@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Abonent:</b>
+  <%= @abonent_payment.abonent.phone %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @abonent_payment.amount %>
+</p>
+
+
+<%= link_to 'Edit', edit_abonent_payment_path(@abonent_payment) %> |
+<%= link_to 'Back', abonent_payments_path %>

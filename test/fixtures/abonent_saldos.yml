@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  abonent: 
+  start_day: 9.99
+
+two:
+  abonent: 
+  start_day: 9.99

@@ -1,0 +1,11 @@
+<%= form_tag("", :method => "get") do %>
+
+  <%= label_tag(:q, "Корпорация") %>
+  <%= collection_select(:corporation, :corporation_id, Corporation.all, :id, :name) %><br>
+  <%= label_tag(:q, "С ") %>
+  <%= text_field_tag 'from_day', nil, :class => 'datepicker' %><br>
+  <%= label_tag(:q, "До ") %>
+  <%= text_field_tag 'to_day', nil, :class => 'datepicker' %>
+  <%= submit_tag "Сформировать"  %>
+
+<% end %>

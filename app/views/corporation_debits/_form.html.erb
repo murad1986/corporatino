@@ -1,0 +1,25 @@
+<%= form_for(@corporation_debit), :html => {:class => "form-stacked"} do |f| %>
+  <% if @corporation_debit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corporation_debit.errors.count, "error") %> prohibited this corporation_debit from being saved:</h2>
+
+      <ul>
+      <% @corporation_debit.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :corporation, "Корпорация" %>
+    <%= f.text_field :corporation %>
+  </div>
+  <div class="field">
+    <%= f.label :amount, "Размер" %>
+    <%= f.text_field :amount %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

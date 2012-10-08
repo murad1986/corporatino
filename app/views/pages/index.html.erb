@@ -1,0 +1,36 @@
+<div class="span-one-third">
+<table>
+    <tbody>
+      <tr>
+        <td><b>Корпорация </b></td>
+        <td><%= @corporation.name %></td>
+        </tr>
+        <tr>
+        <td><b>Всего абонентов: </b></td>
+        <td><%= @corporation.number_count %></td>
+        </tr>
+        <tr>
+        <td><b>Баланс в Мегафоне: </b></td>
+        <td><%= @corporation.balance_megafon %></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<div class="span-two-thirds">
+<table>
+    <tbody>
+    <% @news.each do |new| %>
+      <tr>
+        <td><%= new.created_at.to_date %></td>
+        <td><b><%= new.title %></b><br>
+            <%= new.text %>
+        </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
+
+
+</div>
+
+          

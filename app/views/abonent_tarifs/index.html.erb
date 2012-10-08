@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th>Корпорация</th>
+    <th>Название</th>
+    <th>Абонентская плата</th>
+    <th>Списания</th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @abonent_tarifs.each do |abonent_tarif| %>
+  <tr>
+    <td><%= abonent_tarif.user.username %></td>
+    <td><%= abonent_tarif.name %></td>
+    <td><%= abonent_tarif.tarif %></td>
+    <td><%= abonent_tarif.monthly? ? "Единоразово" : "Ежедневно" %></td>
+    <td><%= link_to 'Изменить', edit_abonent_tarif_path(abonent_tarif) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Добавить новый тариф', new_abonent_tarif_path, :class => 'btn' %>
+ 

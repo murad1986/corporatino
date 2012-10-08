@@ -1,0 +1,34 @@
+<%= form_for @abonent_payment , :html => {:class => "form-stacked"} do |f| %>
+  <% if @abonent_payment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@abonent_payment.errors.count, "error") %> prohibited this abonent_payment from being saved:</h2>
+
+      <ul>
+      <% @abonent_payment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="dynamic_select">
+  <div class="field">
+    <%= label_tag(:q, "Корпорация ") %>
+    <%= collection_select :corporation, :corporation_id, @corporations, :id, :name, :include_blank => false %>
+  </div>
+
+  <div class="field">
+  <%= f.label :abonent_id, "Абонент" %>
+  <%= f.grouped_collection_select(:abonent_id, @corporations, :abonents, :name, :id, :phone, :inlcude_blank => true )%><br>
+  </div>
+</div>
+  <div class="field">
+    <%= f.label :amount, "Сумма" %>
+    <%= f.text_field :amount %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Пополнить" %>
+  </div>
+    <%= f.hidden_field :manual, :value => true   %>
+
+<% end %>

@@ -1,0 +1,2 @@
+module Index::TestHelper
+end

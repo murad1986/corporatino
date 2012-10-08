@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  phone: 1
+  password: MyString
+  rate_megafon: 
+  rate_corpo: 
+  number_count: 1
+  balance_megafon: 9.99
+  balance_corpo: 9.99
+
+two:
+  name: MyString
+  phone: 1
+  password: MyString
+  rate_megafon: 
+  rate_corpo: 
+  number_count: 1
+  balance_megafon: 9.99
+  balance_corpo: 9.99

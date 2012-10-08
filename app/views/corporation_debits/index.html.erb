@@ -1,0 +1,18 @@
+<table>
+  <tr>
+    <th>Время</th>
+    <th>Корпорация</th>
+    <th>Сумма</th>
+
+  </tr>
+
+<% @corporation_debits.each do |corporation_debit| %>
+  <tr>
+    <td><%= corporation_debit.created_at %></td>
+    <td><%= corporation_debit.corporation.corporation %></td>
+    <td><%= corporation_debit.amount %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

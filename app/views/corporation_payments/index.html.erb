@@ -1,0 +1,21 @@
+<table>
+  <tr>
+    <th>Время пополнения</th>
+    <th>Корпорация</th>
+    <th>Сумма</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @corporation_payments.each do |corporation_payment| %>
+  <tr>
+    <td><%= corporation_payment.created_at %></td>
+    <td><%= corporation_payment.corporation.name %></td>
+    <td><%= corporation_payment.amount %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Новое пополнение', new_corporation_payment_path, :class => 'btn' %>

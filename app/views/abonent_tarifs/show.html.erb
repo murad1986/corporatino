@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @abonent_tarif.name %>
+</p>
+
+<p>
+  <b>Tarif:</b>
+  <%= @abonent_tarif.tarif %>
+</p>
+
+
+<%= link_to 'Edit', edit_abonent_tarif_path(@abonent_tarif) %> |
+<%= link_to 'Back', abonent_tarifs_path %>

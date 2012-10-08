@@ -1,0 +1,29 @@
+<%= form_for @abonent_tarif do |f| %>
+  <% if @abonent_tarif.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@abonent_tarif.errors.count, "error") %> prohibited this abonent_tarif from being saved:</h2>
+
+      <ul>
+      <% @abonent_tarif.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, "Название тарифа" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :tarif, "Абонентская плата" %>
+    <%= f.text_field :tarif %>
+  </div>
+  <div class="field">
+    <%= f.label :monthly, "Единоразовое списание" %>
+    <%= f.check_box :monthly %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Добавить", :class =>"btn" %>
+  </div>
+<% end %>

@@ -1,0 +1,48 @@
+<%= render 'form' %>
+
+<table>
+  <tr>
+    <th>Дата</th>
+    <th>Абонент</th>
+    <th>Начало дня</th>
+    <th>Поступления</th>
+    <th>Списания</th>
+    <th>Конечный остаток</th>
+  </tr>
+<%
+ @abonent_pays_sum = []
+ @abonent_debits_sum = []
+%>
+
+
+
+<% @abonent_saldos.each do |abonent_saldo| %>
+<% 
+  abonent_pays = abonent_saldo.abonent.abonent_payments.pays_by_day(abonent_saldo.created_at.to_date).collect{|pay| pay.amount}
+  @abonent_pays_sum << abonent_pays.sum
+  abonent_debits = abonent_saldo.abonent.abonent_debits.debits_by_day(abonent_saldo.created_at.to_date).collect{|debit| debit.amount} 
+  @abonent_debits_sum << abonent_debits.sum
+  balance = abonent_saldo.start_day + abonent_pays.sum - abonent_debits.sum
+%>
+
+      
+  <tr>
+    <td><%= abonent_saldo.created_at.to_date %></td>
+    <td><%= abonent_saldo.abonent.phone %></td>
+    <td><%= abonent_saldo.start_day %></td>
+    <td><%= abonent_pays.sum %></td>
+    <td><%= abonent_debits.sum %></td>
+    <td> <%= balance %> </td>
+  </tr>
+<% end %>
+  <tr>
+    <td>Итого: </td>
+    <td></td>
+    <td></td>
+    <td><%= @abonent_pays_sum.sum   %></td>
+    <td><%= @abonent_debits_sum.sum  %></td>
+    <td> </td>
+  </tr>
+</table>
+
+<br />

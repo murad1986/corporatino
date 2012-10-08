@@ -1,0 +1,28 @@
+<table>
+  <tr>
+    <th>Дата</th>
+    <th>Абонент</th>
+    <th>Пополнение</th>
+    <th>Тип оплаты</th>
+  </tr>
+  
+<% @abonent_payments.each do |abonent_payment| %>
+  <tr>
+    <td><%= abonent_payment.created_at %></td>
+    <td><%= abonent_payment.abonent.phone %></td>
+    <td><%= abonent_payment.amount %></td>
+    <% if abonent_payment.manual == true %>
+      <td>
+          Ручное
+     </td>
+     <% else %>
+      <td>
+          Терминал
+     </td> 
+     <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= link_to 'Пополнить остаток точки', new_abonent_payment_path, :class => 'btn' %>

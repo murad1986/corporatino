@@ -1,0 +1,38 @@
+<table class="corporation">
+    <thead>
+      <tr>
+        <th>Изменить</th>
+        <th>Корпорация</th>
+        <th>ИП владельца</th>
+        <th>Телефон</th>
+        <th>Кол-во Абонентов</th>
+        <th>Тариф</th>
+        <th>Баланс</th>
+        <th>Отсрочка</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @corporations.each do |corporation| %>
+    <%
+    corporation_pays = corporation.corporation_payments.collect{|pay| pay.amount}
+    corporation_debits = corporation.corporation_debits.collect{|pay| pay.amount}
+    balance = corporation_pays.sum - corporation_debits.sum %>
+      <tr>
+        <td><%= link_to "...", edit_corporation_path(corporation.id), :class => 'btn' %></td>
+        <td><%= corporation.corporation %></td>
+        <td><%= corporation.name %></td>
+        <td><%= corporation.phone %></td>
+        <td><%= corporation.number_count%></td>
+        <td><%= corporation.rate_corpo%></td>
+        <td><%= balance %></td>
+        <td><%= corporation.delay   %></td>
+        <td><%= corporation.show_status %></td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+
+<br />
+
+<%= link_to 'Добавить Корпорацию', new_corporation_path, :class => 'btn'%>

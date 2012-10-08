@@ -1,0 +1,25 @@
+<%= form_for @rate_corpo do |f| %>
+  <% if @rate_corpo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@rate_corpo.errors.count, "error") %> prohibited this rate_corpo from being saved:</h2>
+
+      <ul>
+      <% @rate_corpo.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, "Название" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :pay, "Абонентская плата" %>
+    <%= f.text_field :pay %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Сохранить", :class => 'btn' %>
+  </div>
+<% end %>

@@ -1,0 +1,37 @@
+<%= render 'form'%>
+
+<table>
+  <tr>
+    <th>Дата</th>
+    <th>Корпорация</th>
+    <th>Начало дня</th>
+
+  </tr>
+<%
+ @corporation_pays_sum = []
+ @corporation_debits_sum = []
+%>
+
+<% @corporation_saldos.each do |corporation_saldo| %>
+
+<%
+
+corporation_pays = corporation_saldo.corporation.corporation_payments.pays_by_day(corporation_saldo.created_at.to_date).collect{|pay| pay.amount}
+
+@corporation_pays_sum << corporation_pays.sum
+corporation_debits = corporation_saldo.corporation.corporation_debits.debits_by_day(corporation_saldo.created_at.to_date).collect{|debit| debit.amount}
+
+@corporation_debits_sum << corporation_debits.sum
+
+balance = corporation_saldo.startDay + corporation_pays.sum - corporation_debits.sum
+
+ %>
+  <tr>
+    <td><%= corporation_saldo.created_at.to_date %></td>
+    <td><%= corporation_saldo.corporation.corporation %></td>
+    <td><%= corporation_saldo.startDay %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

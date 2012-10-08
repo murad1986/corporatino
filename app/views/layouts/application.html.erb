@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Corporatino</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<%= show_topbar %>
+  <div class="container">
+
+      <div class="content">
+        <%= show_header %>
+        <div class="row">
+          <div class="span14">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; Corporatino 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+</body>
+</html>

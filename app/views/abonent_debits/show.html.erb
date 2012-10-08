@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Abonent:</b>
+  <%= @abonent_debit.abonent.phone %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @abonent_debit.amount %>
+</p>
+
+
+<%= link_to 'Edit', edit_abonent_debit_path(@abonent_debit) %> |
+<%= link_to 'Back', abonent_debits_path %>

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Corporation:</b>
+  <%= @corporation_saldo.corporation %>
+</p>
+
+<p>
+  <b>Startday:</b>
+  <%= @corporation_saldo.startDay %>
+</p>
+
+
+<%= link_to 'Edit', edit_corporation_saldo_path(@corporation_saldo) %> |
+<%= link_to 'Back', corporation_saldos_path %>

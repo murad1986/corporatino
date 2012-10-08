@@ -1,0 +1,71 @@
+<% corporations = current_user.admin? ? Corporation.all : current_user.corporations %>
+<%= form_tag("", :method => "get") do %>
+  <%= collection_select(:corporation, :corporation_id, corporations, :id, :name, :html =>{:class => "input"}) %>
+  <%= submit_tag("Сформировать", :class => "btn") %>
+<% end %>
+<table class="zebra-striped">
+<thead>
+  <tr>
+    <th>Изменить</th>
+    <th>Абонент</th>
+    <th>Наименование</th>
+    <th>Тариф</th>
+    <th>Отсрочка</th>
+    <th>Баланс</th>
+    <th>Работа</th>
+    <th>Статус</th>
+  </tr>
+</thead>
+<tbody>
+<% @abonents.each do |abonent| %>
+<%
+    abonent_pays = abonent.abonent_payments.collect{|pay| pay.amount}
+    abonent_debits = abonent.abonent_debits.collect{|pay| pay.amount}
+    balance = abonent_pays.sum - abonent_debits.sum
+%>
+  <tr>
+    <td>
+      <%= link_to '...', edit_abonent_path(abonent), :class => 'btn' %>
+    </td>
+    <td>
+      <%= abonent.phone %>
+    </td>
+    <td>
+        <%= abonent.name %>
+    </td>
+    <% if abonent.abonent_tarif.present? %>
+      <td>
+        <%= abonent.abonent_tarif.name %>
+      </td>
+    <% else %>
+      <td>
+        Тариф не выбран
+      </td>
+    <% end %>
+    <td>
+        <%= abonent.delay %>
+    </td>
+    <td>
+      <%= balance %>
+    </td>
+<% if abonent.suspend == true %>
+
+    <td>
+      Неактивен
+    </td>
+<% else %>
+    <td>
+      <%= abonent.status? ? "Работает" : "Заблокирован" %>
+    </td>
+
+<% end %>
+    <td>
+      <%= abonent.suspend? ? "Неактивен" : "Активен" %>
+    </td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<br />
+<%= link_to 'Добавить нового абонента', new_abonent_path, :class => 'btn' %>

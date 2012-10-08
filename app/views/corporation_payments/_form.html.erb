@@ -1,0 +1,26 @@
+<%= form_for(@corporation_payment) do |f| %>
+  <% if @corporation_payment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corporation_payment.errors.count, "error") %> prohibited this corporation_payment from being saved:</h2>
+
+      <ul>
+      <% @corporation_payment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :corporation_id, "Корпорация" %>
+    <%= f.collection_select(:corporation_id, Corporation.all, :id, :name) %>
+
+  </div>
+  <div class="field">
+    <%= f.label :amount, "Сумма пополнения" %>
+    <%= f.text_field :amount %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Пополнить баланс", :class => 'btn'%>
+  </div>
+<% end %>

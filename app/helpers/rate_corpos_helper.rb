@@ -1,0 +1,2 @@
+module RateCorposHelper
+end

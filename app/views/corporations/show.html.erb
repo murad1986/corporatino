@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @corporation.name %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%= @corporation.phone %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%= @corporation.password %>
+</p>
+
+<p>
+  <b>Rate megafon:</b>
+  <%= @corporation.rate_megafon %>
+</p>
+
+
+
+
+
+
+<p>
+  <b>Number count:</b>
+  <%= @corporation.number_count %>
+</p>
+
+<p>
+  <b>Balance megafon:</b>
+  <%= @corporation.balance_megafon %>
+</p>
+
+<p>
+  <b>Balance corpo:</b>
+  <%= @corporation.balance_corpo %>
+</p>
+
+
+<%= link_to 'Edit', edit_corporation_path(@corporation) %> |
+<%= link_to 'Back', corporations_path %>

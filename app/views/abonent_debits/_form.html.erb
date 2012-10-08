@@ -1,0 +1,25 @@
+<%= form_for(@abonent_debit), :html => {:class => "form-stacked"} do |f| %>
+  <% if @abonent_debit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@abonent_debit.errors.count, "error") %> prohibited this abonent_debit from being saved:</h2>
+
+      <ul>
+      <% @abonent_debit.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :abonent, "Абонент" %>
+    <%= f.collection_select(:abonent_id, Abonent.all, :id, :phone) %>
+  </div>
+  <div class="field">
+    <%= f.label :amount, "Размер" %>
+    <%= f.text_field :amount %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

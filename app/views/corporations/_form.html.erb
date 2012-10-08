@@ -1,0 +1,37 @@
+<%= form_for @corporation do |f| %>
+  <% if @corporation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@corporation.errors.count, "error") %> prohibited this corporation from being saved:</h2>
+
+      <ul>
+      <% @corporation.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :corporation, "Корпорация" %>
+    <%= f.text_field :corporation %>
+  </div><br>
+  <div class="field">
+    <%= f.label :phone, "Номер телефона" %>
+    <%= f.text_field :phone %>
+  </div><br>
+  <div class="field">
+    <%= f.label :password, "Пароль Сервис-Гида" %>
+    <%= f.text_field :password %>
+  </div><br>
+    <div class="field">
+    <%= f.label :delay, "Отсрочка" %>
+    <%= f.text_field :delay, :value => '0' %>
+  </div><br>
+  <div class="field">
+    <%= f.label :rate_corpo_id, "Тариф в Корпорации" %>
+    <%= f.collection_select(:rate_corpo_id, RateCorpo.all, :id, :name) %>
+  </div><br>
+  <div class="actions">
+    <%= f.submit "Добавить Корпорацию", :class => "btn" %>
+  </div>
+<% end %>

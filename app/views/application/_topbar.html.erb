@@ -1,0 +1,21 @@
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+        <%= logo %>
+        <ul class="nav">
+            <li><%= link_to "Абоненты", abonents_path %></li>
+            <li><%= link_to "Взаиморасчеты", abonent_saldos_path %></li>
+            <li><%= link_to "Тарифы", abonent_tarifs_path %></li>
+            <li><%= link_to "Пополнение остатков", new_abonent_payment_path %></li>
+            <li class="dropdown" data-dropdown="dropdown">
+              <a href="#" class="dropdown-toggle">Помощь</a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Добавить заявку", new_help_path %></li>
+                <li><%= link_to "Инструкция", instruction_path %></li>
+              </ul>
+            </li>
+            <li><%= link_to " Выйти", destroy_user_session_path, :method => :delete %></li>
+          </ul>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Корпорация:</b>
+  <%= @corporation_payment.corporation.name %>
+</p>
+
+<p>
+  <b>Сумма:</b>
+  <%= @corporation_payment.amount %>
+</p>
+
+
+<%= link_to 'Изменить', edit_corporation_payment_path(@corporation_payment) %> |
+<%= link_to 'Назад', corporation_payments_path %>

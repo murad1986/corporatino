@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Phone:</b>
+  <%= @abonent.phone %>
+</p>
+
+<p>
+  <b>Тариф</b>
+  <%= @abonent.show_tarif_name %>
+</p>
+
+<p>
+  <b>Delay:</b>
+  <%= @abonent.delay %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @abonent.status %>
+</p>
+
+
+<%= link_to 'Edit', edit_abonent_path(@abonent) %> |
+<%= link_to 'Back', abonents_path %>

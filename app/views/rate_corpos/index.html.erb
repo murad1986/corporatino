@@ -1,0 +1,21 @@
+<table>
+  <tr>
+    <th>Название</th>
+    <th>Абонентская плата</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @rate_corpos.each do |rate_corpo| %>
+  <tr>
+    <td><%= rate_corpo.name %></td>
+    <td><%= rate_corpo.pay %></td>
+    <td><%= link_to 'Изменить', edit_rate_corpo_path(rate_corpo) %></td>
+    <td><%= link_to 'Удалить', rate_corpo, confirm: 'Вы уверены?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Добавить новый Тариф', new_rate_corpo_path, :class => "btn" %>

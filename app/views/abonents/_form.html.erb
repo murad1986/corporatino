@@ -1,0 +1,46 @@
+<%= form_for @abonent do |f| %>
+  <% if @abonent.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@abonent.errors.count, "error") %> prohibited this abonent from being saved:</h2>
+
+      <ul>
+      <% @abonent.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, "Наименование" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :phone, "Телефон" %>
+    <%= f.text_field :phone %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Тариф"%>
+    <%= f.collection_select(:abonent_tarif_id, current_user.abonent_tarifs, :id, :name)  %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Отсрочка(в днях)" %>
+    <%= f.number_field :delay %>
+  </div>
+
+  <div class="field">
+    <%= f.label "Начало работы: " %>
+    <%= f.text_field :start_date, :class => 'datepicker' %>
+  </div>
+  
+  <div class="field">
+    <%= f.label "Статус: " %>
+    <%= select(:abonent, :suspend, [['Не активен', true],['Активен', false]])  %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Сохранить", :class => "btn" %>
+  </div>
+<% end %>

@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <th>Дата</th>
+    <th>Заголовок</th>
+    <th>Текст</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @news.each do |news| %>
+  <tr>
+    <td><%= news.created_at.to_date %></td>
+    <td><%= news.title %></td>
+    <td><%= news.text %></td>
+    <td><%= link_to 'Показать', news %></td>
+    <td><%= link_to 'Редактировать', edit_news_path(news) %></td>
+    <td><%= link_to 'Удалить', news, confirm: 'Уверены?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Добавить новость', new_news_path, :class => "btn" %>

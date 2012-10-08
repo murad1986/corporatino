@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Название:</b>
+  <%= @rate_corpo.name %>
+</p>
+
+<p>
+  <b>Абонентская плата:</b>
+  <%= @rate_corpo.pay %>
+</p>
+
+
+<%= link_to 'Редактирование', edit_rate_corpo_path(@rate_corpo) %> |
+<%= link_to 'Назад', rate_corpos_path %>

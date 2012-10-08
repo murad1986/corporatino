@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  corporation: 
+  phone: 1
+  balance: 9.99
+  delay: 1
+  status: 1
+
+two:
+  corporation: 
+  phone: 1
+  balance: 9.99
+  delay: 1
+  status: 1

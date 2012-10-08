@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Corporation:</b>
+  <%= @corporation_debit.corporation %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @corporation_debit.amount %>
+</p>
+
+
+<%= link_to 'Edit', edit_corporation_debit_path(@corporation_debit) %> |
+<%= link_to 'Back', corporation_debits_path %>
