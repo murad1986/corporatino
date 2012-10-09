@@ -52,7 +52,7 @@ class Corporation < ActiveRecord::Base
     self.corporation_saldos.build(:corporation => self, :startDay => "0")
   end
 
-  def change_status_after_de lay
+  def change_status_after_delay
     pays = self.corporation_payments.collect{|pay| pay.amount}
     debits = self.corporation_debits.collect{|pay| pay.amount}
     balance = pays.sum - debits.sum
