@@ -5,7 +5,11 @@ class Corporation < ActiveRecord::Base
   require 'hpricot'
   require 'date'
   include MEGAFON
-
+  
+  def logging(message)
+    log = Logger.new(File.join(Rails.root, "log", 'corporation.log'))
+    log.debug DateTime.now + message
+  end
   # => Association's
   belongs_to  :rate_corpo
   belongs_to  :user, :dependent => :destroy
@@ -48,7 +52,7 @@ class Corporation < ActiveRecord::Base
     self.corporation_saldos.build(:corporation => self, :startDay => "0")
   end
 
-  def change_status_after_delay
+  def change_status_after_de lay
     pays = self.corporation_payments.collect{|pay| pay.amount}
     debits = self.corporation_debits.collect{|pay| pay.amount}
     balance = pays.sum - debits.sum
@@ -80,6 +84,8 @@ class Corporation < ActiveRecord::Base
 
 # ====== From model Abonent ==============================
   def change_abonent_status
+
+
     abonents_to_lock = []
     abonents_to_unlock = []
 
@@ -105,53 +111,47 @@ class Corporation < ActiveRecord::Base
               if last_debit_day.to_date + 30.day == Date.current
 
                 if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
-                  abonent.update_attributes(:status => false)
-                  abonents_to_lock.push abonent.phone.to_s
+                  lock_abonent(abonent, abonents_to_lock)
                 else
-                  abonent.update_attributes(:status => true)
-                  abonents_to_unlock.push abonent.phone.to_s
+                  unlock_abonent(abonent, abonents_to_unlock)
                 end
               end
 
             # => Если последнее списание не по ежемесячному списанию
             else
               if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
-                abonent.update_attributes(:status => false)
-                abonents_to_lock.push abonent.phone.to_s
+                lock_abonent(abonent, abonents_to_lock)
               else
-                abonent.update_attributes(:status => true)
-                abonents_to_unlock.push abonent.phone.to_s
+                unlock_abonent(abonent, abonents_to_unlock)
               end
             end
 
           # => Если предедущих списаний нет
           else
             if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
-              abonent.update_attributes(:status => false)
-              abonents_to_lock.push abonent.phone.to_s
+              lock_abonent(abonent, abonents_to_lock)
             else
-              abonent.update_attributes(:status => true)
-              abonents_to_unlock.push abonent.phone.to_s
+              unlock_abonent(abonent, abonents_to_unlock)
             end
           end
 
         # => Если тариф не ежемесячный
         else
           if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
-            abonents_to_lock.push abonent.phone.to_s if abonent.status
-            abonent.update_attributes(:status => false)
+            lock_abonent(abonent, abonents_to_lock)
           else
-            abonents_to_unlock.push abonent.phone.to_s unless abonent.status
-            abonent.update_attributes(:status => true)
+            unlock_abonent(abonent, abonents_to_unlock) 
           end                      
         end
       elsif !abonent.suspend? and !abonent.abonent_tarif
     	    if balance <= 0 and delay == 0
-    		abonents_to_lock.push abonent.phone.to_s
-    		abonent.update_attributes(:status => false)
-    	    end
+            lock_abonent(abonent, abonents_to_lock)
+          end
       end
+
     end
+
+    
 
     try_index = 0
     begin
@@ -160,7 +160,7 @@ class Corporation < ActiveRecord::Base
     rescue => err
       puts err
       try_index += 1
-      if try_index < 10
+      if try_index < 1000
         puts "Tried #{try_index} times"
         retry
       else
@@ -170,6 +170,26 @@ class Corporation < ActiveRecord::Base
     end
 
   end
+
+  def check_start_date
+    abonents.each do |abonent|
+      abonent.update_attributes(:suspend => false) if abonent.start_date == Date.current
+    end
+  end
+  
+  def lock_abonent(abonent, lock_array)
+    lock_array << abonent.phone.to_s
+    abonent.update_attributes(:status => false)
+    logging("Заблокирован абонент #{abonent.phone} --- #{abonent.corporation}")    
+  end
+
+  def unlock_abonent(abonent, unlock_array)
+    unlock_array << abonent.phone.to_s
+    abonent.update_attributes(:status => true)
+    logging("Разблокирован абонент #{abonent.phone} --- #{abonent.corporation}")     
+  end
+
+
 
   def charge_abonent
     abonents.each do |abonent|
@@ -197,11 +217,6 @@ class Corporation < ActiveRecord::Base
     end
   end
 
-  def check_start_date
-    abonents.each do |abonent|
-      abonent.update_attributes(:suspend => false) if abonent.start_date == Date.current
-    end
-  end
 
   def self.end_day
     corporations = Corporation.all
@@ -209,8 +224,8 @@ class Corporation < ActiveRecord::Base
       corporation.charge
       corporation.change_status
       corporation.change_delay
-      corporation.check_start_date
       corporation.change_abonent_status
+      corporation.check_start_date
       corporation.charge_abonent
       corporation.change_abonent_delay
       CorporationSaldo.balance_start_day(corporation)

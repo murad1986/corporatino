@@ -28,6 +28,13 @@ class Abonent < ActiveRecord::Base
     self.abonent_saldos.create!(:abonent => self, :start_day => "0")
   end
 
+  def chage_status_after_start_day
+    if self.status = false and self.start_date == Date.current
+      self.update_attributes(:status => true)
+    end
+  end
+
+  
   def show_status
     self.status ? "Активен" : "Не активен"
   end
