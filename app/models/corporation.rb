@@ -180,13 +180,13 @@ class Corporation < ActiveRecord::Base
   def lock_abonent(abonent, lock_array)
     lock_array << abonent.phone.to_s
     abonent.update_attributes(:status => false)
-    logging("Заблокирован абонент #{abonent.phone} --- #{abonent.corporation}")    
+    logging("Заблокирован абонент #{abonent.phone} --- #{abonent.corporation.name}")    
   end
 
   def unlock_abonent(abonent, unlock_array)
     unlock_array << abonent.phone.to_s
     abonent.update_attributes(:status => true)
-    logging("Разблокирован абонент #{abonent.phone} --- #{abonent.corporation}")     
+    logging("Разблокирован абонент #{abonent.phone} --- #{abonent.corporation.name}")     
   end
 
 
