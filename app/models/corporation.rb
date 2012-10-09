@@ -8,7 +8,7 @@ class Corporation < ActiveRecord::Base
   
   def logging(message)
     log = Logger.new(File.join(Rails.root, "log", 'corporation.log'))
-    log.debug DateTime.now + message
+    log.debug "#{DateTime.now} #{message}"
   end
   # => Association's
   belongs_to  :rate_corpo
