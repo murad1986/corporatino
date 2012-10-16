@@ -1,0 +1,12575 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: abonent_debits; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE abonent_debits (
+    id integer NOT NULL,
+    abonent_id integer,
+    amount numeric(6,2),
+    abonent_tarif_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.abonent_debits OWNER TO corporatino;
+
+--
+-- Name: abonent_debits_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE abonent_debits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abonent_debits_id_seq OWNER TO corporatino;
+
+--
+-- Name: abonent_debits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE abonent_debits_id_seq OWNED BY abonent_debits.id;
+
+
+--
+-- Name: abonent_debits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('abonent_debits_id_seq', 40, true);
+
+
+--
+-- Name: abonent_payments; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE abonent_payments (
+    id integer NOT NULL,
+    abonent_id integer,
+    amount numeric(6,2),
+    platika_id integer,
+    manual boolean,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.abonent_payments OWNER TO corporatino;
+
+--
+-- Name: abonent_payments_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE abonent_payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abonent_payments_id_seq OWNER TO corporatino;
+
+--
+-- Name: abonent_payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE abonent_payments_id_seq OWNED BY abonent_payments.id;
+
+
+--
+-- Name: abonent_payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('abonent_payments_id_seq', 3, true);
+
+
+--
+-- Name: abonent_saldos; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE abonent_saldos (
+    id integer NOT NULL,
+    abonent_id integer,
+    start_day numeric(6,2),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.abonent_saldos OWNER TO corporatino;
+
+--
+-- Name: abonent_saldos_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE abonent_saldos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abonent_saldos_id_seq OWNER TO corporatino;
+
+--
+-- Name: abonent_saldos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE abonent_saldos_id_seq OWNED BY abonent_saldos.id;
+
+
+--
+-- Name: abonent_saldos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('abonent_saldos_id_seq', 94544, true);
+
+
+--
+-- Name: abonent_tarifs; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE abonent_tarifs (
+    id integer NOT NULL,
+    name character varying(255),
+    tarif numeric(6,2),
+    monthly boolean,
+    user_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.abonent_tarifs OWNER TO corporatino;
+
+--
+-- Name: abonent_tarifs_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE abonent_tarifs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abonent_tarifs_id_seq OWNER TO corporatino;
+
+--
+-- Name: abonent_tarifs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE abonent_tarifs_id_seq OWNED BY abonent_tarifs.id;
+
+
+--
+-- Name: abonent_tarifs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('abonent_tarifs_id_seq', 10, true);
+
+
+--
+-- Name: abonents; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE abonents (
+    id integer NOT NULL,
+    corporation_id integer,
+    phone character varying(255),
+    delay integer DEFAULT 0,
+    status boolean DEFAULT true,
+    abonent_tarif_id integer,
+    name character varying(255),
+    suspend boolean DEFAULT true,
+    start_date date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.abonents OWNER TO corporatino;
+
+--
+-- Name: abonents_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE abonents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.abonents_id_seq OWNER TO corporatino;
+
+--
+-- Name: abonents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE abonents_id_seq OWNED BY abonents.id;
+
+
+--
+-- Name: abonents_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('abonents_id_seq', 1500, true);
+
+
+--
+-- Name: corporation_debits; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE corporation_debits (
+    id integer NOT NULL,
+    corporation_id integer,
+    amount numeric(6,0),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.corporation_debits OWNER TO corporatino;
+
+--
+-- Name: corporation_debits_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE corporation_debits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corporation_debits_id_seq OWNER TO corporatino;
+
+--
+-- Name: corporation_debits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE corporation_debits_id_seq OWNED BY corporation_debits.id;
+
+
+--
+-- Name: corporation_debits_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('corporation_debits_id_seq', 1, false);
+
+
+--
+-- Name: corporation_payments; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE corporation_payments (
+    id integer NOT NULL,
+    corporation_id integer,
+    amount numeric(6,0),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.corporation_payments OWNER TO corporatino;
+
+--
+-- Name: corporation_payments_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE corporation_payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corporation_payments_id_seq OWNER TO corporatino;
+
+--
+-- Name: corporation_payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE corporation_payments_id_seq OWNED BY corporation_payments.id;
+
+
+--
+-- Name: corporation_payments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('corporation_payments_id_seq', 1, false);
+
+
+--
+-- Name: corporation_saldos; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE corporation_saldos (
+    id integer NOT NULL,
+    corporation_id integer,
+    "startDay" numeric(6,0),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.corporation_saldos OWNER TO corporatino;
+
+--
+-- Name: corporation_saldos_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE corporation_saldos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corporation_saldos_id_seq OWNER TO corporatino;
+
+--
+-- Name: corporation_saldos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE corporation_saldos_id_seq OWNED BY corporation_saldos.id;
+
+
+--
+-- Name: corporation_saldos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('corporation_saldos_id_seq', 179, true);
+
+
+--
+-- Name: corporations; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE corporations (
+    id integer NOT NULL,
+    name character varying(255),
+    phone character varying(255),
+    password character varying(255),
+    rate_megafon character varying(255),
+    rate_corpo_id integer,
+    number_count integer,
+    balance_megafon numeric,
+    balance_corpo numeric,
+    status integer,
+    user_id integer,
+    corporation character varying(255),
+    delay integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.corporations OWNER TO corporatino;
+
+--
+-- Name: corporations_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE corporations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.corporations_id_seq OWNER TO corporatino;
+
+--
+-- Name: corporations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE corporations_id_seq OWNED BY corporations.id;
+
+
+--
+-- Name: corporations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('corporations_id_seq', 12, true);
+
+
+--
+-- Name: helps; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE helps (
+    id integer NOT NULL,
+    title character varying(255),
+    body text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.helps OWNER TO corporatino;
+
+--
+-- Name: helps_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE helps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.helps_id_seq OWNER TO corporatino;
+
+--
+-- Name: helps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE helps_id_seq OWNED BY helps.id;
+
+
+--
+-- Name: helps_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('helps_id_seq', 1, false);
+
+
+--
+-- Name: news; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE news (
+    id integer NOT NULL,
+    title character varying(255),
+    text text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.news OWNER TO corporatino;
+
+--
+-- Name: news_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE news_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.news_id_seq OWNER TO corporatino;
+
+--
+-- Name: news_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE news_id_seq OWNED BY news.id;
+
+
+--
+-- Name: news_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('news_id_seq', 1, false);
+
+
+--
+-- Name: rate_corpos; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE rate_corpos (
+    id integer NOT NULL,
+    name character varying(255),
+    pay numeric,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.rate_corpos OWNER TO corporatino;
+
+--
+-- Name: rate_corpos_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE rate_corpos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rate_corpos_id_seq OWNER TO corporatino;
+
+--
+-- Name: rate_corpos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE rate_corpos_id_seq OWNED BY rate_corpos.id;
+
+
+--
+-- Name: rate_corpos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('rate_corpos_id_seq', 1, false);
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO corporatino;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    email character varying(255) DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying(128) DEFAULT ''::character varying NOT NULL,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying(255),
+    last_sign_in_ip character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    username character varying(255),
+    admin boolean DEFAULT false
+);
+
+
+ALTER TABLE public.users OWNER TO corporatino;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: corporatino
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO corporatino;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: corporatino
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: corporatino
+--
+
+SELECT pg_catalog.setval('users_id_seq', 10, true);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE abonent_debits ALTER COLUMN id SET DEFAULT nextval('abonent_debits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE abonent_payments ALTER COLUMN id SET DEFAULT nextval('abonent_payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE abonent_saldos ALTER COLUMN id SET DEFAULT nextval('abonent_saldos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE abonent_tarifs ALTER COLUMN id SET DEFAULT nextval('abonent_tarifs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE abonents ALTER COLUMN id SET DEFAULT nextval('abonents_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE corporation_debits ALTER COLUMN id SET DEFAULT nextval('corporation_debits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE corporation_payments ALTER COLUMN id SET DEFAULT nextval('corporation_payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE corporation_saldos ALTER COLUMN id SET DEFAULT nextval('corporation_saldos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE corporations ALTER COLUMN id SET DEFAULT nextval('corporations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE helps ALTER COLUMN id SET DEFAULT nextval('helps_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE news ALTER COLUMN id SET DEFAULT nextval('news_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE rate_corpos ALTER COLUMN id SET DEFAULT nextval('rate_corpos_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: corporatino
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: abonent_debits; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY abonent_debits (id, abonent_id, amount, abonent_tarif_id, created_at, updated_at) FROM stdin;
+24	852	0.17	8	2012-10-01 01:00:06.236098	2012-10-01 01:00:06.236098
+25	852	0.17	8	2012-10-02 01:00:06.490143	2012-10-02 01:00:06.490143
+26	852	0.17	8	2012-10-03 01:00:06.835925	2012-10-03 01:00:06.835925
+27	852	0.17	8	2012-10-04 01:00:06.517974	2012-10-04 01:00:06.517974
+28	852	0.17	8	2012-10-04 11:04:18.562283	2012-10-04 11:04:18.562283
+29	852	0.17	8	2012-10-05 01:00:06.801951	2012-10-05 01:00:06.801951
+30	852	0.17	8	2012-10-06 01:00:06.895984	2012-10-06 01:00:06.895984
+31	852	0.17	8	2012-10-07 01:00:06.609731	2012-10-07 01:00:06.609731
+32	852	0.17	8	2012-10-08 01:00:06.720218	2012-10-08 01:00:06.720218
+33	852	0.17	8	2012-10-08 17:56:45.651154	2012-10-08 17:56:45.651154
+34	852	0.17	8	2012-10-08 18:04:14.824821	2012-10-08 18:04:14.824821
+35	852	0.17	8	2012-10-08 18:04:51.719879	2012-10-08 18:04:51.719879
+36	852	0.17	8	2012-10-08 18:23:37.668169	2012-10-08 18:23:37.668169
+37	852	0.17	8	2012-10-08 18:24:49.575221	2012-10-08 18:24:49.575221
+38	852	0.17	8	2012-10-08 18:32:03.58713	2012-10-08 18:32:03.58713
+39	852	0.17	8	2012-10-09 01:00:06.778149	2012-10-09 01:00:06.778149
+40	1078	200.00	10	2012-10-12 01:00:25.706376	2012-10-12 01:00:25.706376
+\.
+
+
+--
+-- Data for Name: abonent_payments; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY abonent_payments (id, abonent_id, amount, platika_id, manual, created_at, updated_at) FROM stdin;
+2	852	50.00	\N	t	2012-09-30 17:44:29.060033	2012-09-30 17:44:29.060033
+3	1078	200.00	65785504	\N	2012-10-11 18:35:27.635861	2012-10-11 18:35:27.635861
+\.
+
+
+--
+-- Data for Name: abonent_saldos; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY abonent_saldos (id, abonent_id, start_day, created_at, updated_at) FROM stdin;
+83809	765	0.00	2012-09-30 17:43:21.375908	2012-09-30 17:43:21.375908
+83810	766	0.00	2012-09-30 17:43:21.379602	2012-09-30 17:43:21.379602
+83811	767	0.00	2012-09-30 17:43:21.382314	2012-09-30 17:43:21.382314
+83812	768	0.00	2012-09-30 17:43:21.38518	2012-09-30 17:43:21.38518
+83813	769	0.00	2012-09-30 17:43:21.388042	2012-09-30 17:43:21.388042
+83814	770	0.00	2012-09-30 17:43:21.390571	2012-09-30 17:43:21.390571
+83815	771	0.00	2012-09-30 17:43:21.393249	2012-09-30 17:43:21.393249
+83816	772	0.00	2012-09-30 17:43:21.396053	2012-09-30 17:43:21.396053
+83817	773	0.00	2012-09-30 17:43:21.398541	2012-09-30 17:43:21.398541
+83818	774	0.00	2012-09-30 17:43:21.401213	2012-09-30 17:43:21.401213
+83819	775	0.00	2012-09-30 17:43:21.403571	2012-09-30 17:43:21.403571
+83820	776	0.00	2012-09-30 17:43:21.406261	2012-09-30 17:43:21.406261
+83821	777	0.00	2012-09-30 17:43:21.408835	2012-09-30 17:43:21.408835
+83822	778	0.00	2012-09-30 17:43:21.411354	2012-09-30 17:43:21.411354
+83823	779	0.00	2012-09-30 17:43:21.413692	2012-09-30 17:43:21.413692
+83824	780	0.00	2012-09-30 17:43:21.416238	2012-09-30 17:43:21.416238
+83825	781	0.00	2012-09-30 17:43:21.418676	2012-09-30 17:43:21.418676
+83826	782	0.00	2012-09-30 17:43:21.421357	2012-09-30 17:43:21.421357
+83827	783	0.00	2012-09-30 17:43:21.424031	2012-09-30 17:43:21.424031
+83828	784	0.00	2012-09-30 17:43:21.426535	2012-09-30 17:43:21.426535
+83829	785	0.00	2012-09-30 17:43:21.429241	2012-09-30 17:43:21.429241
+83830	786	0.00	2012-09-30 17:43:21.43169	2012-09-30 17:43:21.43169
+83831	787	0.00	2012-09-30 17:43:21.434375	2012-09-30 17:43:21.434375
+83832	788	0.00	2012-09-30 17:43:21.437067	2012-09-30 17:43:21.437067
+83833	789	0.00	2012-09-30 17:43:21.439573	2012-09-30 17:43:21.439573
+83834	790	0.00	2012-09-30 17:43:21.442307	2012-09-30 17:43:21.442307
+83835	791	0.00	2012-09-30 17:43:21.444901	2012-09-30 17:43:21.444901
+83836	792	0.00	2012-09-30 17:43:21.447429	2012-09-30 17:43:21.447429
+83837	793	0.00	2012-09-30 17:43:21.45014	2012-09-30 17:43:21.45014
+83838	794	0.00	2012-09-30 17:43:21.452514	2012-09-30 17:43:21.452514
+83839	795	0.00	2012-09-30 17:43:21.455204	2012-09-30 17:43:21.455204
+83840	796	0.00	2012-09-30 17:43:21.457544	2012-09-30 17:43:21.457544
+83841	797	0.00	2012-09-30 17:43:21.460213	2012-09-30 17:43:21.460213
+83842	798	0.00	2012-09-30 17:43:21.462556	2012-09-30 17:43:21.462556
+83843	799	0.00	2012-09-30 17:43:21.465269	2012-09-30 17:43:21.465269
+83844	800	0.00	2012-09-30 17:43:21.467827	2012-09-30 17:43:21.467827
+83845	801	0.00	2012-09-30 17:43:21.470329	2012-09-30 17:43:21.470329
+83846	802	0.00	2012-09-30 17:43:21.472968	2012-09-30 17:43:21.472968
+83847	803	0.00	2012-09-30 17:43:21.475482	2012-09-30 17:43:21.475482
+83848	804	0.00	2012-09-30 17:43:21.478179	2012-09-30 17:43:21.478179
+83849	805	0.00	2012-09-30 17:43:21.480529	2012-09-30 17:43:21.480529
+83850	806	0.00	2012-09-30 17:43:21.483254	2012-09-30 17:43:21.483254
+83851	807	0.00	2012-09-30 17:43:21.4857	2012-09-30 17:43:21.4857
+83852	808	0.00	2012-09-30 17:43:21.48836	2012-09-30 17:43:21.48836
+83853	809	0.00	2012-09-30 17:43:21.490696	2012-09-30 17:43:21.490696
+83854	810	0.00	2012-09-30 17:43:21.493371	2012-09-30 17:43:21.493371
+83855	811	0.00	2012-09-30 17:43:21.496024	2012-09-30 17:43:21.496024
+83856	812	0.00	2012-09-30 17:43:21.498529	2012-09-30 17:43:21.498529
+83857	813	0.00	2012-09-30 17:43:21.501213	2012-09-30 17:43:21.501213
+83858	814	0.00	2012-09-30 17:43:21.503551	2012-09-30 17:43:21.503551
+83859	815	0.00	2012-09-30 17:43:21.506243	2012-09-30 17:43:21.506243
+83860	816	0.00	2012-09-30 17:43:21.50866	2012-09-30 17:43:21.50866
+83861	817	0.00	2012-09-30 17:43:21.511361	2012-09-30 17:43:21.511361
+83862	818	0.00	2012-09-30 17:43:21.514059	2012-09-30 17:43:21.514059
+83863	819	0.00	2012-09-30 17:43:21.516571	2012-09-30 17:43:21.516571
+83864	820	0.00	2012-09-30 17:43:21.519238	2012-09-30 17:43:21.519238
+83865	821	0.00	2012-09-30 17:43:21.522053	2012-09-30 17:43:21.522053
+83866	822	0.00	2012-09-30 17:43:21.52466	2012-09-30 17:43:21.52466
+83867	823	0.00	2012-09-30 17:43:21.527362	2012-09-30 17:43:21.527362
+83868	824	0.00	2012-09-30 17:43:21.530029	2012-09-30 17:43:21.530029
+83869	825	0.00	2012-09-30 17:43:21.532646	2012-09-30 17:43:21.532646
+83870	826	0.00	2012-09-30 17:43:21.535339	2012-09-30 17:43:21.535339
+83871	827	0.00	2012-09-30 17:43:21.537965	2012-09-30 17:43:21.537965
+83872	828	0.00	2012-09-30 17:43:21.540478	2012-09-30 17:43:21.540478
+83873	829	0.00	2012-09-30 17:43:21.54314	2012-09-30 17:43:21.54314
+83874	830	0.00	2012-09-30 17:43:21.546032	2012-09-30 17:43:21.546032
+83875	831	0.00	2012-09-30 17:43:21.548557	2012-09-30 17:43:21.548557
+83876	832	0.00	2012-09-30 17:43:21.55125	2012-09-30 17:43:21.55125
+83877	833	0.00	2012-09-30 17:43:21.553688	2012-09-30 17:43:21.553688
+83878	834	0.00	2012-09-30 17:43:21.556333	2012-09-30 17:43:21.556333
+83879	835	0.00	2012-09-30 17:43:21.558985	2012-09-30 17:43:21.558985
+83880	836	0.00	2012-09-30 17:43:21.561504	2012-09-30 17:43:21.561504
+83881	837	0.00	2012-09-30 17:43:21.564247	2012-09-30 17:43:21.564247
+83882	838	0.00	2012-09-30 17:43:21.566861	2012-09-30 17:43:21.566861
+83883	839	0.00	2012-09-30 17:43:21.56937	2012-09-30 17:43:21.56937
+83884	840	0.00	2012-09-30 17:43:21.572067	2012-09-30 17:43:21.572067
+83885	841	0.00	2012-09-30 17:43:21.574863	2012-09-30 17:43:21.574863
+83886	842	0.00	2012-09-30 17:43:21.577367	2012-09-30 17:43:21.577367
+83887	843	0.00	2012-09-30 17:43:21.580038	2012-09-30 17:43:21.580038
+83888	844	0.00	2012-09-30 17:43:21.582385	2012-09-30 17:43:21.582385
+83889	845	0.00	2012-09-30 17:43:21.585053	2012-09-30 17:43:21.585053
+83890	846	0.00	2012-09-30 17:43:21.587417	2012-09-30 17:43:21.587417
+83891	847	0.00	2012-09-30 17:43:21.590101	2012-09-30 17:43:21.590101
+83892	848	0.00	2012-09-30 17:43:21.592458	2012-09-30 17:43:21.592458
+83893	849	0.00	2012-09-30 17:43:21.595164	2012-09-30 17:43:21.595164
+83894	850	0.00	2012-09-30 17:43:21.597508	2012-09-30 17:43:21.597508
+83895	851	0.00	2012-09-30 17:43:21.600191	2012-09-30 17:43:21.600191
+83896	852	0.00	2012-09-30 17:43:21.602541	2012-09-30 17:43:21.602541
+83897	853	0.00	2012-09-30 17:43:21.605218	2012-09-30 17:43:21.605218
+83898	854	0.00	2012-09-30 17:43:21.607567	2012-09-30 17:43:21.607567
+83899	855	0.00	2012-09-30 17:43:21.610298	2012-09-30 17:43:21.610298
+83900	856	0.00	2012-09-30 17:43:21.612885	2012-09-30 17:43:21.612885
+83901	857	0.00	2012-09-30 17:43:21.615409	2012-09-30 17:43:21.615409
+83902	858	0.00	2012-09-30 17:43:21.643112	2012-09-30 17:43:21.643112
+83903	859	0.00	2012-09-30 17:43:21.646132	2012-09-30 17:43:21.646132
+83904	860	0.00	2012-09-30 17:43:21.648576	2012-09-30 17:43:21.648576
+83905	861	0.00	2012-09-30 17:43:21.651306	2012-09-30 17:43:21.651306
+83906	862	0.00	2012-09-30 17:43:21.653983	2012-09-30 17:43:21.653983
+83907	863	0.00	2012-09-30 17:43:21.656551	2012-09-30 17:43:21.656551
+83908	864	0.00	2012-09-30 17:43:21.659321	2012-09-30 17:43:21.659321
+83909	865	0.00	2012-09-30 17:43:21.661986	2012-09-30 17:43:21.661986
+83910	866	0.00	2012-09-30 17:43:21.664553	2012-09-30 17:43:21.664553
+83911	867	0.00	2012-09-30 17:43:21.667302	2012-09-30 17:43:21.667302
+83912	868	0.00	2012-09-30 17:43:21.669967	2012-09-30 17:43:21.669967
+83913	869	0.00	2012-09-30 17:43:21.672591	2012-09-30 17:43:21.672591
+83914	870	0.00	2012-09-30 17:43:21.675326	2012-09-30 17:43:21.675326
+83915	871	0.00	2012-09-30 17:43:21.67787	2012-09-30 17:43:21.67787
+83916	872	0.00	2012-09-30 17:43:21.680528	2012-09-30 17:43:21.680528
+83917	873	0.00	2012-09-30 17:43:21.683296	2012-09-30 17:43:21.683296
+83918	874	0.00	2012-09-30 17:43:21.685949	2012-09-30 17:43:21.685949
+83919	875	0.00	2012-09-30 17:43:21.688602	2012-09-30 17:43:21.688602
+83920	876	0.00	2012-09-30 17:43:21.691321	2012-09-30 17:43:21.691321
+83921	877	0.00	2012-09-30 17:43:21.694044	2012-09-30 17:43:21.694044
+83922	878	0.00	2012-09-30 17:43:21.696881	2012-09-30 17:43:21.696881
+83923	879	0.00	2012-09-30 17:43:21.699498	2012-09-30 17:43:21.699498
+83924	880	0.00	2012-09-30 17:43:21.702259	2012-09-30 17:43:21.702259
+83925	881	0.00	2012-09-30 17:43:21.704903	2012-09-30 17:43:21.704903
+83926	882	0.00	2012-09-30 17:43:21.707472	2012-09-30 17:43:21.707472
+83927	883	0.00	2012-09-30 17:43:21.710201	2012-09-30 17:43:21.710201
+83928	765	0.00	2012-10-01 01:00:06.283535	2012-10-01 01:00:06.283535
+83929	766	0.00	2012-10-01 01:00:06.291457	2012-10-01 01:00:06.291457
+83930	767	0.00	2012-10-01 01:00:06.299513	2012-10-01 01:00:06.299513
+83931	768	0.00	2012-10-01 01:00:06.308158	2012-10-01 01:00:06.308158
+83932	769	0.00	2012-10-01 01:00:06.316517	2012-10-01 01:00:06.316517
+83933	770	0.00	2012-10-01 01:00:06.325027	2012-10-01 01:00:06.325027
+83934	771	0.00	2012-10-01 01:00:06.333339	2012-10-01 01:00:06.333339
+83935	772	0.00	2012-10-01 01:00:06.341467	2012-10-01 01:00:06.341467
+83936	773	0.00	2012-10-01 01:00:06.349745	2012-10-01 01:00:06.349745
+83937	774	0.00	2012-10-01 01:00:06.35834	2012-10-01 01:00:06.35834
+83938	775	0.00	2012-10-01 01:00:06.36644	2012-10-01 01:00:06.36644
+83939	776	0.00	2012-10-01 01:00:06.374769	2012-10-01 01:00:06.374769
+83940	777	0.00	2012-10-01 01:00:06.38322	2012-10-01 01:00:06.38322
+83941	778	0.00	2012-10-01 01:00:06.391381	2012-10-01 01:00:06.391381
+83942	779	0.00	2012-10-01 01:00:06.399773	2012-10-01 01:00:06.399773
+83943	780	0.00	2012-10-01 01:00:06.408206	2012-10-01 01:00:06.408206
+83944	781	0.00	2012-10-01 01:00:06.416433	2012-10-01 01:00:06.416433
+83945	782	0.00	2012-10-01 01:00:06.42476	2012-10-01 01:00:06.42476
+83946	783	0.00	2012-10-01 01:00:06.433217	2012-10-01 01:00:06.433217
+83947	784	0.00	2012-10-01 01:00:06.44137	2012-10-01 01:00:06.44137
+83948	785	0.00	2012-10-01 01:00:06.451133	2012-10-01 01:00:06.451133
+83949	786	0.00	2012-10-01 01:00:06.467983	2012-10-01 01:00:06.467983
+83950	787	0.00	2012-10-01 01:00:06.484456	2012-10-01 01:00:06.484456
+83951	788	0.00	2012-10-01 01:00:06.501207	2012-10-01 01:00:06.501207
+83952	789	0.00	2012-10-01 01:00:06.517729	2012-10-01 01:00:06.517729
+83953	790	0.00	2012-10-01 01:00:06.534364	2012-10-01 01:00:06.534364
+83954	791	0.00	2012-10-01 01:00:06.551304	2012-10-01 01:00:06.551304
+83955	792	0.00	2012-10-01 01:00:06.567534	2012-10-01 01:00:06.567534
+83956	793	0.00	2012-10-01 01:00:06.584448	2012-10-01 01:00:06.584448
+83957	794	0.00	2012-10-01 01:00:06.601303	2012-10-01 01:00:06.601303
+83958	795	0.00	2012-10-01 01:00:06.617518	2012-10-01 01:00:06.617518
+83959	796	0.00	2012-10-01 01:00:06.634349	2012-10-01 01:00:06.634349
+83960	797	0.00	2012-10-01 01:00:06.651157	2012-10-01 01:00:06.651157
+83961	798	0.00	2012-10-01 01:00:06.667789	2012-10-01 01:00:06.667789
+83962	799	0.00	2012-10-01 01:00:06.684352	2012-10-01 01:00:06.684352
+83963	800	0.00	2012-10-01 01:00:06.701325	2012-10-01 01:00:06.701325
+83964	801	0.00	2012-10-01 01:00:06.717782	2012-10-01 01:00:06.717782
+83965	802	0.00	2012-10-01 01:00:06.734286	2012-10-01 01:00:06.734286
+83966	803	0.00	2012-10-01 01:00:06.751232	2012-10-01 01:00:06.751232
+83967	804	0.00	2012-10-01 01:00:06.76776	2012-10-01 01:00:06.76776
+83968	805	0.00	2012-10-01 01:00:06.784309	2012-10-01 01:00:06.784309
+83969	806	0.00	2012-10-01 01:00:06.801289	2012-10-01 01:00:06.801289
+83970	807	0.00	2012-10-01 01:00:06.817768	2012-10-01 01:00:06.817768
+83971	808	0.00	2012-10-01 01:00:06.834242	2012-10-01 01:00:06.834242
+83972	809	0.00	2012-10-01 01:00:06.850896	2012-10-01 01:00:06.850896
+83973	810	0.00	2012-10-01 01:00:06.867665	2012-10-01 01:00:06.867665
+83974	811	0.00	2012-10-01 01:00:06.884275	2012-10-01 01:00:06.884275
+83975	812	0.00	2012-10-01 01:00:06.901184	2012-10-01 01:00:06.901184
+83976	813	0.00	2012-10-01 01:00:06.917713	2012-10-01 01:00:06.917713
+83977	814	0.00	2012-10-01 01:00:06.934213	2012-10-01 01:00:06.934213
+83978	815	0.00	2012-10-01 01:00:06.95105	2012-10-01 01:00:06.95105
+83979	816	0.00	2012-10-01 01:00:06.959288	2012-10-01 01:00:06.959288
+83980	817	0.00	2012-10-01 01:00:06.967761	2012-10-01 01:00:06.967761
+83981	818	0.00	2012-10-01 01:00:06.998845	2012-10-01 01:00:06.998845
+83982	819	0.00	2012-10-01 01:00:07.009448	2012-10-01 01:00:07.009448
+83983	820	0.00	2012-10-01 01:00:07.017796	2012-10-01 01:00:07.017796
+83984	821	0.00	2012-10-01 01:00:07.026346	2012-10-01 01:00:07.026346
+83985	822	0.00	2012-10-01 01:00:07.034223	2012-10-01 01:00:07.034223
+83986	823	0.00	2012-10-01 01:00:07.042813	2012-10-01 01:00:07.042813
+83987	824	0.00	2012-10-01 01:00:07.051127	2012-10-01 01:00:07.051127
+83988	825	0.00	2012-10-01 01:00:07.059314	2012-10-01 01:00:07.059314
+83989	826	0.00	2012-10-01 01:00:07.067813	2012-10-01 01:00:07.067813
+83990	827	0.00	2012-10-01 01:00:07.076193	2012-10-01 01:00:07.076193
+83991	828	0.00	2012-10-01 01:00:07.084298	2012-10-01 01:00:07.084298
+83992	829	0.00	2012-10-01 01:00:07.092832	2012-10-01 01:00:07.092832
+83993	830	0.00	2012-10-01 01:00:07.101065	2012-10-01 01:00:07.101065
+83994	831	0.00	2012-10-01 01:00:07.109284	2012-10-01 01:00:07.109284
+83995	832	0.00	2012-10-01 01:00:07.117342	2012-10-01 01:00:07.117342
+83996	833	0.00	2012-10-01 01:00:07.126069	2012-10-01 01:00:07.126069
+83997	834	0.00	2012-10-01 01:00:07.134276	2012-10-01 01:00:07.134276
+83998	835	0.00	2012-10-01 01:00:07.142781	2012-10-01 01:00:07.142781
+83999	836	0.00	2012-10-01 01:00:07.151252	2012-10-01 01:00:07.151252
+84000	837	0.00	2012-10-01 01:00:07.191517	2012-10-01 01:00:07.191517
+84001	838	0.00	2012-10-01 01:00:07.201355	2012-10-01 01:00:07.201355
+84002	839	0.00	2012-10-01 01:00:07.209313	2012-10-01 01:00:07.209313
+84003	840	0.00	2012-10-01 01:00:07.217753	2012-10-01 01:00:07.217753
+84004	841	0.00	2012-10-01 01:00:07.226084	2012-10-01 01:00:07.226084
+84005	842	0.00	2012-10-01 01:00:07.234241	2012-10-01 01:00:07.234241
+84006	843	0.00	2012-10-01 01:00:07.242536	2012-10-01 01:00:07.242536
+84007	844	0.00	2012-10-01 01:00:07.251001	2012-10-01 01:00:07.251001
+84008	845	0.00	2012-10-01 01:00:07.259266	2012-10-01 01:00:07.259266
+84009	846	0.00	2012-10-01 01:00:07.267815	2012-10-01 01:00:07.267815
+84010	847	0.00	2012-10-01 01:00:07.276283	2012-10-01 01:00:07.276283
+84011	848	0.00	2012-10-01 01:00:07.284303	2012-10-01 01:00:07.284303
+84012	849	0.00	2012-10-01 01:00:07.292801	2012-10-01 01:00:07.292801
+84013	850	0.00	2012-10-01 01:00:07.301308	2012-10-01 01:00:07.301308
+84014	851	0.00	2012-10-01 01:00:07.309347	2012-10-01 01:00:07.309347
+84015	853	0.00	2012-10-01 01:00:07.317402	2012-10-01 01:00:07.317402
+84016	854	0.00	2012-10-01 01:00:07.326217	2012-10-01 01:00:07.326217
+84017	855	0.00	2012-10-01 01:00:07.334181	2012-10-01 01:00:07.334181
+84018	856	0.00	2012-10-01 01:00:07.342784	2012-10-01 01:00:07.342784
+84019	857	0.00	2012-10-01 01:00:07.350999	2012-10-01 01:00:07.350999
+84020	858	0.00	2012-10-01 01:00:07.359285	2012-10-01 01:00:07.359285
+84021	859	0.00	2012-10-01 01:00:07.367545	2012-10-01 01:00:07.367545
+84022	860	0.00	2012-10-01 01:00:07.37623	2012-10-01 01:00:07.37623
+84023	861	0.00	2012-10-01 01:00:07.384247	2012-10-01 01:00:07.384247
+84024	862	0.00	2012-10-01 01:00:07.392728	2012-10-01 01:00:07.392728
+84025	863	0.00	2012-10-01 01:00:07.401041	2012-10-01 01:00:07.401041
+84026	864	0.00	2012-10-01 01:00:07.409279	2012-10-01 01:00:07.409279
+84027	865	0.00	2012-10-01 01:00:07.417527	2012-10-01 01:00:07.417527
+84028	866	0.00	2012-10-01 01:00:07.426277	2012-10-01 01:00:07.426277
+84029	867	0.00	2012-10-01 01:00:07.434231	2012-10-01 01:00:07.434231
+84030	868	0.00	2012-10-01 01:00:07.442527	2012-10-01 01:00:07.442527
+84031	869	0.00	2012-10-01 01:00:07.451036	2012-10-01 01:00:07.451036
+84032	870	0.00	2012-10-01 01:00:07.459258	2012-10-01 01:00:07.459258
+84033	871	0.00	2012-10-01 01:00:07.467517	2012-10-01 01:00:07.467517
+84034	872	0.00	2012-10-01 01:00:07.47599	2012-10-01 01:00:07.47599
+84035	873	0.00	2012-10-01 01:00:07.484208	2012-10-01 01:00:07.484208
+84036	874	0.00	2012-10-01 01:00:07.492795	2012-10-01 01:00:07.492795
+84037	875	0.00	2012-10-01 01:00:07.501043	2012-10-01 01:00:07.501043
+84038	876	0.00	2012-10-01 01:00:07.509242	2012-10-01 01:00:07.509242
+84039	877	0.00	2012-10-01 01:00:07.517781	2012-10-01 01:00:07.517781
+84040	878	0.00	2012-10-01 01:00:07.526239	2012-10-01 01:00:07.526239
+84041	879	0.00	2012-10-01 01:00:07.534257	2012-10-01 01:00:07.534257
+84042	880	0.00	2012-10-01 01:00:07.542647	2012-10-01 01:00:07.542647
+84043	881	0.00	2012-10-01 01:00:07.551065	2012-10-01 01:00:07.551065
+84044	882	0.00	2012-10-01 01:00:07.559278	2012-10-01 01:00:07.559278
+84045	883	0.00	2012-10-01 01:00:07.567761	2012-10-01 01:00:07.567761
+84046	852	50.00	2012-10-01 01:00:07.576215	2012-10-01 01:00:07.576215
+84047	765	0.00	2012-10-02 01:00:06.528625	2012-10-02 01:00:06.528625
+84048	766	0.00	2012-10-02 01:00:06.536524	2012-10-02 01:00:06.536524
+84049	767	0.00	2012-10-02 01:00:06.544637	2012-10-02 01:00:06.544637
+84050	768	0.00	2012-10-02 01:00:06.553055	2012-10-02 01:00:06.553055
+84051	769	0.00	2012-10-02 01:00:06.561344	2012-10-02 01:00:06.561344
+84052	770	0.00	2012-10-02 01:00:06.569625	2012-10-02 01:00:06.569625
+84053	771	0.00	2012-10-02 01:00:06.578036	2012-10-02 01:00:06.578036
+84054	772	0.00	2012-10-02 01:00:06.586311	2012-10-02 01:00:06.586311
+84055	773	0.00	2012-10-02 01:00:06.59462	2012-10-02 01:00:06.59462
+84056	774	0.00	2012-10-02 01:00:06.603012	2012-10-02 01:00:06.603012
+84057	775	0.00	2012-10-02 01:00:06.611257	2012-10-02 01:00:06.611257
+84058	776	0.00	2012-10-02 01:00:06.61976	2012-10-02 01:00:06.61976
+84059	777	0.00	2012-10-02 01:00:06.627972	2012-10-02 01:00:06.627972
+84060	778	0.00	2012-10-02 01:00:06.636252	2012-10-02 01:00:06.636252
+84061	779	0.00	2012-10-02 01:00:06.644618	2012-10-02 01:00:06.644618
+84062	780	0.00	2012-10-02 01:00:06.652976	2012-10-02 01:00:06.652976
+84063	781	0.00	2012-10-02 01:00:06.661368	2012-10-02 01:00:06.661368
+84064	782	0.00	2012-10-02 01:00:06.669716	2012-10-02 01:00:06.669716
+84065	783	0.00	2012-10-02 01:00:06.678074	2012-10-02 01:00:06.678074
+84066	784	0.00	2012-10-02 01:00:06.686329	2012-10-02 01:00:06.686329
+84067	785	0.00	2012-10-02 01:00:06.694702	2012-10-02 01:00:06.694702
+84068	786	0.00	2012-10-02 01:00:06.703086	2012-10-02 01:00:06.703086
+84069	787	0.00	2012-10-02 01:00:06.71133	2012-10-02 01:00:06.71133
+84070	788	0.00	2012-10-02 01:00:06.719694	2012-10-02 01:00:06.719694
+84071	789	0.00	2012-10-02 01:00:06.728083	2012-10-02 01:00:06.728083
+84072	790	0.00	2012-10-02 01:00:06.736287	2012-10-02 01:00:06.736287
+84073	791	0.00	2012-10-02 01:00:06.744706	2012-10-02 01:00:06.744706
+84074	792	0.00	2012-10-02 01:00:06.75307	2012-10-02 01:00:06.75307
+84075	793	0.00	2012-10-02 01:00:06.76132	2012-10-02 01:00:06.76132
+84076	794	0.00	2012-10-02 01:00:06.769654	2012-10-02 01:00:06.769654
+84077	795	0.00	2012-10-02 01:00:06.778064	2012-10-02 01:00:06.778064
+84078	796	0.00	2012-10-02 01:00:06.786284	2012-10-02 01:00:06.786284
+84079	797	0.00	2012-10-02 01:00:06.794691	2012-10-02 01:00:06.794691
+84080	798	0.00	2012-10-02 01:00:06.803039	2012-10-02 01:00:06.803039
+84081	799	0.00	2012-10-02 01:00:06.811267	2012-10-02 01:00:06.811267
+84082	800	0.00	2012-10-02 01:00:06.819614	2012-10-02 01:00:06.819614
+84083	801	0.00	2012-10-02 01:00:06.828025	2012-10-02 01:00:06.828025
+84084	802	0.00	2012-10-02 01:00:06.836265	2012-10-02 01:00:06.836265
+84085	803	0.00	2012-10-02 01:00:06.844602	2012-10-02 01:00:06.844602
+84086	804	0.00	2012-10-02 01:00:06.853025	2012-10-02 01:00:06.853025
+84087	805	0.00	2012-10-02 01:00:06.861269	2012-10-02 01:00:06.861269
+84088	806	0.00	2012-10-02 01:00:06.869602	2012-10-02 01:00:06.869602
+84089	807	0.00	2012-10-02 01:00:06.878011	2012-10-02 01:00:06.878011
+84090	808	0.00	2012-10-02 01:00:06.886254	2012-10-02 01:00:06.886254
+84091	809	0.00	2012-10-02 01:00:06.89456	2012-10-02 01:00:06.89456
+84092	810	0.00	2012-10-02 01:00:06.903012	2012-10-02 01:00:06.903012
+84093	811	0.00	2012-10-02 01:00:06.911279	2012-10-02 01:00:06.911279
+84094	812	0.00	2012-10-02 01:00:06.919732	2012-10-02 01:00:06.919732
+84095	813	0.00	2012-10-02 01:00:06.92808	2012-10-02 01:00:06.92808
+84096	814	0.00	2012-10-02 01:00:06.936299	2012-10-02 01:00:06.936299
+84097	815	0.00	2012-10-02 01:00:06.944675	2012-10-02 01:00:06.944675
+84098	816	0.00	2012-10-02 01:00:06.953063	2012-10-02 01:00:06.953063
+84099	817	0.00	2012-10-02 01:00:06.961284	2012-10-02 01:00:06.961284
+84100	818	0.00	2012-10-02 01:00:06.992369	2012-10-02 01:00:06.992369
+84101	819	0.00	2012-10-02 01:00:07.003265	2012-10-02 01:00:07.003265
+84102	820	0.00	2012-10-02 01:00:07.011371	2012-10-02 01:00:07.011371
+84103	821	0.00	2012-10-02 01:00:07.019736	2012-10-02 01:00:07.019736
+84104	822	0.00	2012-10-02 01:00:07.028102	2012-10-02 01:00:07.028102
+84105	823	0.00	2012-10-02 01:00:07.047653	2012-10-02 01:00:07.047653
+84106	824	0.00	2012-10-02 01:00:07.063963	2012-10-02 01:00:07.063963
+84107	825	0.00	2012-10-02 01:00:07.097221	2012-10-02 01:00:07.097221
+84108	826	0.00	2012-10-02 01:00:07.130616	2012-10-02 01:00:07.130616
+84109	827	0.00	2012-10-02 01:00:07.164008	2012-10-02 01:00:07.164008
+84110	828	0.00	2012-10-02 01:00:07.197273	2012-10-02 01:00:07.197273
+84111	829	0.00	2012-10-02 01:00:07.238979	2012-10-02 01:00:07.238979
+84112	830	0.00	2012-10-02 01:00:07.27218	2012-10-02 01:00:07.27218
+84113	831	0.00	2012-10-02 01:00:07.305444	2012-10-02 01:00:07.305444
+84114	832	0.00	2012-10-02 01:00:07.347191	2012-10-02 01:00:07.347191
+84115	833	0.00	2012-10-02 01:00:07.380514	2012-10-02 01:00:07.380514
+84116	834	0.00	2012-10-02 01:00:07.413844	2012-10-02 01:00:07.413844
+84117	835	0.00	2012-10-02 01:00:07.455454	2012-10-02 01:00:07.455454
+84118	836	0.00	2012-10-02 01:00:07.497149	2012-10-02 01:00:07.497149
+84119	837	0.00	2012-10-02 01:00:07.570818	2012-10-02 01:00:07.570818
+84120	838	0.00	2012-10-02 01:00:07.594858	2012-10-02 01:00:07.594858
+84121	839	0.00	2012-10-02 01:00:07.627634	2012-10-02 01:00:07.627634
+84122	840	0.00	2012-10-02 01:00:07.66102	2012-10-02 01:00:07.66102
+84123	841	0.00	2012-10-02 01:00:07.694244	2012-10-02 01:00:07.694244
+84124	842	0.00	2012-10-02 01:00:07.727797	2012-10-02 01:00:07.727797
+84125	843	0.00	2012-10-02 01:00:07.760941	2012-10-02 01:00:07.760941
+84126	844	0.00	2012-10-02 01:00:07.794236	2012-10-02 01:00:07.794236
+84127	845	0.00	2012-10-02 01:00:07.827478	2012-10-02 01:00:07.827478
+84128	846	0.00	2012-10-02 01:00:07.860871	2012-10-02 01:00:07.860871
+84129	847	0.00	2012-10-02 01:00:07.894142	2012-10-02 01:00:07.894142
+84130	848	0.00	2012-10-02 01:00:07.927451	2012-10-02 01:00:07.927451
+84131	849	0.00	2012-10-02 01:00:07.960782	2012-10-02 01:00:07.960782
+84132	850	0.00	2012-10-02 01:00:07.994168	2012-10-02 01:00:07.994168
+84133	851	0.00	2012-10-02 01:00:08.027385	2012-10-02 01:00:08.027385
+84134	853	0.00	2012-10-02 01:00:08.060734	2012-10-02 01:00:08.060734
+84135	854	0.00	2012-10-02 01:00:08.09411	2012-10-02 01:00:08.09411
+84136	855	0.00	2012-10-02 01:00:08.127319	2012-10-02 01:00:08.127319
+84137	856	0.00	2012-10-02 01:00:08.160717	2012-10-02 01:00:08.160717
+84138	857	0.00	2012-10-02 01:00:08.194096	2012-10-02 01:00:08.194096
+84139	858	0.00	2012-10-02 01:00:08.22729	2012-10-02 01:00:08.22729
+84140	859	0.00	2012-10-02 01:00:08.260629	2012-10-02 01:00:08.260629
+84141	860	0.00	2012-10-02 01:00:08.293988	2012-10-02 01:00:08.293988
+84142	861	0.00	2012-10-02 01:00:08.32726	2012-10-02 01:00:08.32726
+84143	862	0.00	2012-10-02 01:00:08.360598	2012-10-02 01:00:08.360598
+84144	863	0.00	2012-10-02 01:00:08.393957	2012-10-02 01:00:08.393957
+84145	864	0.00	2012-10-02 01:00:08.427217	2012-10-02 01:00:08.427217
+84146	865	0.00	2012-10-02 01:00:08.460514	2012-10-02 01:00:08.460514
+84147	866	0.00	2012-10-02 01:00:08.493896	2012-10-02 01:00:08.493896
+84148	867	0.00	2012-10-02 01:00:08.527131	2012-10-02 01:00:08.527131
+84149	868	0.00	2012-10-02 01:00:08.560488	2012-10-02 01:00:08.560488
+84150	869	0.00	2012-10-02 01:00:08.593869	2012-10-02 01:00:08.593869
+84151	870	0.00	2012-10-02 01:00:08.627125	2012-10-02 01:00:08.627125
+84152	871	0.00	2012-10-02 01:00:08.660469	2012-10-02 01:00:08.660469
+84153	872	0.00	2012-10-02 01:00:08.693783	2012-10-02 01:00:08.693783
+84154	873	0.00	2012-10-02 01:00:08.727275	2012-10-02 01:00:08.727275
+84155	874	0.00	2012-10-02 01:00:08.760385	2012-10-02 01:00:08.760385
+84156	875	0.00	2012-10-02 01:00:08.793762	2012-10-02 01:00:08.793762
+84157	876	0.00	2012-10-02 01:00:08.827112	2012-10-02 01:00:08.827112
+84158	877	0.00	2012-10-02 01:00:08.860337	2012-10-02 01:00:08.860337
+84159	878	0.00	2012-10-02 01:00:08.89371	2012-10-02 01:00:08.89371
+84160	879	0.00	2012-10-02 01:00:08.927091	2012-10-02 01:00:08.927091
+84161	880	0.00	2012-10-02 01:00:08.960274	2012-10-02 01:00:08.960274
+84162	881	0.00	2012-10-02 01:00:08.99367	2012-10-02 01:00:08.99367
+84163	882	0.00	2012-10-02 01:00:09.027049	2012-10-02 01:00:09.027049
+84164	883	0.00	2012-10-02 01:00:09.060306	2012-10-02 01:00:09.060306
+84165	852	49.83	2012-10-02 01:00:09.093753	2012-10-02 01:00:09.093753
+84166	765	0.00	2012-10-03 01:00:06.873387	2012-10-03 01:00:06.873387
+84167	766	0.00	2012-10-03 01:00:06.881121	2012-10-03 01:00:06.881121
+84168	767	0.00	2012-10-03 01:00:06.889153	2012-10-03 01:00:06.889153
+84169	768	0.00	2012-10-03 01:00:06.897323	2012-10-03 01:00:06.897323
+84170	769	0.00	2012-10-03 01:00:06.905711	2012-10-03 01:00:06.905711
+84171	770	0.00	2012-10-03 01:00:06.914099	2012-10-03 01:00:06.914099
+84172	771	0.00	2012-10-03 01:00:06.922383	2012-10-03 01:00:06.922383
+84173	772	0.00	2012-10-03 01:00:06.9307	2012-10-03 01:00:06.9307
+84174	773	0.00	2012-10-03 01:00:06.939097	2012-10-03 01:00:06.939097
+84175	774	0.00	2012-10-03 01:00:06.947291	2012-10-03 01:00:06.947291
+84176	775	0.00	2012-10-03 01:00:06.955698	2012-10-03 01:00:06.955698
+84177	776	0.00	2012-10-03 01:00:06.964103	2012-10-03 01:00:06.964103
+84178	777	0.00	2012-10-03 01:00:06.972301	2012-10-03 01:00:06.972301
+84179	778	0.00	2012-10-03 01:00:06.980701	2012-10-03 01:00:06.980701
+84180	779	0.00	2012-10-03 01:00:06.989064	2012-10-03 01:00:06.989064
+84181	780	0.00	2012-10-03 01:00:06.997331	2012-10-03 01:00:06.997331
+84182	781	0.00	2012-10-03 01:00:07.005694	2012-10-03 01:00:07.005694
+84183	782	0.00	2012-10-03 01:00:07.01408	2012-10-03 01:00:07.01408
+84184	783	0.00	2012-10-03 01:00:07.022424	2012-10-03 01:00:07.022424
+84185	784	0.00	2012-10-03 01:00:07.030766	2012-10-03 01:00:07.030766
+84186	785	0.00	2012-10-03 01:00:07.039137	2012-10-03 01:00:07.039137
+84187	786	0.00	2012-10-03 01:00:07.047378	2012-10-03 01:00:07.047378
+84188	787	0.00	2012-10-03 01:00:07.055766	2012-10-03 01:00:07.055766
+84189	788	0.00	2012-10-03 01:00:07.064123	2012-10-03 01:00:07.064123
+84190	789	0.00	2012-10-03 01:00:07.072369	2012-10-03 01:00:07.072369
+84191	790	0.00	2012-10-03 01:00:07.080755	2012-10-03 01:00:07.080755
+84192	791	0.00	2012-10-03 01:00:07.107384	2012-10-03 01:00:07.107384
+84193	792	0.00	2012-10-03 01:00:07.146823	2012-10-03 01:00:07.146823
+84194	793	0.00	2012-10-03 01:00:07.188248	2012-10-03 01:00:07.188248
+84195	794	0.00	2012-10-03 01:00:07.221835	2012-10-03 01:00:07.221835
+84196	795	0.00	2012-10-03 01:00:07.25498	2012-10-03 01:00:07.25498
+84197	796	0.00	2012-10-03 01:00:07.288227	2012-10-03 01:00:07.288227
+84198	797	0.00	2012-10-03 01:00:07.321648	2012-10-03 01:00:07.321648
+84199	798	0.00	2012-10-03 01:00:07.355046	2012-10-03 01:00:07.355046
+84200	799	0.00	2012-10-03 01:00:07.388131	2012-10-03 01:00:07.388131
+84201	800	0.00	2012-10-03 01:00:07.421426	2012-10-03 01:00:07.421426
+84202	801	0.00	2012-10-03 01:00:07.454777	2012-10-03 01:00:07.454777
+84203	802	0.00	2012-10-03 01:00:07.488208	2012-10-03 01:00:07.488208
+84204	803	0.00	2012-10-03 01:00:07.521455	2012-10-03 01:00:07.521455
+84205	804	0.00	2012-10-03 01:00:07.554919	2012-10-03 01:00:07.554919
+84206	805	0.00	2012-10-03 01:00:07.588288	2012-10-03 01:00:07.588288
+84207	806	0.00	2012-10-03 01:00:07.621316	2012-10-03 01:00:07.621316
+84208	807	0.00	2012-10-03 01:00:07.654808	2012-10-03 01:00:07.654808
+84209	808	0.00	2012-10-03 01:00:07.688333	2012-10-03 01:00:07.688333
+84210	809	0.00	2012-10-03 01:00:07.721338	2012-10-03 01:00:07.721338
+84211	810	0.00	2012-10-03 01:00:07.754766	2012-10-03 01:00:07.754766
+84212	811	0.00	2012-10-03 01:00:07.788096	2012-10-03 01:00:07.788096
+84213	812	0.00	2012-10-03 01:00:07.821273	2012-10-03 01:00:07.821273
+84214	813	0.00	2012-10-03 01:00:07.854807	2012-10-03 01:00:07.854807
+84215	814	0.00	2012-10-03 01:00:07.888292	2012-10-03 01:00:07.888292
+84216	815	0.00	2012-10-03 01:00:07.921243	2012-10-03 01:00:07.921243
+84217	816	0.00	2012-10-03 01:00:07.954633	2012-10-03 01:00:07.954633
+84218	817	0.00	2012-10-03 01:00:07.988012	2012-10-03 01:00:07.988012
+84219	818	0.00	2012-10-03 01:00:08.04405	2012-10-03 01:00:08.04405
+84220	819	0.00	2012-10-03 01:00:08.081033	2012-10-03 01:00:08.081033
+84221	820	0.00	2012-10-03 01:00:08.089247	2012-10-03 01:00:08.089247
+84222	821	0.00	2012-10-03 01:00:08.097395	2012-10-03 01:00:08.097395
+84223	822	0.00	2012-10-03 01:00:08.105793	2012-10-03 01:00:08.105793
+84224	823	0.00	2012-10-03 01:00:08.114275	2012-10-03 01:00:08.114275
+84225	824	0.00	2012-10-03 01:00:08.122314	2012-10-03 01:00:08.122314
+84226	825	0.00	2012-10-03 01:00:08.130832	2012-10-03 01:00:08.130832
+84227	826	0.00	2012-10-03 01:00:08.139136	2012-10-03 01:00:08.139136
+84228	827	0.00	2012-10-03 01:00:08.147398	2012-10-03 01:00:08.147398
+84229	828	0.00	2012-10-03 01:00:08.155772	2012-10-03 01:00:08.155772
+84230	829	0.00	2012-10-03 01:00:08.164014	2012-10-03 01:00:08.164014
+84231	830	0.00	2012-10-03 01:00:08.172292	2012-10-03 01:00:08.172292
+84232	831	0.00	2012-10-03 01:00:08.180796	2012-10-03 01:00:08.180796
+84233	832	0.00	2012-10-03 01:00:08.189102	2012-10-03 01:00:08.189102
+84234	833	0.00	2012-10-03 01:00:08.197344	2012-10-03 01:00:08.197344
+84235	834	0.00	2012-10-03 01:00:08.205424	2012-10-03 01:00:08.205424
+84236	835	0.00	2012-10-03 01:00:08.214131	2012-10-03 01:00:08.214131
+84237	836	0.00	2012-10-03 01:00:08.222263	2012-10-03 01:00:08.222263
+84238	837	0.00	2012-10-03 01:00:08.263821	2012-10-03 01:00:08.263821
+84239	838	0.00	2012-10-03 01:00:08.27274	2012-10-03 01:00:08.27274
+84240	839	0.00	2012-10-03 01:00:08.280815	2012-10-03 01:00:08.280815
+84241	840	0.00	2012-10-03 01:00:08.289099	2012-10-03 01:00:08.289099
+84242	841	0.00	2012-10-03 01:00:08.297371	2012-10-03 01:00:08.297371
+84243	842	0.00	2012-10-03 01:00:08.30581	2012-10-03 01:00:08.30581
+84244	843	0.00	2012-10-03 01:00:08.31423	2012-10-03 01:00:08.31423
+84245	844	0.00	2012-10-03 01:00:08.322381	2012-10-03 01:00:08.322381
+84246	845	0.00	2012-10-03 01:00:08.330865	2012-10-03 01:00:08.330865
+84247	846	0.00	2012-10-03 01:00:08.339313	2012-10-03 01:00:08.339313
+84248	847	0.00	2012-10-03 01:00:08.347361	2012-10-03 01:00:08.347361
+84249	848	0.00	2012-10-03 01:00:08.355443	2012-10-03 01:00:08.355443
+84250	849	0.00	2012-10-03 01:00:08.364299	2012-10-03 01:00:08.364299
+84251	850	0.00	2012-10-03 01:00:08.372345	2012-10-03 01:00:08.372345
+84252	851	0.00	2012-10-03 01:00:08.380838	2012-10-03 01:00:08.380838
+84253	853	0.00	2012-10-03 01:00:08.389228	2012-10-03 01:00:08.389228
+84254	854	0.00	2012-10-03 01:00:08.397371	2012-10-03 01:00:08.397371
+84255	855	0.00	2012-10-03 01:00:08.405815	2012-10-03 01:00:08.405815
+84256	856	0.00	2012-10-03 01:00:08.414252	2012-10-03 01:00:08.414252
+84257	857	0.00	2012-10-03 01:00:08.422309	2012-10-03 01:00:08.422309
+84258	858	0.00	2012-10-03 01:00:08.430774	2012-10-03 01:00:08.430774
+84259	859	0.00	2012-10-03 01:00:08.438986	2012-10-03 01:00:08.438986
+84260	860	0.00	2012-10-03 01:00:08.447338	2012-10-03 01:00:08.447338
+84261	861	0.00	2012-10-03 01:00:08.455767	2012-10-03 01:00:08.455767
+84262	862	0.00	2012-10-03 01:00:08.46409	2012-10-03 01:00:08.46409
+84263	863	0.00	2012-10-03 01:00:08.472295	2012-10-03 01:00:08.472295
+84264	864	0.00	2012-10-03 01:00:08.480795	2012-10-03 01:00:08.480795
+84265	865	0.00	2012-10-03 01:00:08.489166	2012-10-03 01:00:08.489166
+84266	866	0.00	2012-10-03 01:00:08.497312	2012-10-03 01:00:08.497312
+84267	867	0.00	2012-10-03 01:00:08.505773	2012-10-03 01:00:08.505773
+84268	868	0.00	2012-10-03 01:00:08.514232	2012-10-03 01:00:08.514232
+84269	869	0.00	2012-10-03 01:00:08.522257	2012-10-03 01:00:08.522257
+84270	870	0.00	2012-10-03 01:00:08.530806	2012-10-03 01:00:08.530806
+84271	871	0.00	2012-10-03 01:00:08.539239	2012-10-03 01:00:08.539239
+84272	872	0.00	2012-10-03 01:00:08.547292	2012-10-03 01:00:08.547292
+84273	873	0.00	2012-10-03 01:00:08.555768	2012-10-03 01:00:08.555768
+84274	874	0.00	2012-10-03 01:00:08.564224	2012-10-03 01:00:08.564224
+84275	875	0.00	2012-10-03 01:00:08.572346	2012-10-03 01:00:08.572346
+84276	876	0.00	2012-10-03 01:00:08.580813	2012-10-03 01:00:08.580813
+84277	877	0.00	2012-10-03 01:00:08.58922	2012-10-03 01:00:08.58922
+84278	878	0.00	2012-10-03 01:00:08.597349	2012-10-03 01:00:08.597349
+84279	879	0.00	2012-10-03 01:00:08.605769	2012-10-03 01:00:08.605769
+84280	880	0.00	2012-10-03 01:00:08.614228	2012-10-03 01:00:08.614228
+84281	881	0.00	2012-10-03 01:00:08.622283	2012-10-03 01:00:08.622283
+84282	882	0.00	2012-10-03 01:00:08.630776	2012-10-03 01:00:08.630776
+84283	883	0.00	2012-10-03 01:00:08.639077	2012-10-03 01:00:08.639077
+84284	852	49.66	2012-10-03 01:00:08.647468	2012-10-03 01:00:08.647468
+84285	765	0.00	2012-10-04 01:00:06.553436	2012-10-04 01:00:06.553436
+84286	766	0.00	2012-10-04 01:00:06.561221	2012-10-04 01:00:06.561221
+84287	767	0.00	2012-10-04 01:00:06.56922	2012-10-04 01:00:06.56922
+84288	768	0.00	2012-10-04 01:00:06.577433	2012-10-04 01:00:06.577433
+84289	769	0.00	2012-10-04 01:00:06.585848	2012-10-04 01:00:06.585848
+84290	770	0.00	2012-10-04 01:00:06.594116	2012-10-04 01:00:06.594116
+84291	771	0.00	2012-10-04 01:00:06.60238	2012-10-04 01:00:06.60238
+84292	772	0.00	2012-10-04 01:00:06.610783	2012-10-04 01:00:06.610783
+84293	773	0.00	2012-10-04 01:00:06.619076	2012-10-04 01:00:06.619076
+84294	774	0.00	2012-10-04 01:00:06.627559	2012-10-04 01:00:06.627559
+84295	775	0.00	2012-10-04 01:00:06.635774	2012-10-04 01:00:06.635774
+84296	776	0.00	2012-10-04 01:00:06.64407	2012-10-04 01:00:06.64407
+84297	777	0.00	2012-10-04 01:00:06.652376	2012-10-04 01:00:06.652376
+84298	778	0.00	2012-10-04 01:00:06.660763	2012-10-04 01:00:06.660763
+84299	779	0.00	2012-10-04 01:00:06.669124	2012-10-04 01:00:06.669124
+84300	780	0.00	2012-10-04 01:00:06.67739	2012-10-04 01:00:06.67739
+84301	781	0.00	2012-10-04 01:00:06.685755	2012-10-04 01:00:06.685755
+84302	782	0.00	2012-10-04 01:00:06.69413	2012-10-04 01:00:06.69413
+84303	783	0.00	2012-10-04 01:00:06.70237	2012-10-04 01:00:06.70237
+84304	784	0.00	2012-10-04 01:00:06.71075	2012-10-04 01:00:06.71075
+84305	785	0.00	2012-10-04 01:00:06.71912	2012-10-04 01:00:06.71912
+84306	786	0.00	2012-10-04 01:00:06.727378	2012-10-04 01:00:06.727378
+84307	787	0.00	2012-10-04 01:00:06.735732	2012-10-04 01:00:06.735732
+84308	788	0.00	2012-10-04 01:00:06.744115	2012-10-04 01:00:06.744115
+84309	789	0.00	2012-10-04 01:00:06.752339	2012-10-04 01:00:06.752339
+84310	790	0.00	2012-10-04 01:00:06.760738	2012-10-04 01:00:06.760738
+84311	791	0.00	2012-10-04 01:00:06.769107	2012-10-04 01:00:06.769107
+84312	792	0.00	2012-10-04 01:00:06.777361	2012-10-04 01:00:06.777361
+84313	793	0.00	2012-10-04 01:00:06.785911	2012-10-04 01:00:06.785911
+84314	794	0.00	2012-10-04 01:00:06.79415	2012-10-04 01:00:06.79415
+84315	795	0.00	2012-10-04 01:00:06.802453	2012-10-04 01:00:06.802453
+84316	796	0.00	2012-10-04 01:00:06.810836	2012-10-04 01:00:06.810836
+84317	797	0.00	2012-10-04 01:00:06.819122	2012-10-04 01:00:06.819122
+84318	798	0.00	2012-10-04 01:00:06.827428	2012-10-04 01:00:06.827428
+84319	799	0.00	2012-10-04 01:00:06.835984	2012-10-04 01:00:06.835984
+84320	800	0.00	2012-10-04 01:00:06.844122	2012-10-04 01:00:06.844122
+84321	801	0.00	2012-10-04 01:00:06.85239	2012-10-04 01:00:06.85239
+84322	802	0.00	2012-10-04 01:00:06.860857	2012-10-04 01:00:06.860857
+84323	803	0.00	2012-10-04 01:00:06.869105	2012-10-04 01:00:06.869105
+84324	804	0.00	2012-10-04 01:00:06.877435	2012-10-04 01:00:06.877435
+84325	805	0.00	2012-10-04 01:00:06.885803	2012-10-04 01:00:06.885803
+84326	806	0.00	2012-10-04 01:00:06.894103	2012-10-04 01:00:06.894103
+84327	807	0.00	2012-10-04 01:00:06.902404	2012-10-04 01:00:06.902404
+84328	808	0.00	2012-10-04 01:00:06.910781	2012-10-04 01:00:06.910781
+84329	809	0.00	2012-10-04 01:00:06.919076	2012-10-04 01:00:06.919076
+84330	810	0.00	2012-10-04 01:00:06.927397	2012-10-04 01:00:06.927397
+84331	811	0.00	2012-10-04 01:00:06.935766	2012-10-04 01:00:06.935766
+84332	812	0.00	2012-10-04 01:00:06.944076	2012-10-04 01:00:06.944076
+84333	813	0.00	2012-10-04 01:00:06.95239	2012-10-04 01:00:06.95239
+84334	814	0.00	2012-10-04 01:00:06.96076	2012-10-04 01:00:06.96076
+84335	815	0.00	2012-10-04 01:00:06.969075	2012-10-04 01:00:06.969075
+84336	816	0.00	2012-10-04 01:00:06.977371	2012-10-04 01:00:06.977371
+84337	817	0.00	2012-10-04 01:00:06.985902	2012-10-04 01:00:06.985902
+84338	818	0.00	2012-10-04 01:00:07.016496	2012-10-04 01:00:07.016496
+84339	819	0.00	2012-10-04 01:00:07.027875	2012-10-04 01:00:07.027875
+84340	820	0.00	2012-10-04 01:00:07.061375	2012-10-04 01:00:07.061375
+84341	821	0.00	2012-10-04 01:00:07.094417	2012-10-04 01:00:07.094417
+84342	822	0.00	2012-10-04 01:00:07.127833	2012-10-04 01:00:07.127833
+84343	823	0.00	2012-10-04 01:00:07.161258	2012-10-04 01:00:07.161258
+84344	824	0.00	2012-10-04 01:00:07.194273	2012-10-04 01:00:07.194273
+84345	825	0.00	2012-10-04 01:00:07.227707	2012-10-04 01:00:07.227707
+84346	826	0.00	2012-10-04 01:00:07.260984	2012-10-04 01:00:07.260984
+84347	827	0.00	2012-10-04 01:00:07.29428	2012-10-04 01:00:07.29428
+84348	828	0.00	2012-10-04 01:00:07.327438	2012-10-04 01:00:07.327438
+84349	829	0.00	2012-10-04 01:00:07.361115	2012-10-04 01:00:07.361115
+84350	830	0.00	2012-10-04 01:00:07.394186	2012-10-04 01:00:07.394186
+84351	831	0.00	2012-10-04 01:00:07.427509	2012-10-04 01:00:07.427509
+84352	832	0.00	2012-10-04 01:00:07.460796	2012-10-04 01:00:07.460796
+84353	833	0.00	2012-10-04 01:00:07.494259	2012-10-04 01:00:07.494259
+84354	834	0.00	2012-10-04 01:00:07.527413	2012-10-04 01:00:07.527413
+84355	835	0.00	2012-10-04 01:00:07.560967	2012-10-04 01:00:07.560967
+84356	836	0.00	2012-10-04 01:00:07.594208	2012-10-04 01:00:07.594208
+84357	837	0.00	2012-10-04 01:00:07.660538	2012-10-04 01:00:07.660538
+84358	838	0.00	2012-10-04 01:00:07.711423	2012-10-04 01:00:07.711423
+84359	839	0.00	2012-10-04 01:00:07.719301	2012-10-04 01:00:07.719301
+84360	840	0.00	2012-10-04 01:00:07.727671	2012-10-04 01:00:07.727671
+84361	841	0.00	2012-10-04 01:00:07.736059	2012-10-04 01:00:07.736059
+84362	842	0.00	2012-10-04 01:00:07.744271	2012-10-04 01:00:07.744271
+84363	843	0.00	2012-10-04 01:00:07.752353	2012-10-04 01:00:07.752353
+84364	844	0.00	2012-10-04 01:00:07.761022	2012-10-04 01:00:07.761022
+84365	845	0.00	2012-10-04 01:00:07.769254	2012-10-04 01:00:07.769254
+84366	846	0.00	2012-10-04 01:00:07.777504	2012-10-04 01:00:07.777504
+84367	847	0.00	2012-10-04 01:00:07.786021	2012-10-04 01:00:07.786021
+84368	848	0.00	2012-10-04 01:00:07.794221	2012-10-04 01:00:07.794221
+84369	849	0.00	2012-10-04 01:00:07.802477	2012-10-04 01:00:07.802477
+84370	850	0.00	2012-10-04 01:00:07.811019	2012-10-04 01:00:07.811019
+84371	851	0.00	2012-10-04 01:00:07.819194	2012-10-04 01:00:07.819194
+84372	853	0.00	2012-10-04 01:00:07.827473	2012-10-04 01:00:07.827473
+84373	854	0.00	2012-10-04 01:00:07.835938	2012-10-04 01:00:07.835938
+84374	855	0.00	2012-10-04 01:00:07.844171	2012-10-04 01:00:07.844171
+84375	856	0.00	2012-10-04 01:00:07.852419	2012-10-04 01:00:07.852419
+84376	857	0.00	2012-10-04 01:00:07.86085	2012-10-04 01:00:07.86085
+84377	858	0.00	2012-10-04 01:00:07.869165	2012-10-04 01:00:07.869165
+84378	859	0.00	2012-10-04 01:00:07.877425	2012-10-04 01:00:07.877425
+84379	860	0.00	2012-10-04 01:00:07.88584	2012-10-04 01:00:07.88584
+84380	861	0.00	2012-10-04 01:00:07.894288	2012-10-04 01:00:07.894288
+84381	862	0.00	2012-10-04 01:00:07.902515	2012-10-04 01:00:07.902515
+84382	863	0.00	2012-10-04 01:00:07.911041	2012-10-04 01:00:07.911041
+84383	864	0.00	2012-10-04 01:00:07.919164	2012-10-04 01:00:07.919164
+84384	865	0.00	2012-10-04 01:00:07.927651	2012-10-04 01:00:07.927651
+84385	866	0.00	2012-10-04 01:00:07.936026	2012-10-04 01:00:07.936026
+84386	867	0.00	2012-10-04 01:00:07.944244	2012-10-04 01:00:07.944244
+84387	868	0.00	2012-10-04 01:00:07.952507	2012-10-04 01:00:07.952507
+84388	869	0.00	2012-10-04 01:00:07.96111	2012-10-04 01:00:07.96111
+84389	870	0.00	2012-10-04 01:00:07.969223	2012-10-04 01:00:07.969223
+84390	871	0.00	2012-10-04 01:00:07.977488	2012-10-04 01:00:07.977488
+84391	872	0.00	2012-10-04 01:00:07.985983	2012-10-04 01:00:07.985983
+84392	873	0.00	2012-10-04 01:00:07.994178	2012-10-04 01:00:07.994178
+84393	874	0.00	2012-10-04 01:00:08.002413	2012-10-04 01:00:08.002413
+84394	875	0.00	2012-10-04 01:00:08.010989	2012-10-04 01:00:08.010989
+84395	876	0.00	2012-10-04 01:00:08.019178	2012-10-04 01:00:08.019178
+84396	877	0.00	2012-10-04 01:00:08.027456	2012-10-04 01:00:08.027456
+84397	878	0.00	2012-10-04 01:00:08.035985	2012-10-04 01:00:08.035985
+84398	879	0.00	2012-10-04 01:00:08.044178	2012-10-04 01:00:08.044178
+84399	880	0.00	2012-10-04 01:00:08.052393	2012-10-04 01:00:08.052393
+84400	881	0.00	2012-10-04 01:00:08.06084	2012-10-04 01:00:08.06084
+84401	882	0.00	2012-10-04 01:00:08.069159	2012-10-04 01:00:08.069159
+84402	883	0.00	2012-10-04 01:00:08.077512	2012-10-04 01:00:08.077512
+84403	852	49.49	2012-10-04 01:00:08.086045	2012-10-04 01:00:08.086045
+84404	765	0.00	2012-10-04 11:04:18.600813	2012-10-04 11:04:18.600813
+84405	766	0.00	2012-10-04 11:04:18.60862	2012-10-04 11:04:18.60862
+84406	767	0.00	2012-10-04 11:04:18.616842	2012-10-04 11:04:18.616842
+84407	768	0.00	2012-10-04 11:04:18.625167	2012-10-04 11:04:18.625167
+84408	769	0.00	2012-10-04 11:04:18.633334	2012-10-04 11:04:18.633334
+84409	770	0.00	2012-10-04 11:04:18.641435	2012-10-04 11:04:18.641435
+84410	771	0.00	2012-10-04 11:04:18.673944	2012-10-04 11:04:18.673944
+84411	772	0.00	2012-10-04 11:04:18.683342	2012-10-04 11:04:18.683342
+84412	773	0.00	2012-10-04 11:04:18.691652	2012-10-04 11:04:18.691652
+84413	774	0.00	2012-10-04 11:04:18.700381	2012-10-04 11:04:18.700381
+84414	775	0.00	2012-10-04 11:04:18.740073	2012-10-04 11:04:18.740073
+84415	776	0.00	2012-10-04 11:04:18.750655	2012-10-04 11:04:18.750655
+84416	777	0.00	2012-10-04 11:04:18.758644	2012-10-04 11:04:18.758644
+84417	778	0.00	2012-10-04 11:04:18.766674	2012-10-04 11:04:18.766674
+84418	779	0.00	2012-10-04 11:04:18.775025	2012-10-04 11:04:18.775025
+84419	780	0.00	2012-10-04 11:04:18.783271	2012-10-04 11:04:18.783271
+84420	781	0.00	2012-10-04 11:04:18.792012	2012-10-04 11:04:18.792012
+84421	782	0.00	2012-10-04 11:04:18.799913	2012-10-04 11:04:18.799913
+84422	783	0.00	2012-10-04 11:04:18.808298	2012-10-04 11:04:18.808298
+84423	784	0.00	2012-10-04 11:04:18.81651	2012-10-04 11:04:18.81651
+84424	785	0.00	2012-10-04 11:04:18.824859	2012-10-04 11:04:18.824859
+84425	786	0.00	2012-10-04 11:04:18.833288	2012-10-04 11:04:18.833288
+84426	787	0.00	2012-10-04 11:04:18.841474	2012-10-04 11:04:18.841474
+84427	788	0.00	2012-10-04 11:04:18.849854	2012-10-04 11:04:18.849854
+84428	789	0.00	2012-10-04 11:04:18.858277	2012-10-04 11:04:18.858277
+84429	790	0.00	2012-10-04 11:04:18.866487	2012-10-04 11:04:18.866487
+84430	791	0.00	2012-10-04 11:04:18.875179	2012-10-04 11:04:18.875179
+84431	792	0.00	2012-10-04 11:04:18.88335	2012-10-04 11:04:18.88335
+84432	793	0.00	2012-10-04 11:04:18.891717	2012-10-04 11:04:18.891717
+84433	794	0.00	2012-10-04 11:04:18.900248	2012-10-04 11:04:18.900248
+84434	795	0.00	2012-10-04 11:04:18.908461	2012-10-04 11:04:18.908461
+84435	796	0.00	2012-10-04 11:04:18.91685	2012-10-04 11:04:18.91685
+84436	797	0.00	2012-10-04 11:04:18.925231	2012-10-04 11:04:18.925231
+84437	798	0.00	2012-10-04 11:04:18.933461	2012-10-04 11:04:18.933461
+84438	799	0.00	2012-10-04 11:04:18.941949	2012-10-04 11:04:18.941949
+84439	800	0.00	2012-10-04 11:04:18.950232	2012-10-04 11:04:18.950232
+84440	801	0.00	2012-10-04 11:04:18.958429	2012-10-04 11:04:18.958429
+84441	802	0.00	2012-10-04 11:04:18.966877	2012-10-04 11:04:18.966877
+84442	803	0.00	2012-10-04 11:04:18.97525	2012-10-04 11:04:18.97525
+84443	804	0.00	2012-10-04 11:04:18.983415	2012-10-04 11:04:18.983415
+84444	805	0.00	2012-10-04 11:04:18.992115	2012-10-04 11:04:18.992115
+84445	806	0.00	2012-10-04 11:04:19.00025	2012-10-04 11:04:19.00025
+84446	807	0.00	2012-10-04 11:04:19.00841	2012-10-04 11:04:19.00841
+84447	808	0.00	2012-10-04 11:04:19.016614	2012-10-04 11:04:19.016614
+84448	809	0.00	2012-10-04 11:04:19.025215	2012-10-04 11:04:19.025215
+84449	810	0.00	2012-10-04 11:04:19.033501	2012-10-04 11:04:19.033501
+84450	811	0.00	2012-10-04 11:04:19.041611	2012-10-04 11:04:19.041611
+84451	812	0.00	2012-10-04 11:04:19.050195	2012-10-04 11:04:19.050195
+84452	813	0.00	2012-10-04 11:04:19.058232	2012-10-04 11:04:19.058232
+84453	814	0.00	2012-10-04 11:04:19.06664	2012-10-04 11:04:19.06664
+84454	815	0.00	2012-10-04 11:04:19.074926	2012-10-04 11:04:19.074926
+84455	816	0.00	2012-10-04 11:04:19.083304	2012-10-04 11:04:19.083304
+84456	817	0.00	2012-10-04 11:04:19.091552	2012-10-04 11:04:19.091552
+84457	818	0.00	2012-10-04 11:04:19.099916	2012-10-04 11:04:19.099916
+84458	819	0.00	2012-10-04 11:04:19.108294	2012-10-04 11:04:19.108294
+84459	820	0.00	2012-10-04 11:04:19.11652	2012-10-04 11:04:19.11652
+84460	821	0.00	2012-10-04 11:04:19.124913	2012-10-04 11:04:19.124913
+84461	822	0.00	2012-10-04 11:04:19.133276	2012-10-04 11:04:19.133276
+84462	823	0.00	2012-10-04 11:04:19.141479	2012-10-04 11:04:19.141479
+84463	824	0.00	2012-10-04 11:04:19.149904	2012-10-04 11:04:19.149904
+84464	825	0.00	2012-10-04 11:04:19.158276	2012-10-04 11:04:19.158276
+84465	826	0.00	2012-10-04 11:04:19.166426	2012-10-04 11:04:19.166426
+84466	827	0.00	2012-10-04 11:04:19.174892	2012-10-04 11:04:19.174892
+84467	828	0.00	2012-10-04 11:04:19.183269	2012-10-04 11:04:19.183269
+84468	829	0.00	2012-10-04 11:04:19.191492	2012-10-04 11:04:19.191492
+84469	830	0.00	2012-10-04 11:04:19.199999	2012-10-04 11:04:19.199999
+84470	831	0.00	2012-10-04 11:04:19.208275	2012-10-04 11:04:19.208275
+84471	832	0.00	2012-10-04 11:04:19.216593	2012-10-04 11:04:19.216593
+84472	833	0.00	2012-10-04 11:04:19.224893	2012-10-04 11:04:19.224893
+84473	834	0.00	2012-10-04 11:04:19.233221	2012-10-04 11:04:19.233221
+84474	835	0.00	2012-10-04 11:04:19.241502	2012-10-04 11:04:19.241502
+84475	836	0.00	2012-10-04 11:04:19.2499	2012-10-04 11:04:19.2499
+84476	837	0.00	2012-10-04 11:04:19.258297	2012-10-04 11:04:19.258297
+84477	838	0.00	2012-10-04 11:04:19.26657	2012-10-04 11:04:19.26657
+84478	839	0.00	2012-10-04 11:04:19.274965	2012-10-04 11:04:19.274965
+84479	840	0.00	2012-10-04 11:04:19.28323	2012-10-04 11:04:19.28323
+84480	841	0.00	2012-10-04 11:04:19.291532	2012-10-04 11:04:19.291532
+84481	842	0.00	2012-10-04 11:04:19.299942	2012-10-04 11:04:19.299942
+84482	843	0.00	2012-10-04 11:04:19.308227	2012-10-04 11:04:19.308227
+84483	844	0.00	2012-10-04 11:04:19.316527	2012-10-04 11:04:19.316527
+84484	845	0.00	2012-10-04 11:04:19.324924	2012-10-04 11:04:19.324924
+84485	846	0.00	2012-10-04 11:04:19.333199	2012-10-04 11:04:19.333199
+84486	847	0.00	2012-10-04 11:04:19.341507	2012-10-04 11:04:19.341507
+84487	848	0.00	2012-10-04 11:04:19.34988	2012-10-04 11:04:19.34988
+84488	849	0.00	2012-10-04 11:04:19.358197	2012-10-04 11:04:19.358197
+84489	850	0.00	2012-10-04 11:04:19.36646	2012-10-04 11:04:19.36646
+84490	851	0.00	2012-10-04 11:04:19.374902	2012-10-04 11:04:19.374902
+84491	853	0.00	2012-10-04 11:04:19.383188	2012-10-04 11:04:19.383188
+84492	854	0.00	2012-10-04 11:04:19.415296	2012-10-04 11:04:19.415296
+84493	855	0.00	2012-10-04 11:04:19.425662	2012-10-04 11:04:19.425662
+84494	856	0.00	2012-10-04 11:04:19.433474	2012-10-04 11:04:19.433474
+84495	857	0.00	2012-10-04 11:04:19.441361	2012-10-04 11:04:19.441361
+84496	858	0.00	2012-10-04 11:04:19.450253	2012-10-04 11:04:19.450253
+84497	859	0.00	2012-10-04 11:04:19.4585	2012-10-04 11:04:19.4585
+84498	860	0.00	2012-10-04 11:04:19.466938	2012-10-04 11:04:19.466938
+84499	861	0.00	2012-10-04 11:04:19.475096	2012-10-04 11:04:19.475096
+84500	862	0.00	2012-10-04 11:04:19.483425	2012-10-04 11:04:19.483425
+84501	863	0.00	2012-10-04 11:04:19.491838	2012-10-04 11:04:19.491838
+84502	864	0.00	2012-10-04 11:04:19.500205	2012-10-04 11:04:19.500205
+84503	865	0.00	2012-10-04 11:04:19.5084	2012-10-04 11:04:19.5084
+84504	866	0.00	2012-10-04 11:04:19.516638	2012-10-04 11:04:19.516638
+84505	867	0.00	2012-10-04 11:04:19.525415	2012-10-04 11:04:19.525415
+84506	868	0.00	2012-10-04 11:04:19.533474	2012-10-04 11:04:19.533474
+84507	869	0.00	2012-10-04 11:04:19.541842	2012-10-04 11:04:19.541842
+84508	870	0.00	2012-10-04 11:04:19.550325	2012-10-04 11:04:19.550325
+84509	871	0.00	2012-10-04 11:04:19.558491	2012-10-04 11:04:19.558491
+84510	872	0.00	2012-10-04 11:04:19.566836	2012-10-04 11:04:19.566836
+84511	873	0.00	2012-10-04 11:04:19.575225	2012-10-04 11:04:19.575225
+84512	874	0.00	2012-10-04 11:04:19.5834	2012-10-04 11:04:19.5834
+84513	875	0.00	2012-10-04 11:04:19.591818	2012-10-04 11:04:19.591818
+84514	876	0.00	2012-10-04 11:04:19.600242	2012-10-04 11:04:19.600242
+84515	877	0.00	2012-10-04 11:04:19.608481	2012-10-04 11:04:19.608481
+84516	878	0.00	2012-10-04 11:04:19.616846	2012-10-04 11:04:19.616846
+84517	879	0.00	2012-10-04 11:04:19.625196	2012-10-04 11:04:19.625196
+84518	880	0.00	2012-10-04 11:04:19.63338	2012-10-04 11:04:19.63338
+84519	881	0.00	2012-10-04 11:04:19.642248	2012-10-04 11:04:19.642248
+84520	882	0.00	2012-10-04 11:04:19.650417	2012-10-04 11:04:19.650417
+84521	883	0.00	2012-10-04 11:04:19.658626	2012-10-04 11:04:19.658626
+84522	852	49.32	2012-10-04 11:04:19.667179	2012-10-04 11:04:19.667179
+84523	765	0.00	2012-10-05 01:00:06.839755	2012-10-05 01:00:06.839755
+84524	766	0.00	2012-10-05 01:00:06.848357	2012-10-05 01:00:06.848357
+84525	767	0.00	2012-10-05 01:00:06.856237	2012-10-05 01:00:06.856237
+84526	768	0.00	2012-10-05 01:00:06.864486	2012-10-05 01:00:06.864486
+84527	769	0.00	2012-10-05 01:00:06.872833	2012-10-05 01:00:06.872833
+84528	770	0.00	2012-10-05 01:00:06.881169	2012-10-05 01:00:06.881169
+84529	771	0.00	2012-10-05 01:00:06.88983	2012-10-05 01:00:06.88983
+84530	772	0.00	2012-10-05 01:00:06.898013	2012-10-05 01:00:06.898013
+84531	773	0.00	2012-10-05 01:00:06.906273	2012-10-05 01:00:06.906273
+84532	774	0.00	2012-10-05 01:00:06.914726	2012-10-05 01:00:06.914726
+84533	775	0.00	2012-10-05 01:00:06.923192	2012-10-05 01:00:06.923192
+84534	776	0.00	2012-10-05 01:00:06.931154	2012-10-05 01:00:06.931154
+84535	777	0.00	2012-10-05 01:00:06.939633	2012-10-05 01:00:06.939633
+84536	778	0.00	2012-10-05 01:00:06.947995	2012-10-05 01:00:06.947995
+84537	779	0.00	2012-10-05 01:00:06.956229	2012-10-05 01:00:06.956229
+84538	780	0.00	2012-10-05 01:00:06.964507	2012-10-05 01:00:06.964507
+84539	781	0.00	2012-10-05 01:00:06.972976	2012-10-05 01:00:06.972976
+84540	782	0.00	2012-10-05 01:00:06.981187	2012-10-05 01:00:06.981187
+84541	783	0.00	2012-10-05 01:00:06.989636	2012-10-05 01:00:06.989636
+84542	784	0.00	2012-10-05 01:00:06.997983	2012-10-05 01:00:06.997983
+84543	785	0.00	2012-10-05 01:00:07.006232	2012-10-05 01:00:07.006232
+84544	786	0.00	2012-10-05 01:00:07.014317	2012-10-05 01:00:07.014317
+84545	787	0.00	2012-10-05 01:00:07.02296	2012-10-05 01:00:07.02296
+84546	788	0.00	2012-10-05 01:00:07.031162	2012-10-05 01:00:07.031162
+84547	789	0.00	2012-10-05 01:00:07.039493	2012-10-05 01:00:07.039493
+84548	790	0.00	2012-10-05 01:00:07.047958	2012-10-05 01:00:07.047958
+84549	791	0.00	2012-10-05 01:00:07.056193	2012-10-05 01:00:07.056193
+84550	792	0.00	2012-10-05 01:00:07.064816	2012-10-05 01:00:07.064816
+84551	793	0.00	2012-10-05 01:00:07.088026	2012-10-05 01:00:07.088026
+84552	794	0.00	2012-10-05 01:00:07.104919	2012-10-05 01:00:07.104919
+84553	795	0.00	2012-10-05 01:00:07.146407	2012-10-05 01:00:07.146407
+84554	796	0.00	2012-10-05 01:00:07.179764	2012-10-05 01:00:07.179764
+84555	797	0.00	2012-10-05 01:00:07.213117	2012-10-05 01:00:07.213117
+84556	798	0.00	2012-10-05 01:00:07.246346	2012-10-05 01:00:07.246346
+84557	799	0.00	2012-10-05 01:00:07.279715	2012-10-05 01:00:07.279715
+84558	800	0.00	2012-10-05 01:00:07.313082	2012-10-05 01:00:07.313082
+84559	801	0.00	2012-10-05 01:00:07.346302	2012-10-05 01:00:07.346302
+84560	802	0.00	2012-10-05 01:00:07.379898	2012-10-05 01:00:07.379898
+84561	803	0.00	2012-10-05 01:00:07.413046	2012-10-05 01:00:07.413046
+84562	804	0.00	2012-10-05 01:00:07.446259	2012-10-05 01:00:07.446259
+84563	805	0.00	2012-10-05 01:00:07.479572	2012-10-05 01:00:07.479572
+84564	806	0.00	2012-10-05 01:00:07.51302	2012-10-05 01:00:07.51302
+84565	807	0.00	2012-10-05 01:00:07.546253	2012-10-05 01:00:07.546253
+84566	808	0.00	2012-10-05 01:00:07.579528	2012-10-05 01:00:07.579528
+84567	809	0.00	2012-10-05 01:00:07.612909	2012-10-05 01:00:07.612909
+84568	810	0.00	2012-10-05 01:00:07.6462	2012-10-05 01:00:07.6462
+84569	811	0.00	2012-10-05 01:00:07.679518	2012-10-05 01:00:07.679518
+84570	812	0.00	2012-10-05 01:00:07.71292	2012-10-05 01:00:07.71292
+84571	813	0.00	2012-10-05 01:00:07.746169	2012-10-05 01:00:07.746169
+84572	814	0.00	2012-10-05 01:00:07.779693	2012-10-05 01:00:07.779693
+84573	815	0.00	2012-10-05 01:00:07.812857	2012-10-05 01:00:07.812857
+84574	816	0.00	2012-10-05 01:00:07.846112	2012-10-05 01:00:07.846112
+84575	817	0.00	2012-10-05 01:00:07.879406	2012-10-05 01:00:07.879406
+84576	818	0.00	2012-10-05 01:00:07.935563	2012-10-05 01:00:07.935563
+84577	819	0.00	2012-10-05 01:00:07.96854	2012-10-05 01:00:07.96854
+84578	820	0.00	2012-10-05 01:00:08.001868	2012-10-05 01:00:08.001868
+84579	821	0.00	2012-10-05 01:00:08.035167	2012-10-05 01:00:08.035167
+84580	822	0.00	2012-10-05 01:00:08.06841	2012-10-05 01:00:08.06841
+84581	823	0.00	2012-10-05 01:00:08.101753	2012-10-05 01:00:08.101753
+84582	824	0.00	2012-10-05 01:00:08.135163	2012-10-05 01:00:08.135163
+84583	825	0.00	2012-10-05 01:00:08.168383	2012-10-05 01:00:08.168383
+84584	826	0.00	2012-10-05 01:00:08.201743	2012-10-05 01:00:08.201743
+84585	827	0.00	2012-10-05 01:00:08.235104	2012-10-05 01:00:08.235104
+84586	828	0.00	2012-10-05 01:00:08.268307	2012-10-05 01:00:08.268307
+84587	829	0.00	2012-10-05 01:00:08.301696	2012-10-05 01:00:08.301696
+84588	830	0.00	2012-10-05 01:00:08.335094	2012-10-05 01:00:08.335094
+84589	831	0.00	2012-10-05 01:00:08.368311	2012-10-05 01:00:08.368311
+84590	832	0.00	2012-10-05 01:00:08.401676	2012-10-05 01:00:08.401676
+84591	833	0.00	2012-10-05 01:00:08.435028	2012-10-05 01:00:08.435028
+84592	834	0.00	2012-10-05 01:00:08.468274	2012-10-05 01:00:08.468274
+84593	835	0.00	2012-10-05 01:00:08.501511	2012-10-05 01:00:08.501511
+84594	836	0.00	2012-10-05 01:00:08.53495	2012-10-05 01:00:08.53495
+84595	837	0.00	2012-10-05 01:00:08.6022	2012-10-05 01:00:08.6022
+84596	838	0.00	2012-10-05 01:00:08.630804	2012-10-05 01:00:08.630804
+84597	839	0.00	2012-10-05 01:00:08.638936	2012-10-05 01:00:08.638936
+84598	840	0.00	2012-10-05 01:00:08.647229	2012-10-05 01:00:08.647229
+84599	841	0.00	2012-10-05 01:00:08.65566	2012-10-05 01:00:08.65566
+84600	842	0.00	2012-10-05 01:00:08.663988	2012-10-05 01:00:08.663988
+84601	843	0.00	2012-10-05 01:00:08.672232	2012-10-05 01:00:08.672232
+84602	844	0.00	2012-10-05 01:00:08.680647	2012-10-05 01:00:08.680647
+84603	845	0.00	2012-10-05 01:00:08.688917	2012-10-05 01:00:08.688917
+84604	846	0.00	2012-10-05 01:00:08.697208	2012-10-05 01:00:08.697208
+84605	847	0.00	2012-10-05 01:00:08.70553	2012-10-05 01:00:08.70553
+84606	848	0.00	2012-10-05 01:00:08.713923	2012-10-05 01:00:08.713923
+84607	849	0.00	2012-10-05 01:00:08.72218	2012-10-05 01:00:08.72218
+84608	850	0.00	2012-10-05 01:00:08.730475	2012-10-05 01:00:08.730475
+84609	851	0.00	2012-10-05 01:00:08.738894	2012-10-05 01:00:08.738894
+84610	853	0.00	2012-10-05 01:00:08.747165	2012-10-05 01:00:08.747165
+84611	854	0.00	2012-10-05 01:00:08.755473	2012-10-05 01:00:08.755473
+84612	855	0.00	2012-10-05 01:00:08.763871	2012-10-05 01:00:08.763871
+84613	856	0.00	2012-10-05 01:00:08.772139	2012-10-05 01:00:08.772139
+84614	857	0.00	2012-10-05 01:00:08.780452	2012-10-05 01:00:08.780452
+84615	858	0.00	2012-10-05 01:00:08.788806	2012-10-05 01:00:08.788806
+84616	859	0.00	2012-10-05 01:00:08.797123	2012-10-05 01:00:08.797123
+84617	860	0.00	2012-10-05 01:00:08.805426	2012-10-05 01:00:08.805426
+84618	861	0.00	2012-10-05 01:00:08.813797	2012-10-05 01:00:08.813797
+84619	862	0.00	2012-10-05 01:00:08.822116	2012-10-05 01:00:08.822116
+84620	863	0.00	2012-10-05 01:00:08.830412	2012-10-05 01:00:08.830412
+84621	864	0.00	2012-10-05 01:00:08.838781	2012-10-05 01:00:08.838781
+84622	865	0.00	2012-10-05 01:00:08.847127	2012-10-05 01:00:08.847127
+84623	866	0.00	2012-10-05 01:00:08.855421	2012-10-05 01:00:08.855421
+84624	867	0.00	2012-10-05 01:00:08.863836	2012-10-05 01:00:08.863836
+84625	868	0.00	2012-10-05 01:00:08.872154	2012-10-05 01:00:08.872154
+84626	869	0.00	2012-10-05 01:00:08.880384	2012-10-05 01:00:08.880384
+84627	870	0.00	2012-10-05 01:00:08.888757	2012-10-05 01:00:08.888757
+84628	871	0.00	2012-10-05 01:00:08.897161	2012-10-05 01:00:08.897161
+84629	872	0.00	2012-10-05 01:00:08.905369	2012-10-05 01:00:08.905369
+84630	873	0.00	2012-10-05 01:00:08.913911	2012-10-05 01:00:08.913911
+84631	874	0.00	2012-10-05 01:00:08.922163	2012-10-05 01:00:08.922163
+84632	875	0.00	2012-10-05 01:00:08.930492	2012-10-05 01:00:08.930492
+84633	876	0.00	2012-10-05 01:00:08.938862	2012-10-05 01:00:08.938862
+84634	877	0.00	2012-10-05 01:00:08.947191	2012-10-05 01:00:08.947191
+84635	878	0.00	2012-10-05 01:00:08.955476	2012-10-05 01:00:08.955476
+84636	879	0.00	2012-10-05 01:00:08.963851	2012-10-05 01:00:08.963851
+84637	880	0.00	2012-10-05 01:00:08.972185	2012-10-05 01:00:08.972185
+84638	881	0.00	2012-10-05 01:00:08.980461	2012-10-05 01:00:08.980461
+84639	882	0.00	2012-10-05 01:00:08.988856	2012-10-05 01:00:08.988856
+84640	883	0.00	2012-10-05 01:00:08.997123	2012-10-05 01:00:08.997123
+84641	852	48.98	2012-10-05 01:00:09.005571	2012-10-05 01:00:09.005571
+84642	765	0.00	2012-10-06 01:00:06.934616	2012-10-06 01:00:06.934616
+84643	766	0.00	2012-10-06 01:00:06.943289	2012-10-06 01:00:06.943289
+84644	767	0.00	2012-10-06 01:00:06.951248	2012-10-06 01:00:06.951248
+84645	768	0.00	2012-10-06 01:00:06.959412	2012-10-06 01:00:06.959412
+84646	769	0.00	2012-10-06 01:00:06.967879	2012-10-06 01:00:06.967879
+84647	770	0.00	2012-10-06 01:00:06.976199	2012-10-06 01:00:06.976199
+84648	771	0.00	2012-10-06 01:00:06.984262	2012-10-06 01:00:06.984262
+84649	772	0.00	2012-10-06 01:00:06.992723	2012-10-06 01:00:06.992723
+84650	773	0.00	2012-10-06 01:00:07.001025	2012-10-06 01:00:07.001025
+84651	774	0.00	2012-10-06 01:00:07.009272	2012-10-06 01:00:07.009272
+84652	775	0.00	2012-10-06 01:00:07.01749	2012-10-06 01:00:07.01749
+84653	776	0.00	2012-10-06 01:00:07.025807	2012-10-06 01:00:07.025807
+84654	777	0.00	2012-10-06 01:00:07.034239	2012-10-06 01:00:07.034239
+84655	778	0.00	2012-10-06 01:00:07.042726	2012-10-06 01:00:07.042726
+84656	779	0.00	2012-10-06 01:00:07.05101	2012-10-06 01:00:07.05101
+84657	780	0.00	2012-10-06 01:00:07.059255	2012-10-06 01:00:07.059255
+84658	781	0.00	2012-10-06 01:00:07.067634	2012-10-06 01:00:07.067634
+84659	782	0.00	2012-10-06 01:00:07.076178	2012-10-06 01:00:07.076178
+84660	783	0.00	2012-10-06 01:00:07.08422	2012-10-06 01:00:07.08422
+84661	784	0.00	2012-10-06 01:00:07.092657	2012-10-06 01:00:07.092657
+84662	785	0.00	2012-10-06 01:00:07.100966	2012-10-06 01:00:07.100966
+84663	786	0.00	2012-10-06 01:00:07.109243	2012-10-06 01:00:07.109243
+84664	787	0.00	2012-10-06 01:00:07.117523	2012-10-06 01:00:07.117523
+84665	788	0.00	2012-10-06 01:00:07.125964	2012-10-06 01:00:07.125964
+84666	789	0.00	2012-10-06 01:00:07.13418	2012-10-06 01:00:07.13418
+84667	790	0.00	2012-10-06 01:00:07.142611	2012-10-06 01:00:07.142611
+84668	791	0.00	2012-10-06 01:00:07.165077	2012-10-06 01:00:07.165077
+84669	792	0.00	2012-10-06 01:00:07.182205	2012-10-06 01:00:07.182205
+84670	793	0.00	2012-10-06 01:00:07.223809	2012-10-06 01:00:07.223809
+84671	794	0.00	2012-10-06 01:00:07.265324	2012-10-06 01:00:07.265324
+84672	795	0.00	2012-10-06 01:00:07.298521	2012-10-06 01:00:07.298521
+84673	796	0.00	2012-10-06 01:00:07.332299	2012-10-06 01:00:07.332299
+84674	797	0.00	2012-10-06 01:00:07.373757	2012-10-06 01:00:07.373757
+84675	798	0.00	2012-10-06 01:00:07.415243	2012-10-06 01:00:07.415243
+84676	799	0.00	2012-10-06 01:00:07.457038	2012-10-06 01:00:07.457038
+84677	800	0.00	2012-10-06 01:00:07.498724	2012-10-06 01:00:07.498724
+84678	801	0.00	2012-10-06 01:00:07.540245	2012-10-06 01:00:07.540245
+84679	802	0.00	2012-10-06 01:00:07.573521	2012-10-06 01:00:07.573521
+84680	803	0.00	2012-10-06 01:00:07.615202	2012-10-06 01:00:07.615202
+84681	804	0.00	2012-10-06 01:00:07.657114	2012-10-06 01:00:07.657114
+84682	805	0.00	2012-10-06 01:00:07.690274	2012-10-06 01:00:07.690274
+84683	806	0.00	2012-10-06 01:00:07.723495	2012-10-06 01:00:07.723495
+84684	807	0.00	2012-10-06 01:00:07.765259	2012-10-06 01:00:07.765259
+84685	808	0.00	2012-10-06 01:00:07.798478	2012-10-06 01:00:07.798478
+84686	809	0.00	2012-10-06 01:00:07.840223	2012-10-06 01:00:07.840223
+84687	810	0.00	2012-10-06 01:00:07.87348	2012-10-06 01:00:07.87348
+84688	811	0.00	2012-10-06 01:00:07.915178	2012-10-06 01:00:07.915178
+84689	812	0.00	2012-10-06 01:00:07.948369	2012-10-06 01:00:07.948369
+84690	813	0.00	2012-10-06 01:00:07.990147	2012-10-06 01:00:07.990147
+84691	814	0.00	2012-10-06 01:00:08.023504	2012-10-06 01:00:08.023504
+84692	815	0.00	2012-10-06 01:00:08.06274	2012-10-06 01:00:08.06274
+84693	816	0.00	2012-10-06 01:00:08.104278	2012-10-06 01:00:08.104278
+84694	817	0.00	2012-10-06 01:00:08.14619	2012-10-06 01:00:08.14619
+84695	818	0.00	2012-10-06 01:00:08.210494	2012-10-06 01:00:08.210494
+84696	819	0.00	2012-10-06 01:00:08.237549	2012-10-06 01:00:08.237549
+84697	820	0.00	2012-10-06 01:00:08.279209	2012-10-06 01:00:08.279209
+84698	821	0.00	2012-10-06 01:00:08.320853	2012-10-06 01:00:08.320853
+84699	822	0.00	2012-10-06 01:00:08.354259	2012-10-06 01:00:08.354259
+84700	823	0.00	2012-10-06 01:00:08.387464	2012-10-06 01:00:08.387464
+84701	824	0.00	2012-10-06 01:00:08.429298	2012-10-06 01:00:08.429298
+84702	825	0.00	2012-10-06 01:00:08.47082	2012-10-06 01:00:08.47082
+84703	826	0.00	2012-10-06 01:00:08.512462	2012-10-06 01:00:08.512462
+84704	827	0.00	2012-10-06 01:00:08.546029	2012-10-06 01:00:08.546029
+84705	828	0.00	2012-10-06 01:00:08.579227	2012-10-06 01:00:08.579227
+84706	829	0.00	2012-10-06 01:00:08.620839	2012-10-06 01:00:08.620839
+84707	830	0.00	2012-10-06 01:00:08.662376	2012-10-06 01:00:08.662376
+84708	831	0.00	2012-10-06 01:00:08.704326	2012-10-06 01:00:08.704326
+84709	832	0.00	2012-10-06 01:00:08.737328	2012-10-06 01:00:08.737328
+84710	833	0.00	2012-10-06 01:00:08.779289	2012-10-06 01:00:08.779289
+84711	834	0.00	2012-10-06 01:00:08.820844	2012-10-06 01:00:08.820844
+84712	835	0.00	2012-10-06 01:00:08.85406	2012-10-06 01:00:08.85406
+84713	836	0.00	2012-10-06 01:00:08.887295	2012-10-06 01:00:08.887295
+84714	837	0.00	2012-10-06 01:00:08.954952	2012-10-06 01:00:08.954952
+84715	838	0.00	2012-10-06 01:00:08.984243	2012-10-06 01:00:08.984243
+84716	839	0.00	2012-10-06 01:00:08.99222	2012-10-06 01:00:08.99222
+84717	840	0.00	2012-10-06 01:00:09.000416	2012-10-06 01:00:09.000416
+84718	841	0.00	2012-10-06 01:00:09.008888	2012-10-06 01:00:09.008888
+84719	842	0.00	2012-10-06 01:00:09.017215	2012-10-06 01:00:09.017215
+84720	843	0.00	2012-10-06 01:00:09.025398	2012-10-06 01:00:09.025398
+84721	844	0.00	2012-10-06 01:00:09.03383	2012-10-06 01:00:09.03383
+84722	845	0.00	2012-10-06 01:00:09.042181	2012-10-06 01:00:09.042181
+84723	846	0.00	2012-10-06 01:00:09.050346	2012-10-06 01:00:09.050346
+84724	847	0.00	2012-10-06 01:00:09.05882	2012-10-06 01:00:09.05882
+84725	848	0.00	2012-10-06 01:00:09.067133	2012-10-06 01:00:09.067133
+84726	849	0.00	2012-10-06 01:00:09.07537	2012-10-06 01:00:09.07537
+84727	850	0.00	2012-10-06 01:00:09.083476	2012-10-06 01:00:09.083476
+84728	851	0.00	2012-10-06 01:00:09.092301	2012-10-06 01:00:09.092301
+84729	853	0.00	2012-10-06 01:00:09.100307	2012-10-06 01:00:09.100307
+84730	854	0.00	2012-10-06 01:00:09.108769	2012-10-06 01:00:09.108769
+84731	855	0.00	2012-10-06 01:00:09.117191	2012-10-06 01:00:09.117191
+84732	856	0.00	2012-10-06 01:00:09.125347	2012-10-06 01:00:09.125347
+84733	857	0.00	2012-10-06 01:00:09.133758	2012-10-06 01:00:09.133758
+84734	858	0.00	2012-10-06 01:00:09.142195	2012-10-06 01:00:09.142195
+84735	859	0.00	2012-10-06 01:00:09.150256	2012-10-06 01:00:09.150256
+84736	860	0.00	2012-10-06 01:00:09.158725	2012-10-06 01:00:09.158725
+84737	861	0.00	2012-10-06 01:00:09.166942	2012-10-06 01:00:09.166942
+84738	862	0.00	2012-10-06 01:00:09.175314	2012-10-06 01:00:09.175314
+84739	863	0.00	2012-10-06 01:00:09.18375	2012-10-06 01:00:09.18375
+84740	864	0.00	2012-10-06 01:00:09.192172	2012-10-06 01:00:09.192172
+84741	865	0.00	2012-10-06 01:00:09.200402	2012-10-06 01:00:09.200402
+84742	866	0.00	2012-10-06 01:00:09.208665	2012-10-06 01:00:09.208665
+84743	867	0.00	2012-10-06 01:00:09.217161	2012-10-06 01:00:09.217161
+84744	868	0.00	2012-10-06 01:00:09.225508	2012-10-06 01:00:09.225508
+84745	869	0.00	2012-10-06 01:00:09.233832	2012-10-06 01:00:09.233832
+84746	870	0.00	2012-10-06 01:00:09.242309	2012-10-06 01:00:09.242309
+84747	871	0.00	2012-10-06 01:00:09.250358	2012-10-06 01:00:09.250358
+84748	872	0.00	2012-10-06 01:00:09.258821	2012-10-06 01:00:09.258821
+84749	873	0.00	2012-10-06 01:00:09.267147	2012-10-06 01:00:09.267147
+84750	874	0.00	2012-10-06 01:00:09.275372	2012-10-06 01:00:09.275372
+84751	875	0.00	2012-10-06 01:00:09.283404	2012-10-06 01:00:09.283404
+84752	876	0.00	2012-10-06 01:00:09.292159	2012-10-06 01:00:09.292159
+84753	877	0.00	2012-10-06 01:00:09.300364	2012-10-06 01:00:09.300364
+84754	878	0.00	2012-10-06 01:00:09.308427	2012-10-06 01:00:09.308427
+84755	879	0.00	2012-10-06 01:00:09.317139	2012-10-06 01:00:09.317139
+84756	880	0.00	2012-10-06 01:00:09.325362	2012-10-06 01:00:09.325362
+84757	881	0.00	2012-10-06 01:00:09.333398	2012-10-06 01:00:09.333398
+84758	882	0.00	2012-10-06 01:00:09.342149	2012-10-06 01:00:09.342149
+84759	883	0.00	2012-10-06 01:00:09.350306	2012-10-06 01:00:09.350306
+84760	852	48.81	2012-10-06 01:00:09.35881	2012-10-06 01:00:09.35881
+84761	765	0.00	2012-10-07 01:00:06.647041	2012-10-07 01:00:06.647041
+84762	766	0.00	2012-10-07 01:00:06.65513	2012-10-07 01:00:06.65513
+84763	767	0.00	2012-10-07 01:00:06.663256	2012-10-07 01:00:06.663256
+84764	768	0.00	2012-10-07 01:00:06.671219	2012-10-07 01:00:06.671219
+84765	769	0.00	2012-10-07 01:00:06.679634	2012-10-07 01:00:06.679634
+84766	770	0.00	2012-10-07 01:00:06.687909	2012-10-07 01:00:06.687909
+84767	771	0.00	2012-10-07 01:00:06.696206	2012-10-07 01:00:06.696206
+84768	772	0.00	2012-10-07 01:00:06.7045	2012-10-07 01:00:06.7045
+84769	773	0.00	2012-10-07 01:00:06.712889	2012-10-07 01:00:06.712889
+84770	774	0.00	2012-10-07 01:00:06.721125	2012-10-07 01:00:06.721125
+84771	775	0.00	2012-10-07 01:00:06.729489	2012-10-07 01:00:06.729489
+84772	776	0.00	2012-10-07 01:00:06.73785	2012-10-07 01:00:06.73785
+84773	777	0.00	2012-10-07 01:00:06.746117	2012-10-07 01:00:06.746117
+84774	778	0.00	2012-10-07 01:00:06.754431	2012-10-07 01:00:06.754431
+84775	779	0.00	2012-10-07 01:00:06.76283	2012-10-07 01:00:06.76283
+84776	780	0.00	2012-10-07 01:00:06.771091	2012-10-07 01:00:06.771091
+84777	781	0.00	2012-10-07 01:00:06.779426	2012-10-07 01:00:06.779426
+84778	782	0.00	2012-10-07 01:00:06.787823	2012-10-07 01:00:06.787823
+84779	783	0.00	2012-10-07 01:00:06.796085	2012-10-07 01:00:06.796085
+84780	784	0.00	2012-10-07 01:00:06.804393	2012-10-07 01:00:06.804393
+84781	785	0.00	2012-10-07 01:00:06.812778	2012-10-07 01:00:06.812778
+84782	786	0.00	2012-10-07 01:00:06.821078	2012-10-07 01:00:06.821078
+84783	787	0.00	2012-10-07 01:00:06.829385	2012-10-07 01:00:06.829385
+84784	788	0.00	2012-10-07 01:00:06.837765	2012-10-07 01:00:06.837765
+84785	789	0.00	2012-10-07 01:00:06.846074	2012-10-07 01:00:06.846074
+84786	790	0.00	2012-10-07 01:00:06.854401	2012-10-07 01:00:06.854401
+84787	791	0.00	2012-10-07 01:00:06.862859	2012-10-07 01:00:06.862859
+84788	792	0.00	2012-10-07 01:00:06.871126	2012-10-07 01:00:06.871126
+84789	793	0.00	2012-10-07 01:00:06.879369	2012-10-07 01:00:06.879369
+84790	794	0.00	2012-10-07 01:00:06.887748	2012-10-07 01:00:06.887748
+84791	795	0.00	2012-10-07 01:00:06.896076	2012-10-07 01:00:06.896076
+84792	796	0.00	2012-10-07 01:00:06.904354	2012-10-07 01:00:06.904354
+84793	797	0.00	2012-10-07 01:00:06.912896	2012-10-07 01:00:06.912896
+84794	798	0.00	2012-10-07 01:00:06.92111	2012-10-07 01:00:06.92111
+84795	799	0.00	2012-10-07 01:00:06.929417	2012-10-07 01:00:06.929417
+84796	800	0.00	2012-10-07 01:00:06.937841	2012-10-07 01:00:06.937841
+84797	801	0.00	2012-10-07 01:00:06.94619	2012-10-07 01:00:06.94619
+84798	802	0.00	2012-10-07 01:00:06.9544	2012-10-07 01:00:06.9544
+84799	803	0.00	2012-10-07 01:00:06.962831	2012-10-07 01:00:06.962831
+84800	804	0.00	2012-10-07 01:00:06.971088	2012-10-07 01:00:06.971088
+84801	805	0.00	2012-10-07 01:00:06.97942	2012-10-07 01:00:06.97942
+84802	806	0.00	2012-10-07 01:00:06.98778	2012-10-07 01:00:06.98778
+84803	807	0.00	2012-10-07 01:00:06.996085	2012-10-07 01:00:06.996085
+84804	808	0.00	2012-10-07 01:00:07.004391	2012-10-07 01:00:07.004391
+84805	809	0.00	2012-10-07 01:00:07.012777	2012-10-07 01:00:07.012777
+84806	810	0.00	2012-10-07 01:00:07.021072	2012-10-07 01:00:07.021072
+84807	811	0.00	2012-10-07 01:00:07.029405	2012-10-07 01:00:07.029405
+84808	812	0.00	2012-10-07 01:00:07.037819	2012-10-07 01:00:07.037819
+84809	813	0.00	2012-10-07 01:00:07.046132	2012-10-07 01:00:07.046132
+84810	814	0.00	2012-10-07 01:00:07.054508	2012-10-07 01:00:07.054508
+84811	815	0.00	2012-10-07 01:00:07.062712	2012-10-07 01:00:07.062712
+84812	816	0.00	2012-10-07 01:00:07.071129	2012-10-07 01:00:07.071129
+84813	817	0.00	2012-10-07 01:00:07.079457	2012-10-07 01:00:07.079457
+84814	818	0.00	2012-10-07 01:00:07.110571	2012-10-07 01:00:07.110571
+84815	819	0.00	2012-10-07 01:00:07.121239	2012-10-07 01:00:07.121239
+84816	820	0.00	2012-10-07 01:00:07.129514	2012-10-07 01:00:07.129514
+84817	821	0.00	2012-10-07 01:00:07.150836	2012-10-07 01:00:07.150836
+84818	822	0.00	2012-10-07 01:00:07.167437	2012-10-07 01:00:07.167437
+84819	823	0.00	2012-10-07 01:00:07.209208	2012-10-07 01:00:07.209208
+84820	824	0.00	2012-10-07 01:00:07.250865	2012-10-07 01:00:07.250865
+84821	825	0.00	2012-10-07 01:00:07.292402	2012-10-07 01:00:07.292402
+84822	826	0.00	2012-10-07 01:00:07.334127	2012-10-07 01:00:07.334127
+84823	827	0.00	2012-10-07 01:00:07.37571	2012-10-07 01:00:07.37571
+84824	828	0.00	2012-10-07 01:00:07.417306	2012-10-07 01:00:07.417306
+84825	829	0.00	2012-10-07 01:00:07.459058	2012-10-07 01:00:07.459058
+84826	830	0.00	2012-10-07 01:00:07.500867	2012-10-07 01:00:07.500867
+84827	831	0.00	2012-10-07 01:00:07.54232	2012-10-07 01:00:07.54232
+84828	832	0.00	2012-10-07 01:00:07.584037	2012-10-07 01:00:07.584037
+84829	833	0.00	2012-10-07 01:00:07.6256	2012-10-07 01:00:07.6256
+84830	834	0.00	2012-10-07 01:00:07.667259	2012-10-07 01:00:07.667259
+84831	835	0.00	2012-10-07 01:00:07.708947	2012-10-07 01:00:07.708947
+84832	836	0.00	2012-10-07 01:00:07.750536	2012-10-07 01:00:07.750536
+84833	837	0.00	2012-10-07 01:00:07.82633	2012-10-07 01:00:07.82633
+84834	838	0.00	2012-10-07 01:00:07.857109	2012-10-07 01:00:07.857109
+84835	839	0.00	2012-10-07 01:00:07.898422	2012-10-07 01:00:07.898422
+84836	840	0.00	2012-10-07 01:00:07.940181	2012-10-07 01:00:07.940181
+84837	841	0.00	2012-10-07 01:00:07.98176	2012-10-07 01:00:07.98176
+84838	842	0.00	2012-10-07 01:00:08.023326	2012-10-07 01:00:08.023326
+84839	843	0.00	2012-10-07 01:00:08.065037	2012-10-07 01:00:08.065037
+84840	844	0.00	2012-10-07 01:00:08.106583	2012-10-07 01:00:08.106583
+84841	845	0.00	2012-10-07 01:00:08.148304	2012-10-07 01:00:08.148304
+84842	846	0.00	2012-10-07 01:00:08.190001	2012-10-07 01:00:08.190001
+84843	847	0.00	2012-10-07 01:00:08.223241	2012-10-07 01:00:08.223241
+84844	848	0.00	2012-10-07 01:00:08.256529	2012-10-07 01:00:08.256529
+84845	849	0.00	2012-10-07 01:00:08.298212	2012-10-07 01:00:08.298212
+84846	850	0.00	2012-10-07 01:00:08.339917	2012-10-07 01:00:08.339917
+84847	851	0.00	2012-10-07 01:00:08.381457	2012-10-07 01:00:08.381457
+84848	853	0.00	2012-10-07 01:00:08.414811	2012-10-07 01:00:08.414811
+84849	854	0.00	2012-10-07 01:00:08.456616	2012-10-07 01:00:08.456616
+84850	855	0.00	2012-10-07 01:00:08.498182	2012-10-07 01:00:08.498182
+84851	856	0.00	2012-10-07 01:00:08.53976	2012-10-07 01:00:08.53976
+84852	857	0.00	2012-10-07 01:00:08.581381	2012-10-07 01:00:08.581381
+84853	858	0.00	2012-10-07 01:00:08.623101	2012-10-07 01:00:08.623101
+84854	859	0.00	2012-10-07 01:00:08.656297	2012-10-07 01:00:08.656297
+84855	860	0.00	2012-10-07 01:00:08.689691	2012-10-07 01:00:08.689691
+84856	861	0.00	2012-10-07 01:00:08.731316	2012-10-07 01:00:08.731316
+84857	862	0.00	2012-10-07 01:00:08.773047	2012-10-07 01:00:08.773047
+84858	863	0.00	2012-10-07 01:00:08.814611	2012-10-07 01:00:08.814611
+84859	864	0.00	2012-10-07 01:00:08.848008	2012-10-07 01:00:08.848008
+84860	865	0.00	2012-10-07 01:00:08.881241	2012-10-07 01:00:08.881241
+84861	866	0.00	2012-10-07 01:00:08.914541	2012-10-07 01:00:08.914541
+84862	867	0.00	2012-10-07 01:00:08.947901	2012-10-07 01:00:08.947901
+84863	868	0.00	2012-10-07 01:00:08.981195	2012-10-07 01:00:08.981195
+84864	869	0.00	2012-10-07 01:00:09.014497	2012-10-07 01:00:09.014497
+84865	870	0.00	2012-10-07 01:00:09.047896	2012-10-07 01:00:09.047896
+84866	871	0.00	2012-10-07 01:00:09.081161	2012-10-07 01:00:09.081161
+84867	872	0.00	2012-10-07 01:00:09.123103	2012-10-07 01:00:09.123103
+84868	873	0.00	2012-10-07 01:00:09.164459	2012-10-07 01:00:09.164459
+84869	874	0.00	2012-10-07 01:00:09.19782	2012-10-07 01:00:09.19782
+84870	875	0.00	2012-10-07 01:00:09.231052	2012-10-07 01:00:09.231052
+84871	876	0.00	2012-10-07 01:00:09.264401	2012-10-07 01:00:09.264401
+84872	877	0.00	2012-10-07 01:00:09.306139	2012-10-07 01:00:09.306139
+84873	878	0.00	2012-10-07 01:00:09.339369	2012-10-07 01:00:09.339369
+84874	879	0.00	2012-10-07 01:00:09.381127	2012-10-07 01:00:09.381127
+84875	880	0.00	2012-10-07 01:00:09.414326	2012-10-07 01:00:09.414326
+84876	881	0.00	2012-10-07 01:00:09.447706	2012-10-07 01:00:09.447706
+84877	882	0.00	2012-10-07 01:00:09.489334	2012-10-07 01:00:09.489334
+84878	883	0.00	2012-10-07 01:00:09.531057	2012-10-07 01:00:09.531057
+84879	852	48.64	2012-10-07 01:00:09.572762	2012-10-07 01:00:09.572762
+84880	765	0.00	2012-10-08 01:00:06.757561	2012-10-08 01:00:06.757561
+84881	766	0.00	2012-10-08 01:00:06.76522	2012-10-08 01:00:06.76522
+84882	767	0.00	2012-10-08 01:00:06.773239	2012-10-08 01:00:06.773239
+84883	768	0.00	2012-10-08 01:00:06.781443	2012-10-08 01:00:06.781443
+84884	769	0.00	2012-10-08 01:00:06.789914	2012-10-08 01:00:06.789914
+84885	770	0.00	2012-10-08 01:00:06.798131	2012-10-08 01:00:06.798131
+84886	771	0.00	2012-10-08 01:00:06.806616	2012-10-08 01:00:06.806616
+84887	772	0.00	2012-10-08 01:00:06.814926	2012-10-08 01:00:06.814926
+84888	773	0.00	2012-10-08 01:00:06.823159	2012-10-08 01:00:06.823159
+84889	774	0.00	2012-10-08 01:00:06.831482	2012-10-08 01:00:06.831482
+84890	775	0.00	2012-10-08 01:00:06.839863	2012-10-08 01:00:06.839863
+84891	776	0.00	2012-10-08 01:00:06.848212	2012-10-08 01:00:06.848212
+84892	777	0.00	2012-10-08 01:00:06.856447	2012-10-08 01:00:06.856447
+84893	778	0.00	2012-10-08 01:00:06.864874	2012-10-08 01:00:06.864874
+84894	779	0.00	2012-10-08 01:00:06.873138	2012-10-08 01:00:06.873138
+84895	780	0.00	2012-10-08 01:00:06.881433	2012-10-08 01:00:06.881433
+84896	781	0.00	2012-10-08 01:00:06.889845	2012-10-08 01:00:06.889845
+84897	782	0.00	2012-10-08 01:00:06.898113	2012-10-08 01:00:06.898113
+84898	783	0.00	2012-10-08 01:00:06.906449	2012-10-08 01:00:06.906449
+84899	784	0.00	2012-10-08 01:00:06.914835	2012-10-08 01:00:06.914835
+84900	785	0.00	2012-10-08 01:00:06.923111	2012-10-08 01:00:06.923111
+84901	786	0.00	2012-10-08 01:00:06.931409	2012-10-08 01:00:06.931409
+84902	787	0.00	2012-10-08 01:00:06.939823	2012-10-08 01:00:06.939823
+84903	788	0.00	2012-10-08 01:00:06.948099	2012-10-08 01:00:06.948099
+84904	789	0.00	2012-10-08 01:00:06.956419	2012-10-08 01:00:06.956419
+84905	790	0.00	2012-10-08 01:00:06.964777	2012-10-08 01:00:06.964777
+84906	791	0.00	2012-10-08 01:00:06.973093	2012-10-08 01:00:06.973093
+84907	792	0.00	2012-10-08 01:00:06.981412	2012-10-08 01:00:06.981412
+84908	793	0.00	2012-10-08 01:00:06.989771	2012-10-08 01:00:06.989771
+84909	794	0.00	2012-10-08 01:00:06.998076	2012-10-08 01:00:06.998076
+84910	795	0.00	2012-10-08 01:00:07.006394	2012-10-08 01:00:07.006394
+84911	796	0.00	2012-10-08 01:00:07.014758	2012-10-08 01:00:07.014758
+84912	797	0.00	2012-10-08 01:00:07.023145	2012-10-08 01:00:07.023145
+84913	798	0.00	2012-10-08 01:00:07.031392	2012-10-08 01:00:07.031392
+84914	799	0.00	2012-10-08 01:00:07.039749	2012-10-08 01:00:07.039749
+84915	800	0.00	2012-10-08 01:00:07.04814	2012-10-08 01:00:07.04814
+84916	801	0.00	2012-10-08 01:00:07.056496	2012-10-08 01:00:07.056496
+84917	802	0.00	2012-10-08 01:00:07.064852	2012-10-08 01:00:07.064852
+84918	803	0.00	2012-10-08 01:00:07.073128	2012-10-08 01:00:07.073128
+84919	804	0.00	2012-10-08 01:00:07.081423	2012-10-08 01:00:07.081423
+84920	805	0.00	2012-10-08 01:00:07.089835	2012-10-08 01:00:07.089835
+84921	806	0.00	2012-10-08 01:00:07.098115	2012-10-08 01:00:07.098115
+84922	807	0.00	2012-10-08 01:00:07.106434	2012-10-08 01:00:07.106434
+84923	808	0.00	2012-10-08 01:00:07.11483	2012-10-08 01:00:07.11483
+84924	809	0.00	2012-10-08 01:00:07.136308	2012-10-08 01:00:07.136308
+84925	810	0.00	2012-10-08 01:00:07.152908	2012-10-08 01:00:07.152908
+84926	811	0.00	2012-10-08 01:00:07.194466	2012-10-08 01:00:07.194466
+84927	812	0.00	2012-10-08 01:00:07.236124	2012-10-08 01:00:07.236124
+84928	813	0.00	2012-10-08 01:00:07.277785	2012-10-08 01:00:07.277785
+84929	814	0.00	2012-10-08 01:00:07.319388	2012-10-08 01:00:07.319388
+84930	815	0.00	2012-10-08 01:00:07.361118	2012-10-08 01:00:07.361118
+84931	816	0.00	2012-10-08 01:00:07.40273	2012-10-08 01:00:07.40273
+84932	817	0.00	2012-10-08 01:00:07.444498	2012-10-08 01:00:07.444498
+84933	818	0.00	2012-10-08 01:00:07.508957	2012-10-08 01:00:07.508957
+84934	819	0.00	2012-10-08 01:00:07.536023	2012-10-08 01:00:07.536023
+84935	820	0.00	2012-10-08 01:00:07.57756	2012-10-08 01:00:07.57756
+84936	821	0.00	2012-10-08 01:00:07.619202	2012-10-08 01:00:07.619202
+84937	822	0.00	2012-10-08 01:00:07.660932	2012-10-08 01:00:07.660932
+84938	823	0.00	2012-10-08 01:00:07.702547	2012-10-08 01:00:07.702547
+84939	824	0.00	2012-10-08 01:00:07.744135	2012-10-08 01:00:07.744135
+84940	825	0.00	2012-10-08 01:00:07.785885	2012-10-08 01:00:07.785885
+84941	826	0.00	2012-10-08 01:00:07.827462	2012-10-08 01:00:07.827462
+84942	827	0.00	2012-10-08 01:00:07.869066	2012-10-08 01:00:07.869066
+84943	828	0.00	2012-10-08 01:00:07.910765	2012-10-08 01:00:07.910765
+84944	829	0.00	2012-10-08 01:00:07.952448	2012-10-08 01:00:07.952448
+84945	830	0.00	2012-10-08 01:00:07.994134	2012-10-08 01:00:07.994134
+84946	831	0.00	2012-10-08 01:00:08.035754	2012-10-08 01:00:08.035754
+84947	832	0.00	2012-10-08 01:00:08.077372	2012-10-08 01:00:08.077372
+84948	833	0.00	2012-10-08 01:00:08.119078	2012-10-08 01:00:08.119078
+84949	834	0.00	2012-10-08 01:00:08.160686	2012-10-08 01:00:08.160686
+84950	835	0.00	2012-10-08 01:00:08.202319	2012-10-08 01:00:08.202319
+84951	836	0.00	2012-10-08 01:00:08.244039	2012-10-08 01:00:08.244039
+84952	837	0.00	2012-10-08 01:00:08.31991	2012-10-08 01:00:08.31991
+84953	838	0.00	2012-10-08 01:00:08.341559	2012-10-08 01:00:08.341559
+84954	839	0.00	2012-10-08 01:00:08.374599	2012-10-08 01:00:08.374599
+84955	840	0.00	2012-10-08 01:00:08.407954	2012-10-08 01:00:08.407954
+84956	841	0.00	2012-10-08 01:00:08.441444	2012-10-08 01:00:08.441444
+84957	842	0.00	2012-10-08 01:00:08.474472	2012-10-08 01:00:08.474472
+84958	843	0.00	2012-10-08 01:00:08.507857	2012-10-08 01:00:08.507857
+84959	844	0.00	2012-10-08 01:00:08.541133	2012-10-08 01:00:08.541133
+84960	845	0.00	2012-10-08 01:00:08.574409	2012-10-08 01:00:08.574409
+84961	846	0.00	2012-10-08 01:00:08.607782	2012-10-08 01:00:08.607782
+84962	847	0.00	2012-10-08 01:00:08.641156	2012-10-08 01:00:08.641156
+84963	848	0.00	2012-10-08 01:00:08.674373	2012-10-08 01:00:08.674373
+84964	849	0.00	2012-10-08 01:00:08.707723	2012-10-08 01:00:08.707723
+84965	850	0.00	2012-10-08 01:00:08.7411	2012-10-08 01:00:08.7411
+84966	851	0.00	2012-10-08 01:00:08.77431	2012-10-08 01:00:08.77431
+84967	853	0.00	2012-10-08 01:00:08.807645	2012-10-08 01:00:08.807645
+84968	854	0.00	2012-10-08 01:00:08.841046	2012-10-08 01:00:08.841046
+84969	855	0.00	2012-10-08 01:00:08.8743	2012-10-08 01:00:08.8743
+84970	856	0.00	2012-10-08 01:00:08.90759	2012-10-08 01:00:08.90759
+84971	857	0.00	2012-10-08 01:00:08.940984	2012-10-08 01:00:08.940984
+84972	858	0.00	2012-10-08 01:00:08.974268	2012-10-08 01:00:08.974268
+84973	859	0.00	2012-10-08 01:00:09.0075	2012-10-08 01:00:09.0075
+84974	860	0.00	2012-10-08 01:00:09.040918	2012-10-08 01:00:09.040918
+84975	861	0.00	2012-10-08 01:00:09.074192	2012-10-08 01:00:09.074192
+84976	862	0.00	2012-10-08 01:00:09.107488	2012-10-08 01:00:09.107488
+84977	863	0.00	2012-10-08 01:00:09.140901	2012-10-08 01:00:09.140901
+84978	864	0.00	2012-10-08 01:00:09.174153	2012-10-08 01:00:09.174153
+84979	865	0.00	2012-10-08 01:00:09.207452	2012-10-08 01:00:09.207452
+84980	866	0.00	2012-10-08 01:00:09.240771	2012-10-08 01:00:09.240771
+84981	867	0.00	2012-10-08 01:00:09.274106	2012-10-08 01:00:09.274106
+84982	868	0.00	2012-10-08 01:00:09.307403	2012-10-08 01:00:09.307403
+84983	869	0.00	2012-10-08 01:00:09.340765	2012-10-08 01:00:09.340765
+84984	870	0.00	2012-10-08 01:00:09.374067	2012-10-08 01:00:09.374067
+84985	871	0.00	2012-10-08 01:00:09.407366	2012-10-08 01:00:09.407366
+84986	872	0.00	2012-10-08 01:00:09.440723	2012-10-08 01:00:09.440723
+84987	873	0.00	2012-10-08 01:00:09.47409	2012-10-08 01:00:09.47409
+84988	874	0.00	2012-10-08 01:00:09.507337	2012-10-08 01:00:09.507337
+84989	875	0.00	2012-10-08 01:00:09.540682	2012-10-08 01:00:09.540682
+84990	876	0.00	2012-10-08 01:00:09.57406	2012-10-08 01:00:09.57406
+84991	877	0.00	2012-10-08 01:00:09.607286	2012-10-08 01:00:09.607286
+84992	878	0.00	2012-10-08 01:00:09.640621	2012-10-08 01:00:09.640621
+84993	879	0.00	2012-10-08 01:00:09.674019	2012-10-08 01:00:09.674019
+84994	880	0.00	2012-10-08 01:00:09.70725	2012-10-08 01:00:09.70725
+84995	881	0.00	2012-10-08 01:00:09.740626	2012-10-08 01:00:09.740626
+84996	882	0.00	2012-10-08 01:00:09.773976	2012-10-08 01:00:09.773976
+84997	883	0.00	2012-10-08 01:00:09.807206	2012-10-08 01:00:09.807206
+84998	852	48.47	2012-10-08 01:00:09.840669	2012-10-08 01:00:09.840669
+84999	765	0.00	2012-10-08 17:56:45.68533	2012-10-08 17:56:45.68533
+85000	766	0.00	2012-10-08 17:56:45.693266	2012-10-08 17:56:45.693266
+85001	767	0.00	2012-10-08 17:56:45.701355	2012-10-08 17:56:45.701355
+85002	768	0.00	2012-10-08 17:56:45.709369	2012-10-08 17:56:45.709369
+85003	769	0.00	2012-10-08 17:56:45.717878	2012-10-08 17:56:45.717878
+85004	770	0.00	2012-10-08 17:56:45.726133	2012-10-08 17:56:45.726133
+85005	771	0.00	2012-10-08 17:56:45.73601	2012-10-08 17:56:45.73601
+85006	772	0.00	2012-10-08 17:56:45.776469	2012-10-08 17:56:45.776469
+85007	773	0.00	2012-10-08 17:56:45.794389	2012-10-08 17:56:45.794389
+85008	774	0.00	2012-10-08 17:56:45.811039	2012-10-08 17:56:45.811039
+85009	775	0.00	2012-10-08 17:56:45.827363	2012-10-08 17:56:45.827363
+85010	776	0.00	2012-10-08 17:56:45.844027	2012-10-08 17:56:45.844027
+85011	777	0.00	2012-10-08 17:56:45.860988	2012-10-08 17:56:45.860988
+85012	778	0.00	2012-10-08 17:56:45.877407	2012-10-08 17:56:45.877407
+85013	779	0.00	2012-10-08 17:56:45.930591	2012-10-08 17:56:45.930591
+85014	780	0.00	2012-10-08 17:56:45.952475	2012-10-08 17:56:45.952475
+85015	781	0.00	2012-10-08 17:56:45.969186	2012-10-08 17:56:45.969186
+85016	782	0.00	2012-10-08 17:56:45.985946	2012-10-08 17:56:45.985946
+85017	783	0.00	2012-10-08 17:56:46.00245	2012-10-08 17:56:46.00245
+85018	784	0.00	2012-10-08 17:56:46.019261	2012-10-08 17:56:46.019261
+85019	785	0.00	2012-10-08 17:56:46.035863	2012-10-08 17:56:46.035863
+85020	786	0.00	2012-10-08 17:56:46.052338	2012-10-08 17:56:46.052338
+85021	787	0.00	2012-10-08 17:56:46.069154	2012-10-08 17:56:46.069154
+85022	788	0.00	2012-10-08 17:56:46.085623	2012-10-08 17:56:46.085623
+85023	789	0.00	2012-10-08 17:56:46.102542	2012-10-08 17:56:46.102542
+85024	790	0.00	2012-10-08 17:56:46.119236	2012-10-08 17:56:46.119236
+85025	791	0.00	2012-10-08 17:56:46.135842	2012-10-08 17:56:46.135842
+85026	792	0.00	2012-10-08 17:56:46.152316	2012-10-08 17:56:46.152316
+85027	793	0.00	2012-10-08 17:56:46.168974	2012-10-08 17:56:46.168974
+85028	794	0.00	2012-10-08 17:56:46.185468	2012-10-08 17:56:46.185468
+85029	795	0.00	2012-10-08 17:56:46.202373	2012-10-08 17:56:46.202373
+85030	796	0.00	2012-10-08 17:56:46.210435	2012-10-08 17:56:46.210435
+85031	797	0.00	2012-10-08 17:56:46.218839	2012-10-08 17:56:46.218839
+85032	798	0.00	2012-10-08 17:56:46.227242	2012-10-08 17:56:46.227242
+85033	799	0.00	2012-10-08 17:56:46.235445	2012-10-08 17:56:46.235445
+85034	800	0.00	2012-10-08 17:56:46.243848	2012-10-08 17:56:46.243848
+85035	801	0.00	2012-10-08 17:56:46.252222	2012-10-08 17:56:46.252222
+85036	802	0.00	2012-10-08 17:56:46.260602	2012-10-08 17:56:46.260602
+85037	803	0.00	2012-10-08 17:56:46.268899	2012-10-08 17:56:46.268899
+85038	804	0.00	2012-10-08 17:56:46.277275	2012-10-08 17:56:46.277275
+85039	805	0.00	2012-10-08 17:56:46.285551	2012-10-08 17:56:46.285551
+85040	806	0.00	2012-10-08 17:56:46.294024	2012-10-08 17:56:46.294024
+85041	807	0.00	2012-10-08 17:56:46.302279	2012-10-08 17:56:46.302279
+85042	808	0.00	2012-10-08 17:56:46.310562	2012-10-08 17:56:46.310562
+85043	809	0.00	2012-10-08 17:56:46.318926	2012-10-08 17:56:46.318926
+85044	810	0.00	2012-10-08 17:56:46.327247	2012-10-08 17:56:46.327247
+85045	811	0.00	2012-10-08 17:56:46.335508	2012-10-08 17:56:46.335508
+85046	812	0.00	2012-10-08 17:56:46.343913	2012-10-08 17:56:46.343913
+85047	813	0.00	2012-10-08 17:56:46.352214	2012-10-08 17:56:46.352214
+85048	814	0.00	2012-10-08 17:56:46.360536	2012-10-08 17:56:46.360536
+85049	815	0.00	2012-10-08 17:56:46.368893	2012-10-08 17:56:46.368893
+85050	816	0.00	2012-10-08 17:56:46.377217	2012-10-08 17:56:46.377217
+85051	817	0.00	2012-10-08 17:56:46.385459	2012-10-08 17:56:46.385459
+85052	818	0.00	2012-10-08 17:56:46.394266	2012-10-08 17:56:46.394266
+85053	819	0.00	2012-10-08 17:56:46.402209	2012-10-08 17:56:46.402209
+85054	820	0.00	2012-10-08 17:56:46.410487	2012-10-08 17:56:46.410487
+85055	821	0.00	2012-10-08 17:56:46.418843	2012-10-08 17:56:46.418843
+85056	822	0.00	2012-10-08 17:56:46.427238	2012-10-08 17:56:46.427238
+85057	823	0.00	2012-10-08 17:56:46.435475	2012-10-08 17:56:46.435475
+85058	824	0.00	2012-10-08 17:56:46.44384	2012-10-08 17:56:46.44384
+85059	825	0.00	2012-10-08 17:56:46.452216	2012-10-08 17:56:46.452216
+85060	826	0.00	2012-10-08 17:56:46.460455	2012-10-08 17:56:46.460455
+85061	827	0.00	2012-10-08 17:56:46.468815	2012-10-08 17:56:46.468815
+85062	828	0.00	2012-10-08 17:56:46.477206	2012-10-08 17:56:46.477206
+85063	829	0.00	2012-10-08 17:56:46.485457	2012-10-08 17:56:46.485457
+85064	830	0.00	2012-10-08 17:56:46.493831	2012-10-08 17:56:46.493831
+85065	831	0.00	2012-10-08 17:56:46.502194	2012-10-08 17:56:46.502194
+85066	832	0.00	2012-10-08 17:56:46.511105	2012-10-08 17:56:46.511105
+85067	833	0.00	2012-10-08 17:56:46.519122	2012-10-08 17:56:46.519122
+85068	834	0.00	2012-10-08 17:56:46.527327	2012-10-08 17:56:46.527327
+85069	835	0.00	2012-10-08 17:56:46.535572	2012-10-08 17:56:46.535572
+85070	836	0.00	2012-10-08 17:56:46.544329	2012-10-08 17:56:46.544329
+85071	837	0.00	2012-10-08 17:56:46.552452	2012-10-08 17:56:46.552452
+85072	838	0.00	2012-10-08 17:56:46.561014	2012-10-08 17:56:46.561014
+85073	839	0.00	2012-10-08 17:56:46.569261	2012-10-08 17:56:46.569261
+85074	840	0.00	2012-10-08 17:56:46.577423	2012-10-08 17:56:46.577423
+85075	841	0.00	2012-10-08 17:56:46.585988	2012-10-08 17:56:46.585988
+85076	842	0.00	2012-10-08 17:56:46.593877	2012-10-08 17:56:46.593877
+85077	843	0.00	2012-10-08 17:56:46.60219	2012-10-08 17:56:46.60219
+85078	844	0.00	2012-10-08 17:56:46.610611	2012-10-08 17:56:46.610611
+85079	845	0.00	2012-10-08 17:56:46.618968	2012-10-08 17:56:46.618968
+85080	846	0.00	2012-10-08 17:56:46.627296	2012-10-08 17:56:46.627296
+85081	847	0.00	2012-10-08 17:56:46.635551	2012-10-08 17:56:46.635551
+85082	848	0.00	2012-10-08 17:56:46.643978	2012-10-08 17:56:46.643978
+85083	849	0.00	2012-10-08 17:56:46.652246	2012-10-08 17:56:46.652246
+85084	850	0.00	2012-10-08 17:56:46.660696	2012-10-08 17:56:46.660696
+85085	851	0.00	2012-10-08 17:56:46.669403	2012-10-08 17:56:46.669403
+85086	853	0.00	2012-10-08 17:56:46.6775	2012-10-08 17:56:46.6775
+85087	854	0.00	2012-10-08 17:56:46.686036	2012-10-08 17:56:46.686036
+85088	855	0.00	2012-10-08 17:56:46.694368	2012-10-08 17:56:46.694368
+85089	856	0.00	2012-10-08 17:56:46.702298	2012-10-08 17:56:46.702298
+85090	857	0.00	2012-10-08 17:56:46.710541	2012-10-08 17:56:46.710541
+85091	858	0.00	2012-10-08 17:56:46.744014	2012-10-08 17:56:46.744014
+85092	859	0.00	2012-10-08 17:56:46.75259	2012-10-08 17:56:46.75259
+85093	860	0.00	2012-10-08 17:56:46.761144	2012-10-08 17:56:46.761144
+85094	861	0.00	2012-10-08 17:56:46.769346	2012-10-08 17:56:46.769346
+85095	862	0.00	2012-10-08 17:56:46.777505	2012-10-08 17:56:46.777505
+85096	863	0.00	2012-10-08 17:56:46.785988	2012-10-08 17:56:46.785988
+85097	864	0.00	2012-10-08 17:56:46.794056	2012-10-08 17:56:46.794056
+85098	865	0.00	2012-10-08 17:56:46.802297	2012-10-08 17:56:46.802297
+85099	866	0.00	2012-10-08 17:56:46.810555	2012-10-08 17:56:46.810555
+85100	867	0.00	2012-10-08 17:56:46.818987	2012-10-08 17:56:46.818987
+85101	868	0.00	2012-10-08 17:56:46.827252	2012-10-08 17:56:46.827252
+85102	869	0.00	2012-10-08 17:56:46.835487	2012-10-08 17:56:46.835487
+85103	870	0.00	2012-10-08 17:56:46.84395	2012-10-08 17:56:46.84395
+85104	871	0.00	2012-10-08 17:56:46.852556	2012-10-08 17:56:46.852556
+85105	872	0.00	2012-10-08 17:56:46.861017	2012-10-08 17:56:46.861017
+85106	873	0.00	2012-10-08 17:56:46.869435	2012-10-08 17:56:46.869435
+85107	874	0.00	2012-10-08 17:56:46.877606	2012-10-08 17:56:46.877606
+85108	875	0.00	2012-10-08 17:56:46.886178	2012-10-08 17:56:46.886178
+85109	876	0.00	2012-10-08 17:56:46.894269	2012-10-08 17:56:46.894269
+85110	877	0.00	2012-10-08 17:56:46.902583	2012-10-08 17:56:46.902583
+85111	878	0.00	2012-10-08 17:56:46.911135	2012-10-08 17:56:46.911135
+85112	879	0.00	2012-10-08 17:56:46.919264	2012-10-08 17:56:46.919264
+85113	880	0.00	2012-10-08 17:56:46.927654	2012-10-08 17:56:46.927654
+85114	881	0.00	2012-10-08 17:56:46.936136	2012-10-08 17:56:46.936136
+85115	882	0.00	2012-10-08 17:56:46.944256	2012-10-08 17:56:46.944256
+85116	883	0.00	2012-10-08 17:56:46.952569	2012-10-08 17:56:46.952569
+85117	852	48.30	2012-10-08 17:56:46.961237	2012-10-08 17:56:46.961237
+85118	765	0.00	2012-10-08 18:04:14.859714	2012-10-08 18:04:14.859714
+85119	766	0.00	2012-10-08 18:04:14.867218	2012-10-08 18:04:14.867218
+85120	767	0.00	2012-10-08 18:04:14.875298	2012-10-08 18:04:14.875298
+85121	768	0.00	2012-10-08 18:04:14.883489	2012-10-08 18:04:14.883489
+85122	769	0.00	2012-10-08 18:04:14.891888	2012-10-08 18:04:14.891888
+85123	770	0.00	2012-10-08 18:04:14.900243	2012-10-08 18:04:14.900243
+85124	771	0.00	2012-10-08 18:04:14.908454	2012-10-08 18:04:14.908454
+85125	772	0.00	2012-10-08 18:04:14.916838	2012-10-08 18:04:14.916838
+85126	773	0.00	2012-10-08 18:04:14.925218	2012-10-08 18:04:14.925218
+85127	774	0.00	2012-10-08 18:04:14.958317	2012-10-08 18:04:14.958317
+85128	775	0.00	2012-10-08 18:04:14.967363	2012-10-08 18:04:14.967363
+85129	776	0.00	2012-10-08 18:04:14.975267	2012-10-08 18:04:14.975267
+85130	777	0.00	2012-10-08 18:04:14.983521	2012-10-08 18:04:14.983521
+85131	778	0.00	2012-10-08 18:04:14.991908	2012-10-08 18:04:14.991908
+85132	779	0.00	2012-10-08 18:04:15.000303	2012-10-08 18:04:15.000303
+85133	780	0.00	2012-10-08 18:04:15.009438	2012-10-08 18:04:15.009438
+85134	781	0.00	2012-10-08 18:04:15.017315	2012-10-08 18:04:15.017315
+85135	782	0.00	2012-10-08 18:04:15.060538	2012-10-08 18:04:15.060538
+85136	783	0.00	2012-10-08 18:04:15.067466	2012-10-08 18:04:15.067466
+85137	784	0.00	2012-10-08 18:04:15.075581	2012-10-08 18:04:15.075581
+85138	785	0.00	2012-10-08 18:04:15.084164	2012-10-08 18:04:15.084164
+85139	786	0.00	2012-10-08 18:04:15.092373	2012-10-08 18:04:15.092373
+85140	787	0.00	2012-10-08 18:04:15.100425	2012-10-08 18:04:15.100425
+85141	788	0.00	2012-10-08 18:04:15.108986	2012-10-08 18:04:15.108986
+85142	789	0.00	2012-10-08 18:04:15.117361	2012-10-08 18:04:15.117361
+85143	790	0.00	2012-10-08 18:04:15.125353	2012-10-08 18:04:15.125353
+85144	791	0.00	2012-10-08 18:04:15.133984	2012-10-08 18:04:15.133984
+85145	792	0.00	2012-10-08 18:04:15.142269	2012-10-08 18:04:15.142269
+85146	793	0.00	2012-10-08 18:04:15.150447	2012-10-08 18:04:15.150447
+85147	794	0.00	2012-10-08 18:04:15.158761	2012-10-08 18:04:15.158761
+85148	795	0.00	2012-10-08 18:04:15.167338	2012-10-08 18:04:15.167338
+85149	796	0.00	2012-10-08 18:04:15.17531	2012-10-08 18:04:15.17531
+85150	797	0.00	2012-10-08 18:04:15.183579	2012-10-08 18:04:15.183579
+85151	798	0.00	2012-10-08 18:04:15.191946	2012-10-08 18:04:15.191946
+85152	799	0.00	2012-10-08 18:04:15.200283	2012-10-08 18:04:15.200283
+85153	800	0.00	2012-10-08 18:04:15.208553	2012-10-08 18:04:15.208553
+85154	801	0.00	2012-10-08 18:04:15.216822	2012-10-08 18:04:15.216822
+85155	802	0.00	2012-10-08 18:04:15.225319	2012-10-08 18:04:15.225319
+85156	803	0.00	2012-10-08 18:04:15.233529	2012-10-08 18:04:15.233529
+85157	804	0.00	2012-10-08 18:04:15.241833	2012-10-08 18:04:15.241833
+85158	805	0.00	2012-10-08 18:04:15.250253	2012-10-08 18:04:15.250253
+85159	806	0.00	2012-10-08 18:04:15.258567	2012-10-08 18:04:15.258567
+85160	807	0.00	2012-10-08 18:04:15.266909	2012-10-08 18:04:15.266909
+85161	808	0.00	2012-10-08 18:04:15.275319	2012-10-08 18:04:15.275319
+85162	809	0.00	2012-10-08 18:04:15.283492	2012-10-08 18:04:15.283492
+85163	810	0.00	2012-10-08 18:04:15.291873	2012-10-08 18:04:15.291873
+85164	811	0.00	2012-10-08 18:04:15.300453	2012-10-08 18:04:15.300453
+85165	812	0.00	2012-10-08 18:04:15.308937	2012-10-08 18:04:15.308937
+85166	813	0.00	2012-10-08 18:04:15.316917	2012-10-08 18:04:15.316917
+85167	814	0.00	2012-10-08 18:04:15.325307	2012-10-08 18:04:15.325307
+85168	815	0.00	2012-10-08 18:04:15.333577	2012-10-08 18:04:15.333577
+85169	816	0.00	2012-10-08 18:04:15.342036	2012-10-08 18:04:15.342036
+85170	817	0.00	2012-10-08 18:04:15.350305	2012-10-08 18:04:15.350305
+85171	818	0.00	2012-10-08 18:04:15.358533	2012-10-08 18:04:15.358533
+85172	819	0.00	2012-10-08 18:04:15.367171	2012-10-08 18:04:15.367171
+85173	820	0.00	2012-10-08 18:04:15.375499	2012-10-08 18:04:15.375499
+85174	821	0.00	2012-10-08 18:04:15.384077	2012-10-08 18:04:15.384077
+85175	822	0.00	2012-10-08 18:04:15.392329	2012-10-08 18:04:15.392329
+85176	823	0.00	2012-10-08 18:04:15.400495	2012-10-08 18:04:15.400495
+85177	824	0.00	2012-10-08 18:04:15.408892	2012-10-08 18:04:15.408892
+85178	825	0.00	2012-10-08 18:04:15.417325	2012-10-08 18:04:15.417325
+85179	826	0.00	2012-10-08 18:04:15.425484	2012-10-08 18:04:15.425484
+85180	827	0.00	2012-10-08 18:04:15.433959	2012-10-08 18:04:15.433959
+85181	828	0.00	2012-10-08 18:04:15.442262	2012-10-08 18:04:15.442262
+85182	829	0.00	2012-10-08 18:04:15.450437	2012-10-08 18:04:15.450437
+85183	830	0.00	2012-10-08 18:04:15.458944	2012-10-08 18:04:15.458944
+85184	831	0.00	2012-10-08 18:04:15.466838	2012-10-08 18:04:15.466838
+85185	832	0.00	2012-10-08 18:04:15.475241	2012-10-08 18:04:15.475241
+85186	833	0.00	2012-10-08 18:04:15.483436	2012-10-08 18:04:15.483436
+85187	834	0.00	2012-10-08 18:04:15.491853	2012-10-08 18:04:15.491853
+85188	835	0.00	2012-10-08 18:04:15.500285	2012-10-08 18:04:15.500285
+85189	836	0.00	2012-10-08 18:04:15.508569	2012-10-08 18:04:15.508569
+85190	837	0.00	2012-10-08 18:04:15.516916	2012-10-08 18:04:15.516916
+85191	838	0.00	2012-10-08 18:04:15.525402	2012-10-08 18:04:15.525402
+85192	839	0.00	2012-10-08 18:04:15.533604	2012-10-08 18:04:15.533604
+85193	840	0.00	2012-10-08 18:04:15.54204	2012-10-08 18:04:15.54204
+85194	841	0.00	2012-10-08 18:04:15.550899	2012-10-08 18:04:15.550899
+85195	842	0.00	2012-10-08 18:04:15.559195	2012-10-08 18:04:15.559195
+85196	843	0.00	2012-10-08 18:04:15.5674	2012-10-08 18:04:15.5674
+85197	844	0.00	2012-10-08 18:04:15.57549	2012-10-08 18:04:15.57549
+85198	845	0.00	2012-10-08 18:04:15.583607	2012-10-08 18:04:15.583607
+85199	846	0.00	2012-10-08 18:04:15.592007	2012-10-08 18:04:15.592007
+85200	847	0.00	2012-10-08 18:04:15.600369	2012-10-08 18:04:15.600369
+85201	848	0.00	2012-10-08 18:04:15.60891	2012-10-08 18:04:15.60891
+85202	849	0.00	2012-10-08 18:04:15.617308	2012-10-08 18:04:15.617308
+85203	850	0.00	2012-10-08 18:04:15.625518	2012-10-08 18:04:15.625518
+85204	851	0.00	2012-10-08 18:04:15.633609	2012-10-08 18:04:15.633609
+85205	853	0.00	2012-10-08 18:04:15.642011	2012-10-08 18:04:15.642011
+85206	854	0.00	2012-10-08 18:04:15.650299	2012-10-08 18:04:15.650299
+85207	855	0.00	2012-10-08 18:04:15.658672	2012-10-08 18:04:15.658672
+85208	856	0.00	2012-10-08 18:04:15.667029	2012-10-08 18:04:15.667029
+85209	857	0.00	2012-10-08 18:04:15.675296	2012-10-08 18:04:15.675296
+85210	858	0.00	2012-10-08 18:04:15.683595	2012-10-08 18:04:15.683595
+85211	859	0.00	2012-10-08 18:04:15.691995	2012-10-08 18:04:15.691995
+85212	860	0.00	2012-10-08 18:04:15.700435	2012-10-08 18:04:15.700435
+85213	861	0.00	2012-10-08 18:04:15.734119	2012-10-08 18:04:15.734119
+85214	862	0.00	2012-10-08 18:04:15.742424	2012-10-08 18:04:15.742424
+85215	863	0.00	2012-10-08 18:04:15.750421	2012-10-08 18:04:15.750421
+85216	864	0.00	2012-10-08 18:04:15.758731	2012-10-08 18:04:15.758731
+85217	865	0.00	2012-10-08 18:04:15.767079	2012-10-08 18:04:15.767079
+85218	866	0.00	2012-10-08 18:04:15.775352	2012-10-08 18:04:15.775352
+85219	867	0.00	2012-10-08 18:04:15.783678	2012-10-08 18:04:15.783678
+85220	868	0.00	2012-10-08 18:04:15.792056	2012-10-08 18:04:15.792056
+85221	869	0.00	2012-10-08 18:04:15.800316	2012-10-08 18:04:15.800316
+85222	870	0.00	2012-10-08 18:04:15.808657	2012-10-08 18:04:15.808657
+85223	871	0.00	2012-10-08 18:04:15.817069	2012-10-08 18:04:15.817069
+85224	872	0.00	2012-10-08 18:04:15.825322	2012-10-08 18:04:15.825322
+85225	873	0.00	2012-10-08 18:04:15.833791	2012-10-08 18:04:15.833791
+85226	874	0.00	2012-10-08 18:04:15.842458	2012-10-08 18:04:15.842458
+85227	875	0.00	2012-10-08 18:04:15.850541	2012-10-08 18:04:15.850541
+85228	876	0.00	2012-10-08 18:04:15.859189	2012-10-08 18:04:15.859189
+85229	877	0.00	2012-10-08 18:04:15.867289	2012-10-08 18:04:15.867289
+85230	878	0.00	2012-10-08 18:04:15.875475	2012-10-08 18:04:15.875475
+85231	879	0.00	2012-10-08 18:04:15.884164	2012-10-08 18:04:15.884164
+85232	880	0.00	2012-10-08 18:04:15.892101	2012-10-08 18:04:15.892101
+85233	881	0.00	2012-10-08 18:04:15.900576	2012-10-08 18:04:15.900576
+85234	882	0.00	2012-10-08 18:04:15.909094	2012-10-08 18:04:15.909094
+85235	883	0.00	2012-10-08 18:04:15.917301	2012-10-08 18:04:15.917301
+85236	852	48.13	2012-10-08 18:04:15.925875	2012-10-08 18:04:15.925875
+85237	765	0.00	2012-10-08 18:04:51.745372	2012-10-08 18:04:51.745372
+85238	766	0.00	2012-10-08 18:04:51.753265	2012-10-08 18:04:51.753265
+85239	767	0.00	2012-10-08 18:04:51.761155	2012-10-08 18:04:51.761155
+85240	768	0.00	2012-10-08 18:04:51.769391	2012-10-08 18:04:51.769391
+85241	769	0.00	2012-10-08 18:04:51.777615	2012-10-08 18:04:51.777615
+85242	770	0.00	2012-10-08 18:04:51.785859	2012-10-08 18:04:51.785859
+85243	771	0.00	2012-10-08 18:04:51.794184	2012-10-08 18:04:51.794184
+85244	772	0.00	2012-10-08 18:04:51.8029	2012-10-08 18:04:51.8029
+85245	773	0.00	2012-10-08 18:04:51.811124	2012-10-08 18:04:51.811124
+85246	774	0.00	2012-10-08 18:04:51.819196	2012-10-08 18:04:51.819196
+85247	775	0.00	2012-10-08 18:04:51.827406	2012-10-08 18:04:51.827406
+85248	776	0.00	2012-10-08 18:04:51.835931	2012-10-08 18:04:51.835931
+85249	777	0.00	2012-10-08 18:04:51.844215	2012-10-08 18:04:51.844215
+85250	778	0.00	2012-10-08 18:04:51.852502	2012-10-08 18:04:51.852502
+85251	779	0.00	2012-10-08 18:04:51.860861	2012-10-08 18:04:51.860861
+85252	780	0.00	2012-10-08 18:04:51.869246	2012-10-08 18:04:51.869246
+85253	781	0.00	2012-10-08 18:04:51.877503	2012-10-08 18:04:51.877503
+85254	782	0.00	2012-10-08 18:04:51.885858	2012-10-08 18:04:51.885858
+85255	783	0.00	2012-10-08 18:04:51.894267	2012-10-08 18:04:51.894267
+85256	784	0.00	2012-10-08 18:04:51.902569	2012-10-08 18:04:51.902569
+85257	785	0.00	2012-10-08 18:04:51.910837	2012-10-08 18:04:51.910837
+85258	786	0.00	2012-10-08 18:04:51.919243	2012-10-08 18:04:51.919243
+85259	787	0.00	2012-10-08 18:04:51.927479	2012-10-08 18:04:51.927479
+85260	788	0.00	2012-10-08 18:04:51.936197	2012-10-08 18:04:51.936197
+85261	789	0.00	2012-10-08 18:04:51.944382	2012-10-08 18:04:51.944382
+85262	790	0.00	2012-10-08 18:04:51.952863	2012-10-08 18:04:51.952863
+85263	791	0.00	2012-10-08 18:04:51.96113	2012-10-08 18:04:51.96113
+85264	792	0.00	2012-10-08 18:04:51.969366	2012-10-08 18:04:51.969366
+85265	793	0.00	2012-10-08 18:04:51.977745	2012-10-08 18:04:51.977745
+85266	794	0.00	2012-10-08 18:04:51.986086	2012-10-08 18:04:51.986086
+85267	795	0.00	2012-10-08 18:04:51.994307	2012-10-08 18:04:51.994307
+85268	796	0.00	2012-10-08 18:04:52.002492	2012-10-08 18:04:52.002492
+85269	797	0.00	2012-10-08 18:04:52.011179	2012-10-08 18:04:52.011179
+85270	798	0.00	2012-10-08 18:04:52.019187	2012-10-08 18:04:52.019187
+85271	799	0.00	2012-10-08 18:04:52.027419	2012-10-08 18:04:52.027419
+85272	800	0.00	2012-10-08 18:04:52.035591	2012-10-08 18:04:52.035591
+85273	801	0.00	2012-10-08 18:04:52.044214	2012-10-08 18:04:52.044214
+85274	802	0.00	2012-10-08 18:04:52.05302	2012-10-08 18:04:52.05302
+85275	803	0.00	2012-10-08 18:04:52.060798	2012-10-08 18:04:52.060798
+85276	804	0.00	2012-10-08 18:04:52.069204	2012-10-08 18:04:52.069204
+85277	805	0.00	2012-10-08 18:04:52.077375	2012-10-08 18:04:52.077375
+85278	806	0.00	2012-10-08 18:04:52.085931	2012-10-08 18:04:52.085931
+85279	807	0.00	2012-10-08 18:04:52.09421	2012-10-08 18:04:52.09421
+85280	808	0.00	2012-10-08 18:04:52.102537	2012-10-08 18:04:52.102537
+85281	809	0.00	2012-10-08 18:04:52.110863	2012-10-08 18:04:52.110863
+85282	810	0.00	2012-10-08 18:04:52.119239	2012-10-08 18:04:52.119239
+85283	811	0.00	2012-10-08 18:04:52.127497	2012-10-08 18:04:52.127497
+85284	812	0.00	2012-10-08 18:04:52.136412	2012-10-08 18:04:52.136412
+85285	813	0.00	2012-10-08 18:04:52.144455	2012-10-08 18:04:52.144455
+85286	814	0.00	2012-10-08 18:04:52.15288	2012-10-08 18:04:52.15288
+85287	815	0.00	2012-10-08 18:04:52.161078	2012-10-08 18:04:52.161078
+85288	816	0.00	2012-10-08 18:04:52.169247	2012-10-08 18:04:52.169247
+85289	817	0.00	2012-10-08 18:04:52.177538	2012-10-08 18:04:52.177538
+85290	818	0.00	2012-10-08 18:04:52.186158	2012-10-08 18:04:52.186158
+85291	819	0.00	2012-10-08 18:04:52.194231	2012-10-08 18:04:52.194231
+85292	820	0.00	2012-10-08 18:04:52.202405	2012-10-08 18:04:52.202405
+85293	821	0.00	2012-10-08 18:04:52.210841	2012-10-08 18:04:52.210841
+85294	822	0.00	2012-10-08 18:04:52.219448	2012-10-08 18:04:52.219448
+85295	823	0.00	2012-10-08 18:04:52.227463	2012-10-08 18:04:52.227463
+85296	824	0.00	2012-10-08 18:04:52.236329	2012-10-08 18:04:52.236329
+85297	825	0.00	2012-10-08 18:04:52.244211	2012-10-08 18:04:52.244211
+85298	826	0.00	2012-10-08 18:04:52.252484	2012-10-08 18:04:52.252484
+85299	827	0.00	2012-10-08 18:04:52.261177	2012-10-08 18:04:52.261177
+85300	828	0.00	2012-10-08 18:04:52.26939	2012-10-08 18:04:52.26939
+85301	829	0.00	2012-10-08 18:04:52.277556	2012-10-08 18:04:52.277556
+85302	830	0.00	2012-10-08 18:04:52.311572	2012-10-08 18:04:52.311572
+85303	831	0.00	2012-10-08 18:04:52.319421	2012-10-08 18:04:52.319421
+85304	832	0.00	2012-10-08 18:04:52.327437	2012-10-08 18:04:52.327437
+85305	833	0.00	2012-10-08 18:04:52.335893	2012-10-08 18:04:52.335893
+85306	834	0.00	2012-10-08 18:04:52.34441	2012-10-08 18:04:52.34441
+85307	835	0.00	2012-10-08 18:04:52.35254	2012-10-08 18:04:52.35254
+85308	836	0.00	2012-10-08 18:04:52.361188	2012-10-08 18:04:52.361188
+85309	837	0.00	2012-10-08 18:04:52.369493	2012-10-08 18:04:52.369493
+85310	838	0.00	2012-10-08 18:04:52.377589	2012-10-08 18:04:52.377589
+85311	839	0.00	2012-10-08 18:04:52.385945	2012-10-08 18:04:52.385945
+85312	840	0.00	2012-10-08 18:04:52.394751	2012-10-08 18:04:52.394751
+85313	841	0.00	2012-10-08 18:04:52.402784	2012-10-08 18:04:52.402784
+85314	842	0.00	2012-10-08 18:04:52.446579	2012-10-08 18:04:52.446579
+85315	843	0.00	2012-10-08 18:04:52.461515	2012-10-08 18:04:52.461515
+85316	844	0.00	2012-10-08 18:04:52.469488	2012-10-08 18:04:52.469488
+85317	845	0.00	2012-10-08 18:04:52.478033	2012-10-08 18:04:52.478033
+85318	846	0.00	2012-10-08 18:04:52.486249	2012-10-08 18:04:52.486249
+85319	847	0.00	2012-10-08 18:04:52.494398	2012-10-08 18:04:52.494398
+85320	848	0.00	2012-10-08 18:04:52.502604	2012-10-08 18:04:52.502604
+85321	849	0.00	2012-10-08 18:04:52.511099	2012-10-08 18:04:52.511099
+85322	850	0.00	2012-10-08 18:04:52.519278	2012-10-08 18:04:52.519278
+85323	851	0.00	2012-10-08 18:04:52.527421	2012-10-08 18:04:52.527421
+85324	853	0.00	2012-10-08 18:04:52.5361	2012-10-08 18:04:52.5361
+85325	854	0.00	2012-10-08 18:04:52.544232	2012-10-08 18:04:52.544232
+85326	855	0.00	2012-10-08 18:04:52.552483	2012-10-08 18:04:52.552483
+85327	856	0.00	2012-10-08 18:04:52.56085	2012-10-08 18:04:52.56085
+85328	857	0.00	2012-10-08 18:04:52.569551	2012-10-08 18:04:52.569551
+85329	858	0.00	2012-10-08 18:04:52.577561	2012-10-08 18:04:52.577561
+85330	859	0.00	2012-10-08 18:04:52.586124	2012-10-08 18:04:52.586124
+85331	860	0.00	2012-10-08 18:04:52.594002	2012-10-08 18:04:52.594002
+85332	861	0.00	2012-10-08 18:04:52.602427	2012-10-08 18:04:52.602427
+85333	862	0.00	2012-10-08 18:04:52.610796	2012-10-08 18:04:52.610796
+85334	863	0.00	2012-10-08 18:04:52.619198	2012-10-08 18:04:52.619198
+85335	864	0.00	2012-10-08 18:04:52.627748	2012-10-08 18:04:52.627748
+85336	865	0.00	2012-10-08 18:04:52.636137	2012-10-08 18:04:52.636137
+85337	866	0.00	2012-10-08 18:04:52.644444	2012-10-08 18:04:52.644444
+85338	867	0.00	2012-10-08 18:04:52.652754	2012-10-08 18:04:52.652754
+85339	868	0.00	2012-10-08 18:04:52.66101	2012-10-08 18:04:52.66101
+85340	869	0.00	2012-10-08 18:04:52.66959	2012-10-08 18:04:52.66959
+85341	870	0.00	2012-10-08 18:04:52.678024	2012-10-08 18:04:52.678024
+85342	871	0.00	2012-10-08 18:04:52.686254	2012-10-08 18:04:52.686254
+85343	872	0.00	2012-10-08 18:04:52.694563	2012-10-08 18:04:52.694563
+85344	873	0.00	2012-10-08 18:04:52.703201	2012-10-08 18:04:52.703201
+85345	874	0.00	2012-10-08 18:04:52.710894	2012-10-08 18:04:52.710894
+85346	875	0.00	2012-10-08 18:04:52.719252	2012-10-08 18:04:52.719252
+85347	876	0.00	2012-10-08 18:04:52.727537	2012-10-08 18:04:52.727537
+85348	877	0.00	2012-10-08 18:04:52.735806	2012-10-08 18:04:52.735806
+85349	878	0.00	2012-10-08 18:04:52.744151	2012-10-08 18:04:52.744151
+85350	879	0.00	2012-10-08 18:04:52.752473	2012-10-08 18:04:52.752473
+85351	880	0.00	2012-10-08 18:04:52.760823	2012-10-08 18:04:52.760823
+85352	881	0.00	2012-10-08 18:04:52.769198	2012-10-08 18:04:52.769198
+85353	882	0.00	2012-10-08 18:04:52.77793	2012-10-08 18:04:52.77793
+85354	883	0.00	2012-10-08 18:04:52.785937	2012-10-08 18:04:52.785937
+85355	852	47.96	2012-10-08 18:04:52.794372	2012-10-08 18:04:52.794372
+85356	765	0.00	2012-10-08 18:23:37.704068	2012-10-08 18:23:37.704068
+85357	766	0.00	2012-10-08 18:23:37.711939	2012-10-08 18:23:37.711939
+85358	767	0.00	2012-10-08 18:23:37.719916	2012-10-08 18:23:37.719916
+85359	768	0.00	2012-10-08 18:23:37.728595	2012-10-08 18:23:37.728595
+85360	769	0.00	2012-10-08 18:23:37.737163	2012-10-08 18:23:37.737163
+85361	770	0.00	2012-10-08 18:23:37.745384	2012-10-08 18:23:37.745384
+85362	771	0.00	2012-10-08 18:23:37.753588	2012-10-08 18:23:37.753588
+85363	772	0.00	2012-10-08 18:23:37.76218	2012-10-08 18:23:37.76218
+85364	773	0.00	2012-10-08 18:23:37.793975	2012-10-08 18:23:37.793975
+85365	774	0.00	2012-10-08 18:23:37.803791	2012-10-08 18:23:37.803791
+85366	775	0.00	2012-10-08 18:23:37.81182	2012-10-08 18:23:37.81182
+85367	776	0.00	2012-10-08 18:23:37.820078	2012-10-08 18:23:37.820078
+85368	777	0.00	2012-10-08 18:23:37.828373	2012-10-08 18:23:37.828373
+85369	778	0.00	2012-10-08 18:23:37.836625	2012-10-08 18:23:37.836625
+85370	779	0.00	2012-10-08 18:23:37.845052	2012-10-08 18:23:37.845052
+85371	780	0.00	2012-10-08 18:23:37.853422	2012-10-08 18:23:37.853422
+85372	781	0.00	2012-10-08 18:23:37.861722	2012-10-08 18:23:37.861722
+85373	782	0.00	2012-10-08 18:23:37.904379	2012-10-08 18:23:37.904379
+85374	783	0.00	2012-10-08 18:23:37.91185	2012-10-08 18:23:37.91185
+85375	784	0.00	2012-10-08 18:23:37.920153	2012-10-08 18:23:37.920153
+85376	785	0.00	2012-10-08 18:23:37.928327	2012-10-08 18:23:37.928327
+85377	786	0.00	2012-10-08 18:23:37.936694	2012-10-08 18:23:37.936694
+85378	787	0.00	2012-10-08 18:23:37.945067	2012-10-08 18:23:37.945067
+85379	788	0.00	2012-10-08 18:23:37.953481	2012-10-08 18:23:37.953481
+85380	789	0.00	2012-10-08 18:23:37.961707	2012-10-08 18:23:37.961707
+85381	790	0.00	2012-10-08 18:23:37.970261	2012-10-08 18:23:37.970261
+85382	791	0.00	2012-10-08 18:23:37.978631	2012-10-08 18:23:37.978631
+85383	792	0.00	2012-10-08 18:23:37.986798	2012-10-08 18:23:37.986798
+85384	793	0.00	2012-10-08 18:23:37.995085	2012-10-08 18:23:37.995085
+85385	794	0.00	2012-10-08 18:23:38.003377	2012-10-08 18:23:38.003377
+85386	795	0.00	2012-10-08 18:23:38.011646	2012-10-08 18:23:38.011646
+85387	796	0.00	2012-10-08 18:23:38.02008	2012-10-08 18:23:38.02008
+85388	797	0.00	2012-10-08 18:23:38.028606	2012-10-08 18:23:38.028606
+85389	798	0.00	2012-10-08 18:23:38.037189	2012-10-08 18:23:38.037189
+85390	799	0.00	2012-10-08 18:23:38.045394	2012-10-08 18:23:38.045394
+85391	800	0.00	2012-10-08 18:23:38.053614	2012-10-08 18:23:38.053614
+85392	801	0.00	2012-10-08 18:23:38.062163	2012-10-08 18:23:38.062163
+85393	802	0.00	2012-10-08 18:23:38.070404	2012-10-08 18:23:38.070404
+85394	803	0.00	2012-10-08 18:23:38.078601	2012-10-08 18:23:38.078601
+85395	804	0.00	2012-10-08 18:23:38.086876	2012-10-08 18:23:38.086876
+85396	805	0.00	2012-10-08 18:23:38.09527	2012-10-08 18:23:38.09527
+85397	806	0.00	2012-10-08 18:23:38.103586	2012-10-08 18:23:38.103586
+85398	807	0.00	2012-10-08 18:23:38.112125	2012-10-08 18:23:38.112125
+85399	808	0.00	2012-10-08 18:23:38.120341	2012-10-08 18:23:38.120341
+85400	809	0.00	2012-10-08 18:23:38.128585	2012-10-08 18:23:38.128585
+85401	810	0.00	2012-10-08 18:23:38.13714	2012-10-08 18:23:38.13714
+85402	811	0.00	2012-10-08 18:23:38.1454	2012-10-08 18:23:38.1454
+85403	812	0.00	2012-10-08 18:23:38.153596	2012-10-08 18:23:38.153596
+85404	813	0.00	2012-10-08 18:23:38.161988	2012-10-08 18:23:38.161988
+85405	814	0.00	2012-10-08 18:23:38.170443	2012-10-08 18:23:38.170443
+85406	815	0.00	2012-10-08 18:23:38.178616	2012-10-08 18:23:38.178616
+85407	816	0.00	2012-10-08 18:23:38.187234	2012-10-08 18:23:38.187234
+85408	817	0.00	2012-10-08 18:23:38.195413	2012-10-08 18:23:38.195413
+85409	818	0.00	2012-10-08 18:23:38.203556	2012-10-08 18:23:38.203556
+85410	819	0.00	2012-10-08 18:23:38.21215	2012-10-08 18:23:38.21215
+85411	820	0.00	2012-10-08 18:23:38.220476	2012-10-08 18:23:38.220476
+85412	821	0.00	2012-10-08 18:23:38.228542	2012-10-08 18:23:38.228542
+85413	822	0.00	2012-10-08 18:23:38.237276	2012-10-08 18:23:38.237276
+85414	823	0.00	2012-10-08 18:23:38.245378	2012-10-08 18:23:38.245378
+85415	824	0.00	2012-10-08 18:23:38.253543	2012-10-08 18:23:38.253543
+85416	825	0.00	2012-10-08 18:23:38.26216	2012-10-08 18:23:38.26216
+85417	826	0.00	2012-10-08 18:23:38.270352	2012-10-08 18:23:38.270352
+85418	827	0.00	2012-10-08 18:23:38.278577	2012-10-08 18:23:38.278577
+85419	828	0.00	2012-10-08 18:23:38.287168	2012-10-08 18:23:38.287168
+85420	829	0.00	2012-10-08 18:23:38.295382	2012-10-08 18:23:38.295382
+85421	830	0.00	2012-10-08 18:23:38.303446	2012-10-08 18:23:38.303446
+85422	831	0.00	2012-10-08 18:23:38.312146	2012-10-08 18:23:38.312146
+85423	832	0.00	2012-10-08 18:23:38.320373	2012-10-08 18:23:38.320373
+85424	833	0.00	2012-10-08 18:23:38.328505	2012-10-08 18:23:38.328505
+85425	834	0.00	2012-10-08 18:23:38.336959	2012-10-08 18:23:38.336959
+85426	835	0.00	2012-10-08 18:23:38.345295	2012-10-08 18:23:38.345295
+85427	836	0.00	2012-10-08 18:23:38.353439	2012-10-08 18:23:38.353439
+85428	837	0.00	2012-10-08 18:23:38.361896	2012-10-08 18:23:38.361896
+85429	838	0.00	2012-10-08 18:23:38.370358	2012-10-08 18:23:38.370358
+85430	839	0.00	2012-10-08 18:23:38.378494	2012-10-08 18:23:38.378494
+85431	840	0.00	2012-10-08 18:23:38.387136	2012-10-08 18:23:38.387136
+85432	841	0.00	2012-10-08 18:23:38.395444	2012-10-08 18:23:38.395444
+85433	842	0.00	2012-10-08 18:23:38.403583	2012-10-08 18:23:38.403583
+85434	843	0.00	2012-10-08 18:23:38.412172	2012-10-08 18:23:38.412172
+85435	844	0.00	2012-10-08 18:23:38.420338	2012-10-08 18:23:38.420338
+85436	845	0.00	2012-10-08 18:23:38.428524	2012-10-08 18:23:38.428524
+85437	846	0.00	2012-10-08 18:23:38.43727	2012-10-08 18:23:38.43727
+85438	847	0.00	2012-10-08 18:23:38.445344	2012-10-08 18:23:38.445344
+85439	848	0.00	2012-10-08 18:23:38.453434	2012-10-08 18:23:38.453434
+85440	849	0.00	2012-10-08 18:23:38.461951	2012-10-08 18:23:38.461951
+85441	850	0.00	2012-10-08 18:23:38.470345	2012-10-08 18:23:38.470345
+85442	851	0.00	2012-10-08 18:23:38.478436	2012-10-08 18:23:38.478436
+85443	853	0.00	2012-10-08 18:23:38.487147	2012-10-08 18:23:38.487147
+85444	854	0.00	2012-10-08 18:23:38.495351	2012-10-08 18:23:38.495351
+85445	855	0.00	2012-10-08 18:23:38.503512	2012-10-08 18:23:38.503512
+85446	856	0.00	2012-10-08 18:23:38.512131	2012-10-08 18:23:38.512131
+85447	857	0.00	2012-10-08 18:23:38.520404	2012-10-08 18:23:38.520404
+85448	858	0.00	2012-10-08 18:23:38.528526	2012-10-08 18:23:38.528526
+85449	859	0.00	2012-10-08 18:23:38.537128	2012-10-08 18:23:38.537128
+85450	860	0.00	2012-10-08 18:23:38.545346	2012-10-08 18:23:38.545346
+85451	861	0.00	2012-10-08 18:23:38.579407	2012-10-08 18:23:38.579407
+85452	862	0.00	2012-10-08 18:23:38.587191	2012-10-08 18:23:38.587191
+85453	863	0.00	2012-10-08 18:23:38.595402	2012-10-08 18:23:38.595402
+85454	864	0.00	2012-10-08 18:23:38.603571	2012-10-08 18:23:38.603571
+85455	865	0.00	2012-10-08 18:23:38.61217	2012-10-08 18:23:38.61217
+85456	866	0.00	2012-10-08 18:23:38.620475	2012-10-08 18:23:38.620475
+85457	867	0.00	2012-10-08 18:23:38.62884	2012-10-08 18:23:38.62884
+85458	868	0.00	2012-10-08 18:23:38.637171	2012-10-08 18:23:38.637171
+85459	869	0.00	2012-10-08 18:23:38.645363	2012-10-08 18:23:38.645363
+85460	870	0.00	2012-10-08 18:23:38.653536	2012-10-08 18:23:38.653536
+85461	871	0.00	2012-10-08 18:23:38.662136	2012-10-08 18:23:38.662136
+85462	872	0.00	2012-10-08 18:23:38.670396	2012-10-08 18:23:38.670396
+85463	873	0.00	2012-10-08 18:23:38.678665	2012-10-08 18:23:38.678665
+85464	874	0.00	2012-10-08 18:23:38.68727	2012-10-08 18:23:38.68727
+85465	875	0.00	2012-10-08 18:23:38.695152	2012-10-08 18:23:38.695152
+85466	876	0.00	2012-10-08 18:23:38.703336	2012-10-08 18:23:38.703336
+85467	877	0.00	2012-10-08 18:23:38.71189	2012-10-08 18:23:38.71189
+85468	878	0.00	2012-10-08 18:23:38.720483	2012-10-08 18:23:38.720483
+85469	879	0.00	2012-10-08 18:23:38.728634	2012-10-08 18:23:38.728634
+85470	880	0.00	2012-10-08 18:23:38.737184	2012-10-08 18:23:38.737184
+85471	881	0.00	2012-10-08 18:23:38.745491	2012-10-08 18:23:38.745491
+85472	882	0.00	2012-10-08 18:23:38.753591	2012-10-08 18:23:38.753591
+85473	883	0.00	2012-10-08 18:23:38.762166	2012-10-08 18:23:38.762166
+85474	852	47.79	2012-10-08 18:23:38.770535	2012-10-08 18:23:38.770535
+85475	765	0.00	2012-10-08 18:24:49.6088	2012-10-08 18:24:49.6088
+85476	766	0.00	2012-10-08 18:24:49.616499	2012-10-08 18:24:49.616499
+85477	767	0.00	2012-10-08 18:24:49.624401	2012-10-08 18:24:49.624401
+85478	768	0.00	2012-10-08 18:24:49.632948	2012-10-08 18:24:49.632948
+85479	769	0.00	2012-10-08 18:24:49.641254	2012-10-08 18:24:49.641254
+85480	770	0.00	2012-10-08 18:24:49.649541	2012-10-08 18:24:49.649541
+85481	771	0.00	2012-10-08 18:24:49.657941	2012-10-08 18:24:49.657941
+85482	772	0.00	2012-10-08 18:24:49.666252	2012-10-08 18:24:49.666252
+85483	773	0.00	2012-10-08 18:24:49.674544	2012-10-08 18:24:49.674544
+85484	774	0.00	2012-10-08 18:24:49.707389	2012-10-08 18:24:49.707389
+85485	775	0.00	2012-10-08 18:24:49.716393	2012-10-08 18:24:49.716393
+85486	776	0.00	2012-10-08 18:24:49.724619	2012-10-08 18:24:49.724619
+85487	777	0.00	2012-10-08 18:24:49.733083	2012-10-08 18:24:49.733083
+85488	778	0.00	2012-10-08 18:24:49.741348	2012-10-08 18:24:49.741348
+85489	779	0.00	2012-10-08 18:24:49.750012	2012-10-08 18:24:49.750012
+85490	780	0.00	2012-10-08 18:24:49.758153	2012-10-08 18:24:49.758153
+85491	781	0.00	2012-10-08 18:24:49.766343	2012-10-08 18:24:49.766343
+85492	782	0.00	2012-10-08 18:24:49.80949	2012-10-08 18:24:49.80949
+85493	783	0.00	2012-10-08 18:24:49.81658	2012-10-08 18:24:49.81658
+85494	784	0.00	2012-10-08 18:24:49.824958	2012-10-08 18:24:49.824958
+85495	785	0.00	2012-10-08 18:24:49.833258	2012-10-08 18:24:49.833258
+85496	786	0.00	2012-10-08 18:24:49.841331	2012-10-08 18:24:49.841331
+85497	787	0.00	2012-10-08 18:24:49.84988	2012-10-08 18:24:49.84988
+85498	788	0.00	2012-10-08 18:24:49.857985	2012-10-08 18:24:49.857985
+85499	789	0.00	2012-10-08 18:24:49.866306	2012-10-08 18:24:49.866306
+85500	790	0.00	2012-10-08 18:24:49.874451	2012-10-08 18:24:49.874451
+85501	791	0.00	2012-10-08 18:24:49.883108	2012-10-08 18:24:49.883108
+85502	792	0.00	2012-10-08 18:24:49.891344	2012-10-08 18:24:49.891344
+85503	793	0.00	2012-10-08 18:24:49.899536	2012-10-08 18:24:49.899536
+85504	794	0.00	2012-10-08 18:24:49.908126	2012-10-08 18:24:49.908126
+85505	795	0.00	2012-10-08 18:24:49.916324	2012-10-08 18:24:49.916324
+85506	796	0.00	2012-10-08 18:24:49.924469	2012-10-08 18:24:49.924469
+85507	797	0.00	2012-10-08 18:24:49.933129	2012-10-08 18:24:49.933129
+85508	798	0.00	2012-10-08 18:24:49.941319	2012-10-08 18:24:49.941319
+85509	799	0.00	2012-10-08 18:24:49.949506	2012-10-08 18:24:49.949506
+85510	800	0.00	2012-10-08 18:24:49.95798	2012-10-08 18:24:49.95798
+85511	801	0.00	2012-10-08 18:24:49.966288	2012-10-08 18:24:49.966288
+85512	802	0.00	2012-10-08 18:24:49.974425	2012-10-08 18:24:49.974425
+85513	803	0.00	2012-10-08 18:24:49.983167	2012-10-08 18:24:49.983167
+85514	804	0.00	2012-10-08 18:24:49.991238	2012-10-08 18:24:49.991238
+85515	805	0.00	2012-10-08 18:24:49.999553	2012-10-08 18:24:49.999553
+85516	806	0.00	2012-10-08 18:24:50.007991	2012-10-08 18:24:50.007991
+85517	807	0.00	2012-10-08 18:24:50.01631	2012-10-08 18:24:50.01631
+85518	808	0.00	2012-10-08 18:24:50.024612	2012-10-08 18:24:50.024612
+85519	809	0.00	2012-10-08 18:24:50.032861	2012-10-08 18:24:50.032861
+85520	810	0.00	2012-10-08 18:24:50.041185	2012-10-08 18:24:50.041185
+85521	811	0.00	2012-10-08 18:24:50.049414	2012-10-08 18:24:50.049414
+85522	812	0.00	2012-10-08 18:24:50.057603	2012-10-08 18:24:50.057603
+85523	813	0.00	2012-10-08 18:24:50.066197	2012-10-08 18:24:50.066197
+85524	814	0.00	2012-10-08 18:24:50.074438	2012-10-08 18:24:50.074438
+85525	815	0.00	2012-10-08 18:24:50.082793	2012-10-08 18:24:50.082793
+85526	816	0.00	2012-10-08 18:24:50.091136	2012-10-08 18:24:50.091136
+85527	817	0.00	2012-10-08 18:24:50.099395	2012-10-08 18:24:50.099395
+85528	818	0.00	2012-10-08 18:24:50.107694	2012-10-08 18:24:50.107694
+85529	819	0.00	2012-10-08 18:24:50.116066	2012-10-08 18:24:50.116066
+85530	820	0.00	2012-10-08 18:24:50.124382	2012-10-08 18:24:50.124382
+85531	821	0.00	2012-10-08 18:24:50.132784	2012-10-08 18:24:50.132784
+85532	822	0.00	2012-10-08 18:24:50.14107	2012-10-08 18:24:50.14107
+85533	823	0.00	2012-10-08 18:24:50.149379	2012-10-08 18:24:50.149379
+85534	824	0.00	2012-10-08 18:24:50.157751	2012-10-08 18:24:50.157751
+85535	825	0.00	2012-10-08 18:24:50.166045	2012-10-08 18:24:50.166045
+85536	826	0.00	2012-10-08 18:24:50.174358	2012-10-08 18:24:50.174358
+85537	827	0.00	2012-10-08 18:24:50.182699	2012-10-08 18:24:50.182699
+85538	828	0.00	2012-10-08 18:24:50.191029	2012-10-08 18:24:50.191029
+85539	829	0.00	2012-10-08 18:24:50.199732	2012-10-08 18:24:50.199732
+85540	830	0.00	2012-10-08 18:24:50.208185	2012-10-08 18:24:50.208185
+85541	831	0.00	2012-10-08 18:24:50.216356	2012-10-08 18:24:50.216356
+85542	832	0.00	2012-10-08 18:24:50.224502	2012-10-08 18:24:50.224502
+85543	833	0.00	2012-10-08 18:24:50.233186	2012-10-08 18:24:50.233186
+85544	834	0.00	2012-10-08 18:24:50.241358	2012-10-08 18:24:50.241358
+85545	835	0.00	2012-10-08 18:24:50.249514	2012-10-08 18:24:50.249514
+85546	836	0.00	2012-10-08 18:24:50.258148	2012-10-08 18:24:50.258148
+85547	837	0.00	2012-10-08 18:24:50.266336	2012-10-08 18:24:50.266336
+85548	838	0.00	2012-10-08 18:24:50.274457	2012-10-08 18:24:50.274457
+85549	839	0.00	2012-10-08 18:24:50.283166	2012-10-08 18:24:50.283166
+85550	840	0.00	2012-10-08 18:24:50.291357	2012-10-08 18:24:50.291357
+85551	841	0.00	2012-10-08 18:24:50.299321	2012-10-08 18:24:50.299321
+85552	842	0.00	2012-10-08 18:24:50.307992	2012-10-08 18:24:50.307992
+85553	843	0.00	2012-10-08 18:24:50.316211	2012-10-08 18:24:50.316211
+85554	844	0.00	2012-10-08 18:24:50.324399	2012-10-08 18:24:50.324399
+85555	845	0.00	2012-10-08 18:24:50.332769	2012-10-08 18:24:50.332769
+85556	846	0.00	2012-10-08 18:24:50.341183	2012-10-08 18:24:50.341183
+85557	847	0.00	2012-10-08 18:24:50.34938	2012-10-08 18:24:50.34938
+85558	848	0.00	2012-10-08 18:24:50.357762	2012-10-08 18:24:50.357762
+85559	849	0.00	2012-10-08 18:24:50.366147	2012-10-08 18:24:50.366147
+85560	850	0.00	2012-10-08 18:24:50.374396	2012-10-08 18:24:50.374396
+85561	851	0.00	2012-10-08 18:24:50.382784	2012-10-08 18:24:50.382784
+85562	853	0.00	2012-10-08 18:24:50.391052	2012-10-08 18:24:50.391052
+85563	854	0.00	2012-10-08 18:24:50.399363	2012-10-08 18:24:50.399363
+85564	855	0.00	2012-10-08 18:24:50.407767	2012-10-08 18:24:50.407767
+85565	856	0.00	2012-10-08 18:24:50.416058	2012-10-08 18:24:50.416058
+85566	857	0.00	2012-10-08 18:24:50.42437	2012-10-08 18:24:50.42437
+85567	858	0.00	2012-10-08 18:24:50.432713	2012-10-08 18:24:50.432713
+85568	859	0.00	2012-10-08 18:24:50.441084	2012-10-08 18:24:50.441084
+85569	860	0.00	2012-10-08 18:24:50.449367	2012-10-08 18:24:50.449367
+85570	861	0.00	2012-10-08 18:24:50.482906	2012-10-08 18:24:50.482906
+85571	862	0.00	2012-10-08 18:24:50.491516	2012-10-08 18:24:50.491516
+85572	863	0.00	2012-10-08 18:24:50.499785	2012-10-08 18:24:50.499785
+85573	864	0.00	2012-10-08 18:24:50.50824	2012-10-08 18:24:50.50824
+85574	865	0.00	2012-10-08 18:24:50.516324	2012-10-08 18:24:50.516324
+85575	866	0.00	2012-10-08 18:24:50.524648	2012-10-08 18:24:50.524648
+85576	867	0.00	2012-10-08 18:24:50.533235	2012-10-08 18:24:50.533235
+85577	868	0.00	2012-10-08 18:24:50.541478	2012-10-08 18:24:50.541478
+85578	869	0.00	2012-10-08 18:24:50.549881	2012-10-08 18:24:50.549881
+85579	870	0.00	2012-10-08 18:24:50.55822	2012-10-08 18:24:50.55822
+85580	871	0.00	2012-10-08 18:24:50.566431	2012-10-08 18:24:50.566431
+85581	872	0.00	2012-10-08 18:24:50.57464	2012-10-08 18:24:50.57464
+85582	873	0.00	2012-10-08 18:24:50.58316	2012-10-08 18:24:50.58316
+85583	874	0.00	2012-10-08 18:24:50.591039	2012-10-08 18:24:50.591039
+85584	875	0.00	2012-10-08 18:24:50.599541	2012-10-08 18:24:50.599541
+85585	876	0.00	2012-10-08 18:24:50.608118	2012-10-08 18:24:50.608118
+85586	877	0.00	2012-10-08 18:24:50.616455	2012-10-08 18:24:50.616455
+85587	878	0.00	2012-10-08 18:24:50.624857	2012-10-08 18:24:50.624857
+85588	879	0.00	2012-10-08 18:24:50.633226	2012-10-08 18:24:50.633226
+85589	880	0.00	2012-10-08 18:24:50.641332	2012-10-08 18:24:50.641332
+85590	881	0.00	2012-10-08 18:24:50.649854	2012-10-08 18:24:50.649854
+85591	882	0.00	2012-10-08 18:24:50.658244	2012-10-08 18:24:50.658244
+85592	883	0.00	2012-10-08 18:24:50.666437	2012-10-08 18:24:50.666437
+85593	852	47.62	2012-10-08 18:24:50.675	2012-10-08 18:24:50.675
+85594	765	0.00	2012-10-08 18:32:03.621295	2012-10-08 18:32:03.621295
+85595	766	0.00	2012-10-08 18:32:03.629412	2012-10-08 18:32:03.629412
+85596	767	0.00	2012-10-08 18:32:03.637375	2012-10-08 18:32:03.637375
+85597	768	0.00	2012-10-08 18:32:03.645516	2012-10-08 18:32:03.645516
+85598	769	0.00	2012-10-08 18:32:03.65416	2012-10-08 18:32:03.65416
+85599	770	0.00	2012-10-08 18:32:03.662366	2012-10-08 18:32:03.662366
+85600	771	0.00	2012-10-08 18:32:03.670515	2012-10-08 18:32:03.670515
+85601	772	0.00	2012-10-08 18:32:03.678883	2012-10-08 18:32:03.678883
+85602	773	0.00	2012-10-08 18:32:03.687341	2012-10-08 18:32:03.687341
+85603	774	0.00	2012-10-08 18:32:03.695467	2012-10-08 18:32:03.695467
+85604	775	0.00	2012-10-08 18:32:03.70409	2012-10-08 18:32:03.70409
+85605	776	0.00	2012-10-08 18:32:03.712347	2012-10-08 18:32:03.712347
+85606	777	0.00	2012-10-08 18:32:03.720464	2012-10-08 18:32:03.720464
+85607	778	0.00	2012-10-08 18:32:03.729084	2012-10-08 18:32:03.729084
+85608	779	0.00	2012-10-08 18:32:03.737399	2012-10-08 18:32:03.737399
+85609	780	0.00	2012-10-08 18:32:03.745544	2012-10-08 18:32:03.745544
+85610	781	0.00	2012-10-08 18:32:03.754152	2012-10-08 18:32:03.754152
+85611	782	0.00	2012-10-08 18:32:03.762378	2012-10-08 18:32:03.762378
+85612	783	0.00	2012-10-08 18:32:03.770547	2012-10-08 18:32:03.770547
+85613	784	0.00	2012-10-08 18:32:03.779153	2012-10-08 18:32:03.779153
+85614	785	0.00	2012-10-08 18:32:03.787335	2012-10-08 18:32:03.787335
+85615	786	0.00	2012-10-08 18:32:03.795542	2012-10-08 18:32:03.795542
+85616	787	0.00	2012-10-08 18:32:03.804167	2012-10-08 18:32:03.804167
+85617	788	0.00	2012-10-08 18:32:03.812368	2012-10-08 18:32:03.812368
+85618	789	0.00	2012-10-08 18:32:03.820507	2012-10-08 18:32:03.820507
+85619	790	0.00	2012-10-08 18:32:03.829137	2012-10-08 18:32:03.829137
+85620	791	0.00	2012-10-08 18:32:03.837363	2012-10-08 18:32:03.837363
+85621	792	0.00	2012-10-08 18:32:03.845593	2012-10-08 18:32:03.845593
+85622	793	0.00	2012-10-08 18:32:03.854126	2012-10-08 18:32:03.854126
+85623	794	0.00	2012-10-08 18:32:03.8624	2012-10-08 18:32:03.8624
+85624	795	0.00	2012-10-08 18:32:03.870609	2012-10-08 18:32:03.870609
+85625	796	0.00	2012-10-08 18:32:03.879231	2012-10-08 18:32:03.879231
+85626	797	0.00	2012-10-08 18:32:03.887352	2012-10-08 18:32:03.887352
+85627	798	0.00	2012-10-08 18:32:03.895542	2012-10-08 18:32:03.895542
+85628	799	0.00	2012-10-08 18:32:03.904164	2012-10-08 18:32:03.904164
+85629	800	0.00	2012-10-08 18:32:03.912342	2012-10-08 18:32:03.912342
+85630	801	0.00	2012-10-08 18:32:03.920499	2012-10-08 18:32:03.920499
+85631	802	0.00	2012-10-08 18:32:03.92916	2012-10-08 18:32:03.92916
+85632	803	0.00	2012-10-08 18:32:03.937384	2012-10-08 18:32:03.937384
+85633	804	0.00	2012-10-08 18:32:03.945531	2012-10-08 18:32:03.945531
+85634	805	0.00	2012-10-08 18:32:03.953752	2012-10-08 18:32:03.953752
+85635	806	0.00	2012-10-08 18:32:03.962052	2012-10-08 18:32:03.962052
+85636	807	0.00	2012-10-08 18:32:03.970356	2012-10-08 18:32:03.970356
+85637	808	0.00	2012-10-08 18:32:03.978698	2012-10-08 18:32:03.978698
+85638	809	0.00	2012-10-08 18:32:03.987043	2012-10-08 18:32:03.987043
+85639	810	0.00	2012-10-08 18:32:03.995351	2012-10-08 18:32:03.995351
+85640	811	0.00	2012-10-08 18:32:04.003619	2012-10-08 18:32:04.003619
+85641	812	0.00	2012-10-08 18:32:04.012075	2012-10-08 18:32:04.012075
+85642	813	0.00	2012-10-08 18:32:04.020303	2012-10-08 18:32:04.020303
+85643	814	0.00	2012-10-08 18:32:04.028853	2012-10-08 18:32:04.028853
+85644	815	0.00	2012-10-08 18:32:04.037214	2012-10-08 18:32:04.037214
+85645	816	0.00	2012-10-08 18:32:04.045382	2012-10-08 18:32:04.045382
+85646	817	0.00	2012-10-08 18:32:04.053789	2012-10-08 18:32:04.053789
+85647	818	0.00	2012-10-08 18:32:04.062212	2012-10-08 18:32:04.062212
+85648	819	0.00	2012-10-08 18:32:04.070423	2012-10-08 18:32:04.070423
+85649	820	0.00	2012-10-08 18:32:04.078792	2012-10-08 18:32:04.078792
+85650	821	0.00	2012-10-08 18:32:04.0872	2012-10-08 18:32:04.0872
+85651	822	0.00	2012-10-08 18:32:04.095354	2012-10-08 18:32:04.095354
+85652	823	0.00	2012-10-08 18:32:04.103777	2012-10-08 18:32:04.103777
+85653	824	0.00	2012-10-08 18:32:04.112242	2012-10-08 18:32:04.112242
+85654	825	0.00	2012-10-08 18:32:04.120701	2012-10-08 18:32:04.120701
+85655	826	0.00	2012-10-08 18:32:04.153462	2012-10-08 18:32:04.153462
+85656	827	0.00	2012-10-08 18:32:04.162524	2012-10-08 18:32:04.162524
+85657	828	0.00	2012-10-08 18:32:04.170584	2012-10-08 18:32:04.170584
+85658	829	0.00	2012-10-08 18:32:04.179082	2012-10-08 18:32:04.179082
+85659	830	0.00	2012-10-08 18:32:04.187466	2012-10-08 18:32:04.187466
+85660	831	0.00	2012-10-08 18:32:04.195628	2012-10-08 18:32:04.195628
+85661	832	0.00	2012-10-08 18:32:04.204153	2012-10-08 18:32:04.204153
+85662	833	0.00	2012-10-08 18:32:04.21228	2012-10-08 18:32:04.21228
+85663	834	0.00	2012-10-08 18:32:04.220413	2012-10-08 18:32:04.220413
+85664	835	0.00	2012-10-08 18:32:04.267557	2012-10-08 18:32:04.267557
+85665	836	0.00	2012-10-08 18:32:04.279287	2012-10-08 18:32:04.279287
+85666	837	0.00	2012-10-08 18:32:04.287451	2012-10-08 18:32:04.287451
+85667	838	0.00	2012-10-08 18:32:04.295837	2012-10-08 18:32:04.295837
+85668	839	0.00	2012-10-08 18:32:04.304126	2012-10-08 18:32:04.304126
+85669	840	0.00	2012-10-08 18:32:04.312381	2012-10-08 18:32:04.312381
+85670	841	0.00	2012-10-08 18:32:04.32098	2012-10-08 18:32:04.32098
+85671	842	0.00	2012-10-08 18:32:04.32917	2012-10-08 18:32:04.32917
+85672	843	0.00	2012-10-08 18:32:04.337429	2012-10-08 18:32:04.337429
+85673	844	0.00	2012-10-08 18:32:04.345937	2012-10-08 18:32:04.345937
+85674	845	0.00	2012-10-08 18:32:04.35419	2012-10-08 18:32:04.35419
+85675	846	0.00	2012-10-08 18:32:04.362373	2012-10-08 18:32:04.362373
+85676	847	0.00	2012-10-08 18:32:04.3708	2012-10-08 18:32:04.3708
+85677	848	0.00	2012-10-08 18:32:04.379271	2012-10-08 18:32:04.379271
+85678	849	0.00	2012-10-08 18:32:04.387248	2012-10-08 18:32:04.387248
+85679	850	0.00	2012-10-08 18:32:04.395551	2012-10-08 18:32:04.395551
+85680	851	0.00	2012-10-08 18:32:04.404124	2012-10-08 18:32:04.404124
+85681	853	0.00	2012-10-08 18:32:04.412249	2012-10-08 18:32:04.412249
+85682	854	0.00	2012-10-08 18:32:04.420548	2012-10-08 18:32:04.420548
+85683	855	0.00	2012-10-08 18:32:04.429117	2012-10-08 18:32:04.429117
+85684	856	0.00	2012-10-08 18:32:04.437322	2012-10-08 18:32:04.437322
+85685	857	0.00	2012-10-08 18:32:04.445383	2012-10-08 18:32:04.445383
+85686	858	0.00	2012-10-08 18:32:04.454159	2012-10-08 18:32:04.454159
+85687	859	0.00	2012-10-08 18:32:04.462474	2012-10-08 18:32:04.462474
+85688	860	0.00	2012-10-08 18:32:04.470465	2012-10-08 18:32:04.470465
+85689	861	0.00	2012-10-08 18:32:04.479149	2012-10-08 18:32:04.479149
+85690	862	0.00	2012-10-08 18:32:04.487467	2012-10-08 18:32:04.487467
+85691	863	0.00	2012-10-08 18:32:04.495965	2012-10-08 18:32:04.495965
+85692	864	0.00	2012-10-08 18:32:04.50421	2012-10-08 18:32:04.50421
+85693	865	0.00	2012-10-08 18:32:04.512422	2012-10-08 18:32:04.512422
+85694	866	0.00	2012-10-08 18:32:04.520952	2012-10-08 18:32:04.520952
+85695	867	0.00	2012-10-08 18:32:04.529203	2012-10-08 18:32:04.529203
+85696	868	0.00	2012-10-08 18:32:04.537421	2012-10-08 18:32:04.537421
+85697	869	0.00	2012-10-08 18:32:04.54616	2012-10-08 18:32:04.54616
+85698	870	0.00	2012-10-08 18:32:04.554267	2012-10-08 18:32:04.554267
+85699	871	0.00	2012-10-08 18:32:04.562473	2012-10-08 18:32:04.562473
+85700	872	0.00	2012-10-08 18:32:04.570949	2012-10-08 18:32:04.570949
+85701	873	0.00	2012-10-08 18:32:04.57926	2012-10-08 18:32:04.57926
+85702	874	0.00	2012-10-08 18:32:04.587451	2012-10-08 18:32:04.587451
+85703	875	0.00	2012-10-08 18:32:04.59596	2012-10-08 18:32:04.59596
+85704	876	0.00	2012-10-08 18:32:04.603975	2012-10-08 18:32:04.603975
+85705	877	0.00	2012-10-08 18:32:04.612449	2012-10-08 18:32:04.612449
+85706	878	0.00	2012-10-08 18:32:04.620863	2012-10-08 18:32:04.620863
+85707	879	0.00	2012-10-08 18:32:04.629226	2012-10-08 18:32:04.629226
+85708	880	0.00	2012-10-08 18:32:04.637434	2012-10-08 18:32:04.637434
+85709	881	0.00	2012-10-08 18:32:04.645751	2012-10-08 18:32:04.645751
+85710	882	0.00	2012-10-08 18:32:04.654277	2012-10-08 18:32:04.654277
+85711	883	0.00	2012-10-08 18:32:04.662417	2012-10-08 18:32:04.662417
+85712	852	47.45	2012-10-08 18:32:04.67071	2012-10-08 18:32:04.67071
+85713	765	0.00	2012-10-09 01:00:06.816123	2012-10-09 01:00:06.816123
+85714	766	0.00	2012-10-09 01:00:06.824365	2012-10-09 01:00:06.824365
+85715	767	0.00	2012-10-09 01:00:06.832395	2012-10-09 01:00:06.832395
+85716	768	0.00	2012-10-09 01:00:06.84079	2012-10-09 01:00:06.84079
+85717	769	0.00	2012-10-09 01:00:06.849216	2012-10-09 01:00:06.849216
+85718	770	0.00	2012-10-09 01:00:06.857482	2012-10-09 01:00:06.857482
+85719	771	0.00	2012-10-09 01:00:06.865789	2012-10-09 01:00:06.865789
+85720	772	0.00	2012-10-09 01:00:06.874213	2012-10-09 01:00:06.874213
+85721	773	0.00	2012-10-09 01:00:06.882479	2012-10-09 01:00:06.882479
+85722	774	0.00	2012-10-09 01:00:06.890754	2012-10-09 01:00:06.890754
+85723	775	0.00	2012-10-09 01:00:06.899214	2012-10-09 01:00:06.899214
+85724	776	0.00	2012-10-09 01:00:06.907389	2012-10-09 01:00:06.907389
+85725	777	0.00	2012-10-09 01:00:06.915986	2012-10-09 01:00:06.915986
+85726	778	0.00	2012-10-09 01:00:06.924205	2012-10-09 01:00:06.924205
+85727	779	0.00	2012-10-09 01:00:06.932459	2012-10-09 01:00:06.932459
+85728	780	0.00	2012-10-09 01:00:06.940835	2012-10-09 01:00:06.940835
+85729	781	0.00	2012-10-09 01:00:06.949167	2012-10-09 01:00:06.949167
+85730	782	0.00	2012-10-09 01:00:06.957466	2012-10-09 01:00:06.957466
+85731	783	0.00	2012-10-09 01:00:06.965653	2012-10-09 01:00:06.965653
+85732	784	0.00	2012-10-09 01:00:06.974149	2012-10-09 01:00:06.974149
+85733	785	0.00	2012-10-09 01:00:06.982473	2012-10-09 01:00:06.982473
+85734	786	0.00	2012-10-09 01:00:06.990749	2012-10-09 01:00:06.990749
+85735	787	0.00	2012-10-09 01:00:06.999312	2012-10-09 01:00:06.999312
+85736	788	0.00	2012-10-09 01:00:07.007429	2012-10-09 01:00:07.007429
+85737	789	0.00	2012-10-09 01:00:07.016041	2012-10-09 01:00:07.016041
+85738	790	0.00	2012-10-09 01:00:07.024127	2012-10-09 01:00:07.024127
+85739	791	0.00	2012-10-09 01:00:07.032419	2012-10-09 01:00:07.032419
+85740	792	0.00	2012-10-09 01:00:07.040789	2012-10-09 01:00:07.040789
+85741	793	0.00	2012-10-09 01:00:07.06214	2012-10-09 01:00:07.06214
+85742	794	0.00	2012-10-09 01:00:07.079204	2012-10-09 01:00:07.079204
+85743	795	0.00	2012-10-09 01:00:07.121127	2012-10-09 01:00:07.121127
+85744	796	0.00	2012-10-09 01:00:07.162523	2012-10-09 01:00:07.162523
+85745	797	0.00	2012-10-09 01:00:07.204231	2012-10-09 01:00:07.204231
+85746	798	0.00	2012-10-09 01:00:07.245775	2012-10-09 01:00:07.245775
+85747	799	0.00	2012-10-09 01:00:07.287457	2012-10-09 01:00:07.287457
+85748	800	0.00	2012-10-09 01:00:07.329211	2012-10-09 01:00:07.329211
+85749	801	0.00	2012-10-09 01:00:07.370745	2012-10-09 01:00:07.370745
+85750	802	0.00	2012-10-09 01:00:07.41241	2012-10-09 01:00:07.41241
+85751	803	0.00	2012-10-09 01:00:07.45429	2012-10-09 01:00:07.45429
+85752	804	0.00	2012-10-09 01:00:07.495782	2012-10-09 01:00:07.495782
+85753	805	0.00	2012-10-09 01:00:07.537271	2012-10-09 01:00:07.537271
+85754	806	0.00	2012-10-09 01:00:07.57925	2012-10-09 01:00:07.57925
+85755	807	0.00	2012-10-09 01:00:07.621089	2012-10-09 01:00:07.621089
+85756	808	0.00	2012-10-09 01:00:07.662292	2012-10-09 01:00:07.662292
+85757	809	0.00	2012-10-09 01:00:07.704191	2012-10-09 01:00:07.704191
+85758	810	0.00	2012-10-09 01:00:07.745498	2012-10-09 01:00:07.745498
+85759	811	0.00	2012-10-09 01:00:07.787202	2012-10-09 01:00:07.787202
+85760	812	0.00	2012-10-09 01:00:07.829002	2012-10-09 01:00:07.829002
+85761	813	0.00	2012-10-09 01:00:07.870824	2012-10-09 01:00:07.870824
+85762	814	0.00	2012-10-09 01:00:07.912236	2012-10-09 01:00:07.912236
+85763	815	0.00	2012-10-09 01:00:07.954158	2012-10-09 01:00:07.954158
+85764	816	0.00	2012-10-09 01:00:07.995486	2012-10-09 01:00:07.995486
+85765	817	0.00	2012-10-09 01:00:08.037228	2012-10-09 01:00:08.037228
+85766	818	0.00	2012-10-09 01:00:08.101494	2012-10-09 01:00:08.101494
+85767	819	0.00	2012-10-09 01:00:08.128794	2012-10-09 01:00:08.128794
+85768	820	0.00	2012-10-09 01:00:08.170342	2012-10-09 01:00:08.170342
+85769	821	0.00	2012-10-09 01:00:08.212267	2012-10-09 01:00:08.212267
+85770	822	0.00	2012-10-09 01:00:08.25381	2012-10-09 01:00:08.25381
+85771	823	0.00	2012-10-09 01:00:08.295257	2012-10-09 01:00:08.295257
+85772	824	0.00	2012-10-09 01:00:08.337099	2012-10-09 01:00:08.337099
+85773	825	0.00	2012-10-09 01:00:08.37872	2012-10-09 01:00:08.37872
+85774	826	0.00	2012-10-09 01:00:08.420228	2012-10-09 01:00:08.420228
+85775	827	0.00	2012-10-09 01:00:08.462109	2012-10-09 01:00:08.462109
+85776	828	0.00	2012-10-09 01:00:08.503569	2012-10-09 01:00:08.503569
+85777	829	0.00	2012-10-09 01:00:08.545294	2012-10-09 01:00:08.545294
+85778	830	0.00	2012-10-09 01:00:08.586877	2012-10-09 01:00:08.586877
+85779	831	0.00	2012-10-09 01:00:08.628625	2012-10-09 01:00:08.628625
+85780	832	0.00	2012-10-09 01:00:08.67023	2012-10-09 01:00:08.67023
+85781	833	0.00	2012-10-09 01:00:08.711876	2012-10-09 01:00:08.711876
+85782	834	0.00	2012-10-09 01:00:08.753438	2012-10-09 01:00:08.753438
+85783	835	0.00	2012-10-09 01:00:08.795389	2012-10-09 01:00:08.795389
+85784	836	0.00	2012-10-09 01:00:08.836894	2012-10-09 01:00:08.836894
+85785	837	0.00	2012-10-09 01:00:08.912091	2012-10-09 01:00:08.912091
+85786	838	0.00	2012-10-09 01:00:08.956854	2012-10-09 01:00:08.956854
+85787	839	0.00	2012-10-09 01:00:08.965318	2012-10-09 01:00:08.965318
+85788	840	0.00	2012-10-09 01:00:08.973808	2012-10-09 01:00:08.973808
+85789	841	0.00	2012-10-09 01:00:08.982321	2012-10-09 01:00:08.982321
+85790	842	0.00	2012-10-09 01:00:08.990325	2012-10-09 01:00:08.990325
+85791	843	0.00	2012-10-09 01:00:08.998792	2012-10-09 01:00:08.998792
+85792	844	0.00	2012-10-09 01:00:09.007245	2012-10-09 01:00:09.007245
+85793	845	0.00	2012-10-09 01:00:09.015274	2012-10-09 01:00:09.015274
+85794	846	0.00	2012-10-09 01:00:09.023816	2012-10-09 01:00:09.023816
+85795	847	0.00	2012-10-09 01:00:09.032074	2012-10-09 01:00:09.032074
+85796	848	0.00	2012-10-09 01:00:09.040293	2012-10-09 01:00:09.040293
+85797	849	0.00	2012-10-09 01:00:09.04852	2012-10-09 01:00:09.04852
+85798	850	0.00	2012-10-09 01:00:09.056523	2012-10-09 01:00:09.056523
+85799	851	0.00	2012-10-09 01:00:09.065225	2012-10-09 01:00:09.065225
+85800	853	0.00	2012-10-09 01:00:09.073508	2012-10-09 01:00:09.073508
+85801	854	0.00	2012-10-09 01:00:09.081996	2012-10-09 01:00:09.081996
+85802	855	0.00	2012-10-09 01:00:09.090243	2012-10-09 01:00:09.090243
+85803	856	0.00	2012-10-09 01:00:09.098785	2012-10-09 01:00:09.098785
+85804	857	0.00	2012-10-09 01:00:09.107278	2012-10-09 01:00:09.107278
+85805	858	0.00	2012-10-09 01:00:09.115303	2012-10-09 01:00:09.115303
+85806	859	0.00	2012-10-09 01:00:09.123783	2012-10-09 01:00:09.123783
+85807	860	0.00	2012-10-09 01:00:09.132049	2012-10-09 01:00:09.132049
+85808	861	0.00	2012-10-09 01:00:09.140296	2012-10-09 01:00:09.140296
+85809	862	0.00	2012-10-09 01:00:09.148774	2012-10-09 01:00:09.148774
+85810	863	0.00	2012-10-09 01:00:09.157215	2012-10-09 01:00:09.157215
+85811	864	0.00	2012-10-09 01:00:09.165267	2012-10-09 01:00:09.165267
+85812	865	0.00	2012-10-09 01:00:09.173655	2012-10-09 01:00:09.173655
+85813	866	0.00	2012-10-09 01:00:09.182098	2012-10-09 01:00:09.182098
+85814	867	0.00	2012-10-09 01:00:09.190279	2012-10-09 01:00:09.190279
+85815	868	0.00	2012-10-09 01:00:09.198742	2012-10-09 01:00:09.198742
+85816	869	0.00	2012-10-09 01:00:09.207196	2012-10-09 01:00:09.207196
+85817	870	0.00	2012-10-09 01:00:09.215222	2012-10-09 01:00:09.215222
+85818	871	0.00	2012-10-09 01:00:09.223739	2012-10-09 01:00:09.223739
+85819	872	0.00	2012-10-09 01:00:09.232185	2012-10-09 01:00:09.232185
+85820	873	0.00	2012-10-09 01:00:09.240364	2012-10-09 01:00:09.240364
+85821	874	0.00	2012-10-09 01:00:09.248383	2012-10-09 01:00:09.248383
+85822	875	0.00	2012-10-09 01:00:09.257129	2012-10-09 01:00:09.257129
+85823	876	0.00	2012-10-09 01:00:09.265296	2012-10-09 01:00:09.265296
+85824	877	0.00	2012-10-09 01:00:09.273391	2012-10-09 01:00:09.273391
+85825	878	0.00	2012-10-09 01:00:09.281762	2012-10-09 01:00:09.281762
+85826	879	0.00	2012-10-09 01:00:09.29029	2012-10-09 01:00:09.29029
+85827	880	0.00	2012-10-09 01:00:09.298783	2012-10-09 01:00:09.298783
+85828	881	0.00	2012-10-09 01:00:09.307308	2012-10-09 01:00:09.307308
+85829	882	0.00	2012-10-09 01:00:09.315279	2012-10-09 01:00:09.315279
+85830	883	0.00	2012-10-09 01:00:09.323757	2012-10-09 01:00:09.323757
+85831	852	46.26	2012-10-09 01:00:09.332302	2012-10-09 01:00:09.332302
+85832	884	0.00	2012-10-09 14:46:19.292741	2012-10-09 14:46:19.292741
+85833	885	0.00	2012-10-09 14:46:19.296194	2012-10-09 14:46:19.296194
+85834	886	0.00	2012-10-09 14:46:19.298548	2012-10-09 14:46:19.298548
+85835	887	0.00	2012-10-09 14:46:19.300894	2012-10-09 14:46:19.300894
+85836	888	0.00	2012-10-09 14:46:19.303232	2012-10-09 14:46:19.303232
+85837	889	0.00	2012-10-09 14:46:19.30557	2012-10-09 14:46:19.30557
+85838	890	0.00	2012-10-09 14:46:19.307888	2012-10-09 14:46:19.307888
+85839	891	0.00	2012-10-09 14:46:19.31023	2012-10-09 14:46:19.31023
+85840	892	0.00	2012-10-09 14:46:19.312605	2012-10-09 14:46:19.312605
+85841	893	0.00	2012-10-09 14:46:19.31494	2012-10-09 14:46:19.31494
+85842	894	0.00	2012-10-09 14:46:19.317268	2012-10-09 14:46:19.317268
+85843	895	0.00	2012-10-09 14:46:19.319578	2012-10-09 14:46:19.319578
+85844	896	0.00	2012-10-09 14:46:19.321896	2012-10-09 14:46:19.321896
+85845	897	0.00	2012-10-09 14:46:19.324216	2012-10-09 14:46:19.324216
+85846	898	0.00	2012-10-09 14:46:19.326579	2012-10-09 14:46:19.326579
+85847	899	0.00	2012-10-09 14:46:19.328944	2012-10-09 14:46:19.328944
+85848	900	0.00	2012-10-09 14:46:19.3313	2012-10-09 14:46:19.3313
+85849	901	0.00	2012-10-09 14:46:19.333614	2012-10-09 14:46:19.333614
+85850	902	0.00	2012-10-09 14:46:19.335926	2012-10-09 14:46:19.335926
+85851	903	0.00	2012-10-09 14:46:19.338243	2012-10-09 14:46:19.338243
+85852	904	0.00	2012-10-09 14:46:19.34055	2012-10-09 14:46:19.34055
+85853	905	0.00	2012-10-09 14:46:19.342865	2012-10-09 14:46:19.342865
+85854	906	0.00	2012-10-09 14:46:19.345189	2012-10-09 14:46:19.345189
+85855	907	0.00	2012-10-09 14:46:19.3475	2012-10-09 14:46:19.3475
+85856	908	0.00	2012-10-09 14:46:19.349805	2012-10-09 14:46:19.349805
+85857	909	0.00	2012-10-09 14:46:19.352104	2012-10-09 14:46:19.352104
+85858	910	0.00	2012-10-09 14:46:19.354422	2012-10-09 14:46:19.354422
+85859	911	0.00	2012-10-09 14:46:19.356721	2012-10-09 14:46:19.356721
+85860	912	0.00	2012-10-09 14:46:19.359024	2012-10-09 14:46:19.359024
+85861	913	0.00	2012-10-09 14:46:19.361336	2012-10-09 14:46:19.361336
+85862	914	0.00	2012-10-09 14:46:19.363779	2012-10-09 14:46:19.363779
+85863	915	0.00	2012-10-09 14:46:19.366211	2012-10-09 14:46:19.366211
+85864	916	0.00	2012-10-09 14:46:19.368592	2012-10-09 14:46:19.368592
+85865	917	0.00	2012-10-09 14:46:19.371087	2012-10-09 14:46:19.371087
+85866	918	0.00	2012-10-09 14:46:19.373482	2012-10-09 14:46:19.373482
+85867	919	0.00	2012-10-09 14:46:19.375957	2012-10-09 14:46:19.375957
+85868	920	0.00	2012-10-09 14:46:19.378357	2012-10-09 14:46:19.378357
+85869	921	0.00	2012-10-09 14:46:19.380821	2012-10-09 14:46:19.380821
+85870	922	0.00	2012-10-09 14:46:19.383255	2012-10-09 14:46:19.383255
+85871	923	0.00	2012-10-09 14:46:19.385652	2012-10-09 14:46:19.385652
+85872	924	0.00	2012-10-09 14:46:19.388048	2012-10-09 14:46:19.388048
+85873	925	0.00	2012-10-09 14:46:19.390452	2012-10-09 14:46:19.390452
+85874	926	0.00	2012-10-09 14:46:19.392938	2012-10-09 14:46:19.392938
+85875	927	0.00	2012-10-09 14:46:19.395333	2012-10-09 14:46:19.395333
+85876	928	0.00	2012-10-09 14:46:19.397746	2012-10-09 14:46:19.397746
+85877	929	0.00	2012-10-09 14:46:19.400146	2012-10-09 14:46:19.400146
+85878	930	0.00	2012-10-09 14:46:19.402536	2012-10-09 14:46:19.402536
+85879	931	0.00	2012-10-09 14:46:19.404992	2012-10-09 14:46:19.404992
+85880	932	0.00	2012-10-09 14:46:19.40739	2012-10-09 14:46:19.40739
+85881	933	0.00	2012-10-09 14:46:19.409836	2012-10-09 14:46:19.409836
+85882	934	0.00	2012-10-09 14:46:19.412222	2012-10-09 14:46:19.412222
+85883	935	0.00	2012-10-09 14:46:19.414614	2012-10-09 14:46:19.414614
+85884	936	0.00	2012-10-09 14:46:19.417082	2012-10-09 14:46:19.417082
+85885	937	0.00	2012-10-09 14:46:19.419489	2012-10-09 14:46:19.419489
+85886	938	0.00	2012-10-09 14:46:19.42194	2012-10-09 14:46:19.42194
+85887	939	0.00	2012-10-09 14:46:19.42437	2012-10-09 14:46:19.42437
+85888	940	0.00	2012-10-09 14:46:19.426824	2012-10-09 14:46:19.426824
+85889	941	0.00	2012-10-09 14:46:19.429219	2012-10-09 14:46:19.429219
+85890	942	0.00	2012-10-09 14:46:19.431598	2012-10-09 14:46:19.431598
+85891	943	0.00	2012-10-09 14:46:19.434055	2012-10-09 14:46:19.434055
+85892	944	0.00	2012-10-09 14:46:19.436447	2012-10-09 14:46:19.436447
+85893	945	0.00	2012-10-09 14:46:19.438908	2012-10-09 14:46:19.438908
+85894	946	0.00	2012-10-09 14:46:19.441298	2012-10-09 14:46:19.441298
+85895	947	0.00	2012-10-09 14:46:19.443692	2012-10-09 14:46:19.443692
+85896	948	0.00	2012-10-09 14:46:19.446076	2012-10-09 14:46:19.446076
+85897	949	0.00	2012-10-09 14:46:19.448471	2012-10-09 14:46:19.448471
+85898	950	0.00	2012-10-09 14:46:19.45093	2012-10-09 14:46:19.45093
+85899	951	0.00	2012-10-09 14:46:19.453319	2012-10-09 14:46:19.453319
+85900	952	0.00	2012-10-09 14:46:19.455724	2012-10-09 14:46:19.455724
+85901	953	0.00	2012-10-09 14:46:19.458106	2012-10-09 14:46:19.458106
+85902	954	0.00	2012-10-09 14:46:19.460522	2012-10-09 14:46:19.460522
+85903	955	0.00	2012-10-09 14:46:19.462947	2012-10-09 14:46:19.462947
+85904	956	0.00	2012-10-09 14:46:19.46535	2012-10-09 14:46:19.46535
+85905	957	0.00	2012-10-09 14:46:19.467773	2012-10-09 14:46:19.467773
+85906	958	0.00	2012-10-09 14:46:19.470188	2012-10-09 14:46:19.470188
+85907	959	0.00	2012-10-09 14:46:19.472581	2012-10-09 14:46:19.472581
+85908	960	0.00	2012-10-09 14:46:19.475037	2012-10-09 14:46:19.475037
+85909	961	0.00	2012-10-09 14:46:19.477423	2012-10-09 14:46:19.477423
+85910	962	0.00	2012-10-09 14:46:19.479892	2012-10-09 14:46:19.479892
+85911	963	0.00	2012-10-09 14:46:19.482284	2012-10-09 14:46:19.482284
+85912	964	0.00	2012-10-09 14:46:19.484681	2012-10-09 14:46:19.484681
+85913	965	0.00	2012-10-09 14:46:19.487103	2012-10-09 14:46:19.487103
+85914	966	0.00	2012-10-09 14:46:19.489506	2012-10-09 14:46:19.489506
+85915	967	0.00	2012-10-09 14:46:19.491983	2012-10-09 14:46:19.491983
+85916	968	0.00	2012-10-09 14:46:19.494404	2012-10-09 14:46:19.494404
+85917	969	0.00	2012-10-09 14:46:19.496878	2012-10-09 14:46:19.496878
+85918	970	0.00	2012-10-09 14:46:19.499288	2012-10-09 14:46:19.499288
+85919	971	0.00	2012-10-09 14:46:19.501699	2012-10-09 14:46:19.501699
+85920	972	0.00	2012-10-09 14:46:19.504123	2012-10-09 14:46:19.504123
+85921	973	0.00	2012-10-09 14:46:19.506546	2012-10-09 14:46:19.506546
+85922	974	0.00	2012-10-09 14:46:19.508984	2012-10-09 14:46:19.508984
+85923	975	0.00	2012-10-09 14:46:19.511397	2012-10-09 14:46:19.511397
+85924	976	0.00	2012-10-09 14:46:19.538373	2012-10-09 14:46:19.538373
+85925	977	0.00	2012-10-09 14:46:19.541142	2012-10-09 14:46:19.541142
+85926	978	0.00	2012-10-09 14:46:19.543592	2012-10-09 14:46:19.543592
+85927	979	0.00	2012-10-09 14:46:19.546101	2012-10-09 14:46:19.546101
+85928	980	0.00	2012-10-09 14:46:19.548577	2012-10-09 14:46:19.548577
+85929	981	0.00	2012-10-09 14:46:19.551147	2012-10-09 14:46:19.551147
+85930	982	0.00	2012-10-09 14:46:19.553582	2012-10-09 14:46:19.553582
+85931	983	0.00	2012-10-09 14:46:19.556117	2012-10-09 14:46:19.556117
+85932	984	0.00	2012-10-09 14:46:19.558581	2012-10-09 14:46:19.558581
+85933	985	0.00	2012-10-09 14:46:19.561117	2012-10-09 14:46:19.561117
+85934	986	0.00	2012-10-09 14:46:19.563615	2012-10-09 14:46:19.563615
+85935	987	0.00	2012-10-09 14:46:19.566137	2012-10-09 14:46:19.566137
+85936	988	0.00	2012-10-09 14:46:19.568615	2012-10-09 14:46:19.568615
+85937	989	0.00	2012-10-09 14:46:19.571145	2012-10-09 14:46:19.571145
+85938	990	0.00	2012-10-09 14:46:19.573637	2012-10-09 14:46:19.573637
+85939	991	0.00	2012-10-09 14:46:19.576257	2012-10-09 14:46:19.576257
+85940	992	0.00	2012-10-09 14:46:19.578842	2012-10-09 14:46:19.578842
+85941	993	0.00	2012-10-09 14:46:19.581422	2012-10-09 14:46:19.581422
+85942	994	0.00	2012-10-09 14:46:19.583979	2012-10-09 14:46:19.583979
+85943	995	0.00	2012-10-09 14:46:19.58647	2012-10-09 14:46:19.58647
+85944	996	0.00	2012-10-09 14:46:19.588991	2012-10-09 14:46:19.588991
+85945	997	0.00	2012-10-09 14:46:19.59145	2012-10-09 14:46:19.59145
+85946	998	0.00	2012-10-09 14:46:19.593909	2012-10-09 14:46:19.593909
+85947	999	0.00	2012-10-09 14:46:19.596404	2012-10-09 14:46:19.596404
+85948	1000	0.00	2012-10-09 14:46:19.598856	2012-10-09 14:46:19.598856
+85949	1001	0.00	2012-10-09 14:46:19.601319	2012-10-09 14:46:19.601319
+85950	1002	0.00	2012-10-09 14:46:19.603814	2012-10-09 14:46:19.603814
+85951	1003	0.00	2012-10-09 14:46:19.606288	2012-10-09 14:46:19.606288
+85952	1004	0.00	2012-10-09 14:46:19.608824	2012-10-09 14:46:19.608824
+85953	1005	0.00	2012-10-09 14:46:19.611288	2012-10-09 14:46:19.611288
+85954	1006	0.00	2012-10-09 14:46:19.613769	2012-10-09 14:46:19.613769
+85955	1007	0.00	2012-10-09 14:46:19.616266	2012-10-09 14:46:19.616266
+85956	1008	0.00	2012-10-09 14:46:19.618756	2012-10-09 14:46:19.618756
+85957	1009	0.00	2012-10-09 14:46:19.621282	2012-10-09 14:46:19.621282
+85958	1010	0.00	2012-10-09 14:46:19.623738	2012-10-09 14:46:19.623738
+85959	1011	0.00	2012-10-09 14:46:19.626226	2012-10-09 14:46:19.626226
+85960	1012	0.00	2012-10-09 14:46:19.628815	2012-10-09 14:46:19.628815
+85961	1013	0.00	2012-10-09 14:46:19.631406	2012-10-09 14:46:19.631406
+85962	1014	0.00	2012-10-09 14:46:19.633865	2012-10-09 14:46:19.633865
+85963	1015	0.00	2012-10-09 14:46:19.636321	2012-10-09 14:46:19.636321
+85964	1016	0.00	2012-10-09 14:46:19.638821	2012-10-09 14:46:19.638821
+85965	1017	0.00	2012-10-09 14:46:19.641307	2012-10-09 14:46:19.641307
+85966	1018	0.00	2012-10-09 14:46:19.643862	2012-10-09 14:46:19.643862
+85967	1019	0.00	2012-10-09 14:46:19.646316	2012-10-09 14:46:19.646316
+85968	1020	0.00	2012-10-09 14:46:19.64884	2012-10-09 14:46:19.64884
+85969	1021	0.00	2012-10-09 14:46:19.651314	2012-10-09 14:46:19.651314
+85970	1022	0.00	2012-10-09 14:46:19.653851	2012-10-09 14:46:19.653851
+85971	1023	0.00	2012-10-09 14:46:19.656319	2012-10-09 14:46:19.656319
+85972	1024	0.00	2012-10-09 14:46:19.65884	2012-10-09 14:46:19.65884
+85973	1025	0.00	2012-10-09 14:46:19.661325	2012-10-09 14:46:19.661325
+85974	1026	0.00	2012-10-09 14:46:19.663821	2012-10-09 14:46:19.663821
+85975	1027	0.00	2012-10-09 14:46:19.666336	2012-10-09 14:46:19.666336
+85976	1028	0.00	2012-10-09 14:46:19.668814	2012-10-09 14:46:19.668814
+85977	1029	0.00	2012-10-09 14:46:19.671357	2012-10-09 14:46:19.671357
+85978	1030	0.00	2012-10-09 14:46:19.673814	2012-10-09 14:46:19.673814
+85979	1031	0.00	2012-10-09 14:46:19.676279	2012-10-09 14:46:19.676279
+85980	1032	0.00	2012-10-09 14:46:19.678813	2012-10-09 14:46:19.678813
+85981	1033	0.00	2012-10-09 14:46:19.681341	2012-10-09 14:46:19.681341
+85982	1034	0.00	2012-10-09 14:46:19.683822	2012-10-09 14:46:19.683822
+85983	1035	0.00	2012-10-09 14:46:19.686299	2012-10-09 14:46:19.686299
+85984	1036	0.00	2012-10-09 14:46:19.688845	2012-10-09 14:46:19.688845
+85985	1037	0.00	2012-10-09 14:46:19.69137	2012-10-09 14:46:19.69137
+85986	1038	0.00	2012-10-09 14:46:19.693857	2012-10-09 14:46:19.693857
+85987	1039	0.00	2012-10-09 14:46:19.696323	2012-10-09 14:46:19.696323
+85988	1040	0.00	2012-10-09 14:46:19.698819	2012-10-09 14:46:19.698819
+85989	1041	0.00	2012-10-09 14:46:19.701341	2012-10-09 14:46:19.701341
+85990	1042	0.00	2012-10-09 14:46:19.703846	2012-10-09 14:46:19.703846
+85991	1043	0.00	2012-10-09 14:46:19.706342	2012-10-09 14:46:19.706342
+85992	1044	0.00	2012-10-09 14:46:19.708839	2012-10-09 14:46:19.708839
+85993	1045	0.00	2012-10-09 14:46:19.71137	2012-10-09 14:46:19.71137
+85994	1046	0.00	2012-10-09 14:46:19.713836	2012-10-09 14:46:19.713836
+85995	1047	0.00	2012-10-09 14:46:19.716382	2012-10-09 14:46:19.716382
+85996	1048	0.00	2012-10-09 14:46:19.718939	2012-10-09 14:46:19.718939
+85997	1049	0.00	2012-10-09 14:46:19.721504	2012-10-09 14:46:19.721504
+85998	1050	0.00	2012-10-09 14:46:19.724034	2012-10-09 14:46:19.724034
+85999	1051	0.00	2012-10-09 14:46:19.726542	2012-10-09 14:46:19.726542
+86000	1052	0.00	2012-10-09 14:46:19.729061	2012-10-09 14:46:19.729061
+86001	1053	0.00	2012-10-09 14:46:19.731526	2012-10-09 14:46:19.731526
+86002	1054	0.00	2012-10-09 14:46:19.734014	2012-10-09 14:46:19.734014
+86003	1055	0.00	2012-10-09 14:46:19.736523	2012-10-09 14:46:19.736523
+86004	1056	0.00	2012-10-09 14:46:19.739057	2012-10-09 14:46:19.739057
+86005	1057	0.00	2012-10-09 14:46:19.741571	2012-10-09 14:46:19.741571
+86006	1058	0.00	2012-10-09 14:46:19.744115	2012-10-09 14:46:19.744115
+86007	1059	0.00	2012-10-09 14:46:19.746622	2012-10-09 14:46:19.746622
+86008	1060	0.00	2012-10-09 14:46:19.749164	2012-10-09 14:46:19.749164
+86009	1061	0.00	2012-10-09 14:46:19.751744	2012-10-09 14:46:19.751744
+86010	1062	0.00	2012-10-09 14:46:19.754314	2012-10-09 14:46:19.754314
+86011	1063	0.00	2012-10-09 14:46:19.756962	2012-10-09 14:46:19.756962
+86012	1064	0.00	2012-10-09 14:46:19.75961	2012-10-09 14:46:19.75961
+86013	1065	0.00	2012-10-09 14:46:19.762313	2012-10-09 14:46:19.762313
+86014	1066	0.00	2012-10-09 14:46:19.764997	2012-10-09 14:46:19.764997
+86015	1067	0.00	2012-10-09 14:46:19.767599	2012-10-09 14:46:19.767599
+86016	1068	0.00	2012-10-09 14:46:19.770281	2012-10-09 14:46:19.770281
+86017	1069	0.00	2012-10-09 14:46:19.772984	2012-10-09 14:46:19.772984
+86018	1070	0.00	2012-10-09 14:46:19.775825	2012-10-09 14:46:19.775825
+86019	1071	0.00	2012-10-09 14:46:19.779425	2012-10-09 14:46:19.779425
+86020	1072	0.00	2012-10-09 14:46:19.782256	2012-10-09 14:46:19.782256
+86021	1073	0.00	2012-10-09 14:46:19.810845	2012-10-09 14:46:19.810845
+86022	1074	0.00	2012-10-09 14:46:19.8136	2012-10-09 14:46:19.8136
+86023	1075	0.00	2012-10-09 14:46:19.853915	2012-10-09 14:46:19.853915
+86024	1076	0.00	2012-10-09 14:46:19.857051	2012-10-09 14:46:19.857051
+86025	1077	0.00	2012-10-09 14:46:19.859621	2012-10-09 14:46:19.859621
+86026	1078	0.00	2012-10-09 14:46:19.862239	2012-10-09 14:46:19.862239
+86027	1079	0.00	2012-10-09 14:46:19.864793	2012-10-09 14:46:19.864793
+86028	1080	0.00	2012-10-09 14:46:19.867403	2012-10-09 14:46:19.867403
+86029	1081	0.00	2012-10-09 14:46:19.870043	2012-10-09 14:46:19.870043
+86030	1082	0.00	2012-10-09 14:46:19.87256	2012-10-09 14:46:19.87256
+86031	1083	0.00	2012-10-09 14:46:19.87511	2012-10-09 14:46:19.87511
+86032	1084	0.00	2012-10-09 14:46:19.877625	2012-10-09 14:46:19.877625
+86033	1085	0.00	2012-10-09 14:46:19.880204	2012-10-09 14:46:19.880204
+86034	1086	0.00	2012-10-09 14:46:19.88279	2012-10-09 14:46:19.88279
+86035	1087	0.00	2012-10-09 14:46:19.885381	2012-10-09 14:46:19.885381
+86036	1088	0.00	2012-10-09 14:46:19.88797	2012-10-09 14:46:19.88797
+86037	1089	0.00	2012-10-09 14:46:19.890515	2012-10-09 14:46:19.890515
+86038	1090	0.00	2012-10-09 14:46:19.893086	2012-10-09 14:46:19.893086
+86039	1091	0.00	2012-10-09 14:46:19.895571	2012-10-09 14:46:19.895571
+86040	1092	0.00	2012-10-09 14:46:19.898143	2012-10-09 14:46:19.898143
+86041	1093	0.00	2012-10-09 14:46:19.90063	2012-10-09 14:46:19.90063
+86042	1094	0.00	2012-10-09 14:46:19.90317	2012-10-09 14:46:19.90317
+86043	1095	0.00	2012-10-09 14:46:19.905672	2012-10-09 14:46:19.905672
+86044	1096	0.00	2012-10-09 14:46:19.90822	2012-10-09 14:46:19.90822
+86045	1097	0.00	2012-10-09 14:46:19.910717	2012-10-09 14:46:19.910717
+86046	1098	0.00	2012-10-09 14:46:19.913224	2012-10-09 14:46:19.913224
+86047	1099	0.00	2012-10-09 14:46:19.915699	2012-10-09 14:46:19.915699
+86048	1100	0.00	2012-10-09 14:46:19.91825	2012-10-09 14:46:19.91825
+86049	1101	0.00	2012-10-09 14:46:19.92074	2012-10-09 14:46:19.92074
+86050	1102	0.00	2012-10-09 14:46:19.923233	2012-10-09 14:46:19.923233
+86051	1103	0.00	2012-10-09 14:46:19.925686	2012-10-09 14:46:19.925686
+86052	1104	0.00	2012-10-09 14:46:19.928233	2012-10-09 14:46:19.928233
+86053	1105	0.00	2012-10-09 14:46:19.930734	2012-10-09 14:46:19.930734
+86054	1106	0.00	2012-10-09 14:46:19.933246	2012-10-09 14:46:19.933246
+86055	1107	0.00	2012-10-09 14:46:19.935711	2012-10-09 14:46:19.935711
+86056	1108	0.00	2012-10-09 14:46:19.938157	2012-10-09 14:46:19.938157
+86057	1109	0.00	2012-10-09 14:46:19.940623	2012-10-09 14:46:19.940623
+86058	1110	0.00	2012-10-09 14:46:19.943141	2012-10-09 14:46:19.943141
+86059	1111	0.00	2012-10-09 14:46:19.945645	2012-10-09 14:46:19.945645
+86060	1112	0.00	2012-10-09 14:46:19.948169	2012-10-09 14:46:19.948169
+86061	1113	0.00	2012-10-09 14:46:19.95068	2012-10-09 14:46:19.95068
+86062	1114	0.00	2012-10-09 14:46:19.953213	2012-10-09 14:46:19.953213
+86063	1115	0.00	2012-10-09 14:46:19.955711	2012-10-09 14:46:19.955711
+86064	1116	0.00	2012-10-09 14:46:19.958259	2012-10-09 14:46:19.958259
+86065	1117	0.00	2012-10-09 14:46:19.960713	2012-10-09 14:46:19.960713
+86066	1118	0.00	2012-10-09 14:46:19.963157	2012-10-09 14:46:19.963157
+86067	1119	0.00	2012-10-09 14:46:19.965603	2012-10-09 14:46:19.965603
+86068	1120	0.00	2012-10-09 14:46:19.968135	2012-10-09 14:46:19.968135
+86069	1121	0.00	2012-10-09 14:46:19.97064	2012-10-09 14:46:19.97064
+86070	1122	0.00	2012-10-09 14:46:19.97317	2012-10-09 14:46:19.97317
+86071	1123	0.00	2012-10-09 14:46:19.975683	2012-10-09 14:46:19.975683
+86072	1124	0.00	2012-10-09 14:46:19.978208	2012-10-09 14:46:19.978208
+86073	1125	0.00	2012-10-09 14:46:19.980826	2012-10-09 14:46:19.980826
+86074	1126	0.00	2012-10-09 14:46:19.98339	2012-10-09 14:46:19.98339
+86075	1127	0.00	2012-10-09 14:46:19.985925	2012-10-09 14:46:19.985925
+86076	1128	0.00	2012-10-09 14:46:19.988428	2012-10-09 14:46:19.988428
+86077	1129	0.00	2012-10-09 14:46:19.990957	2012-10-09 14:46:19.990957
+86078	1130	0.00	2012-10-09 14:46:19.993489	2012-10-09 14:46:19.993489
+86079	1131	0.00	2012-10-09 14:46:19.995971	2012-10-09 14:46:19.995971
+86080	1132	0.00	2012-10-09 14:46:19.998431	2012-10-09 14:46:19.998431
+86081	1133	0.00	2012-10-09 14:46:20.000998	2012-10-09 14:46:20.000998
+86082	1134	0.00	2012-10-09 14:46:20.003595	2012-10-09 14:46:20.003595
+86083	1135	0.00	2012-10-09 14:46:20.006085	2012-10-09 14:46:20.006085
+86084	1136	0.00	2012-10-09 14:46:20.008541	2012-10-09 14:46:20.008541
+86085	1137	0.00	2012-10-09 14:46:20.010973	2012-10-09 14:46:20.010973
+86086	1138	0.00	2012-10-09 14:46:20.013415	2012-10-09 14:46:20.013415
+86087	1139	0.00	2012-10-09 14:46:20.015835	2012-10-09 14:46:20.015835
+86088	1140	0.00	2012-10-09 14:46:20.018252	2012-10-09 14:46:20.018252
+86089	1141	0.00	2012-10-09 14:46:20.020719	2012-10-09 14:46:20.020719
+86090	1142	0.00	2012-10-09 14:46:20.023163	2012-10-09 14:46:20.023163
+86091	1143	0.00	2012-10-09 14:46:20.025617	2012-10-09 14:46:20.025617
+86092	1144	0.00	2012-10-09 14:46:20.02814	2012-10-09 14:46:20.02814
+86093	1145	0.00	2012-10-09 14:46:20.030599	2012-10-09 14:46:20.030599
+86094	1146	0.00	2012-10-09 14:46:20.033116	2012-10-09 14:46:20.033116
+86095	1147	0.00	2012-10-09 14:46:20.035598	2012-10-09 14:46:20.035598
+86096	1148	0.00	2012-10-09 14:46:20.038123	2012-10-09 14:46:20.038123
+86097	1149	0.00	2012-10-09 14:46:20.040624	2012-10-09 14:46:20.040624
+86098	1150	0.00	2012-10-09 14:46:20.04315	2012-10-09 14:46:20.04315
+86099	1151	0.00	2012-10-09 14:46:20.045662	2012-10-09 14:46:20.045662
+86100	1152	0.00	2012-10-09 14:46:20.048192	2012-10-09 14:46:20.048192
+86101	1153	0.00	2012-10-09 14:46:20.050683	2012-10-09 14:46:20.050683
+86102	1154	0.00	2012-10-09 14:46:20.05321	2012-10-09 14:46:20.05321
+86103	1155	0.00	2012-10-09 14:46:20.055696	2012-10-09 14:46:20.055696
+86104	1156	0.00	2012-10-09 14:46:20.05823	2012-10-09 14:46:20.05823
+86105	1157	0.00	2012-10-09 14:46:20.060711	2012-10-09 14:46:20.060711
+86106	1158	0.00	2012-10-09 14:46:20.063237	2012-10-09 14:46:20.063237
+86107	1159	0.00	2012-10-09 14:46:20.065677	2012-10-09 14:46:20.065677
+86108	1160	0.00	2012-10-09 14:46:20.068195	2012-10-09 14:46:20.068195
+86109	1161	0.00	2012-10-09 14:46:20.070674	2012-10-09 14:46:20.070674
+86110	1162	0.00	2012-10-09 14:46:20.0732	2012-10-09 14:46:20.0732
+86111	1163	0.00	2012-10-09 14:46:20.075669	2012-10-09 14:46:20.075669
+86112	1164	0.00	2012-10-09 14:46:20.078203	2012-10-09 14:46:20.078203
+86113	1165	0.00	2012-10-09 14:46:20.080681	2012-10-09 14:46:20.080681
+86114	1166	0.00	2012-10-09 14:46:20.083204	2012-10-09 14:46:20.083204
+86115	1167	0.00	2012-10-09 14:46:20.085683	2012-10-09 14:46:20.085683
+86116	1168	0.00	2012-10-09 14:46:20.088225	2012-10-09 14:46:20.088225
+86117	1169	0.00	2012-10-09 14:46:20.090819	2012-10-09 14:46:20.090819
+86118	1170	0.00	2012-10-09 14:46:20.120928	2012-10-09 14:46:20.120928
+86119	1171	0.00	2012-10-09 14:46:20.123708	2012-10-09 14:46:20.123708
+86120	1172	0.00	2012-10-09 14:46:20.126299	2012-10-09 14:46:20.126299
+86121	1173	0.00	2012-10-09 14:46:20.128949	2012-10-09 14:46:20.128949
+86122	1174	0.00	2012-10-09 14:46:20.131492	2012-10-09 14:46:20.131492
+86123	1175	0.00	2012-10-09 14:46:20.134106	2012-10-09 14:46:20.134106
+86124	1176	0.00	2012-10-09 14:46:20.136606	2012-10-09 14:46:20.136606
+86125	1177	0.00	2012-10-09 14:46:20.139222	2012-10-09 14:46:20.139222
+86126	1178	0.00	2012-10-09 14:46:20.141709	2012-10-09 14:46:20.141709
+86127	1179	0.00	2012-10-09 14:46:20.144302	2012-10-09 14:46:20.144302
+86128	1180	0.00	2012-10-09 14:46:20.146816	2012-10-09 14:46:20.146816
+86129	1181	0.00	2012-10-09 14:46:20.149387	2012-10-09 14:46:20.149387
+86130	1182	0.00	2012-10-09 14:46:20.152034	2012-10-09 14:46:20.152034
+86131	1183	0.00	2012-10-09 14:46:20.154573	2012-10-09 14:46:20.154573
+86132	1184	0.00	2012-10-09 14:46:20.157182	2012-10-09 14:46:20.157182
+86133	1185	0.00	2012-10-09 14:46:20.159685	2012-10-09 14:46:20.159685
+86134	1186	0.00	2012-10-09 14:46:20.162336	2012-10-09 14:46:20.162336
+86135	1187	0.00	2012-10-09 14:46:20.164887	2012-10-09 14:46:20.164887
+86136	1188	0.00	2012-10-09 14:46:20.16747	2012-10-09 14:46:20.16747
+86137	1189	0.00	2012-10-09 14:46:20.170029	2012-10-09 14:46:20.170029
+86138	1190	0.00	2012-10-09 14:46:20.172588	2012-10-09 14:46:20.172588
+86139	1191	0.00	2012-10-09 14:46:20.175121	2012-10-09 14:46:20.175121
+86140	1192	0.00	2012-10-09 14:46:20.177615	2012-10-09 14:46:20.177615
+86141	1193	0.00	2012-10-09 14:46:20.180259	2012-10-09 14:46:20.180259
+86142	1194	0.00	2012-10-09 14:46:20.182761	2012-10-09 14:46:20.182761
+86143	1195	0.00	2012-10-09 14:46:20.185299	2012-10-09 14:46:20.185299
+86144	1196	0.00	2012-10-09 14:46:20.187802	2012-10-09 14:46:20.187802
+86145	1197	0.00	2012-10-09 14:46:20.190385	2012-10-09 14:46:20.190385
+86146	1198	0.00	2012-10-09 14:46:20.192976	2012-10-09 14:46:20.192976
+86147	1199	0.00	2012-10-09 14:46:20.195516	2012-10-09 14:46:20.195516
+86148	1200	0.00	2012-10-09 14:46:20.198016	2012-10-09 14:46:20.198016
+86149	1201	0.00	2012-10-09 14:46:20.200585	2012-10-09 14:46:20.200585
+86150	1202	0.00	2012-10-09 14:46:20.203129	2012-10-09 14:46:20.203129
+86151	1203	0.00	2012-10-09 14:46:20.205753	2012-10-09 14:46:20.205753
+86152	1204	0.00	2012-10-09 14:46:20.208276	2012-10-09 14:46:20.208276
+86153	1205	0.00	2012-10-09 14:46:20.210786	2012-10-09 14:46:20.210786
+86154	1206	0.00	2012-10-09 14:46:20.213359	2012-10-09 14:46:20.213359
+86155	1207	0.00	2012-10-09 14:46:20.215934	2012-10-09 14:46:20.215934
+86156	1208	0.00	2012-10-09 14:46:20.218464	2012-10-09 14:46:20.218464
+86157	1209	0.00	2012-10-09 14:46:20.220984	2012-10-09 14:46:20.220984
+86158	1210	0.00	2012-10-09 14:46:20.223542	2012-10-09 14:46:20.223542
+86159	1211	0.00	2012-10-09 14:46:20.226053	2012-10-09 14:46:20.226053
+86160	1212	0.00	2012-10-09 14:46:20.228606	2012-10-09 14:46:20.228606
+86161	1213	0.00	2012-10-09 14:46:20.231144	2012-10-09 14:46:20.231144
+86162	1214	0.00	2012-10-09 14:46:20.233698	2012-10-09 14:46:20.233698
+86163	1215	0.00	2012-10-09 14:46:20.236263	2012-10-09 14:46:20.236263
+86164	1216	0.00	2012-10-09 14:46:20.238821	2012-10-09 14:46:20.238821
+86165	1217	0.00	2012-10-09 14:46:20.241381	2012-10-09 14:46:20.241381
+86166	1218	0.00	2012-10-09 14:46:20.243978	2012-10-09 14:46:20.243978
+86167	1219	0.00	2012-10-09 14:46:20.246518	2012-10-09 14:46:20.246518
+86168	1220	0.00	2012-10-09 14:46:20.249069	2012-10-09 14:46:20.249069
+86169	1221	0.00	2012-10-09 14:46:20.251622	2012-10-09 14:46:20.251622
+86170	1222	0.00	2012-10-09 14:46:20.254187	2012-10-09 14:46:20.254187
+86171	1223	0.00	2012-10-09 14:46:20.256855	2012-10-09 14:46:20.256855
+86172	1224	0.00	2012-10-09 14:46:20.259498	2012-10-09 14:46:20.259498
+86173	1225	0.00	2012-10-09 14:46:20.262125	2012-10-09 14:46:20.262125
+86174	1226	0.00	2012-10-09 14:46:20.264684	2012-10-09 14:46:20.264684
+86175	1227	0.00	2012-10-09 14:46:20.26732	2012-10-09 14:46:20.26732
+86176	1228	0.00	2012-10-09 14:46:20.269805	2012-10-09 14:46:20.269805
+86177	1229	0.00	2012-10-09 14:46:20.272416	2012-10-09 14:46:20.272416
+86178	1230	0.00	2012-10-09 14:46:20.274996	2012-10-09 14:46:20.274996
+86179	1231	0.00	2012-10-09 14:46:20.277563	2012-10-09 14:46:20.277563
+86180	1232	0.00	2012-10-09 14:46:20.280119	2012-10-09 14:46:20.280119
+86181	1233	0.00	2012-10-09 14:46:20.282663	2012-10-09 14:46:20.282663
+86182	1234	0.00	2012-10-09 14:46:20.285308	2012-10-09 14:46:20.285308
+86183	1235	0.00	2012-10-09 14:46:20.287835	2012-10-09 14:46:20.287835
+86184	1236	0.00	2012-10-09 14:46:20.290469	2012-10-09 14:46:20.290469
+86185	1237	0.00	2012-10-09 14:46:20.293109	2012-10-09 14:46:20.293109
+86186	1238	0.00	2012-10-09 14:46:20.295641	2012-10-09 14:46:20.295641
+86187	1239	0.00	2012-10-09 14:46:20.298278	2012-10-09 14:46:20.298278
+86188	1240	0.00	2012-10-09 14:46:20.300796	2012-10-09 14:46:20.300796
+86189	1241	0.00	2012-10-09 14:46:20.303448	2012-10-09 14:46:20.303448
+86190	1242	0.00	2012-10-09 14:46:20.306068	2012-10-09 14:46:20.306068
+86191	1243	0.00	2012-10-09 14:46:20.308611	2012-10-09 14:46:20.308611
+86192	1244	0.00	2012-10-09 14:46:20.311241	2012-10-09 14:46:20.311241
+86193	1245	0.00	2012-10-09 14:46:20.313872	2012-10-09 14:46:20.313872
+86194	1246	0.00	2012-10-09 14:46:20.316451	2012-10-09 14:46:20.316451
+86195	1247	0.00	2012-10-09 14:46:20.319093	2012-10-09 14:46:20.319093
+86196	1248	0.00	2012-10-09 14:46:20.321665	2012-10-09 14:46:20.321665
+86197	1249	0.00	2012-10-09 14:46:20.324294	2012-10-09 14:46:20.324294
+86198	1250	0.00	2012-10-09 14:46:20.326944	2012-10-09 14:46:20.326944
+86199	1251	0.00	2012-10-09 14:46:20.329581	2012-10-09 14:46:20.329581
+86200	1252	0.00	2012-10-09 14:46:20.332201	2012-10-09 14:46:20.332201
+86201	1253	0.00	2012-10-09 14:46:20.334804	2012-10-09 14:46:20.334804
+86202	1254	0.00	2012-10-09 14:46:20.337477	2012-10-09 14:46:20.337477
+86203	1255	0.00	2012-10-09 14:46:20.340798	2012-10-09 14:46:20.340798
+86204	1256	0.00	2012-10-09 14:46:20.343768	2012-10-09 14:46:20.343768
+86205	1257	0.00	2012-10-09 14:46:20.37492	2012-10-09 14:46:20.37492
+86206	1258	0.00	2012-10-09 14:46:20.377854	2012-10-09 14:46:20.377854
+86207	1259	0.00	2012-10-09 14:46:20.380453	2012-10-09 14:46:20.380453
+86208	1260	0.00	2012-10-09 14:46:20.383055	2012-10-09 14:46:20.383055
+86209	1261	0.00	2012-10-09 14:46:20.385643	2012-10-09 14:46:20.385643
+86210	1262	0.00	2012-10-09 14:46:20.388272	2012-10-09 14:46:20.388272
+86211	1263	0.00	2012-10-09 14:46:20.390781	2012-10-09 14:46:20.390781
+86212	1264	0.00	2012-10-09 14:46:20.393403	2012-10-09 14:46:20.393403
+86213	1265	0.00	2012-10-09 14:46:20.395987	2012-10-09 14:46:20.395987
+86214	1266	0.00	2012-10-09 14:46:20.398526	2012-10-09 14:46:20.398526
+86215	1267	0.00	2012-10-09 14:46:20.40112	2012-10-09 14:46:20.40112
+86216	1268	0.00	2012-10-09 14:46:20.403633	2012-10-09 14:46:20.403633
+86217	1269	0.00	2012-10-09 14:46:20.406259	2012-10-09 14:46:20.406259
+86218	1270	0.00	2012-10-09 14:46:20.40883	2012-10-09 14:46:20.40883
+86219	1271	0.00	2012-10-09 14:46:20.411445	2012-10-09 14:46:20.411445
+86220	1272	0.00	2012-10-09 14:46:20.414063	2012-10-09 14:46:20.414063
+86221	1273	0.00	2012-10-09 14:46:20.416578	2012-10-09 14:46:20.416578
+86222	1274	0.00	2012-10-09 14:46:20.419317	2012-10-09 14:46:20.419317
+86223	1275	0.00	2012-10-09 14:46:20.421998	2012-10-09 14:46:20.421998
+86224	1276	0.00	2012-10-09 14:46:20.4246	2012-10-09 14:46:20.4246
+86225	1277	0.00	2012-10-09 14:46:20.427168	2012-10-09 14:46:20.427168
+86226	1278	0.00	2012-10-09 14:46:20.429753	2012-10-09 14:46:20.429753
+86227	1279	0.00	2012-10-09 14:46:20.432313	2012-10-09 14:46:20.432313
+86228	1280	0.00	2012-10-09 14:46:20.434936	2012-10-09 14:46:20.434936
+86229	1281	0.00	2012-10-09 14:46:20.437546	2012-10-09 14:46:20.437546
+86230	1282	0.00	2012-10-09 14:46:20.440116	2012-10-09 14:46:20.440116
+86231	1283	0.00	2012-10-09 14:46:20.442668	2012-10-09 14:46:20.442668
+86232	1284	0.00	2012-10-09 14:46:20.445296	2012-10-09 14:46:20.445296
+86233	1285	0.00	2012-10-09 14:46:20.447789	2012-10-09 14:46:20.447789
+86234	1286	0.00	2012-10-09 14:46:20.450387	2012-10-09 14:46:20.450387
+86235	1287	0.00	2012-10-09 14:46:20.452983	2012-10-09 14:46:20.452983
+86236	1288	0.00	2012-10-09 14:46:20.455538	2012-10-09 14:46:20.455538
+86237	1289	0.00	2012-10-09 14:46:20.458102	2012-10-09 14:46:20.458102
+86238	1290	0.00	2012-10-09 14:46:20.460643	2012-10-09 14:46:20.460643
+86239	1291	0.00	2012-10-09 14:46:20.46327	2012-10-09 14:46:20.46327
+86240	1292	0.00	2012-10-09 14:46:20.465788	2012-10-09 14:46:20.465788
+86241	1293	0.00	2012-10-09 14:46:20.468389	2012-10-09 14:46:20.468389
+86242	1294	0.00	2012-10-09 14:46:20.470974	2012-10-09 14:46:20.470974
+86243	1295	0.00	2012-10-09 14:46:20.473529	2012-10-09 14:46:20.473529
+86244	1296	0.00	2012-10-09 14:46:20.476133	2012-10-09 14:46:20.476133
+86245	1297	0.00	2012-10-09 14:46:20.478657	2012-10-09 14:46:20.478657
+86246	1298	0.00	2012-10-09 14:46:20.481298	2012-10-09 14:46:20.481298
+86247	1299	0.00	2012-10-09 14:46:20.483839	2012-10-09 14:46:20.483839
+86248	1300	0.00	2012-10-09 14:46:20.486478	2012-10-09 14:46:20.486478
+86249	1301	0.00	2012-10-09 14:46:20.489115	2012-10-09 14:46:20.489115
+86250	1302	0.00	2012-10-09 14:46:20.491628	2012-10-09 14:46:20.491628
+86251	1303	0.00	2012-10-09 14:46:20.494275	2012-10-09 14:46:20.494275
+86252	1304	0.00	2012-10-09 14:46:20.496787	2012-10-09 14:46:20.496787
+86253	1305	0.00	2012-10-09 14:46:20.499385	2012-10-09 14:46:20.499385
+86254	1306	0.00	2012-10-09 14:46:20.502011	2012-10-09 14:46:20.502011
+86255	1307	0.00	2012-10-09 14:46:20.50453	2012-10-09 14:46:20.50453
+86256	1308	0.00	2012-10-09 14:46:20.507124	2012-10-09 14:46:20.507124
+86257	1309	0.00	2012-10-09 14:46:20.509668	2012-10-09 14:46:20.509668
+86258	1310	0.00	2012-10-09 14:46:20.512307	2012-10-09 14:46:20.512307
+86259	1311	0.00	2012-10-09 14:46:20.51485	2012-10-09 14:46:20.51485
+86260	1312	0.00	2012-10-09 14:46:20.517447	2012-10-09 14:46:20.517447
+86261	1313	0.00	2012-10-09 14:46:20.520083	2012-10-09 14:46:20.520083
+86262	1314	0.00	2012-10-09 14:46:20.522844	2012-10-09 14:46:20.522844
+86263	1315	0.00	2012-10-09 14:46:20.525446	2012-10-09 14:46:20.525446
+86264	1316	0.00	2012-10-09 14:46:20.528076	2012-10-09 14:46:20.528076
+86265	1317	0.00	2012-10-09 14:46:20.530632	2012-10-09 14:46:20.530632
+86266	1318	0.00	2012-10-09 14:46:20.533212	2012-10-09 14:46:20.533212
+86267	1319	0.00	2012-10-09 14:46:20.535774	2012-10-09 14:46:20.535774
+86268	1320	0.00	2012-10-09 14:46:20.538426	2012-10-09 14:46:20.538426
+86269	1321	0.00	2012-10-09 14:46:20.541058	2012-10-09 14:46:20.541058
+86270	1322	0.00	2012-10-09 14:46:20.543629	2012-10-09 14:46:20.543629
+86271	1323	0.00	2012-10-09 14:46:20.546184	2012-10-09 14:46:20.546184
+86272	1324	0.00	2012-10-09 14:46:20.548756	2012-10-09 14:46:20.548756
+86273	1325	0.00	2012-10-09 14:46:20.551346	2012-10-09 14:46:20.551346
+86274	1326	0.00	2012-10-09 14:46:20.553954	2012-10-09 14:46:20.553954
+86275	1327	0.00	2012-10-09 14:46:20.556607	2012-10-09 14:46:20.556607
+86276	1328	0.00	2012-10-09 14:46:20.55924	2012-10-09 14:46:20.55924
+86277	1329	0.00	2012-10-09 14:46:20.561796	2012-10-09 14:46:20.561796
+86278	1330	0.00	2012-10-09 14:46:20.564451	2012-10-09 14:46:20.564451
+86279	1331	0.00	2012-10-09 14:46:20.567077	2012-10-09 14:46:20.567077
+86280	1332	0.00	2012-10-09 14:46:20.569671	2012-10-09 14:46:20.569671
+86281	1333	0.00	2012-10-09 14:46:20.572309	2012-10-09 14:46:20.572309
+86282	1334	0.00	2012-10-09 14:46:20.574976	2012-10-09 14:46:20.574976
+86283	1335	0.00	2012-10-09 14:46:20.577596	2012-10-09 14:46:20.577596
+86284	1336	0.00	2012-10-09 14:46:20.580246	2012-10-09 14:46:20.580246
+86285	1337	0.00	2012-10-09 14:46:20.582891	2012-10-09 14:46:20.582891
+86286	1338	0.00	2012-10-09 14:46:20.586146	2012-10-09 14:46:20.586146
+86287	1339	0.00	2012-10-09 14:46:20.589256	2012-10-09 14:46:20.589256
+86288	1340	0.00	2012-10-09 14:46:20.621791	2012-10-09 14:46:20.621791
+86289	1341	0.00	2012-10-09 14:46:20.624676	2012-10-09 14:46:20.624676
+86290	1342	0.00	2012-10-09 14:46:20.627332	2012-10-09 14:46:20.627332
+86291	1343	0.00	2012-10-09 14:46:20.629967	2012-10-09 14:46:20.629967
+86292	1344	0.00	2012-10-09 14:46:20.632578	2012-10-09 14:46:20.632578
+86293	1345	0.00	2012-10-09 14:46:20.635185	2012-10-09 14:46:20.635185
+86294	1346	0.00	2012-10-09 14:46:20.637742	2012-10-09 14:46:20.637742
+86295	1347	0.00	2012-10-09 14:46:20.640345	2012-10-09 14:46:20.640345
+86296	1348	0.00	2012-10-09 14:46:20.642981	2012-10-09 14:46:20.642981
+86297	1349	0.00	2012-10-09 14:46:20.645567	2012-10-09 14:46:20.645567
+86298	1350	0.00	2012-10-09 14:46:20.648195	2012-10-09 14:46:20.648195
+86299	1351	0.00	2012-10-09 14:46:20.650743	2012-10-09 14:46:20.650743
+86300	1352	0.00	2012-10-09 14:46:20.653324	2012-10-09 14:46:20.653324
+86301	1353	0.00	2012-10-09 14:46:20.655963	2012-10-09 14:46:20.655963
+86302	1354	0.00	2012-10-09 14:46:20.658569	2012-10-09 14:46:20.658569
+86303	1355	0.00	2012-10-09 14:46:20.661213	2012-10-09 14:46:20.661213
+86304	1356	0.00	2012-10-09 14:46:20.705794	2012-10-09 14:46:20.705794
+86305	1357	0.00	2012-10-09 14:46:20.709052	2012-10-09 14:46:20.709052
+86306	1358	0.00	2012-10-09 14:46:20.711643	2012-10-09 14:46:20.711643
+86307	1359	0.00	2012-10-09 14:46:20.714308	2012-10-09 14:46:20.714308
+86308	1360	0.00	2012-10-09 14:46:20.716984	2012-10-09 14:46:20.716984
+86309	1361	0.00	2012-10-09 14:46:20.719619	2012-10-09 14:46:20.719619
+86310	1362	0.00	2012-10-09 14:46:20.722253	2012-10-09 14:46:20.722253
+86311	1363	0.00	2012-10-09 14:46:20.724786	2012-10-09 14:46:20.724786
+86312	1364	0.00	2012-10-09 14:46:20.727416	2012-10-09 14:46:20.727416
+86313	1365	0.00	2012-10-09 14:46:20.730042	2012-10-09 14:46:20.730042
+86314	1366	0.00	2012-10-09 14:46:20.732585	2012-10-09 14:46:20.732585
+86315	1367	0.00	2012-10-09 14:46:20.735194	2012-10-09 14:46:20.735194
+86316	1368	0.00	2012-10-09 14:46:20.737763	2012-10-09 14:46:20.737763
+86317	1369	0.00	2012-10-09 14:46:20.740326	2012-10-09 14:46:20.740326
+86318	1370	0.00	2012-10-09 14:46:20.742977	2012-10-09 14:46:20.742977
+86319	1371	0.00	2012-10-09 14:46:20.745576	2012-10-09 14:46:20.745576
+86320	1372	0.00	2012-10-09 14:46:20.748203	2012-10-09 14:46:20.748203
+86321	1373	0.00	2012-10-09 14:46:20.75074	2012-10-09 14:46:20.75074
+86322	1374	0.00	2012-10-09 14:46:20.75333	2012-10-09 14:46:20.75333
+86323	1375	0.00	2012-10-09 14:46:20.755937	2012-10-09 14:46:20.755937
+86324	1376	0.00	2012-10-09 14:46:20.758514	2012-10-09 14:46:20.758514
+86325	1377	0.00	2012-10-09 14:46:20.761123	2012-10-09 14:46:20.761123
+86326	1378	0.00	2012-10-09 14:46:20.76366	2012-10-09 14:46:20.76366
+86327	1379	0.00	2012-10-09 14:46:20.766294	2012-10-09 14:46:20.766294
+86328	1380	0.00	2012-10-09 14:46:20.768959	2012-10-09 14:46:20.768959
+86329	1381	0.00	2012-10-09 14:46:20.771545	2012-10-09 14:46:20.771545
+86330	1382	0.00	2012-10-09 14:46:20.77415	2012-10-09 14:46:20.77415
+86331	1383	0.00	2012-10-09 14:46:20.776705	2012-10-09 14:46:20.776705
+86332	1384	0.00	2012-10-09 14:46:20.779311	2012-10-09 14:46:20.779311
+86333	1385	0.00	2012-10-09 14:46:20.781877	2012-10-09 14:46:20.781877
+86334	1386	0.00	2012-10-09 14:46:20.784452	2012-10-09 14:46:20.784452
+86335	1387	0.00	2012-10-09 14:46:20.787044	2012-10-09 14:46:20.787044
+86336	1388	0.00	2012-10-09 14:46:20.789563	2012-10-09 14:46:20.789563
+86337	1389	0.00	2012-10-09 14:46:20.792149	2012-10-09 14:46:20.792149
+86338	1390	0.00	2012-10-09 14:46:20.794677	2012-10-09 14:46:20.794677
+86339	1391	0.00	2012-10-09 14:46:20.797274	2012-10-09 14:46:20.797274
+86340	1392	0.00	2012-10-09 14:46:20.799785	2012-10-09 14:46:20.799785
+86341	1393	0.00	2012-10-09 14:46:20.8023	2012-10-09 14:46:20.8023
+86342	1394	0.00	2012-10-09 14:46:20.804851	2012-10-09 14:46:20.804851
+86343	1395	0.00	2012-10-09 14:46:20.807397	2012-10-09 14:46:20.807397
+86344	1396	0.00	2012-10-09 14:46:20.809971	2012-10-09 14:46:20.809971
+86345	1397	0.00	2012-10-09 14:46:20.812476	2012-10-09 14:46:20.812476
+86346	1398	0.00	2012-10-09 14:46:20.815037	2012-10-09 14:46:20.815037
+86347	1399	0.00	2012-10-09 14:46:20.817554	2012-10-09 14:46:20.817554
+86348	1400	0.00	2012-10-09 14:46:20.820133	2012-10-09 14:46:20.820133
+86349	1401	0.00	2012-10-09 14:46:20.822656	2012-10-09 14:46:20.822656
+86350	1402	0.00	2012-10-09 14:46:20.825248	2012-10-09 14:46:20.825248
+86351	1403	0.00	2012-10-09 14:46:20.827741	2012-10-09 14:46:20.827741
+86352	1404	0.00	2012-10-09 14:46:20.830272	2012-10-09 14:46:20.830272
+86353	1405	0.00	2012-10-09 14:46:20.832775	2012-10-09 14:46:20.832775
+86354	1406	0.00	2012-10-09 14:46:20.835294	2012-10-09 14:46:20.835294
+86355	1407	0.00	2012-10-09 14:46:20.837828	2012-10-09 14:46:20.837828
+86356	1408	0.00	2012-10-09 14:46:20.840373	2012-10-09 14:46:20.840373
+86357	1409	0.00	2012-10-09 14:46:20.842939	2012-10-09 14:46:20.842939
+86358	1410	0.00	2012-10-09 14:46:20.845443	2012-10-09 14:46:20.845443
+86359	1411	0.00	2012-10-09 14:46:20.847967	2012-10-09 14:46:20.847967
+86360	1412	0.00	2012-10-09 14:46:20.85046	2012-10-09 14:46:20.85046
+86361	1413	0.00	2012-10-09 14:46:20.852994	2012-10-09 14:46:20.852994
+86362	1414	0.00	2012-10-09 14:46:20.855502	2012-10-09 14:46:20.855502
+86363	1415	0.00	2012-10-09 14:46:20.85803	2012-10-09 14:46:20.85803
+86364	1416	0.00	2012-10-09 14:46:20.860528	2012-10-09 14:46:20.860528
+86365	1417	0.00	2012-10-09 14:46:20.8631	2012-10-09 14:46:20.8631
+86366	1418	0.00	2012-10-09 14:46:20.865815	2012-10-09 14:46:20.865815
+86367	1419	0.00	2012-10-09 14:46:20.868357	2012-10-09 14:46:20.868357
+86368	1420	0.00	2012-10-09 14:46:20.870916	2012-10-09 14:46:20.870916
+86369	1421	0.00	2012-10-09 14:46:20.873446	2012-10-09 14:46:20.873446
+86370	1422	0.00	2012-10-09 14:46:20.876012	2012-10-09 14:46:20.876012
+86371	1423	0.00	2012-10-09 14:46:20.878498	2012-10-09 14:46:20.878498
+86372	1424	0.00	2012-10-09 14:46:20.881058	2012-10-09 14:46:20.881058
+86373	1425	0.00	2012-10-09 14:46:20.883548	2012-10-09 14:46:20.883548
+86374	1426	0.00	2012-10-09 14:46:20.8861	2012-10-09 14:46:20.8861
+86375	1427	0.00	2012-10-09 14:46:20.888587	2012-10-09 14:46:20.888587
+86376	1428	0.00	2012-10-09 14:46:20.891148	2012-10-09 14:46:20.891148
+86377	1429	0.00	2012-10-09 14:46:20.893643	2012-10-09 14:46:20.893643
+86378	1430	0.00	2012-10-09 14:46:20.896215	2012-10-09 14:46:20.896215
+86379	1431	0.00	2012-10-09 14:46:20.898723	2012-10-09 14:46:20.898723
+86380	1432	0.00	2012-10-09 14:46:20.901245	2012-10-09 14:46:20.901245
+86381	1433	0.00	2012-10-09 14:46:20.903713	2012-10-09 14:46:20.903713
+86382	1434	0.00	2012-10-09 14:46:20.906198	2012-10-09 14:46:20.906198
+86383	1435	0.00	2012-10-09 14:46:20.908667	2012-10-09 14:46:20.908667
+86384	1436	0.00	2012-10-09 14:46:20.911241	2012-10-09 14:46:20.911241
+86385	1437	0.00	2012-10-09 14:46:20.945382	2012-10-09 14:46:20.945382
+86386	1438	0.00	2012-10-09 14:46:20.948034	2012-10-09 14:46:20.948034
+86387	1439	0.00	2012-10-09 14:46:20.950656	2012-10-09 14:46:20.950656
+86388	1440	0.00	2012-10-09 14:46:20.95329	2012-10-09 14:46:20.95329
+86389	1441	0.00	2012-10-09 14:46:20.955835	2012-10-09 14:46:20.955835
+86390	1442	0.00	2012-10-09 14:46:20.958423	2012-10-09 14:46:20.958423
+86391	1443	0.00	2012-10-09 14:46:20.96106	2012-10-09 14:46:20.96106
+86392	1444	0.00	2012-10-09 14:46:20.963614	2012-10-09 14:46:20.963614
+86393	1445	0.00	2012-10-09 14:46:20.966234	2012-10-09 14:46:20.966234
+86394	1446	0.00	2012-10-09 14:46:20.968777	2012-10-09 14:46:20.968777
+86395	1447	0.00	2012-10-09 14:46:20.971337	2012-10-09 14:46:20.971337
+86396	1448	0.00	2012-10-09 14:46:20.97395	2012-10-09 14:46:20.97395
+86397	1449	0.00	2012-10-09 14:46:20.976507	2012-10-09 14:46:20.976507
+86398	1450	0.00	2012-10-09 14:46:20.979094	2012-10-09 14:46:20.979094
+86399	1451	0.00	2012-10-09 14:46:20.981646	2012-10-09 14:46:20.981646
+86400	1452	0.00	2012-10-09 14:46:20.98429	2012-10-09 14:46:20.98429
+86401	1453	0.00	2012-10-09 14:46:20.986889	2012-10-09 14:46:20.986889
+86402	1454	0.00	2012-10-09 14:46:20.989474	2012-10-09 14:46:20.989474
+86403	1455	0.00	2012-10-09 14:46:20.992072	2012-10-09 14:46:20.992072
+86404	1456	0.00	2012-10-09 14:46:20.994854	2012-10-09 14:46:20.994854
+86405	1457	0.00	2012-10-09 14:46:20.997455	2012-10-09 14:46:20.997455
+86406	1458	0.00	2012-10-09 14:46:21.000086	2012-10-09 14:46:21.000086
+86407	1459	0.00	2012-10-09 14:46:21.002642	2012-10-09 14:46:21.002642
+86408	1460	0.00	2012-10-09 14:46:21.00529	2012-10-09 14:46:21.00529
+86409	1461	0.00	2012-10-09 14:46:21.007897	2012-10-09 14:46:21.007897
+86410	1462	0.00	2012-10-09 14:46:21.010508	2012-10-09 14:46:21.010508
+86411	1463	0.00	2012-10-09 14:46:21.013124	2012-10-09 14:46:21.013124
+86412	1464	0.00	2012-10-09 14:46:21.015681	2012-10-09 14:46:21.015681
+86413	1465	0.00	2012-10-09 14:46:21.0183	2012-10-09 14:46:21.0183
+86414	1466	0.00	2012-10-09 14:46:21.020899	2012-10-09 14:46:21.020899
+86415	1467	0.00	2012-10-09 14:46:21.023524	2012-10-09 14:46:21.023524
+86416	1468	0.00	2012-10-09 14:46:21.026181	2012-10-09 14:46:21.026181
+86417	1469	0.00	2012-10-09 14:46:21.028803	2012-10-09 14:46:21.028803
+86418	1470	0.00	2012-10-09 14:46:21.031379	2012-10-09 14:46:21.031379
+86419	1471	0.00	2012-10-09 14:46:21.034044	2012-10-09 14:46:21.034044
+86420	1472	0.00	2012-10-09 14:46:21.036873	2012-10-09 14:46:21.036873
+86421	1473	0.00	2012-10-09 14:46:21.039499	2012-10-09 14:46:21.039499
+86422	1474	0.00	2012-10-09 14:46:21.042154	2012-10-09 14:46:21.042154
+86423	1475	0.00	2012-10-09 14:46:21.044753	2012-10-09 14:46:21.044753
+86424	1476	0.00	2012-10-09 14:46:21.047359	2012-10-09 14:46:21.047359
+86425	1477	0.00	2012-10-09 14:46:21.05003	2012-10-09 14:46:21.05003
+86426	1478	0.00	2012-10-09 14:46:21.052821	2012-10-09 14:46:21.052821
+86427	1479	0.00	2012-10-09 14:46:21.055538	2012-10-09 14:46:21.055538
+86428	1480	0.00	2012-10-09 14:46:21.058213	2012-10-09 14:46:21.058213
+86429	1481	0.00	2012-10-09 14:46:21.060927	2012-10-09 14:46:21.060927
+86430	1482	0.00	2012-10-09 14:46:21.063565	2012-10-09 14:46:21.063565
+86431	1483	0.00	2012-10-09 14:46:21.066209	2012-10-09 14:46:21.066209
+86432	1484	0.00	2012-10-09 14:46:21.068858	2012-10-09 14:46:21.068858
+86433	1485	0.00	2012-10-09 14:46:21.071504	2012-10-09 14:46:21.071504
+86434	1486	0.00	2012-10-09 14:46:21.074144	2012-10-09 14:46:21.074144
+86435	1487	0.00	2012-10-09 14:46:21.076774	2012-10-09 14:46:21.076774
+86436	1488	0.00	2012-10-09 14:46:21.079457	2012-10-09 14:46:21.079457
+86437	1489	0.00	2012-10-09 14:46:21.082147	2012-10-09 14:46:21.082147
+86438	1490	0.00	2012-10-09 14:46:21.084742	2012-10-09 14:46:21.084742
+86439	1491	0.00	2012-10-09 14:46:21.087377	2012-10-09 14:46:21.087377
+86440	1492	0.00	2012-10-09 14:46:21.090069	2012-10-09 14:46:21.090069
+86441	1493	0.00	2012-10-09 14:46:21.092741	2012-10-09 14:46:21.092741
+86442	1494	0.00	2012-10-09 14:46:21.095367	2012-10-09 14:46:21.095367
+86443	1495	0.00	2012-10-09 14:46:21.09804	2012-10-09 14:46:21.09804
+86444	1496	0.00	2012-10-09 14:46:21.100702	2012-10-09 14:46:21.100702
+86445	1497	0.00	2012-10-09 14:46:21.103378	2012-10-09 14:46:21.103378
+86446	1498	0.00	2012-10-09 14:46:21.106068	2012-10-09 14:46:21.106068
+86447	1499	0.00	2012-10-09 14:46:21.108824	2012-10-09 14:46:21.108824
+86448	1500	0.00	2012-10-09 14:46:21.111583	2012-10-09 14:46:21.111583
+86449	852	45.07	2012-10-09 16:00:12.347139	2012-10-09 16:00:12.347139
+86450	883	0.00	2012-10-09 16:00:12.354388	2012-10-09 16:00:12.354388
+86451	882	0.00	2012-10-09 16:00:12.362638	2012-10-09 16:00:12.362638
+86452	881	0.00	2012-10-09 16:00:12.370869	2012-10-09 16:00:12.370869
+86453	880	0.00	2012-10-09 16:00:12.379542	2012-10-09 16:00:12.379542
+86454	879	0.00	2012-10-09 16:00:12.387529	2012-10-09 16:00:12.387529
+86455	878	0.00	2012-10-09 16:00:12.395926	2012-10-09 16:00:12.395926
+86456	877	0.00	2012-10-09 16:00:12.404499	2012-10-09 16:00:12.404499
+86457	876	0.00	2012-10-09 16:00:12.412955	2012-10-09 16:00:12.412955
+86458	875	0.00	2012-10-09 16:00:12.420935	2012-10-09 16:00:12.420935
+86459	874	0.00	2012-10-09 16:00:12.429491	2012-10-09 16:00:12.429491
+86460	873	0.00	2012-10-09 16:00:12.437497	2012-10-09 16:00:12.437497
+86461	872	0.00	2012-10-09 16:00:12.445913	2012-10-09 16:00:12.445913
+86462	871	0.00	2012-10-09 16:00:12.454412	2012-10-09 16:00:12.454412
+86463	870	0.00	2012-10-09 16:00:12.463244	2012-10-09 16:00:12.463244
+86464	869	0.00	2012-10-09 16:00:12.471298	2012-10-09 16:00:12.471298
+86465	868	0.00	2012-10-09 16:00:12.479339	2012-10-09 16:00:12.479339
+86466	867	0.00	2012-10-09 16:00:12.488027	2012-10-09 16:00:12.488027
+86467	866	0.00	2012-10-09 16:00:12.49596	2012-10-09 16:00:12.49596
+86468	865	0.00	2012-10-09 16:00:12.504531	2012-10-09 16:00:12.504531
+86469	864	0.00	2012-10-09 16:00:12.513194	2012-10-09 16:00:12.513194
+86470	863	0.00	2012-10-09 16:00:12.521342	2012-10-09 16:00:12.521342
+86471	862	0.00	2012-10-09 16:00:12.529479	2012-10-09 16:00:12.529479
+86472	861	0.00	2012-10-09 16:00:12.537597	2012-10-09 16:00:12.537597
+86473	860	0.00	2012-10-09 16:00:12.546248	2012-10-09 16:00:12.546248
+86474	859	0.00	2012-10-09 16:00:12.554279	2012-10-09 16:00:12.554279
+86475	858	0.00	2012-10-09 16:00:12.588218	2012-10-09 16:00:12.588218
+86476	857	0.00	2012-10-09 16:00:12.59629	2012-10-09 16:00:12.59629
+86477	856	0.00	2012-10-09 16:00:12.604583	2012-10-09 16:00:12.604583
+86478	855	0.00	2012-10-09 16:00:12.613225	2012-10-09 16:00:12.613225
+86479	854	0.00	2012-10-09 16:00:12.621057	2012-10-09 16:00:12.621057
+86480	853	0.00	2012-10-09 16:00:12.629293	2012-10-09 16:00:12.629293
+86481	851	0.00	2012-10-09 16:00:12.638029	2012-10-09 16:00:12.638029
+86482	850	0.00	2012-10-09 16:00:12.646141	2012-10-09 16:00:12.646141
+86483	849	0.00	2012-10-09 16:00:12.654377	2012-10-09 16:00:12.654377
+86484	848	0.00	2012-10-09 16:00:12.662626	2012-10-09 16:00:12.662626
+86485	847	0.00	2012-10-09 16:00:12.670985	2012-10-09 16:00:12.670985
+86486	846	0.00	2012-10-09 16:00:12.679841	2012-10-09 16:00:12.679841
+86487	845	0.00	2012-10-09 16:00:12.688211	2012-10-09 16:00:12.688211
+86488	844	0.00	2012-10-09 16:00:12.696333	2012-10-09 16:00:12.696333
+86489	843	0.00	2012-10-09 16:00:12.704362	2012-10-09 16:00:12.704362
+86490	842	0.00	2012-10-09 16:00:12.712756	2012-10-09 16:00:12.712756
+86491	841	0.00	2012-10-09 16:00:12.721127	2012-10-09 16:00:12.721127
+86492	840	0.00	2012-10-09 16:00:12.729357	2012-10-09 16:00:12.729357
+86493	839	0.00	2012-10-09 16:00:12.738234	2012-10-09 16:00:12.738234
+86494	838	0.00	2012-10-09 16:00:12.746352	2012-10-09 16:00:12.746352
+86495	837	0.00	2012-10-09 16:00:12.754551	2012-10-09 16:00:12.754551
+86496	836	0.00	2012-10-09 16:00:12.762896	2012-10-09 16:00:12.762896
+86497	835	0.00	2012-10-09 16:00:12.771492	2012-10-09 16:00:12.771492
+86498	834	0.00	2012-10-09 16:00:12.779443	2012-10-09 16:00:12.779443
+86499	833	0.00	2012-10-09 16:00:12.788363	2012-10-09 16:00:12.788363
+86500	832	0.00	2012-10-09 16:00:12.796139	2012-10-09 16:00:12.796139
+86501	831	0.00	2012-10-09 16:00:12.804683	2012-10-09 16:00:12.804683
+86502	830	0.00	2012-10-09 16:00:12.813307	2012-10-09 16:00:12.813307
+86503	829	0.00	2012-10-09 16:00:12.821276	2012-10-09 16:00:12.821276
+86504	828	0.00	2012-10-09 16:00:12.829789	2012-10-09 16:00:12.829789
+86505	827	0.00	2012-10-09 16:00:12.837825	2012-10-09 16:00:12.837825
+86506	826	0.00	2012-10-09 16:00:12.846395	2012-10-09 16:00:12.846395
+86507	825	0.00	2012-10-09 16:00:12.854313	2012-10-09 16:00:12.854313
+86508	824	0.00	2012-10-09 16:00:12.86281	2012-10-09 16:00:12.86281
+86509	823	0.00	2012-10-09 16:00:12.871081	2012-10-09 16:00:12.871081
+86510	822	0.00	2012-10-09 16:00:12.879849	2012-10-09 16:00:12.879849
+86511	821	0.00	2012-10-09 16:00:12.887775	2012-10-09 16:00:12.887775
+86512	820	0.00	2012-10-09 16:00:12.896382	2012-10-09 16:00:12.896382
+86513	819	0.00	2012-10-09 16:00:12.904364	2012-10-09 16:00:12.904364
+86514	818	0.00	2012-10-09 16:00:12.912827	2012-10-09 16:00:12.912827
+86515	817	0.00	2012-10-09 16:00:12.921163	2012-10-09 16:00:12.921163
+86516	816	0.00	2012-10-09 16:00:12.929643	2012-10-09 16:00:12.929643
+86517	815	0.00	2012-10-09 16:00:12.937851	2012-10-09 16:00:12.937851
+86518	814	0.00	2012-10-09 16:00:12.946413	2012-10-09 16:00:12.946413
+86519	813	0.00	2012-10-09 16:00:12.954488	2012-10-09 16:00:12.954488
+86520	812	0.00	2012-10-09 16:00:12.962845	2012-10-09 16:00:12.962845
+86521	811	0.00	2012-10-09 16:00:12.971565	2012-10-09 16:00:12.971565
+86522	810	0.00	2012-10-09 16:00:13.013443	2012-10-09 16:00:13.013443
+86523	809	0.00	2012-10-09 16:00:13.03005	2012-10-09 16:00:13.03005
+86524	808	0.00	2012-10-09 16:00:13.037916	2012-10-09 16:00:13.037916
+86525	807	0.00	2012-10-09 16:00:13.046197	2012-10-09 16:00:13.046197
+86526	806	0.00	2012-10-09 16:00:13.05486	2012-10-09 16:00:13.05486
+86527	805	0.00	2012-10-09 16:00:13.063342	2012-10-09 16:00:13.063342
+86528	804	0.00	2012-10-09 16:00:13.071506	2012-10-09 16:00:13.071506
+86529	803	0.00	2012-10-09 16:00:13.079502	2012-10-09 16:00:13.079502
+86530	802	0.00	2012-10-09 16:00:13.08823	2012-10-09 16:00:13.08823
+86531	801	0.00	2012-10-09 16:00:13.096117	2012-10-09 16:00:13.096117
+86532	800	0.00	2012-10-09 16:00:13.104181	2012-10-09 16:00:13.104181
+86533	799	0.00	2012-10-09 16:00:13.112489	2012-10-09 16:00:13.112489
+86534	798	0.00	2012-10-09 16:00:13.120694	2012-10-09 16:00:13.120694
+86535	797	0.00	2012-10-09 16:00:13.129612	2012-10-09 16:00:13.129612
+86536	796	0.00	2012-10-09 16:00:13.137828	2012-10-09 16:00:13.137828
+86537	795	0.00	2012-10-09 16:00:13.146439	2012-10-09 16:00:13.146439
+86538	794	0.00	2012-10-09 16:00:13.154852	2012-10-09 16:00:13.154852
+86539	793	0.00	2012-10-09 16:00:13.163268	2012-10-09 16:00:13.163268
+86540	792	0.00	2012-10-09 16:00:13.171181	2012-10-09 16:00:13.171181
+86541	791	0.00	2012-10-09 16:00:13.179386	2012-10-09 16:00:13.179386
+86542	790	0.00	2012-10-09 16:00:13.18798	2012-10-09 16:00:13.18798
+86543	789	0.00	2012-10-09 16:00:13.196009	2012-10-09 16:00:13.196009
+86544	788	0.00	2012-10-09 16:00:13.204505	2012-10-09 16:00:13.204505
+86545	787	0.00	2012-10-09 16:00:13.213079	2012-10-09 16:00:13.213079
+86546	786	0.00	2012-10-09 16:00:13.220949	2012-10-09 16:00:13.220949
+86547	785	0.00	2012-10-09 16:00:13.229595	2012-10-09 16:00:13.229595
+86548	784	0.00	2012-10-09 16:00:13.238245	2012-10-09 16:00:13.238245
+86549	783	0.00	2012-10-09 16:00:13.246366	2012-10-09 16:00:13.246366
+86550	782	0.00	2012-10-09 16:00:13.254364	2012-10-09 16:00:13.254364
+86551	781	0.00	2012-10-09 16:00:13.262614	2012-10-09 16:00:13.262614
+86552	780	0.00	2012-10-09 16:00:13.270989	2012-10-09 16:00:13.270989
+86553	779	0.00	2012-10-09 16:00:13.279725	2012-10-09 16:00:13.279725
+86554	778	0.00	2012-10-09 16:00:13.28759	2012-10-09 16:00:13.28759
+86555	777	0.00	2012-10-09 16:00:13.296389	2012-10-09 16:00:13.296389
+86556	776	0.00	2012-10-09 16:00:13.304316	2012-10-09 16:00:13.304316
+86557	775	0.00	2012-10-09 16:00:13.312767	2012-10-09 16:00:13.312767
+86558	774	0.00	2012-10-09 16:00:13.321215	2012-10-09 16:00:13.321215
+86559	773	0.00	2012-10-09 16:00:13.329385	2012-10-09 16:00:13.329385
+86560	772	0.00	2012-10-09 16:00:13.337789	2012-10-09 16:00:13.337789
+86561	771	0.00	2012-10-09 16:00:13.346087	2012-10-09 16:00:13.346087
+86562	770	0.00	2012-10-09 16:00:13.354354	2012-10-09 16:00:13.354354
+86563	769	0.00	2012-10-09 16:00:13.362992	2012-10-09 16:00:13.362992
+86564	768	0.00	2012-10-09 16:00:13.371393	2012-10-09 16:00:13.371393
+86565	767	0.00	2012-10-09 16:00:13.3794	2012-10-09 16:00:13.3794
+86566	766	0.00	2012-10-09 16:00:13.388181	2012-10-09 16:00:13.388181
+86567	765	0.00	2012-10-09 16:00:13.396047	2012-10-09 16:00:13.396047
+86568	884	0.00	2012-10-09 16:05:35.463843	2012-10-09 16:05:35.463843
+86569	885	0.00	2012-10-09 16:05:35.472006	2012-10-09 16:05:35.472006
+86570	886	0.00	2012-10-09 16:05:35.480279	2012-10-09 16:05:35.480279
+86571	887	0.00	2012-10-09 16:05:35.488498	2012-10-09 16:05:35.488498
+86572	888	0.00	2012-10-09 16:05:35.49685	2012-10-09 16:05:35.49685
+86573	889	0.00	2012-10-09 16:05:35.505314	2012-10-09 16:05:35.505314
+86574	890	0.00	2012-10-09 16:05:35.513481	2012-10-09 16:05:35.513481
+86575	891	0.00	2012-10-09 16:05:35.521634	2012-10-09 16:05:35.521634
+86576	892	0.00	2012-10-09 16:05:35.530232	2012-10-09 16:05:35.530232
+86577	893	0.00	2012-10-09 16:05:35.538484	2012-10-09 16:05:35.538484
+86578	894	0.00	2012-10-09 16:05:35.546637	2012-10-09 16:05:35.546637
+86579	895	0.00	2012-10-09 16:05:35.555212	2012-10-09 16:05:35.555212
+86580	896	0.00	2012-10-09 16:05:35.563526	2012-10-09 16:05:35.563526
+86581	897	0.00	2012-10-09 16:05:35.571636	2012-10-09 16:05:35.571636
+86582	898	0.00	2012-10-09 16:05:35.580145	2012-10-09 16:05:35.580145
+86583	899	0.00	2012-10-09 16:05:35.588428	2012-10-09 16:05:35.588428
+86584	900	0.00	2012-10-09 16:05:35.596649	2012-10-09 16:05:35.596649
+86585	901	0.00	2012-10-09 16:05:35.60531	2012-10-09 16:05:35.60531
+86586	902	0.00	2012-10-09 16:05:35.61344	2012-10-09 16:05:35.61344
+86587	903	0.00	2012-10-09 16:05:35.621907	2012-10-09 16:05:35.621907
+86588	904	0.00	2012-10-09 16:05:35.630258	2012-10-09 16:05:35.630258
+86589	905	0.00	2012-10-09 16:05:35.638496	2012-10-09 16:05:35.638496
+86590	906	0.00	2012-10-09 16:05:35.647181	2012-10-09 16:05:35.647181
+86591	907	0.00	2012-10-09 16:05:35.655261	2012-10-09 16:05:35.655261
+86592	908	0.00	2012-10-09 16:05:35.663503	2012-10-09 16:05:35.663503
+86593	909	0.00	2012-10-09 16:05:35.671896	2012-10-09 16:05:35.671896
+86594	910	0.00	2012-10-09 16:05:35.680264	2012-10-09 16:05:35.680264
+86595	911	0.00	2012-10-09 16:05:35.688436	2012-10-09 16:05:35.688436
+86596	912	0.00	2012-10-09 16:05:35.697364	2012-10-09 16:05:35.697364
+86597	913	0.00	2012-10-09 16:05:35.736465	2012-10-09 16:05:35.736465
+86598	914	0.00	2012-10-09 16:05:35.746742	2012-10-09 16:05:35.746742
+86599	915	0.00	2012-10-09 16:05:35.754948	2012-10-09 16:05:35.754948
+86600	916	0.00	2012-10-09 16:05:35.763283	2012-10-09 16:05:35.763283
+86601	917	0.00	2012-10-09 16:05:35.771516	2012-10-09 16:05:35.771516
+86602	918	0.00	2012-10-09 16:05:35.779927	2012-10-09 16:05:35.779927
+86603	919	0.00	2012-10-09 16:05:35.788199	2012-10-09 16:05:35.788199
+86604	920	0.00	2012-10-09 16:05:35.796586	2012-10-09 16:05:35.796586
+86605	921	0.00	2012-10-09 16:05:35.804939	2012-10-09 16:05:35.804939
+86606	922	0.00	2012-10-09 16:05:35.813246	2012-10-09 16:05:35.813246
+86607	923	0.00	2012-10-09 16:05:35.821608	2012-10-09 16:05:35.821608
+86608	924	0.00	2012-10-09 16:05:35.829962	2012-10-09 16:05:35.829962
+86609	925	0.00	2012-10-09 16:05:35.839919	2012-10-09 16:05:35.839919
+86610	926	0.00	2012-10-09 16:05:35.846802	2012-10-09 16:05:35.846802
+86611	927	0.00	2012-10-09 16:05:35.854988	2012-10-09 16:05:35.854988
+86612	928	0.00	2012-10-09 16:05:35.863242	2012-10-09 16:05:35.863242
+86613	929	0.00	2012-10-09 16:05:35.871841	2012-10-09 16:05:35.871841
+86614	930	0.00	2012-10-09 16:05:35.880185	2012-10-09 16:05:35.880185
+86615	931	0.00	2012-10-09 16:05:35.888525	2012-10-09 16:05:35.888525
+86616	932	0.00	2012-10-09 16:05:35.896826	2012-10-09 16:05:35.896826
+86617	933	0.00	2012-10-09 16:05:35.90526	2012-10-09 16:05:35.90526
+86618	934	0.00	2012-10-09 16:05:35.913535	2012-10-09 16:05:35.913535
+86619	935	0.00	2012-10-09 16:05:35.922194	2012-10-09 16:05:35.922194
+86620	936	0.00	2012-10-09 16:05:35.930273	2012-10-09 16:05:35.930273
+86621	937	0.00	2012-10-09 16:05:35.938608	2012-10-09 16:05:35.938608
+86622	938	0.00	2012-10-09 16:05:35.947162	2012-10-09 16:05:35.947162
+86623	939	0.00	2012-10-09 16:05:35.955376	2012-10-09 16:05:35.955376
+86624	940	0.00	2012-10-09 16:05:35.963514	2012-10-09 16:05:35.963514
+86625	941	0.00	2012-10-09 16:05:35.972165	2012-10-09 16:05:35.972165
+86626	942	0.00	2012-10-09 16:05:35.980394	2012-10-09 16:05:35.980394
+86627	943	0.00	2012-10-09 16:05:35.988641	2012-10-09 16:05:35.988641
+86628	944	0.00	2012-10-09 16:05:35.997044	2012-10-09 16:05:35.997044
+86629	945	0.00	2012-10-09 16:05:36.005383	2012-10-09 16:05:36.005383
+86630	946	0.00	2012-10-09 16:05:36.013495	2012-10-09 16:05:36.013495
+86631	947	0.00	2012-10-09 16:05:36.02196	2012-10-09 16:05:36.02196
+86632	948	0.00	2012-10-09 16:05:36.030283	2012-10-09 16:05:36.030283
+86633	949	0.00	2012-10-09 16:05:36.038492	2012-10-09 16:05:36.038492
+86634	950	0.00	2012-10-09 16:05:36.046665	2012-10-09 16:05:36.046665
+86635	951	0.00	2012-10-09 16:05:36.055238	2012-10-09 16:05:36.055238
+86636	952	0.00	2012-10-09 16:05:36.063541	2012-10-09 16:05:36.063541
+86637	953	0.00	2012-10-09 16:05:36.072006	2012-10-09 16:05:36.072006
+86638	954	0.00	2012-10-09 16:05:36.080182	2012-10-09 16:05:36.080182
+86639	955	0.00	2012-10-09 16:05:36.088516	2012-10-09 16:05:36.088516
+86640	956	0.00	2012-10-09 16:05:36.096896	2012-10-09 16:05:36.096896
+86641	957	0.00	2012-10-09 16:05:36.105308	2012-10-09 16:05:36.105308
+86642	958	0.00	2012-10-09 16:05:36.113529	2012-10-09 16:05:36.113529
+86643	959	0.00	2012-10-09 16:05:36.121886	2012-10-09 16:05:36.121886
+86644	960	0.00	2012-10-09 16:05:36.130281	2012-10-09 16:05:36.130281
+86645	961	0.00	2012-10-09 16:05:36.138494	2012-10-09 16:05:36.138494
+86646	962	0.00	2012-10-09 16:05:36.147059	2012-10-09 16:05:36.147059
+86647	963	0.00	2012-10-09 16:05:36.155356	2012-10-09 16:05:36.155356
+86648	964	0.00	2012-10-09 16:05:36.163704	2012-10-09 16:05:36.163704
+86649	965	0.00	2012-10-09 16:05:36.205809	2012-10-09 16:05:36.205809
+86650	966	0.00	2012-10-09 16:05:36.213758	2012-10-09 16:05:36.213758
+86651	967	0.00	2012-10-09 16:05:36.222014	2012-10-09 16:05:36.222014
+86652	968	0.00	2012-10-09 16:05:36.230384	2012-10-09 16:05:36.230384
+86653	969	0.00	2012-10-09 16:05:36.238568	2012-10-09 16:05:36.238568
+86654	970	0.00	2012-10-09 16:05:36.247188	2012-10-09 16:05:36.247188
+86655	971	0.00	2012-10-09 16:05:36.255356	2012-10-09 16:05:36.255356
+86656	972	0.00	2012-10-09 16:05:36.263572	2012-10-09 16:05:36.263572
+86657	973	0.00	2012-10-09 16:05:36.272038	2012-10-09 16:05:36.272038
+86658	974	0.00	2012-10-09 16:05:36.279994	2012-10-09 16:05:36.279994
+86659	975	0.00	2012-10-09 16:05:36.288275	2012-10-09 16:05:36.288275
+86660	976	0.00	2012-10-09 16:05:36.296536	2012-10-09 16:05:36.296536
+86661	977	0.00	2012-10-09 16:05:36.304934	2012-10-09 16:05:36.304934
+86662	978	0.00	2012-10-09 16:05:36.313329	2012-10-09 16:05:36.313329
+86663	979	0.00	2012-10-09 16:05:36.321614	2012-10-09 16:05:36.321614
+86664	1061	0.00	2012-10-09 16:05:36.329952	2012-10-09 16:05:36.329952
+86665	1062	0.00	2012-10-09 16:05:36.338263	2012-10-09 16:05:36.338263
+86666	1063	0.00	2012-10-09 16:05:36.346575	2012-10-09 16:05:36.346575
+86667	1064	0.00	2012-10-09 16:05:36.354936	2012-10-09 16:05:36.354936
+86668	1065	0.00	2012-10-09 16:05:36.363268	2012-10-09 16:05:36.363268
+86669	1066	0.00	2012-10-09 16:05:36.37157	2012-10-09 16:05:36.37157
+86670	1067	0.00	2012-10-09 16:05:36.379922	2012-10-09 16:05:36.379922
+86671	1068	0.00	2012-10-09 16:05:36.388256	2012-10-09 16:05:36.388256
+86672	1069	0.00	2012-10-09 16:05:36.397068	2012-10-09 16:05:36.397068
+86673	1070	0.00	2012-10-09 16:05:36.405277	2012-10-09 16:05:36.405277
+86674	1071	0.00	2012-10-09 16:05:36.413583	2012-10-09 16:05:36.413583
+86675	980	0.00	2012-10-09 16:05:36.421843	2012-10-09 16:05:36.421843
+86676	981	0.00	2012-10-09 16:05:36.430244	2012-10-09 16:05:36.430244
+86677	982	0.00	2012-10-09 16:05:36.438483	2012-10-09 16:05:36.438483
+86678	983	0.00	2012-10-09 16:05:36.446958	2012-10-09 16:05:36.446958
+86679	984	0.00	2012-10-09 16:05:36.455292	2012-10-09 16:05:36.455292
+86680	985	0.00	2012-10-09 16:05:36.463406	2012-10-09 16:05:36.463406
+86681	986	0.00	2012-10-09 16:05:36.47159	2012-10-09 16:05:36.47159
+86682	987	0.00	2012-10-09 16:05:36.479988	2012-10-09 16:05:36.479988
+86683	988	0.00	2012-10-09 16:05:36.488328	2012-10-09 16:05:36.488328
+86684	989	0.00	2012-10-09 16:05:36.496534	2012-10-09 16:05:36.496534
+86685	990	0.00	2012-10-09 16:05:36.505	2012-10-09 16:05:36.505
+86686	991	0.00	2012-10-09 16:05:36.513275	2012-10-09 16:05:36.513275
+86687	992	0.00	2012-10-09 16:05:36.521585	2012-10-09 16:05:36.521585
+86688	993	0.00	2012-10-09 16:05:36.529923	2012-10-09 16:05:36.529923
+86689	994	0.00	2012-10-09 16:05:36.538257	2012-10-09 16:05:36.538257
+86690	995	0.00	2012-10-09 16:05:36.546579	2012-10-09 16:05:36.546579
+86691	996	0.00	2012-10-09 16:05:36.554963	2012-10-09 16:05:36.554963
+86692	997	0.00	2012-10-09 16:05:36.563219	2012-10-09 16:05:36.563219
+86693	998	0.00	2012-10-09 16:05:36.571584	2012-10-09 16:05:36.571584
+86694	999	0.00	2012-10-09 16:05:36.579907	2012-10-09 16:05:36.579907
+86695	1000	0.00	2012-10-09 16:05:36.588264	2012-10-09 16:05:36.588264
+86696	1001	0.00	2012-10-09 16:05:36.596608	2012-10-09 16:05:36.596608
+86697	1002	0.00	2012-10-09 16:05:36.604948	2012-10-09 16:05:36.604948
+86698	1003	0.00	2012-10-09 16:05:36.613353	2012-10-09 16:05:36.613353
+86699	1004	0.00	2012-10-09 16:05:36.652458	2012-10-09 16:05:36.652458
+86700	1005	0.00	2012-10-09 16:05:36.663409	2012-10-09 16:05:36.663409
+86701	1006	0.00	2012-10-09 16:05:36.671523	2012-10-09 16:05:36.671523
+86702	1007	0.00	2012-10-09 16:05:36.679847	2012-10-09 16:05:36.679847
+86703	1008	0.00	2012-10-09 16:05:36.688226	2012-10-09 16:05:36.688226
+86704	1009	0.00	2012-10-09 16:05:36.696586	2012-10-09 16:05:36.696586
+86705	1010	0.00	2012-10-09 16:05:36.704916	2012-10-09 16:05:36.704916
+86706	1011	0.00	2012-10-09 16:05:36.713406	2012-10-09 16:05:36.713406
+86707	1012	0.00	2012-10-09 16:05:36.721939	2012-10-09 16:05:36.721939
+86708	1013	0.00	2012-10-09 16:05:36.730137	2012-10-09 16:05:36.730137
+86709	1014	0.00	2012-10-09 16:05:36.738549	2012-10-09 16:05:36.738549
+86710	1015	0.00	2012-10-09 16:05:36.7469	2012-10-09 16:05:36.7469
+86711	1016	0.00	2012-10-09 16:05:36.755284	2012-10-09 16:05:36.755284
+86712	1017	0.00	2012-10-09 16:05:36.763465	2012-10-09 16:05:36.763465
+86713	1018	0.00	2012-10-09 16:05:36.771664	2012-10-09 16:05:36.771664
+86714	1019	0.00	2012-10-09 16:05:36.780366	2012-10-09 16:05:36.780366
+86715	1020	0.00	2012-10-09 16:05:36.788464	2012-10-09 16:05:36.788464
+86716	1021	0.00	2012-10-09 16:05:36.796828	2012-10-09 16:05:36.796828
+86717	1022	0.00	2012-10-09 16:05:36.80522	2012-10-09 16:05:36.80522
+86718	1023	0.00	2012-10-09 16:05:36.813434	2012-10-09 16:05:36.813434
+86719	1024	0.00	2012-10-09 16:05:36.821577	2012-10-09 16:05:36.821577
+86720	1025	0.00	2012-10-09 16:05:36.830215	2012-10-09 16:05:36.830215
+86721	1026	0.00	2012-10-09 16:05:36.838516	2012-10-09 16:05:36.838516
+86722	1027	0.00	2012-10-09 16:05:36.846838	2012-10-09 16:05:36.846838
+86723	1028	0.00	2012-10-09 16:05:36.855304	2012-10-09 16:05:36.855304
+86724	1029	0.00	2012-10-09 16:05:36.863234	2012-10-09 16:05:36.863234
+86725	1030	0.00	2012-10-09 16:05:36.871505	2012-10-09 16:05:36.871505
+86726	1031	0.00	2012-10-09 16:05:36.879894	2012-10-09 16:05:36.879894
+86727	1032	0.00	2012-10-09 16:05:36.888251	2012-10-09 16:05:36.888251
+86728	1033	0.00	2012-10-09 16:05:36.89653	2012-10-09 16:05:36.89653
+86729	1034	0.00	2012-10-09 16:05:36.904878	2012-10-09 16:05:36.904878
+86730	1035	0.00	2012-10-09 16:05:36.913261	2012-10-09 16:05:36.913261
+86731	1036	0.00	2012-10-09 16:05:36.921542	2012-10-09 16:05:36.921542
+86732	1037	0.00	2012-10-09 16:05:36.929858	2012-10-09 16:05:36.929858
+86733	1038	0.00	2012-10-09 16:05:36.938297	2012-10-09 16:05:36.938297
+86734	1039	0.00	2012-10-09 16:05:36.946514	2012-10-09 16:05:36.946514
+86735	1040	0.00	2012-10-09 16:05:36.954916	2012-10-09 16:05:36.954916
+86736	1041	0.00	2012-10-09 16:05:36.963232	2012-10-09 16:05:36.963232
+86737	1042	0.00	2012-10-09 16:05:36.971605	2012-10-09 16:05:36.971605
+86738	1043	0.00	2012-10-09 16:05:36.979824	2012-10-09 16:05:36.979824
+86739	1044	0.00	2012-10-09 16:05:36.988187	2012-10-09 16:05:36.988187
+86740	1045	0.00	2012-10-09 16:05:36.996601	2012-10-09 16:05:36.996601
+86741	1046	0.00	2012-10-09 16:05:37.004993	2012-10-09 16:05:37.004993
+86742	1047	0.00	2012-10-09 16:05:37.013317	2012-10-09 16:05:37.013317
+86743	1048	0.00	2012-10-09 16:05:37.021591	2012-10-09 16:05:37.021591
+86744	1049	0.00	2012-10-09 16:05:37.029975	2012-10-09 16:05:37.029975
+86745	1050	0.00	2012-10-09 16:05:37.038265	2012-10-09 16:05:37.038265
+86746	1051	0.00	2012-10-09 16:05:37.046625	2012-10-09 16:05:37.046625
+86747	1052	0.00	2012-10-09 16:05:37.054956	2012-10-09 16:05:37.054956
+86748	1053	0.00	2012-10-09 16:05:37.093865	2012-10-09 16:05:37.093865
+86749	1054	0.00	2012-10-09 16:05:37.105631	2012-10-09 16:05:37.105631
+86750	1055	0.00	2012-10-09 16:05:37.113578	2012-10-09 16:05:37.113578
+86751	1056	0.00	2012-10-09 16:05:37.121761	2012-10-09 16:05:37.121761
+86752	1057	0.00	2012-10-09 16:05:37.130048	2012-10-09 16:05:37.130048
+86753	1058	0.00	2012-10-09 16:05:37.138512	2012-10-09 16:05:37.138512
+86754	1059	0.00	2012-10-09 16:05:37.147065	2012-10-09 16:05:37.147065
+86755	1060	0.00	2012-10-09 16:05:37.155183	2012-10-09 16:05:37.155183
+86756	1072	0.00	2012-10-09 16:05:37.16332	2012-10-09 16:05:37.16332
+86757	1073	0.00	2012-10-09 16:05:37.171585	2012-10-09 16:05:37.171585
+86758	1074	0.00	2012-10-09 16:05:37.219382	2012-10-09 16:05:37.219382
+86759	1075	0.00	2012-10-09 16:05:37.230666	2012-10-09 16:05:37.230666
+86760	1076	0.00	2012-10-09 16:05:37.238481	2012-10-09 16:05:37.238481
+86761	1077	0.00	2012-10-09 16:05:37.246486	2012-10-09 16:05:37.246486
+86762	1079	0.00	2012-10-09 16:05:37.25483	2012-10-09 16:05:37.25483
+86763	1080	0.00	2012-10-09 16:05:37.263142	2012-10-09 16:05:37.263142
+86764	1081	0.00	2012-10-09 16:05:37.271474	2012-10-09 16:05:37.271474
+86765	1082	0.00	2012-10-09 16:05:37.279794	2012-10-09 16:05:37.279794
+86766	1083	0.00	2012-10-09 16:05:37.288099	2012-10-09 16:05:37.288099
+86767	1084	0.00	2012-10-09 16:05:37.29646	2012-10-09 16:05:37.29646
+86768	1085	0.00	2012-10-09 16:05:37.304783	2012-10-09 16:05:37.304783
+86769	1086	0.00	2012-10-09 16:05:37.313118	2012-10-09 16:05:37.313118
+86770	1087	0.00	2012-10-09 16:05:37.321515	2012-10-09 16:05:37.321515
+86771	1088	0.00	2012-10-09 16:05:37.329842	2012-10-09 16:05:37.329842
+86772	1089	0.00	2012-10-09 16:05:37.338144	2012-10-09 16:05:37.338144
+86773	1090	0.00	2012-10-09 16:05:37.346454	2012-10-09 16:05:37.346454
+86774	1091	0.00	2012-10-09 16:05:37.354844	2012-10-09 16:05:37.354844
+86775	1092	0.00	2012-10-09 16:05:37.363114	2012-10-09 16:05:37.363114
+86776	1093	0.00	2012-10-09 16:05:37.371461	2012-10-09 16:05:37.371461
+86777	1094	0.00	2012-10-09 16:05:37.379814	2012-10-09 16:05:37.379814
+86778	1095	0.00	2012-10-09 16:05:37.388092	2012-10-09 16:05:37.388092
+86779	1096	0.00	2012-10-09 16:05:37.396423	2012-10-09 16:05:37.396423
+86780	1097	0.00	2012-10-09 16:05:37.40482	2012-10-09 16:05:37.40482
+86781	1098	0.00	2012-10-09 16:05:37.413108	2012-10-09 16:05:37.413108
+86782	1099	0.00	2012-10-09 16:05:37.421427	2012-10-09 16:05:37.421427
+86783	1100	0.00	2012-10-09 16:05:37.429782	2012-10-09 16:05:37.429782
+86784	1101	0.00	2012-10-09 16:05:37.438076	2012-10-09 16:05:37.438076
+86785	1102	0.00	2012-10-09 16:05:37.446407	2012-10-09 16:05:37.446407
+86786	1103	0.00	2012-10-09 16:05:37.454717	2012-10-09 16:05:37.454717
+86787	1104	0.00	2012-10-09 16:05:37.463015	2012-10-09 16:05:37.463015
+86788	1105	0.00	2012-10-09 16:05:37.471373	2012-10-09 16:05:37.471373
+86789	1106	0.00	2012-10-09 16:05:37.479691	2012-10-09 16:05:37.479691
+86790	1107	0.00	2012-10-09 16:05:37.488039	2012-10-09 16:05:37.488039
+86791	1108	0.00	2012-10-09 16:05:37.496388	2012-10-09 16:05:37.496388
+86792	1109	0.00	2012-10-09 16:05:37.504688	2012-10-09 16:05:37.504688
+86793	1110	0.00	2012-10-09 16:05:37.513011	2012-10-09 16:05:37.513011
+86794	1111	0.00	2012-10-09 16:05:37.521364	2012-10-09 16:05:37.521364
+86795	1112	0.00	2012-10-09 16:05:37.529616	2012-10-09 16:05:37.529616
+86796	1113	0.00	2012-10-09 16:05:37.53809	2012-10-09 16:05:37.53809
+86797	1114	0.00	2012-10-09 16:05:37.546308	2012-10-09 16:05:37.546308
+86798	1115	0.00	2012-10-09 16:05:37.554595	2012-10-09 16:05:37.554595
+86799	1116	0.00	2012-10-09 16:05:37.563006	2012-10-09 16:05:37.563006
+86800	1117	0.00	2012-10-09 16:05:37.571442	2012-10-09 16:05:37.571442
+86801	1118	0.00	2012-10-09 16:05:37.580317	2012-10-09 16:05:37.580317
+86802	1119	0.00	2012-10-09 16:05:37.588426	2012-10-09 16:05:37.588426
+86803	1120	0.00	2012-10-09 16:05:37.596728	2012-10-09 16:05:37.596728
+86804	1121	0.00	2012-10-09 16:05:37.6052	2012-10-09 16:05:37.6052
+86805	1122	0.00	2012-10-09 16:05:37.613403	2012-10-09 16:05:37.613403
+86806	1123	0.00	2012-10-09 16:05:37.6216	2012-10-09 16:05:37.6216
+86807	1124	0.00	2012-10-09 16:05:37.630194	2012-10-09 16:05:37.630194
+86808	1125	0.00	2012-10-09 16:05:37.669735	2012-10-09 16:05:37.669735
+86809	1126	0.00	2012-10-09 16:05:37.680374	2012-10-09 16:05:37.680374
+86810	1127	0.00	2012-10-09 16:05:37.68844	2012-10-09 16:05:37.68844
+86811	1128	0.00	2012-10-09 16:05:37.696497	2012-10-09 16:05:37.696497
+86812	1129	0.00	2012-10-09 16:05:37.705143	2012-10-09 16:05:37.705143
+86813	1130	0.00	2012-10-09 16:05:37.713351	2012-10-09 16:05:37.713351
+86814	1131	0.00	2012-10-09 16:05:37.721823	2012-10-09 16:05:37.721823
+86815	1132	0.00	2012-10-09 16:05:37.730177	2012-10-09 16:05:37.730177
+86816	1133	0.00	2012-10-09 16:05:37.738279	2012-10-09 16:05:37.738279
+86817	1134	0.00	2012-10-09 16:05:37.746497	2012-10-09 16:05:37.746497
+86818	1135	0.00	2012-10-09 16:05:37.754955	2012-10-09 16:05:37.754955
+86819	1136	0.00	2012-10-09 16:05:37.763292	2012-10-09 16:05:37.763292
+86820	1137	0.00	2012-10-09 16:05:37.771515	2012-10-09 16:05:37.771515
+86821	1138	0.00	2012-10-09 16:05:37.780029	2012-10-09 16:05:37.780029
+86822	1139	0.00	2012-10-09 16:05:37.788292	2012-10-09 16:05:37.788292
+86823	1140	0.00	2012-10-09 16:05:37.796316	2012-10-09 16:05:37.796316
+86824	1141	0.00	2012-10-09 16:05:37.804677	2012-10-09 16:05:37.804677
+86825	1142	0.00	2012-10-09 16:05:37.813104	2012-10-09 16:05:37.813104
+86826	1143	0.00	2012-10-09 16:05:37.82163	2012-10-09 16:05:37.82163
+86827	1144	0.00	2012-10-09 16:05:37.830239	2012-10-09 16:05:37.830239
+86828	1145	0.00	2012-10-09 16:05:37.838249	2012-10-09 16:05:37.838249
+86829	1146	0.00	2012-10-09 16:05:37.846535	2012-10-09 16:05:37.846535
+86830	1147	0.00	2012-10-09 16:05:37.855208	2012-10-09 16:05:37.855208
+86831	1148	0.00	2012-10-09 16:05:37.863285	2012-10-09 16:05:37.863285
+86832	1149	0.00	2012-10-09 16:05:37.87158	2012-10-09 16:05:37.87158
+86833	1150	0.00	2012-10-09 16:05:37.880113	2012-10-09 16:05:37.880113
+86834	1151	0.00	2012-10-09 16:05:37.888358	2012-10-09 16:05:37.888358
+86835	1152	0.00	2012-10-09 16:05:37.896508	2012-10-09 16:05:37.896508
+86836	1153	0.00	2012-10-09 16:05:37.905206	2012-10-09 16:05:37.905206
+86837	1154	0.00	2012-10-09 16:05:37.913222	2012-10-09 16:05:37.913222
+86838	1155	0.00	2012-10-09 16:05:37.921572	2012-10-09 16:05:37.921572
+86839	1156	0.00	2012-10-09 16:05:37.930163	2012-10-09 16:05:37.930163
+86840	1157	0.00	2012-10-09 16:05:37.938298	2012-10-09 16:05:37.938298
+86841	1158	0.00	2012-10-09 16:05:37.946389	2012-10-09 16:05:37.946389
+86842	1159	0.00	2012-10-09 16:05:37.954822	2012-10-09 16:05:37.954822
+86843	1160	0.00	2012-10-09 16:05:37.963157	2012-10-09 16:05:37.963157
+86844	1161	0.00	2012-10-09 16:05:37.971423	2012-10-09 16:05:37.971423
+86845	1162	0.00	2012-10-09 16:05:37.979776	2012-10-09 16:05:37.979776
+86846	1163	0.00	2012-10-09 16:05:37.988387	2012-10-09 16:05:37.988387
+86847	1164	0.00	2012-10-09 16:05:37.996909	2012-10-09 16:05:37.996909
+86848	1165	0.00	2012-10-09 16:05:38.005193	2012-10-09 16:05:38.005193
+86849	1166	0.00	2012-10-09 16:05:38.013392	2012-10-09 16:05:38.013392
+86850	1167	0.00	2012-10-09 16:05:38.02152	2012-10-09 16:05:38.02152
+86851	1168	0.00	2012-10-09 16:05:38.030183	2012-10-09 16:05:38.030183
+86852	1169	0.00	2012-10-09 16:05:38.03836	2012-10-09 16:05:38.03836
+86853	1170	0.00	2012-10-09 16:05:38.046614	2012-10-09 16:05:38.046614
+86854	1171	0.00	2012-10-09 16:05:38.055328	2012-10-09 16:05:38.055328
+86855	1172	0.00	2012-10-09 16:05:38.095509	2012-10-09 16:05:38.095509
+86856	1173	0.00	2012-10-09 16:05:38.104842	2012-10-09 16:05:38.104842
+86857	1174	0.00	2012-10-09 16:05:38.113063	2012-10-09 16:05:38.113063
+86858	1175	0.00	2012-10-09 16:05:38.121342	2012-10-09 16:05:38.121342
+86859	1176	0.00	2012-10-09 16:05:38.129703	2012-10-09 16:05:38.129703
+86860	1177	0.00	2012-10-09 16:05:38.138103	2012-10-09 16:05:38.138103
+86861	1178	0.00	2012-10-09 16:05:38.146473	2012-10-09 16:05:38.146473
+86862	1179	0.00	2012-10-09 16:05:38.154832	2012-10-09 16:05:38.154832
+86863	1180	0.00	2012-10-09 16:05:38.163475	2012-10-09 16:05:38.163475
+86864	1181	0.00	2012-10-09 16:05:38.1717	2012-10-09 16:05:38.1717
+86865	1182	0.00	2012-10-09 16:05:38.180197	2012-10-09 16:05:38.180197
+86866	1183	0.00	2012-10-09 16:05:38.188326	2012-10-09 16:05:38.188326
+86867	1184	0.00	2012-10-09 16:05:38.196631	2012-10-09 16:05:38.196631
+86868	1185	0.00	2012-10-09 16:05:38.247481	2012-10-09 16:05:38.247481
+86869	1186	0.00	2012-10-09 16:05:38.255363	2012-10-09 16:05:38.255363
+86870	1187	0.00	2012-10-09 16:05:38.263445	2012-10-09 16:05:38.263445
+86871	1188	0.00	2012-10-09 16:05:38.271748	2012-10-09 16:05:38.271748
+86872	1189	0.00	2012-10-09 16:05:38.280194	2012-10-09 16:05:38.280194
+86873	1190	0.00	2012-10-09 16:05:38.288379	2012-10-09 16:05:38.288379
+86874	1191	0.00	2012-10-09 16:05:38.29663	2012-10-09 16:05:38.29663
+86875	1192	0.00	2012-10-09 16:05:38.305188	2012-10-09 16:05:38.305188
+86876	1193	0.00	2012-10-09 16:05:38.313322	2012-10-09 16:05:38.313322
+86877	1194	0.00	2012-10-09 16:05:38.321623	2012-10-09 16:05:38.321623
+86878	1195	0.00	2012-10-09 16:05:38.330148	2012-10-09 16:05:38.330148
+86879	1196	0.00	2012-10-09 16:05:38.338422	2012-10-09 16:05:38.338422
+86880	1197	0.00	2012-10-09 16:05:38.346588	2012-10-09 16:05:38.346588
+86881	1198	0.00	2012-10-09 16:05:38.355165	2012-10-09 16:05:38.355165
+86882	1199	0.00	2012-10-09 16:05:38.363275	2012-10-09 16:05:38.363275
+86883	1200	0.00	2012-10-09 16:05:38.371574	2012-10-09 16:05:38.371574
+86884	1201	0.00	2012-10-09 16:05:38.380027	2012-10-09 16:05:38.380027
+86885	1202	0.00	2012-10-09 16:05:38.388356	2012-10-09 16:05:38.388356
+86886	1203	0.00	2012-10-09 16:05:38.39652	2012-10-09 16:05:38.39652
+86887	1204	0.00	2012-10-09 16:05:38.405152	2012-10-09 16:05:38.405152
+86888	1205	0.00	2012-10-09 16:05:38.413345	2012-10-09 16:05:38.413345
+86889	1206	0.00	2012-10-09 16:05:38.421518	2012-10-09 16:05:38.421518
+86890	1207	0.00	2012-10-09 16:05:38.429909	2012-10-09 16:05:38.429909
+86891	1208	0.00	2012-10-09 16:05:38.438262	2012-10-09 16:05:38.438262
+86892	1209	0.00	2012-10-09 16:05:38.446859	2012-10-09 16:05:38.446859
+86893	1210	0.00	2012-10-09 16:05:38.455157	2012-10-09 16:05:38.455157
+86894	1211	0.00	2012-10-09 16:05:38.463377	2012-10-09 16:05:38.463377
+86895	1212	0.00	2012-10-09 16:05:38.471608	2012-10-09 16:05:38.471608
+86896	1213	0.00	2012-10-09 16:05:38.480191	2012-10-09 16:05:38.480191
+86897	1214	0.00	2012-10-09 16:05:38.48838	2012-10-09 16:05:38.48838
+86898	1215	0.00	2012-10-09 16:05:38.496335	2012-10-09 16:05:38.496335
+86899	1216	0.00	2012-10-09 16:05:38.505182	2012-10-09 16:05:38.505182
+86900	1217	0.00	2012-10-09 16:05:38.513268	2012-10-09 16:05:38.513268
+86901	1218	0.00	2012-10-09 16:05:38.521405	2012-10-09 16:05:38.521405
+86902	1219	0.00	2012-10-09 16:05:38.530156	2012-10-09 16:05:38.530156
+86903	1220	0.00	2012-10-09 16:05:38.538352	2012-10-09 16:05:38.538352
+86904	1221	0.00	2012-10-09 16:05:38.546551	2012-10-09 16:05:38.546551
+86905	1222	0.00	2012-10-09 16:05:38.555119	2012-10-09 16:05:38.555119
+86906	1223	0.00	2012-10-09 16:05:38.563301	2012-10-09 16:05:38.563301
+86907	1224	0.00	2012-10-09 16:05:38.571585	2012-10-09 16:05:38.571585
+86908	1225	0.00	2012-10-09 16:05:38.579565	2012-10-09 16:05:38.579565
+86909	1226	0.00	2012-10-09 16:05:38.588333	2012-10-09 16:05:38.588333
+86910	1227	0.00	2012-10-09 16:05:38.596526	2012-10-09 16:05:38.596526
+86911	1228	0.00	2012-10-09 16:05:38.605124	2012-10-09 16:05:38.605124
+86912	1229	0.00	2012-10-09 16:05:38.613341	2012-10-09 16:05:38.613341
+86913	1230	0.00	2012-10-09 16:05:38.621544	2012-10-09 16:05:38.621544
+86914	1231	0.00	2012-10-09 16:05:38.62999	2012-10-09 16:05:38.62999
+86915	1232	0.00	2012-10-09 16:05:38.669878	2012-10-09 16:05:38.669878
+86916	1233	0.00	2012-10-09 16:05:38.680313	2012-10-09 16:05:38.680313
+86917	1234	0.00	2012-10-09 16:05:38.688289	2012-10-09 16:05:38.688289
+86918	1235	0.00	2012-10-09 16:05:38.696604	2012-10-09 16:05:38.696604
+86919	1236	0.00	2012-10-09 16:05:38.704978	2012-10-09 16:05:38.704978
+86920	1237	0.00	2012-10-09 16:05:38.713339	2012-10-09 16:05:38.713339
+86921	1238	0.00	2012-10-09 16:05:38.721315	2012-10-09 16:05:38.721315
+86922	1239	0.00	2012-10-09 16:05:38.730021	2012-10-09 16:05:38.730021
+86923	1240	0.00	2012-10-09 16:05:38.738283	2012-10-09 16:05:38.738283
+86924	1241	0.00	2012-10-09 16:05:38.746787	2012-10-09 16:05:38.746787
+86925	1242	0.00	2012-10-09 16:05:38.755233	2012-10-09 16:05:38.755233
+86926	1243	0.00	2012-10-09 16:05:38.763304	2012-10-09 16:05:38.763304
+86927	1244	0.00	2012-10-09 16:05:38.771653	2012-10-09 16:05:38.771653
+86928	1245	0.00	2012-10-09 16:05:38.780204	2012-10-09 16:05:38.780204
+86929	1246	0.00	2012-10-09 16:05:38.788283	2012-10-09 16:05:38.788283
+86930	1247	0.00	2012-10-09 16:05:38.796719	2012-10-09 16:05:38.796719
+86931	1248	0.00	2012-10-09 16:05:38.805163	2012-10-09 16:05:38.805163
+86932	1249	0.00	2012-10-09 16:05:38.813329	2012-10-09 16:05:38.813329
+86933	1250	0.00	2012-10-09 16:05:38.821654	2012-10-09 16:05:38.821654
+86934	1251	0.00	2012-10-09 16:05:38.830114	2012-10-09 16:05:38.830114
+86935	1252	0.00	2012-10-09 16:05:38.838321	2012-10-09 16:05:38.838321
+86936	1253	0.00	2012-10-09 16:05:38.846642	2012-10-09 16:05:38.846642
+86937	1254	0.00	2012-10-09 16:05:38.854982	2012-10-09 16:05:38.854982
+86938	1255	0.00	2012-10-09 16:05:38.863324	2012-10-09 16:05:38.863324
+86939	1256	0.00	2012-10-09 16:05:38.871562	2012-10-09 16:05:38.871562
+86940	1257	0.00	2012-10-09 16:05:38.880194	2012-10-09 16:05:38.880194
+86941	1258	0.00	2012-10-09 16:05:38.88829	2012-10-09 16:05:38.88829
+86942	1259	0.00	2012-10-09 16:05:38.896625	2012-10-09 16:05:38.896625
+86943	1260	0.00	2012-10-09 16:05:38.905153	2012-10-09 16:05:38.905153
+86944	1261	0.00	2012-10-09 16:05:38.913277	2012-10-09 16:05:38.913277
+86945	1262	0.00	2012-10-09 16:05:38.92139	2012-10-09 16:05:38.92139
+86946	1263	0.00	2012-10-09 16:05:38.930059	2012-10-09 16:05:38.930059
+86947	1264	0.00	2012-10-09 16:05:38.938257	2012-10-09 16:05:38.938257
+86948	1265	0.00	2012-10-09 16:05:38.946577	2012-10-09 16:05:38.946577
+86949	1266	0.00	2012-10-09 16:05:38.955017	2012-10-09 16:05:38.955017
+86950	1267	0.00	2012-10-09 16:05:38.963388	2012-10-09 16:05:38.963388
+86951	1268	0.00	2012-10-09 16:05:38.971499	2012-10-09 16:05:38.971499
+86952	1269	0.00	2012-10-09 16:05:38.980286	2012-10-09 16:05:38.980286
+86953	1270	0.00	2012-10-09 16:05:38.988317	2012-10-09 16:05:38.988317
+86954	1271	0.00	2012-10-09 16:05:38.996839	2012-10-09 16:05:38.996839
+86955	1272	0.00	2012-10-09 16:05:39.005237	2012-10-09 16:05:39.005237
+86956	1273	0.00	2012-10-09 16:05:39.013315	2012-10-09 16:05:39.013315
+86957	1274	0.00	2012-10-09 16:05:39.021756	2012-10-09 16:05:39.021756
+86958	1275	0.00	2012-10-09 16:05:39.030214	2012-10-09 16:05:39.030214
+86959	1276	0.00	2012-10-09 16:05:39.038194	2012-10-09 16:05:39.038194
+86960	1277	0.00	2012-10-09 16:05:39.078668	2012-10-09 16:05:39.078668
+86961	1278	0.00	2012-10-09 16:05:39.088372	2012-10-09 16:05:39.088372
+86962	1279	0.00	2012-10-09 16:05:39.096558	2012-10-09 16:05:39.096558
+86963	1280	0.00	2012-10-09 16:05:39.105107	2012-10-09 16:05:39.105107
+86964	1281	0.00	2012-10-09 16:05:39.113154	2012-10-09 16:05:39.113154
+86965	1282	0.00	2012-10-09 16:05:39.121471	2012-10-09 16:05:39.121471
+86966	1283	0.00	2012-10-09 16:05:39.129797	2012-10-09 16:05:39.129797
+86967	1284	0.00	2012-10-09 16:05:39.138021	2012-10-09 16:05:39.138021
+86968	1285	0.00	2012-10-09 16:05:39.146416	2012-10-09 16:05:39.146416
+86969	1286	0.00	2012-10-09 16:05:39.154805	2012-10-09 16:05:39.154805
+86970	1287	0.00	2012-10-09 16:05:39.163404	2012-10-09 16:05:39.163404
+86971	1288	0.00	2012-10-09 16:05:39.171275	2012-10-09 16:05:39.171275
+86972	1289	0.00	2012-10-09 16:05:39.179583	2012-10-09 16:05:39.179583
+86973	1290	0.00	2012-10-09 16:05:39.187959	2012-10-09 16:05:39.187959
+86974	1291	0.00	2012-10-09 16:05:39.196311	2012-10-09 16:05:39.196311
+86975	1292	0.00	2012-10-09 16:05:39.20458	2012-10-09 16:05:39.20458
+86976	1293	0.00	2012-10-09 16:05:39.21298	2012-10-09 16:05:39.21298
+86977	1294	0.00	2012-10-09 16:05:39.260875	2012-10-09 16:05:39.260875
+86978	1295	0.00	2012-10-09 16:05:39.27239	2012-10-09 16:05:39.27239
+86979	1296	0.00	2012-10-09 16:05:39.279934	2012-10-09 16:05:39.279934
+86980	1297	0.00	2012-10-09 16:05:39.288298	2012-10-09 16:05:39.288298
+86981	1298	0.00	2012-10-09 16:05:39.296546	2012-10-09 16:05:39.296546
+86982	1299	0.00	2012-10-09 16:05:39.304918	2012-10-09 16:05:39.304918
+86983	1300	0.00	2012-10-09 16:05:39.313365	2012-10-09 16:05:39.313365
+86984	1301	0.00	2012-10-09 16:05:39.321559	2012-10-09 16:05:39.321559
+86985	1302	0.00	2012-10-09 16:05:39.329999	2012-10-09 16:05:39.329999
+86986	1303	0.00	2012-10-09 16:05:39.33825	2012-10-09 16:05:39.33825
+86987	1304	0.00	2012-10-09 16:05:39.34653	2012-10-09 16:05:39.34653
+86988	1305	0.00	2012-10-09 16:05:39.354914	2012-10-09 16:05:39.354914
+86989	1306	0.00	2012-10-09 16:05:39.363296	2012-10-09 16:05:39.363296
+86990	1307	0.00	2012-10-09 16:05:39.371516	2012-10-09 16:05:39.371516
+86991	1308	0.00	2012-10-09 16:05:39.379913	2012-10-09 16:05:39.379913
+86992	1309	0.00	2012-10-09 16:05:39.388304	2012-10-09 16:05:39.388304
+86993	1310	0.00	2012-10-09 16:05:39.396501	2012-10-09 16:05:39.396501
+86994	1311	0.00	2012-10-09 16:05:39.404541	2012-10-09 16:05:39.404541
+86995	1312	0.00	2012-10-09 16:05:39.413176	2012-10-09 16:05:39.413176
+86996	1313	0.00	2012-10-09 16:05:39.421418	2012-10-09 16:05:39.421418
+86997	1314	0.00	2012-10-09 16:05:39.429486	2012-10-09 16:05:39.429486
+86998	1315	0.00	2012-10-09 16:05:39.438153	2012-10-09 16:05:39.438153
+86999	1316	0.00	2012-10-09 16:05:39.446392	2012-10-09 16:05:39.446392
+87000	1317	0.00	2012-10-09 16:05:39.45448	2012-10-09 16:05:39.45448
+87001	1318	0.00	2012-10-09 16:05:39.46313	2012-10-09 16:05:39.46313
+87002	1319	0.00	2012-10-09 16:05:39.471392	2012-10-09 16:05:39.471392
+87003	1320	0.00	2012-10-09 16:05:39.479556	2012-10-09 16:05:39.479556
+87004	1321	0.00	2012-10-09 16:05:39.488165	2012-10-09 16:05:39.488165
+87005	1322	0.00	2012-10-09 16:05:39.496293	2012-10-09 16:05:39.496293
+87006	1323	0.00	2012-10-09 16:05:39.504538	2012-10-09 16:05:39.504538
+87007	1324	0.00	2012-10-09 16:05:39.513143	2012-10-09 16:05:39.513143
+87008	1325	0.00	2012-10-09 16:05:39.52134	2012-10-09 16:05:39.52134
+87009	1326	0.00	2012-10-09 16:05:39.529633	2012-10-09 16:05:39.529633
+87010	1327	0.00	2012-10-09 16:05:39.538178	2012-10-09 16:05:39.538178
+87011	1328	0.00	2012-10-09 16:05:39.546328	2012-10-09 16:05:39.546328
+87012	1329	0.00	2012-10-09 16:05:39.554581	2012-10-09 16:05:39.554581
+87013	1330	0.00	2012-10-09 16:05:39.562905	2012-10-09 16:05:39.562905
+87014	1331	0.00	2012-10-09 16:05:39.571222	2012-10-09 16:05:39.571222
+87015	1332	0.00	2012-10-09 16:05:39.579523	2012-10-09 16:05:39.579523
+87016	1333	0.00	2012-10-09 16:05:39.587924	2012-10-09 16:05:39.587924
+87017	1334	0.00	2012-10-09 16:05:39.596189	2012-10-09 16:05:39.596189
+87018	1335	0.00	2012-10-09 16:05:39.604553	2012-10-09 16:05:39.604553
+87019	1336	0.00	2012-10-09 16:05:39.612857	2012-10-09 16:05:39.612857
+87020	1337	0.00	2012-10-09 16:05:39.621161	2012-10-09 16:05:39.621161
+87021	1338	0.00	2012-10-09 16:05:39.629474	2012-10-09 16:05:39.629474
+87022	1339	0.00	2012-10-09 16:05:39.670467	2012-10-09 16:05:39.670467
+87023	1340	0.00	2012-10-09 16:05:39.680188	2012-10-09 16:05:39.680188
+87024	1341	0.00	2012-10-09 16:05:39.687948	2012-10-09 16:05:39.687948
+87025	1342	0.00	2012-10-09 16:05:39.696244	2012-10-09 16:05:39.696244
+87026	1343	0.00	2012-10-09 16:05:39.704584	2012-10-09 16:05:39.704584
+87027	1344	0.00	2012-10-09 16:05:39.712913	2012-10-09 16:05:39.712913
+87028	1345	0.00	2012-10-09 16:05:39.721399	2012-10-09 16:05:39.721399
+87029	1346	0.00	2012-10-09 16:05:39.730205	2012-10-09 16:05:39.730205
+87030	1347	0.00	2012-10-09 16:05:39.738236	2012-10-09 16:05:39.738236
+87031	1348	0.00	2012-10-09 16:05:39.746621	2012-10-09 16:05:39.746621
+87032	1349	0.00	2012-10-09 16:05:39.755186	2012-10-09 16:05:39.755186
+87033	1350	0.00	2012-10-09 16:05:39.76345	2012-10-09 16:05:39.76345
+87034	1351	0.00	2012-10-09 16:05:39.771594	2012-10-09 16:05:39.771594
+87035	1352	0.00	2012-10-09 16:05:39.780153	2012-10-09 16:05:39.780153
+87036	1353	0.00	2012-10-09 16:05:39.788285	2012-10-09 16:05:39.788285
+87037	1354	0.00	2012-10-09 16:05:39.796583	2012-10-09 16:05:39.796583
+87038	1355	0.00	2012-10-09 16:05:39.805025	2012-10-09 16:05:39.805025
+87039	1356	0.00	2012-10-09 16:05:39.813309	2012-10-09 16:05:39.813309
+87040	1357	0.00	2012-10-09 16:05:39.821548	2012-10-09 16:05:39.821548
+87041	1358	0.00	2012-10-09 16:05:39.830047	2012-10-09 16:05:39.830047
+87042	1359	0.00	2012-10-09 16:05:39.838159	2012-10-09 16:05:39.838159
+87043	1360	0.00	2012-10-09 16:05:39.845924	2012-10-09 16:05:39.845924
+87044	1361	0.00	2012-10-09 16:05:39.854553	2012-10-09 16:05:39.854553
+87045	1362	0.00	2012-10-09 16:05:39.863	2012-10-09 16:05:39.863
+87046	1363	0.00	2012-10-09 16:05:39.871322	2012-10-09 16:05:39.871322
+87047	1364	0.00	2012-10-09 16:05:39.879654	2012-10-09 16:05:39.879654
+87048	1365	0.00	2012-10-09 16:05:39.888036	2012-10-09 16:05:39.888036
+87049	1366	0.00	2012-10-09 16:05:39.896305	2012-10-09 16:05:39.896305
+87050	1367	0.00	2012-10-09 16:05:39.904622	2012-10-09 16:05:39.904622
+87051	1368	0.00	2012-10-09 16:05:39.913225	2012-10-09 16:05:39.913225
+87052	1369	0.00	2012-10-09 16:05:39.921593	2012-10-09 16:05:39.921593
+87053	1370	0.00	2012-10-09 16:05:39.929916	2012-10-09 16:05:39.929916
+87054	1371	0.00	2012-10-09 16:05:39.938221	2012-10-09 16:05:39.938221
+87055	1372	0.00	2012-10-09 16:05:39.946571	2012-10-09 16:05:39.946571
+87056	1373	0.00	2012-10-09 16:05:39.954986	2012-10-09 16:05:39.954986
+87057	1374	0.00	2012-10-09 16:05:39.963248	2012-10-09 16:05:39.963248
+87058	1375	0.00	2012-10-09 16:05:39.971556	2012-10-09 16:05:39.971556
+87059	1376	0.00	2012-10-09 16:05:39.980308	2012-10-09 16:05:39.980308
+87060	1377	0.00	2012-10-09 16:05:39.988303	2012-10-09 16:05:39.988303
+87061	1379	0.00	2012-10-09 16:05:39.996643	2012-10-09 16:05:39.996643
+87062	1380	0.00	2012-10-09 16:05:40.005714	2012-10-09 16:05:40.005714
+87063	1381	0.00	2012-10-09 16:05:40.013375	2012-10-09 16:05:40.013375
+87064	1382	0.00	2012-10-09 16:05:40.054306	2012-10-09 16:05:40.054306
+87065	1383	0.00	2012-10-09 16:05:40.06333	2012-10-09 16:05:40.06333
+87066	1384	0.00	2012-10-09 16:05:40.07129	2012-10-09 16:05:40.07129
+87067	1385	0.00	2012-10-09 16:05:40.079594	2012-10-09 16:05:40.079594
+87068	1386	0.00	2012-10-09 16:05:40.087963	2012-10-09 16:05:40.087963
+87069	1387	0.00	2012-10-09 16:05:40.096264	2012-10-09 16:05:40.096264
+87070	1388	0.00	2012-10-09 16:05:40.104635	2012-10-09 16:05:40.104635
+87071	1389	0.00	2012-10-09 16:05:40.112968	2012-10-09 16:05:40.112968
+87072	1390	0.00	2012-10-09 16:05:40.121213	2012-10-09 16:05:40.121213
+87073	1391	0.00	2012-10-09 16:05:40.129573	2012-10-09 16:05:40.129573
+87074	1392	0.00	2012-10-09 16:05:40.13799	2012-10-09 16:05:40.13799
+87075	1393	0.00	2012-10-09 16:05:40.146248	2012-10-09 16:05:40.146248
+87076	1394	0.00	2012-10-09 16:05:40.154539	2012-10-09 16:05:40.154539
+87077	1395	0.00	2012-10-09 16:05:40.162956	2012-10-09 16:05:40.162956
+87078	1396	0.00	2012-10-09 16:05:40.171217	2012-10-09 16:05:40.171217
+87079	1397	0.00	2012-10-09 16:05:40.179505	2012-10-09 16:05:40.179505
+87080	1398	0.00	2012-10-09 16:05:40.188347	2012-10-09 16:05:40.188347
+87081	1399	0.00	2012-10-09 16:05:40.196494	2012-10-09 16:05:40.196494
+87082	1400	0.00	2012-10-09 16:05:40.204958	2012-10-09 16:05:40.204958
+87083	1401	0.00	2012-10-09 16:05:40.213195	2012-10-09 16:05:40.213195
+87084	1402	0.00	2012-10-09 16:05:40.221579	2012-10-09 16:05:40.221579
+87085	1403	0.00	2012-10-09 16:05:40.229886	2012-10-09 16:05:40.229886
+87086	1404	0.00	2012-10-09 16:05:40.238335	2012-10-09 16:05:40.238335
+87087	1405	0.00	2012-10-09 16:05:40.287076	2012-10-09 16:05:40.287076
+87088	1406	0.00	2012-10-09 16:05:40.297021	2012-10-09 16:05:40.297021
+87089	1407	0.00	2012-10-09 16:05:40.304886	2012-10-09 16:05:40.304886
+87090	1408	0.00	2012-10-09 16:05:40.313237	2012-10-09 16:05:40.313237
+87091	1409	0.00	2012-10-09 16:05:40.321414	2012-10-09 16:05:40.321414
+87092	1410	0.00	2012-10-09 16:05:40.329424	2012-10-09 16:05:40.329424
+87093	1411	0.00	2012-10-09 16:05:40.337931	2012-10-09 16:05:40.337931
+87094	1412	0.00	2012-10-09 16:05:40.346311	2012-10-09 16:05:40.346311
+87095	1413	0.00	2012-10-09 16:05:40.354511	2012-10-09 16:05:40.354511
+87096	1414	0.00	2012-10-09 16:05:40.362878	2012-10-09 16:05:40.362878
+87097	1415	0.00	2012-10-09 16:05:40.371239	2012-10-09 16:05:40.371239
+87098	1416	0.00	2012-10-09 16:05:40.379501	2012-10-09 16:05:40.379501
+87099	1417	0.00	2012-10-09 16:05:40.38787	2012-10-09 16:05:40.38787
+87100	1418	0.00	2012-10-09 16:05:40.39623	2012-10-09 16:05:40.39623
+87101	1419	0.00	2012-10-09 16:05:40.404454	2012-10-09 16:05:40.404454
+87102	1420	0.00	2012-10-09 16:05:40.412841	2012-10-09 16:05:40.412841
+87103	1421	0.00	2012-10-09 16:05:40.421556	2012-10-09 16:05:40.421556
+87104	1422	0.00	2012-10-09 16:05:40.430043	2012-10-09 16:05:40.430043
+87105	1423	0.00	2012-10-09 16:05:40.438179	2012-10-09 16:05:40.438179
+87106	1424	0.00	2012-10-09 16:05:40.446361	2012-10-09 16:05:40.446361
+87107	1425	0.00	2012-10-09 16:05:40.463631	2012-10-09 16:05:40.463631
+87108	1426	0.00	2012-10-09 16:05:40.480869	2012-10-09 16:05:40.480869
+87109	1427	0.00	2012-10-09 16:05:40.530146	2012-10-09 16:05:40.530146
+87110	1428	0.00	2012-10-09 16:05:40.546438	2012-10-09 16:05:40.546438
+87111	1429	0.00	2012-10-09 16:05:40.554599	2012-10-09 16:05:40.554599
+87112	1430	0.00	2012-10-09 16:05:40.563144	2012-10-09 16:05:40.563144
+87113	1431	0.00	2012-10-09 16:05:40.571062	2012-10-09 16:05:40.571062
+87114	1432	0.00	2012-10-09 16:05:40.579389	2012-10-09 16:05:40.579389
+87115	1433	0.00	2012-10-09 16:05:40.587977	2012-10-09 16:05:40.587977
+87116	1434	0.00	2012-10-09 16:05:40.596465	2012-10-09 16:05:40.596465
+87117	1435	0.00	2012-10-09 16:05:40.604893	2012-10-09 16:05:40.604893
+87118	1436	0.00	2012-10-09 16:05:40.613094	2012-10-09 16:05:40.613094
+87119	1437	0.00	2012-10-09 16:05:40.621293	2012-10-09 16:05:40.621293
+87120	1438	0.00	2012-10-09 16:05:40.629515	2012-10-09 16:05:40.629515
+87121	1439	0.00	2012-10-09 16:05:40.637979	2012-10-09 16:05:40.637979
+87122	1440	0.00	2012-10-09 16:05:40.646245	2012-10-09 16:05:40.646245
+87123	1441	0.00	2012-10-09 16:05:40.654342	2012-10-09 16:05:40.654342
+87124	1442	0.00	2012-10-09 16:05:40.663041	2012-10-09 16:05:40.663041
+87125	1443	0.00	2012-10-09 16:05:40.671346	2012-10-09 16:05:40.671346
+87126	1444	0.00	2012-10-09 16:05:40.679844	2012-10-09 16:05:40.679844
+87127	1445	0.00	2012-10-09 16:05:40.687968	2012-10-09 16:05:40.687968
+87128	1446	0.00	2012-10-09 16:05:40.696349	2012-10-09 16:05:40.696349
+87129	1447	0.00	2012-10-09 16:05:40.704618	2012-10-09 16:05:40.704618
+87130	1448	0.00	2012-10-09 16:05:40.747042	2012-10-09 16:05:40.747042
+87131	1449	0.00	2012-10-09 16:05:40.75505	2012-10-09 16:05:40.75505
+87132	1450	0.00	2012-10-09 16:05:40.763181	2012-10-09 16:05:40.763181
+87133	1451	0.00	2012-10-09 16:05:40.771458	2012-10-09 16:05:40.771458
+87134	1452	0.00	2012-10-09 16:05:40.779617	2012-10-09 16:05:40.779617
+87135	1453	0.00	2012-10-09 16:05:40.788192	2012-10-09 16:05:40.788192
+87136	1454	0.00	2012-10-09 16:05:40.796398	2012-10-09 16:05:40.796398
+87137	1455	0.00	2012-10-09 16:05:40.804828	2012-10-09 16:05:40.804828
+87138	1456	0.00	2012-10-09 16:05:40.813199	2012-10-09 16:05:40.813199
+87139	1457	0.00	2012-10-09 16:05:40.821381	2012-10-09 16:05:40.821381
+87140	1458	0.00	2012-10-09 16:05:40.829804	2012-10-09 16:05:40.829804
+87141	1459	0.00	2012-10-09 16:05:40.838233	2012-10-09 16:05:40.838233
+87142	1460	0.00	2012-10-09 16:05:40.846209	2012-10-09 16:05:40.846209
+87143	1461	0.00	2012-10-09 16:05:40.854497	2012-10-09 16:05:40.854497
+87144	1462	0.00	2012-10-09 16:05:40.862821	2012-10-09 16:05:40.862821
+87145	1463	0.00	2012-10-09 16:05:40.871187	2012-10-09 16:05:40.871187
+87146	1464	0.00	2012-10-09 16:05:40.879485	2012-10-09 16:05:40.879485
+87147	1465	0.00	2012-10-09 16:05:40.887941	2012-10-09 16:05:40.887941
+87148	1466	0.00	2012-10-09 16:05:40.896187	2012-10-09 16:05:40.896187
+87149	1467	0.00	2012-10-09 16:05:40.904524	2012-10-09 16:05:40.904524
+87150	1468	0.00	2012-10-09 16:05:40.912912	2012-10-09 16:05:40.912912
+87151	1469	0.00	2012-10-09 16:05:40.921238	2012-10-09 16:05:40.921238
+87152	1470	0.00	2012-10-09 16:05:40.929536	2012-10-09 16:05:40.929536
+87153	1471	0.00	2012-10-09 16:05:40.937905	2012-10-09 16:05:40.937905
+87154	1472	0.00	2012-10-09 16:05:40.946201	2012-10-09 16:05:40.946201
+87155	1473	0.00	2012-10-09 16:05:40.954562	2012-10-09 16:05:40.954562
+87156	1474	0.00	2012-10-09 16:05:40.962961	2012-10-09 16:05:40.962961
+87157	1475	0.00	2012-10-09 16:05:40.971254	2012-10-09 16:05:40.971254
+87158	1476	0.00	2012-10-09 16:05:40.979553	2012-10-09 16:05:40.979553
+87159	1477	0.00	2012-10-09 16:05:40.988367	2012-10-09 16:05:40.988367
+87160	1478	0.00	2012-10-09 16:05:40.996422	2012-10-09 16:05:40.996422
+87161	1479	0.00	2012-10-09 16:05:41.004812	2012-10-09 16:05:41.004812
+87162	1480	0.00	2012-10-09 16:05:41.013224	2012-10-09 16:05:41.013224
+87163	1481	0.00	2012-10-09 16:05:41.021431	2012-10-09 16:05:41.021431
+87164	1482	0.00	2012-10-09 16:05:41.029833	2012-10-09 16:05:41.029833
+87165	1483	0.00	2012-10-09 16:05:41.038217	2012-10-09 16:05:41.038217
+87166	1484	0.00	2012-10-09 16:05:41.046495	2012-10-09 16:05:41.046495
+87167	1485	0.00	2012-10-09 16:05:41.054898	2012-10-09 16:05:41.054898
+87168	1486	0.00	2012-10-09 16:05:41.063246	2012-10-09 16:05:41.063246
+87169	1487	0.00	2012-10-09 16:05:41.105118	2012-10-09 16:05:41.105118
+87170	1488	0.00	2012-10-09 16:05:41.113331	2012-10-09 16:05:41.113331
+87171	1489	0.00	2012-10-09 16:05:41.121398	2012-10-09 16:05:41.121398
+87172	1490	0.00	2012-10-09 16:05:41.129611	2012-10-09 16:05:41.129611
+87173	1491	0.00	2012-10-09 16:05:41.138259	2012-10-09 16:05:41.138259
+87174	1492	0.00	2012-10-09 16:05:41.146494	2012-10-09 16:05:41.146494
+87175	1493	0.00	2012-10-09 16:05:41.15461	2012-10-09 16:05:41.15461
+87176	1494	0.00	2012-10-09 16:05:41.16321	2012-10-09 16:05:41.16321
+87177	1495	0.00	2012-10-09 16:05:41.171418	2012-10-09 16:05:41.171418
+87178	1496	0.00	2012-10-09 16:05:41.179608	2012-10-09 16:05:41.179608
+87179	1497	0.00	2012-10-09 16:05:41.188363	2012-10-09 16:05:41.188363
+87180	1498	0.00	2012-10-09 16:05:41.196262	2012-10-09 16:05:41.196262
+87181	1499	0.00	2012-10-09 16:05:41.204609	2012-10-09 16:05:41.204609
+87182	1500	0.00	2012-10-09 16:05:41.213139	2012-10-09 16:05:41.213139
+87183	1078	0.00	2012-10-09 16:05:41.221441	2012-10-09 16:05:41.221441
+87184	1378	0.00	2012-10-09 16:05:41.229806	2012-10-09 16:05:41.229806
+87185	852	43.88	2012-10-09 16:05:58.340489	2012-10-09 16:05:58.340489
+87186	883	0.00	2012-10-09 16:05:58.348278	2012-10-09 16:05:58.348278
+87187	882	0.00	2012-10-09 16:05:58.356121	2012-10-09 16:05:58.356121
+87188	881	0.00	2012-10-09 16:05:58.364311	2012-10-09 16:05:58.364311
+87189	880	0.00	2012-10-09 16:05:58.372804	2012-10-09 16:05:58.372804
+87190	879	0.00	2012-10-09 16:05:58.381304	2012-10-09 16:05:58.381304
+87191	878	0.00	2012-10-09 16:05:58.389841	2012-10-09 16:05:58.389841
+87192	877	0.00	2012-10-09 16:05:58.398182	2012-10-09 16:05:58.398182
+87193	876	0.00	2012-10-09 16:05:58.406282	2012-10-09 16:05:58.406282
+87194	875	0.00	2012-10-09 16:05:58.414756	2012-10-09 16:05:58.414756
+87195	874	0.00	2012-10-09 16:05:58.422794	2012-10-09 16:05:58.422794
+87196	873	0.00	2012-10-09 16:05:58.431294	2012-10-09 16:05:58.431294
+87197	872	0.00	2012-10-09 16:05:58.439441	2012-10-09 16:05:58.439441
+87198	871	0.00	2012-10-09 16:05:58.447858	2012-10-09 16:05:58.447858
+87199	870	0.00	2012-10-09 16:05:58.456184	2012-10-09 16:05:58.456184
+87200	869	0.00	2012-10-09 16:05:58.464407	2012-10-09 16:05:58.464407
+87201	868	0.00	2012-10-09 16:05:58.472838	2012-10-09 16:05:58.472838
+87202	867	0.00	2012-10-09 16:05:58.481178	2012-10-09 16:05:58.481178
+87203	866	0.00	2012-10-09 16:05:58.489434	2012-10-09 16:05:58.489434
+87204	865	0.00	2012-10-09 16:05:58.497733	2012-10-09 16:05:58.497733
+87205	864	0.00	2012-10-09 16:05:58.506151	2012-10-09 16:05:58.506151
+87206	863	0.00	2012-10-09 16:05:58.514593	2012-10-09 16:05:58.514593
+87207	862	0.00	2012-10-09 16:05:58.522956	2012-10-09 16:05:58.522956
+87208	861	0.00	2012-10-09 16:05:58.531287	2012-10-09 16:05:58.531287
+87209	860	0.00	2012-10-09 16:05:58.539511	2012-10-09 16:05:58.539511
+87210	859	0.00	2012-10-09 16:05:58.547898	2012-10-09 16:05:58.547898
+87211	858	0.00	2012-10-09 16:05:58.556308	2012-10-09 16:05:58.556308
+87212	857	0.00	2012-10-09 16:05:58.564565	2012-10-09 16:05:58.564565
+87213	856	0.00	2012-10-09 16:05:58.572891	2012-10-09 16:05:58.572891
+87214	855	0.00	2012-10-09 16:05:58.58129	2012-10-09 16:05:58.58129
+87215	854	0.00	2012-10-09 16:05:58.589519	2012-10-09 16:05:58.589519
+87216	853	0.00	2012-10-09 16:05:58.597905	2012-10-09 16:05:58.597905
+87217	851	0.00	2012-10-09 16:05:58.606297	2012-10-09 16:05:58.606297
+87218	850	0.00	2012-10-09 16:05:58.614581	2012-10-09 16:05:58.614581
+87219	849	0.00	2012-10-09 16:05:58.640374	2012-10-09 16:05:58.640374
+87220	848	0.00	2012-10-09 16:05:58.681955	2012-10-09 16:05:58.681955
+87221	847	0.00	2012-10-09 16:05:58.722403	2012-10-09 16:05:58.722403
+87222	846	0.00	2012-10-09 16:05:58.739526	2012-10-09 16:05:58.739526
+87223	845	0.00	2012-10-09 16:05:58.77433	2012-10-09 16:05:58.77433
+87224	844	0.00	2012-10-09 16:05:58.781315	2012-10-09 16:05:58.781315
+87225	843	0.00	2012-10-09 16:05:58.789997	2012-10-09 16:05:58.789997
+87226	842	0.00	2012-10-09 16:05:58.798305	2012-10-09 16:05:58.798305
+87227	841	0.00	2012-10-09 16:05:58.806662	2012-10-09 16:05:58.806662
+87228	840	0.00	2012-10-09 16:05:58.81498	2012-10-09 16:05:58.81498
+87229	839	0.00	2012-10-09 16:05:58.823381	2012-10-09 16:05:58.823381
+87230	838	0.00	2012-10-09 16:05:58.831718	2012-10-09 16:05:58.831718
+87231	837	0.00	2012-10-09 16:05:58.84005	2012-10-09 16:05:58.84005
+87232	836	0.00	2012-10-09 16:05:58.848408	2012-10-09 16:05:58.848408
+87233	835	0.00	2012-10-09 16:05:58.857056	2012-10-09 16:05:58.857056
+87234	834	0.00	2012-10-09 16:05:58.865555	2012-10-09 16:05:58.865555
+87235	833	0.00	2012-10-09 16:05:58.87373	2012-10-09 16:05:58.87373
+87236	832	0.00	2012-10-09 16:05:58.882045	2012-10-09 16:05:58.882045
+87237	831	0.00	2012-10-09 16:05:58.890204	2012-10-09 16:05:58.890204
+87238	830	0.00	2012-10-09 16:05:58.898426	2012-10-09 16:05:58.898426
+87239	829	0.00	2012-10-09 16:05:58.906778	2012-10-09 16:05:58.906778
+87240	828	0.00	2012-10-09 16:05:58.91531	2012-10-09 16:05:58.91531
+87241	827	0.00	2012-10-09 16:05:58.923394	2012-10-09 16:05:58.923394
+87242	826	0.00	2012-10-09 16:05:58.931736	2012-10-09 16:05:58.931736
+87243	825	0.00	2012-10-09 16:05:58.940125	2012-10-09 16:05:58.940125
+87244	824	0.00	2012-10-09 16:05:58.948327	2012-10-09 16:05:58.948327
+87245	823	0.00	2012-10-09 16:05:58.956742	2012-10-09 16:05:58.956742
+87246	822	0.00	2012-10-09 16:05:58.965	2012-10-09 16:05:58.965
+87247	821	0.00	2012-10-09 16:05:58.973455	2012-10-09 16:05:58.973455
+87248	820	0.00	2012-10-09 16:05:58.981697	2012-10-09 16:05:58.981697
+87249	819	0.00	2012-10-09 16:05:58.990134	2012-10-09 16:05:58.990134
+87250	818	0.00	2012-10-09 16:05:58.998448	2012-10-09 16:05:58.998448
+87251	817	0.00	2012-10-09 16:05:59.006734	2012-10-09 16:05:59.006734
+87252	816	0.00	2012-10-09 16:05:59.015016	2012-10-09 16:05:59.015016
+87253	815	0.00	2012-10-09 16:05:59.023479	2012-10-09 16:05:59.023479
+87254	814	0.00	2012-10-09 16:05:59.031633	2012-10-09 16:05:59.031633
+87255	813	0.00	2012-10-09 16:05:59.040089	2012-10-09 16:05:59.040089
+87256	812	0.00	2012-10-09 16:05:59.048314	2012-10-09 16:05:59.048314
+87257	811	0.00	2012-10-09 16:05:59.056908	2012-10-09 16:05:59.056908
+87258	810	0.00	2012-10-09 16:05:59.06529	2012-10-09 16:05:59.06529
+87259	809	0.00	2012-10-09 16:05:59.073492	2012-10-09 16:05:59.073492
+87260	808	0.00	2012-10-09 16:05:59.081961	2012-10-09 16:05:59.081961
+87261	807	0.00	2012-10-09 16:05:59.090301	2012-10-09 16:05:59.090301
+87262	806	0.00	2012-10-09 16:05:59.098751	2012-10-09 16:05:59.098751
+87263	805	0.00	2012-10-09 16:05:59.106974	2012-10-09 16:05:59.106974
+87264	804	0.00	2012-10-09 16:05:59.115597	2012-10-09 16:05:59.115597
+87265	803	0.00	2012-10-09 16:05:59.124019	2012-10-09 16:05:59.124019
+87266	802	0.00	2012-10-09 16:05:59.132293	2012-10-09 16:05:59.132293
+87267	801	0.00	2012-10-09 16:05:59.14049	2012-10-09 16:05:59.14049
+87268	800	0.00	2012-10-09 16:05:59.149015	2012-10-09 16:05:59.149015
+87269	799	0.00	2012-10-09 16:05:59.15722	2012-10-09 16:05:59.15722
+87270	798	0.00	2012-10-09 16:05:59.165401	2012-10-09 16:05:59.165401
+87271	797	0.00	2012-10-09 16:05:59.173618	2012-10-09 16:05:59.173618
+87272	796	0.00	2012-10-09 16:05:59.181967	2012-10-09 16:05:59.181967
+87273	795	0.00	2012-10-09 16:05:59.190286	2012-10-09 16:05:59.190286
+87274	794	0.00	2012-10-09 16:05:59.198507	2012-10-09 16:05:59.198507
+87275	793	0.00	2012-10-09 16:05:59.206842	2012-10-09 16:05:59.206842
+87276	792	0.00	2012-10-09 16:05:59.215265	2012-10-09 16:05:59.215265
+87277	791	0.00	2012-10-09 16:05:59.22365	2012-10-09 16:05:59.22365
+87278	790	0.00	2012-10-09 16:05:59.231829	2012-10-09 16:05:59.231829
+87279	789	0.00	2012-10-09 16:05:59.240322	2012-10-09 16:05:59.240322
+87280	788	0.00	2012-10-09 16:05:59.24859	2012-10-09 16:05:59.24859
+87281	787	0.00	2012-10-09 16:05:59.256765	2012-10-09 16:05:59.256765
+87282	786	0.00	2012-10-09 16:05:59.265309	2012-10-09 16:05:59.265309
+87283	785	0.00	2012-10-09 16:05:59.273642	2012-10-09 16:05:59.273642
+87284	784	0.00	2012-10-09 16:05:59.281897	2012-10-09 16:05:59.281897
+87285	783	0.00	2012-10-09 16:05:59.290502	2012-10-09 16:05:59.290502
+87286	782	0.00	2012-10-09 16:05:59.299165	2012-10-09 16:05:59.299165
+87287	781	0.00	2012-10-09 16:05:59.307568	2012-10-09 16:05:59.307568
+87288	780	0.00	2012-10-09 16:05:59.315729	2012-10-09 16:05:59.315729
+87289	779	0.00	2012-10-09 16:05:59.324069	2012-10-09 16:05:59.324069
+87290	778	0.00	2012-10-09 16:05:59.332493	2012-10-09 16:05:59.332493
+87291	777	0.00	2012-10-09 16:05:59.340618	2012-10-09 16:05:59.340618
+87292	776	0.00	2012-10-09 16:05:59.349082	2012-10-09 16:05:59.349082
+87293	775	0.00	2012-10-09 16:05:59.383598	2012-10-09 16:05:59.383598
+87294	774	0.00	2012-10-09 16:05:59.390489	2012-10-09 16:05:59.390489
+87295	773	0.00	2012-10-09 16:05:59.398408	2012-10-09 16:05:59.398408
+87296	772	0.00	2012-10-09 16:05:59.406626	2012-10-09 16:05:59.406626
+87297	771	0.00	2012-10-09 16:05:59.415207	2012-10-09 16:05:59.415207
+87298	770	0.00	2012-10-09 16:05:59.423438	2012-10-09 16:05:59.423438
+87299	769	0.00	2012-10-09 16:05:59.431827	2012-10-09 16:05:59.431827
+87300	768	0.00	2012-10-09 16:05:59.440274	2012-10-09 16:05:59.440274
+87301	767	0.00	2012-10-09 16:05:59.448357	2012-10-09 16:05:59.448357
+87302	766	0.00	2012-10-09 16:05:59.456527	2012-10-09 16:05:59.456527
+87303	765	0.00	2012-10-09 16:05:59.465204	2012-10-09 16:05:59.465204
+87304	884	0.00	2012-10-09 16:06:39.881389	2012-10-09 16:06:39.881389
+87305	885	0.00	2012-10-09 16:06:39.899508	2012-10-09 16:06:39.899508
+87306	886	0.00	2012-10-09 16:06:39.916326	2012-10-09 16:06:39.916326
+87307	887	0.00	2012-10-09 16:06:39.957508	2012-10-09 16:06:39.957508
+87308	888	0.00	2012-10-09 16:06:39.99926	2012-10-09 16:06:39.99926
+87309	889	0.00	2012-10-09 16:06:40.04097	2012-10-09 16:06:40.04097
+87310	890	0.00	2012-10-09 16:06:40.07334	2012-10-09 16:06:40.07334
+87311	891	0.00	2012-10-09 16:06:40.107104	2012-10-09 16:06:40.107104
+87312	892	0.00	2012-10-09 16:06:40.14025	2012-10-09 16:06:40.14025
+87313	893	0.00	2012-10-09 16:06:40.173455	2012-10-09 16:06:40.173455
+87314	894	0.00	2012-10-09 16:06:40.206874	2012-10-09 16:06:40.206874
+87315	895	0.00	2012-10-09 16:06:40.240018	2012-10-09 16:06:40.240018
+87316	896	0.00	2012-10-09 16:06:40.273506	2012-10-09 16:06:40.273506
+87317	897	0.00	2012-10-09 16:06:40.306466	2012-10-09 16:06:40.306466
+87318	898	0.00	2012-10-09 16:06:40.371341	2012-10-09 16:06:40.371341
+87319	899	0.00	2012-10-09 16:06:40.407054	2012-10-09 16:06:40.407054
+87320	900	0.00	2012-10-09 16:06:40.414775	2012-10-09 16:06:40.414775
+87321	901	0.00	2012-10-09 16:06:40.423052	2012-10-09 16:06:40.423052
+87322	902	0.00	2012-10-09 16:06:40.431381	2012-10-09 16:06:40.431381
+87323	903	0.00	2012-10-09 16:06:40.439634	2012-10-09 16:06:40.439634
+87324	904	0.00	2012-10-09 16:06:40.447971	2012-10-09 16:06:40.447971
+87325	905	0.00	2012-10-09 16:06:40.456267	2012-10-09 16:06:40.456267
+87326	906	0.00	2012-10-09 16:06:40.464595	2012-10-09 16:06:40.464595
+87327	907	0.00	2012-10-09 16:06:40.472991	2012-10-09 16:06:40.472991
+87328	908	0.00	2012-10-09 16:06:40.481366	2012-10-09 16:06:40.481366
+87329	909	0.00	2012-10-09 16:06:40.49019	2012-10-09 16:06:40.49019
+87330	910	0.00	2012-10-09 16:06:40.497944	2012-10-09 16:06:40.497944
+87331	911	0.00	2012-10-09 16:06:40.506255	2012-10-09 16:06:40.506255
+87332	912	0.00	2012-10-09 16:06:40.514575	2012-10-09 16:06:40.514575
+87333	913	0.00	2012-10-09 16:06:40.522972	2012-10-09 16:06:40.522972
+87334	914	0.00	2012-10-09 16:06:40.531316	2012-10-09 16:06:40.531316
+87335	915	0.00	2012-10-09 16:06:40.53953	2012-10-09 16:06:40.53953
+87336	916	0.00	2012-10-09 16:06:40.547953	2012-10-09 16:06:40.547953
+87337	917	0.00	2012-10-09 16:06:40.556525	2012-10-09 16:06:40.556525
+87338	918	0.00	2012-10-09 16:06:40.564953	2012-10-09 16:06:40.564953
+87339	919	0.00	2012-10-09 16:06:40.573311	2012-10-09 16:06:40.573311
+87340	920	0.00	2012-10-09 16:06:40.581588	2012-10-09 16:06:40.581588
+87341	921	0.00	2012-10-09 16:06:40.590364	2012-10-09 16:06:40.590364
+87342	922	0.00	2012-10-09 16:06:40.598346	2012-10-09 16:06:40.598346
+87343	923	0.00	2012-10-09 16:06:40.606546	2012-10-09 16:06:40.606546
+87344	924	0.00	2012-10-09 16:06:40.615575	2012-10-09 16:06:40.615575
+87345	925	0.00	2012-10-09 16:06:40.624459	2012-10-09 16:06:40.624459
+87346	926	0.00	2012-10-09 16:06:40.631909	2012-10-09 16:06:40.631909
+87347	927	0.00	2012-10-09 16:06:40.640187	2012-10-09 16:06:40.640187
+87348	928	0.00	2012-10-09 16:06:40.648186	2012-10-09 16:06:40.648186
+87349	929	0.00	2012-10-09 16:06:40.656413	2012-10-09 16:06:40.656413
+87350	930	0.00	2012-10-09 16:06:40.664605	2012-10-09 16:06:40.664605
+87351	931	0.00	2012-10-09 16:06:40.673062	2012-10-09 16:06:40.673062
+87352	932	0.00	2012-10-09 16:06:40.681385	2012-10-09 16:06:40.681385
+87353	933	0.00	2012-10-09 16:06:40.689707	2012-10-09 16:06:40.689707
+87354	934	0.00	2012-10-09 16:06:40.698059	2012-10-09 16:06:40.698059
+87355	935	0.00	2012-10-09 16:06:40.706378	2012-10-09 16:06:40.706378
+87356	936	0.00	2012-10-09 16:06:40.714828	2012-10-09 16:06:40.714828
+87357	937	0.00	2012-10-09 16:06:40.723102	2012-10-09 16:06:40.723102
+87358	938	0.00	2012-10-09 16:06:40.7314	2012-10-09 16:06:40.7314
+87359	939	0.00	2012-10-09 16:06:40.740165	2012-10-09 16:06:40.740165
+87360	940	0.00	2012-10-09 16:06:40.748296	2012-10-09 16:06:40.748296
+87361	941	0.00	2012-10-09 16:06:40.75642	2012-10-09 16:06:40.75642
+87362	942	0.00	2012-10-09 16:06:40.764668	2012-10-09 16:06:40.764668
+87363	943	0.00	2012-10-09 16:06:40.77309	2012-10-09 16:06:40.77309
+87364	944	0.00	2012-10-09 16:06:40.781409	2012-10-09 16:06:40.781409
+87365	945	0.00	2012-10-09 16:06:40.789777	2012-10-09 16:06:40.789777
+87366	946	0.00	2012-10-09 16:06:40.79803	2012-10-09 16:06:40.79803
+87367	947	0.00	2012-10-09 16:06:40.806414	2012-10-09 16:06:40.806414
+87368	948	0.00	2012-10-09 16:06:40.814704	2012-10-09 16:06:40.814704
+87369	949	0.00	2012-10-09 16:06:40.82309	2012-10-09 16:06:40.82309
+87370	950	0.00	2012-10-09 16:06:40.862571	2012-10-09 16:06:40.862571
+87371	951	0.00	2012-10-09 16:06:40.87367	2012-10-09 16:06:40.87367
+87372	952	0.00	2012-10-09 16:06:40.881762	2012-10-09 16:06:40.881762
+87373	953	0.00	2012-10-09 16:06:40.89022	2012-10-09 16:06:40.89022
+87374	954	0.00	2012-10-09 16:06:40.898467	2012-10-09 16:06:40.898467
+87375	955	0.00	2012-10-09 16:06:40.906571	2012-10-09 16:06:40.906571
+87376	956	0.00	2012-10-09 16:06:40.914642	2012-10-09 16:06:40.914642
+87377	957	0.00	2012-10-09 16:06:40.923024	2012-10-09 16:06:40.923024
+87378	958	0.00	2012-10-09 16:06:40.931303	2012-10-09 16:06:40.931303
+87379	959	0.00	2012-10-09 16:06:40.939687	2012-10-09 16:06:40.939687
+87380	960	0.00	2012-10-09 16:06:40.948057	2012-10-09 16:06:40.948057
+87381	961	0.00	2012-10-09 16:06:40.95636	2012-10-09 16:06:40.95636
+87382	962	0.00	2012-10-09 16:06:40.964666	2012-10-09 16:06:40.964666
+87383	963	0.00	2012-10-09 16:06:40.973069	2012-10-09 16:06:40.973069
+87384	964	0.00	2012-10-09 16:06:40.981361	2012-10-09 16:06:40.981361
+87385	965	0.00	2012-10-09 16:06:40.989744	2012-10-09 16:06:40.989744
+87386	966	0.00	2012-10-09 16:06:40.998085	2012-10-09 16:06:40.998085
+87387	967	0.00	2012-10-09 16:06:41.006326	2012-10-09 16:06:41.006326
+87388	968	0.00	2012-10-09 16:06:41.01466	2012-10-09 16:06:41.01466
+87389	969	0.00	2012-10-09 16:06:41.023001	2012-10-09 16:06:41.023001
+87390	970	0.00	2012-10-09 16:06:41.031338	2012-10-09 16:06:41.031338
+87391	971	0.00	2012-10-09 16:06:41.039678	2012-10-09 16:06:41.039678
+87392	972	0.00	2012-10-09 16:06:41.048112	2012-10-09 16:06:41.048112
+87393	973	0.00	2012-10-09 16:06:41.056406	2012-10-09 16:06:41.056406
+87394	974	0.00	2012-10-09 16:06:41.064643	2012-10-09 16:06:41.064643
+87395	975	0.00	2012-10-09 16:06:41.073068	2012-10-09 16:06:41.073068
+87396	976	0.00	2012-10-09 16:06:41.081237	2012-10-09 16:06:41.081237
+87397	977	0.00	2012-10-09 16:06:41.089311	2012-10-09 16:06:41.089311
+87398	978	0.00	2012-10-09 16:06:41.098046	2012-10-09 16:06:41.098046
+87399	979	0.00	2012-10-09 16:06:41.106392	2012-10-09 16:06:41.106392
+87400	1061	0.00	2012-10-09 16:06:41.115227	2012-10-09 16:06:41.115227
+87401	1062	0.00	2012-10-09 16:06:41.123519	2012-10-09 16:06:41.123519
+87402	1063	0.00	2012-10-09 16:06:41.131817	2012-10-09 16:06:41.131817
+87403	1064	0.00	2012-10-09 16:06:41.140316	2012-10-09 16:06:41.140316
+87404	1065	0.00	2012-10-09 16:06:41.148148	2012-10-09 16:06:41.148148
+87405	1066	0.00	2012-10-09 16:06:41.156384	2012-10-09 16:06:41.156384
+87406	1067	0.00	2012-10-09 16:06:41.165127	2012-10-09 16:06:41.165127
+87407	1068	0.00	2012-10-09 16:06:41.173312	2012-10-09 16:06:41.173312
+87408	1069	0.00	2012-10-09 16:06:41.181671	2012-10-09 16:06:41.181671
+87409	1070	0.00	2012-10-09 16:06:41.190245	2012-10-09 16:06:41.190245
+87410	1071	0.00	2012-10-09 16:06:41.198345	2012-10-09 16:06:41.198345
+87411	980	0.00	2012-10-09 16:06:41.206633	2012-10-09 16:06:41.206633
+87412	981	0.00	2012-10-09 16:06:41.215206	2012-10-09 16:06:41.215206
+87413	982	0.00	2012-10-09 16:06:41.22333	2012-10-09 16:06:41.22333
+87414	983	0.00	2012-10-09 16:06:41.231577	2012-10-09 16:06:41.231577
+87415	984	0.00	2012-10-09 16:06:41.240273	2012-10-09 16:06:41.240273
+87416	985	0.00	2012-10-09 16:06:41.248344	2012-10-09 16:06:41.248344
+87417	986	0.00	2012-10-09 16:06:41.256868	2012-10-09 16:06:41.256868
+87418	987	0.00	2012-10-09 16:06:41.265167	2012-10-09 16:06:41.265167
+87419	988	0.00	2012-10-09 16:06:41.27319	2012-10-09 16:06:41.27319
+87420	989	0.00	2012-10-09 16:06:41.281662	2012-10-09 16:06:41.281662
+87421	990	0.00	2012-10-09 16:06:41.321518	2012-10-09 16:06:41.321518
+87422	991	0.00	2012-10-09 16:06:41.331923	2012-10-09 16:06:41.331923
+87423	992	0.00	2012-10-09 16:06:41.340253	2012-10-09 16:06:41.340253
+87424	993	0.00	2012-10-09 16:06:41.348322	2012-10-09 16:06:41.348322
+87425	994	0.00	2012-10-09 16:06:41.356573	2012-10-09 16:06:41.356573
+87426	995	0.00	2012-10-09 16:06:41.365053	2012-10-09 16:06:41.365053
+87427	996	0.00	2012-10-09 16:06:41.373382	2012-10-09 16:06:41.373382
+87428	997	0.00	2012-10-09 16:06:41.381513	2012-10-09 16:06:41.381513
+87429	998	0.00	2012-10-09 16:06:41.389968	2012-10-09 16:06:41.389968
+87430	999	0.00	2012-10-09 16:06:41.398253	2012-10-09 16:06:41.398253
+87431	1000	0.00	2012-10-09 16:06:41.406492	2012-10-09 16:06:41.406492
+87432	1001	0.00	2012-10-09 16:06:41.414737	2012-10-09 16:06:41.414737
+87433	1002	0.00	2012-10-09 16:06:41.423153	2012-10-09 16:06:41.423153
+87434	1003	0.00	2012-10-09 16:06:41.431452	2012-10-09 16:06:41.431452
+87435	1004	0.00	2012-10-09 16:06:41.439872	2012-10-09 16:06:41.439872
+87436	1005	0.00	2012-10-09 16:06:41.448455	2012-10-09 16:06:41.448455
+87437	1006	0.00	2012-10-09 16:06:41.45673	2012-10-09 16:06:41.45673
+87438	1007	0.00	2012-10-09 16:06:41.465268	2012-10-09 16:06:41.465268
+87439	1008	0.00	2012-10-09 16:06:41.473008	2012-10-09 16:06:41.473008
+87440	1009	0.00	2012-10-09 16:06:41.481746	2012-10-09 16:06:41.481746
+87441	1010	0.00	2012-10-09 16:06:41.490258	2012-10-09 16:06:41.490258
+87442	1011	0.00	2012-10-09 16:06:41.498352	2012-10-09 16:06:41.498352
+87443	1012	0.00	2012-10-09 16:06:41.506629	2012-10-09 16:06:41.506629
+87444	1013	0.00	2012-10-09 16:06:41.515047	2012-10-09 16:06:41.515047
+87445	1014	0.00	2012-10-09 16:06:41.52331	2012-10-09 16:06:41.52331
+87446	1015	0.00	2012-10-09 16:06:41.531609	2012-10-09 16:06:41.531609
+87447	1016	0.00	2012-10-09 16:06:41.540016	2012-10-09 16:06:41.540016
+87448	1017	0.00	2012-10-09 16:06:41.54806	2012-10-09 16:06:41.54806
+87449	1018	0.00	2012-10-09 16:06:41.556675	2012-10-09 16:06:41.556675
+87450	1019	0.00	2012-10-09 16:06:41.565191	2012-10-09 16:06:41.565191
+87451	1020	0.00	2012-10-09 16:06:41.573059	2012-10-09 16:06:41.573059
+87452	1021	0.00	2012-10-09 16:06:41.581381	2012-10-09 16:06:41.581381
+87453	1022	0.00	2012-10-09 16:06:41.589705	2012-10-09 16:06:41.589705
+87454	1023	0.00	2012-10-09 16:06:41.598032	2012-10-09 16:06:41.598032
+87455	1024	0.00	2012-10-09 16:06:41.606352	2012-10-09 16:06:41.606352
+87456	1025	0.00	2012-10-09 16:06:41.614641	2012-10-09 16:06:41.614641
+87457	1026	0.00	2012-10-09 16:06:41.623246	2012-10-09 16:06:41.623246
+87458	1027	0.00	2012-10-09 16:06:41.631584	2012-10-09 16:06:41.631584
+87459	1028	0.00	2012-10-09 16:06:41.640186	2012-10-09 16:06:41.640186
+87460	1029	0.00	2012-10-09 16:06:41.64836	2012-10-09 16:06:41.64836
+87461	1030	0.00	2012-10-09 16:06:41.65681	2012-10-09 16:06:41.65681
+87462	1031	0.00	2012-10-09 16:06:41.665242	2012-10-09 16:06:41.665242
+87463	1032	0.00	2012-10-09 16:06:41.67336	2012-10-09 16:06:41.67336
+87464	1033	0.00	2012-10-09 16:06:41.681635	2012-10-09 16:06:41.681635
+87465	1034	0.00	2012-10-09 16:06:41.690266	2012-10-09 16:06:41.690266
+87466	1035	0.00	2012-10-09 16:06:41.698316	2012-10-09 16:06:41.698316
+87467	1036	0.00	2012-10-09 16:06:41.706836	2012-10-09 16:06:41.706836
+87468	1037	0.00	2012-10-09 16:06:41.715231	2012-10-09 16:06:41.715231
+87469	1038	0.00	2012-10-09 16:06:41.723085	2012-10-09 16:06:41.723085
+87470	1039	0.00	2012-10-09 16:06:41.731963	2012-10-09 16:06:41.731963
+87471	1040	0.00	2012-10-09 16:06:41.773714	2012-10-09 16:06:41.773714
+87472	1041	0.00	2012-10-09 16:06:41.781519	2012-10-09 16:06:41.781519
+87473	1042	0.00	2012-10-09 16:06:41.789847	2012-10-09 16:06:41.789847
+87474	1043	0.00	2012-10-09 16:06:41.797959	2012-10-09 16:06:41.797959
+87475	1044	0.00	2012-10-09 16:06:41.806284	2012-10-09 16:06:41.806284
+87476	1045	0.00	2012-10-09 16:06:41.814624	2012-10-09 16:06:41.814624
+87477	1046	0.00	2012-10-09 16:06:41.822945	2012-10-09 16:06:41.822945
+87478	1047	0.00	2012-10-09 16:06:41.831253	2012-10-09 16:06:41.831253
+87479	1048	0.00	2012-10-09 16:06:41.839602	2012-10-09 16:06:41.839602
+87480	1049	0.00	2012-10-09 16:06:41.848006	2012-10-09 16:06:41.848006
+87481	1050	0.00	2012-10-09 16:06:41.856309	2012-10-09 16:06:41.856309
+87482	1051	0.00	2012-10-09 16:06:41.864602	2012-10-09 16:06:41.864602
+87483	1052	0.00	2012-10-09 16:06:41.872997	2012-10-09 16:06:41.872997
+87484	1053	0.00	2012-10-09 16:06:41.881368	2012-10-09 16:06:41.881368
+87485	1054	0.00	2012-10-09 16:06:41.889582	2012-10-09 16:06:41.889582
+87486	1055	0.00	2012-10-09 16:06:41.897968	2012-10-09 16:06:41.897968
+87487	1056	0.00	2012-10-09 16:06:41.906353	2012-10-09 16:06:41.906353
+87488	1057	0.00	2012-10-09 16:06:41.914576	2012-10-09 16:06:41.914576
+87489	1058	0.00	2012-10-09 16:06:41.9229	2012-10-09 16:06:41.9229
+87490	1059	0.00	2012-10-09 16:06:41.931268	2012-10-09 16:06:41.931268
+87491	1060	0.00	2012-10-09 16:06:41.939658	2012-10-09 16:06:41.939658
+87492	1072	0.00	2012-10-09 16:06:41.948016	2012-10-09 16:06:41.948016
+87493	1073	0.00	2012-10-09 16:06:41.956389	2012-10-09 16:06:41.956389
+87494	1074	0.00	2012-10-09 16:06:41.965217	2012-10-09 16:06:41.965217
+87495	1075	0.00	2012-10-09 16:06:41.97331	2012-10-09 16:06:41.97331
+87496	1076	0.00	2012-10-09 16:06:41.98158	2012-10-09 16:06:41.98158
+87497	1077	0.00	2012-10-09 16:06:41.98999	2012-10-09 16:06:41.98999
+87498	1079	0.00	2012-10-09 16:06:41.99827	2012-10-09 16:06:41.99827
+87499	1080	0.00	2012-10-09 16:06:42.006547	2012-10-09 16:06:42.006547
+87500	1081	0.00	2012-10-09 16:06:42.014953	2012-10-09 16:06:42.014953
+87501	1082	0.00	2012-10-09 16:06:42.023361	2012-10-09 16:06:42.023361
+87502	1083	0.00	2012-10-09 16:06:42.031511	2012-10-09 16:06:42.031511
+87503	1084	0.00	2012-10-09 16:06:42.056485	2012-10-09 16:06:42.056485
+87504	1085	0.00	2012-10-09 16:06:42.098041	2012-10-09 16:06:42.098041
+87505	1086	0.00	2012-10-09 16:06:42.139534	2012-10-09 16:06:42.139534
+87506	1087	0.00	2012-10-09 16:06:42.180928	2012-10-09 16:06:42.180928
+87507	1088	0.00	2012-10-09 16:06:42.222372	2012-10-09 16:06:42.222372
+87508	1089	0.00	2012-10-09 16:06:42.255249	2012-10-09 16:06:42.255249
+87509	1090	0.00	2012-10-09 16:06:42.296778	2012-10-09 16:06:42.296778
+87510	1091	0.00	2012-10-09 16:06:42.329975	2012-10-09 16:06:42.329975
+87511	1092	0.00	2012-10-09 16:06:42.371484	2012-10-09 16:06:42.371484
+87512	1093	0.00	2012-10-09 16:06:42.405284	2012-10-09 16:06:42.405284
+87513	1094	0.00	2012-10-09 16:06:42.438305	2012-10-09 16:06:42.438305
+87514	1095	0.00	2012-10-09 16:06:42.471397	2012-10-09 16:06:42.471397
+87515	1096	0.00	2012-10-09 16:06:42.504744	2012-10-09 16:06:42.504744
+87516	1097	0.00	2012-10-09 16:06:42.538115	2012-10-09 16:06:42.538115
+87517	1098	0.00	2012-10-09 16:06:42.571659	2012-10-09 16:06:42.571659
+87518	1099	0.00	2012-10-09 16:06:42.604907	2012-10-09 16:06:42.604907
+87519	1100	0.00	2012-10-09 16:06:42.669768	2012-10-09 16:06:42.669768
+87520	1101	0.00	2012-10-09 16:06:42.706343	2012-10-09 16:06:42.706343
+87521	1102	0.00	2012-10-09 16:06:42.714447	2012-10-09 16:06:42.714447
+87522	1103	0.00	2012-10-09 16:06:42.722888	2012-10-09 16:06:42.722888
+87523	1104	0.00	2012-10-09 16:06:42.731126	2012-10-09 16:06:42.731126
+87524	1105	0.00	2012-10-09 16:06:42.73942	2012-10-09 16:06:42.73942
+87525	1106	0.00	2012-10-09 16:06:42.747809	2012-10-09 16:06:42.747809
+87526	1107	0.00	2012-10-09 16:06:42.756073	2012-10-09 16:06:42.756073
+87527	1108	0.00	2012-10-09 16:06:42.764481	2012-10-09 16:06:42.764481
+87528	1109	0.00	2012-10-09 16:06:42.772871	2012-10-09 16:06:42.772871
+87529	1110	0.00	2012-10-09 16:06:42.781125	2012-10-09 16:06:42.781125
+87530	1111	0.00	2012-10-09 16:06:42.789416	2012-10-09 16:06:42.789416
+87531	1112	0.00	2012-10-09 16:06:42.797749	2012-10-09 16:06:42.797749
+87532	1113	0.00	2012-10-09 16:06:42.80657	2012-10-09 16:06:42.80657
+87533	1114	0.00	2012-10-09 16:06:42.814498	2012-10-09 16:06:42.814498
+87534	1115	0.00	2012-10-09 16:06:42.822987	2012-10-09 16:06:42.822987
+87535	1116	0.00	2012-10-09 16:06:42.83123	2012-10-09 16:06:42.83123
+87536	1117	0.00	2012-10-09 16:06:42.839381	2012-10-09 16:06:42.839381
+87537	1118	0.00	2012-10-09 16:06:42.847613	2012-10-09 16:06:42.847613
+87538	1119	0.00	2012-10-09 16:06:42.856162	2012-10-09 16:06:42.856162
+87539	1120	0.00	2012-10-09 16:06:42.864407	2012-10-09 16:06:42.864407
+87540	1121	0.00	2012-10-09 16:06:42.872766	2012-10-09 16:06:42.872766
+87541	1122	0.00	2012-10-09 16:06:42.881123	2012-10-09 16:06:42.881123
+87542	1123	0.00	2012-10-09 16:06:42.889414	2012-10-09 16:06:42.889414
+87543	1124	0.00	2012-10-09 16:06:42.897818	2012-10-09 16:06:42.897818
+87544	1125	0.00	2012-10-09 16:06:42.906043	2012-10-09 16:06:42.906043
+87545	1126	0.00	2012-10-09 16:06:42.914365	2012-10-09 16:06:42.914365
+87546	1127	0.00	2012-10-09 16:06:42.922712	2012-10-09 16:06:42.922712
+87547	1128	0.00	2012-10-09 16:06:42.931084	2012-10-09 16:06:42.931084
+87548	1129	0.00	2012-10-09 16:06:42.940397	2012-10-09 16:06:42.940397
+87549	1130	0.00	2012-10-09 16:06:42.957403	2012-10-09 16:06:42.957403
+87550	1131	0.00	2012-10-09 16:06:42.974047	2012-10-09 16:06:42.974047
+87551	1132	0.00	2012-10-09 16:06:42.9908	2012-10-09 16:06:42.9908
+87552	1133	0.00	2012-10-09 16:06:43.007423	2012-10-09 16:06:43.007423
+87553	1134	0.00	2012-10-09 16:06:43.02449	2012-10-09 16:06:43.02449
+87554	1135	0.00	2012-10-09 16:06:43.041162	2012-10-09 16:06:43.041162
+87555	1136	0.00	2012-10-09 16:06:43.057769	2012-10-09 16:06:43.057769
+87556	1137	0.00	2012-10-09 16:06:43.074299	2012-10-09 16:06:43.074299
+87557	1138	0.00	2012-10-09 16:06:43.091185	2012-10-09 16:06:43.091185
+87558	1139	0.00	2012-10-09 16:06:43.107401	2012-10-09 16:06:43.107401
+87559	1140	0.00	2012-10-09 16:06:43.124239	2012-10-09 16:06:43.124239
+87560	1141	0.00	2012-10-09 16:06:43.141206	2012-10-09 16:06:43.141206
+87561	1142	0.00	2012-10-09 16:06:43.157641	2012-10-09 16:06:43.157641
+87562	1143	0.00	2012-10-09 16:06:43.174444	2012-10-09 16:06:43.174444
+87563	1144	0.00	2012-10-09 16:06:43.19121	2012-10-09 16:06:43.19121
+87564	1145	0.00	2012-10-09 16:06:43.20756	2012-10-09 16:06:43.20756
+87565	1146	0.00	2012-10-09 16:06:43.22406	2012-10-09 16:06:43.22406
+87566	1147	0.00	2012-10-09 16:06:43.240862	2012-10-09 16:06:43.240862
+87567	1148	0.00	2012-10-09 16:06:43.291471	2012-10-09 16:06:43.291471
+87568	1149	0.00	2012-10-09 16:06:43.307809	2012-10-09 16:06:43.307809
+87569	1150	0.00	2012-10-09 16:06:43.323999	2012-10-09 16:06:43.323999
+87570	1151	0.00	2012-10-09 16:06:43.340586	2012-10-09 16:06:43.340586
+87571	1152	0.00	2012-10-09 16:06:43.357291	2012-10-09 16:06:43.357291
+87572	1153	0.00	2012-10-09 16:06:43.374302	2012-10-09 16:06:43.374302
+87573	1154	0.00	2012-10-09 16:06:43.391026	2012-10-09 16:06:43.391026
+87574	1155	0.00	2012-10-09 16:06:43.407334	2012-10-09 16:06:43.407334
+87575	1156	0.00	2012-10-09 16:06:43.424386	2012-10-09 16:06:43.424386
+87576	1157	0.00	2012-10-09 16:06:43.440761	2012-10-09 16:06:43.440761
+87577	1158	0.00	2012-10-09 16:06:43.457349	2012-10-09 16:06:43.457349
+87578	1159	0.00	2012-10-09 16:06:43.474126	2012-10-09 16:06:43.474126
+87579	1160	0.00	2012-10-09 16:06:43.491019	2012-10-09 16:06:43.491019
+87580	1161	0.00	2012-10-09 16:06:43.498983	2012-10-09 16:06:43.498983
+87581	1162	0.00	2012-10-09 16:06:43.507344	2012-10-09 16:06:43.507344
+87582	1163	0.00	2012-10-09 16:06:43.515477	2012-10-09 16:06:43.515477
+87583	1164	0.00	2012-10-09 16:06:43.523898	2012-10-09 16:06:43.523898
+87584	1165	0.00	2012-10-09 16:06:43.532224	2012-10-09 16:06:43.532224
+87585	1166	0.00	2012-10-09 16:06:43.540503	2012-10-09 16:06:43.540503
+87586	1167	0.00	2012-10-09 16:06:43.548879	2012-10-09 16:06:43.548879
+87587	1168	0.00	2012-10-09 16:06:43.557295	2012-10-09 16:06:43.557295
+87588	1169	0.00	2012-10-09 16:06:43.565528	2012-10-09 16:06:43.565528
+87589	1170	0.00	2012-10-09 16:06:43.573868	2012-10-09 16:06:43.573868
+87590	1171	0.00	2012-10-09 16:06:43.582264	2012-10-09 16:06:43.582264
+87591	1172	0.00	2012-10-09 16:06:43.590993	2012-10-09 16:06:43.590993
+87592	1173	0.00	2012-10-09 16:06:43.599276	2012-10-09 16:06:43.599276
+87593	1174	0.00	2012-10-09 16:06:43.607481	2012-10-09 16:06:43.607481
+87594	1175	0.00	2012-10-09 16:06:43.615479	2012-10-09 16:06:43.615479
+87595	1176	0.00	2012-10-09 16:06:43.6242	2012-10-09 16:06:43.6242
+87596	1177	0.00	2012-10-09 16:06:43.632337	2012-10-09 16:06:43.632337
+87597	1178	0.00	2012-10-09 16:06:43.640603	2012-10-09 16:06:43.640603
+87598	1179	0.00	2012-10-09 16:06:43.649206	2012-10-09 16:06:43.649206
+87599	1180	0.00	2012-10-09 16:06:43.657421	2012-10-09 16:06:43.657421
+87600	1181	0.00	2012-10-09 16:06:43.66551	2012-10-09 16:06:43.66551
+87601	1182	0.00	2012-10-09 16:06:43.67411	2012-10-09 16:06:43.67411
+87602	1183	0.00	2012-10-09 16:06:43.682388	2012-10-09 16:06:43.682388
+87603	1184	0.00	2012-10-09 16:06:43.690628	2012-10-09 16:06:43.690628
+87604	1185	0.00	2012-10-09 16:06:43.69917	2012-10-09 16:06:43.69917
+87605	1186	0.00	2012-10-09 16:06:43.707578	2012-10-09 16:06:43.707578
+87606	1187	0.00	2012-10-09 16:06:43.715639	2012-10-09 16:06:43.715639
+87607	1188	0.00	2012-10-09 16:06:43.724384	2012-10-09 16:06:43.724384
+87608	1189	0.00	2012-10-09 16:06:43.732435	2012-10-09 16:06:43.732435
+87609	1190	0.00	2012-10-09 16:06:43.740832	2012-10-09 16:06:43.740832
+87610	1191	0.00	2012-10-09 16:06:43.749165	2012-10-09 16:06:43.749165
+87611	1192	0.00	2012-10-09 16:06:43.766659	2012-10-09 16:06:43.766659
+87612	1193	0.00	2012-10-09 16:06:43.774373	2012-10-09 16:06:43.774373
+87613	1194	0.00	2012-10-09 16:06:43.815253	2012-10-09 16:06:43.815253
+87614	1195	0.00	2012-10-09 16:06:43.823992	2012-10-09 16:06:43.823992
+87615	1196	0.00	2012-10-09 16:06:43.832274	2012-10-09 16:06:43.832274
+87616	1197	0.00	2012-10-09 16:06:43.840434	2012-10-09 16:06:43.840434
+87617	1198	0.00	2012-10-09 16:06:43.84884	2012-10-09 16:06:43.84884
+87618	1199	0.00	2012-10-09 16:06:43.857271	2012-10-09 16:06:43.857271
+87619	1200	0.00	2012-10-09 16:06:43.865519	2012-10-09 16:06:43.865519
+87620	1201	0.00	2012-10-09 16:06:43.87375	2012-10-09 16:06:43.87375
+87621	1202	0.00	2012-10-09 16:06:43.882193	2012-10-09 16:06:43.882193
+87622	1203	0.00	2012-10-09 16:06:43.890505	2012-10-09 16:06:43.890505
+87623	1204	0.00	2012-10-09 16:06:43.898905	2012-10-09 16:06:43.898905
+87624	1205	0.00	2012-10-09 16:06:43.907436	2012-10-09 16:06:43.907436
+87625	1206	0.00	2012-10-09 16:06:43.915703	2012-10-09 16:06:43.915703
+87626	1207	0.00	2012-10-09 16:06:43.924138	2012-10-09 16:06:43.924138
+87627	1208	0.00	2012-10-09 16:06:43.932518	2012-10-09 16:06:43.932518
+87628	1209	0.00	2012-10-09 16:06:43.940634	2012-10-09 16:06:43.940634
+87629	1210	0.00	2012-10-09 16:06:43.949219	2012-10-09 16:06:43.949219
+87630	1211	0.00	2012-10-09 16:06:43.957492	2012-10-09 16:06:43.957492
+87631	1212	0.00	2012-10-09 16:06:43.965847	2012-10-09 16:06:43.965847
+87632	1213	0.00	2012-10-09 16:06:43.974231	2012-10-09 16:06:43.974231
+87633	1214	0.00	2012-10-09 16:06:43.982407	2012-10-09 16:06:43.982407
+87634	1215	0.00	2012-10-09 16:06:43.99065	2012-10-09 16:06:43.99065
+87635	1216	0.00	2012-10-09 16:06:43.999231	2012-10-09 16:06:43.999231
+87636	1217	0.00	2012-10-09 16:06:44.007416	2012-10-09 16:06:44.007416
+87637	1218	0.00	2012-10-09 16:06:44.015676	2012-10-09 16:06:44.015676
+87638	1219	0.00	2012-10-09 16:06:44.02428	2012-10-09 16:06:44.02428
+87639	1220	0.00	2012-10-09 16:06:44.032534	2012-10-09 16:06:44.032534
+87640	1221	0.00	2012-10-09 16:06:44.040742	2012-10-09 16:06:44.040742
+87641	1222	0.00	2012-10-09 16:06:44.049235	2012-10-09 16:06:44.049235
+87642	1223	0.00	2012-10-09 16:06:44.057456	2012-10-09 16:06:44.057456
+87643	1224	0.00	2012-10-09 16:06:44.065632	2012-10-09 16:06:44.065632
+87644	1225	0.00	2012-10-09 16:06:44.074088	2012-10-09 16:06:44.074088
+87645	1226	0.00	2012-10-09 16:06:44.082351	2012-10-09 16:06:44.082351
+87646	1227	0.00	2012-10-09 16:06:44.090824	2012-10-09 16:06:44.090824
+87647	1228	0.00	2012-10-09 16:06:44.099296	2012-10-09 16:06:44.099296
+87648	1229	0.00	2012-10-09 16:06:44.107481	2012-10-09 16:06:44.107481
+87649	1230	0.00	2012-10-09 16:06:44.115739	2012-10-09 16:06:44.115739
+87650	1231	0.00	2012-10-09 16:06:44.123874	2012-10-09 16:06:44.123874
+87651	1232	0.00	2012-10-09 16:06:44.132268	2012-10-09 16:06:44.132268
+87652	1233	0.00	2012-10-09 16:06:44.140658	2012-10-09 16:06:44.140658
+87653	1234	0.00	2012-10-09 16:06:44.14932	2012-10-09 16:06:44.14932
+87654	1235	0.00	2012-10-09 16:06:44.157444	2012-10-09 16:06:44.157444
+87655	1236	0.00	2012-10-09 16:06:44.165611	2012-10-09 16:06:44.165611
+87656	1237	0.00	2012-10-09 16:06:44.174253	2012-10-09 16:06:44.174253
+87657	1238	0.00	2012-10-09 16:06:44.182438	2012-10-09 16:06:44.182438
+87658	1239	0.00	2012-10-09 16:06:44.223265	2012-10-09 16:06:44.223265
+87659	1240	0.00	2012-10-09 16:06:44.232618	2012-10-09 16:06:44.232618
+87660	1241	0.00	2012-10-09 16:06:44.240853	2012-10-09 16:06:44.240853
+87661	1242	0.00	2012-10-09 16:06:44.249238	2012-10-09 16:06:44.249238
+87662	1243	0.00	2012-10-09 16:06:44.257433	2012-10-09 16:06:44.257433
+87663	1244	0.00	2012-10-09 16:06:44.265914	2012-10-09 16:06:44.265914
+87664	1245	0.00	2012-10-09 16:06:44.274243	2012-10-09 16:06:44.274243
+87665	1246	0.00	2012-10-09 16:06:44.282321	2012-10-09 16:06:44.282321
+87666	1247	0.00	2012-10-09 16:06:44.290785	2012-10-09 16:06:44.290785
+87667	1248	0.00	2012-10-09 16:06:44.299188	2012-10-09 16:06:44.299188
+87668	1249	0.00	2012-10-09 16:06:44.307315	2012-10-09 16:06:44.307315
+87669	1250	0.00	2012-10-09 16:06:44.315759	2012-10-09 16:06:44.315759
+87670	1251	0.00	2012-10-09 16:06:44.324269	2012-10-09 16:06:44.324269
+87671	1252	0.00	2012-10-09 16:06:44.332454	2012-10-09 16:06:44.332454
+87672	1253	0.00	2012-10-09 16:06:44.340738	2012-10-09 16:06:44.340738
+87673	1254	0.00	2012-10-09 16:06:44.349199	2012-10-09 16:06:44.349199
+87674	1255	0.00	2012-10-09 16:06:44.357343	2012-10-09 16:06:44.357343
+87675	1256	0.00	2012-10-09 16:06:44.365514	2012-10-09 16:06:44.365514
+87676	1257	0.00	2012-10-09 16:06:44.373902	2012-10-09 16:06:44.373902
+87677	1258	0.00	2012-10-09 16:06:44.382232	2012-10-09 16:06:44.382232
+87678	1259	0.00	2012-10-09 16:06:44.390506	2012-10-09 16:06:44.390506
+87679	1260	0.00	2012-10-09 16:06:44.398917	2012-10-09 16:06:44.398917
+87680	1261	0.00	2012-10-09 16:06:44.407286	2012-10-09 16:06:44.407286
+87681	1262	0.00	2012-10-09 16:06:44.415461	2012-10-09 16:06:44.415461
+87682	1263	0.00	2012-10-09 16:06:44.423974	2012-10-09 16:06:44.423974
+87683	1264	0.00	2012-10-09 16:06:44.432279	2012-10-09 16:06:44.432279
+87684	1265	0.00	2012-10-09 16:06:44.440567	2012-10-09 16:06:44.440567
+87685	1266	0.00	2012-10-09 16:06:44.44894	2012-10-09 16:06:44.44894
+87686	1267	0.00	2012-10-09 16:06:44.457665	2012-10-09 16:06:44.457665
+87687	1268	0.00	2012-10-09 16:06:44.465938	2012-10-09 16:06:44.465938
+87688	1269	0.00	2012-10-09 16:06:44.474209	2012-10-09 16:06:44.474209
+87689	1270	0.00	2012-10-09 16:06:44.482428	2012-10-09 16:06:44.482428
+87690	1271	0.00	2012-10-09 16:06:44.490942	2012-10-09 16:06:44.490942
+87691	1272	0.00	2012-10-09 16:06:44.499201	2012-10-09 16:06:44.499201
+87692	1273	0.00	2012-10-09 16:06:44.507363	2012-10-09 16:06:44.507363
+87693	1274	0.00	2012-10-09 16:06:44.515951	2012-10-09 16:06:44.515951
+87694	1275	0.00	2012-10-09 16:06:44.524647	2012-10-09 16:06:44.524647
+87695	1276	0.00	2012-10-09 16:06:44.532865	2012-10-09 16:06:44.532865
+87696	1277	0.00	2012-10-09 16:06:44.54193	2012-10-09 16:06:44.54193
+87697	1278	0.00	2012-10-09 16:06:44.549369	2012-10-09 16:06:44.549369
+87698	1279	0.00	2012-10-09 16:06:44.557868	2012-10-09 16:06:44.557868
+87699	1280	0.00	2012-10-09 16:06:44.566165	2012-10-09 16:06:44.566165
+87700	1281	0.00	2012-10-09 16:06:44.574593	2012-10-09 16:06:44.574593
+87701	1282	0.00	2012-10-09 16:06:44.583415	2012-10-09 16:06:44.583415
+87702	1283	0.00	2012-10-09 16:06:44.591097	2012-10-09 16:06:44.591097
+87703	1284	0.00	2012-10-09 16:06:44.631661	2012-10-09 16:06:44.631661
+87704	1285	0.00	2012-10-09 16:06:44.640798	2012-10-09 16:06:44.640798
+87705	1286	0.00	2012-10-09 16:06:44.648875	2012-10-09 16:06:44.648875
+87706	1287	0.00	2012-10-09 16:06:44.657281	2012-10-09 16:06:44.657281
+87707	1288	0.00	2012-10-09 16:06:44.665472	2012-10-09 16:06:44.665472
+87708	1289	0.00	2012-10-09 16:06:44.674364	2012-10-09 16:06:44.674364
+87709	1290	0.00	2012-10-09 16:06:44.682523	2012-10-09 16:06:44.682523
+87710	1291	0.00	2012-10-09 16:06:44.690428	2012-10-09 16:06:44.690428
+87711	1292	0.00	2012-10-09 16:06:44.698863	2012-10-09 16:06:44.698863
+87712	1293	0.00	2012-10-09 16:06:44.707425	2012-10-09 16:06:44.707425
+87713	1294	0.00	2012-10-09 16:06:44.715861	2012-10-09 16:06:44.715861
+87714	1295	0.00	2012-10-09 16:06:44.724198	2012-10-09 16:06:44.724198
+87715	1296	0.00	2012-10-09 16:06:44.732447	2012-10-09 16:06:44.732447
+87716	1297	0.00	2012-10-09 16:06:44.740425	2012-10-09 16:06:44.740425
+87717	1298	0.00	2012-10-09 16:06:44.748743	2012-10-09 16:06:44.748743
+87718	1299	0.00	2012-10-09 16:06:44.757142	2012-10-09 16:06:44.757142
+87719	1300	0.00	2012-10-09 16:06:44.765474	2012-10-09 16:06:44.765474
+87720	1301	0.00	2012-10-09 16:06:44.773745	2012-10-09 16:06:44.773745
+87721	1302	0.00	2012-10-09 16:06:44.78218	2012-10-09 16:06:44.78218
+87722	1303	0.00	2012-10-09 16:06:44.7904	2012-10-09 16:06:44.7904
+87723	1304	0.00	2012-10-09 16:06:44.798864	2012-10-09 16:06:44.798864
+87724	1305	0.00	2012-10-09 16:06:44.807161	2012-10-09 16:06:44.807161
+87725	1306	0.00	2012-10-09 16:06:44.815666	2012-10-09 16:06:44.815666
+87726	1307	0.00	2012-10-09 16:06:44.823827	2012-10-09 16:06:44.823827
+87727	1308	0.00	2012-10-09 16:06:44.83221	2012-10-09 16:06:44.83221
+87728	1309	0.00	2012-10-09 16:06:44.840457	2012-10-09 16:06:44.840457
+87729	1310	0.00	2012-10-09 16:06:44.848861	2012-10-09 16:06:44.848861
+87730	1311	0.00	2012-10-09 16:06:44.857158	2012-10-09 16:06:44.857158
+87731	1312	0.00	2012-10-09 16:06:44.865637	2012-10-09 16:06:44.865637
+87732	1313	0.00	2012-10-09 16:06:44.87432	2012-10-09 16:06:44.87432
+87733	1314	0.00	2012-10-09 16:06:44.882478	2012-10-09 16:06:44.882478
+87734	1315	0.00	2012-10-09 16:06:44.890642	2012-10-09 16:06:44.890642
+87735	1316	0.00	2012-10-09 16:06:44.899262	2012-10-09 16:06:44.899262
+87736	1317	0.00	2012-10-09 16:06:44.921244	2012-10-09 16:06:44.921244
+87737	1318	0.00	2012-10-09 16:06:44.937893	2012-10-09 16:06:44.937893
+87738	1319	0.00	2012-10-09 16:06:44.97097	2012-10-09 16:06:44.97097
+87739	1320	0.00	2012-10-09 16:06:45.005258	2012-10-09 16:06:45.005258
+87740	1321	0.00	2012-10-09 16:06:45.038472	2012-10-09 16:06:45.038472
+87741	1322	0.00	2012-10-09 16:06:45.071056	2012-10-09 16:06:45.071056
+87742	1323	0.00	2012-10-09 16:06:45.104275	2012-10-09 16:06:45.104275
+87743	1324	0.00	2012-10-09 16:06:45.137561	2012-10-09 16:06:45.137561
+87744	1325	0.00	2012-10-09 16:06:45.170906	2012-10-09 16:06:45.170906
+87745	1326	0.00	2012-10-09 16:06:45.204224	2012-10-09 16:06:45.204224
+87746	1327	0.00	2012-10-09 16:06:45.270923	2012-10-09 16:06:45.270923
+87747	1328	0.00	2012-10-09 16:06:45.296916	2012-10-09 16:06:45.296916
+87748	1329	0.00	2012-10-09 16:06:45.330732	2012-10-09 16:06:45.330732
+87749	1330	0.00	2012-10-09 16:06:45.348193	2012-10-09 16:06:45.348193
+87750	1331	0.00	2012-10-09 16:06:45.389243	2012-10-09 16:06:45.389243
+87751	1332	0.00	2012-10-09 16:06:45.421909	2012-10-09 16:06:45.421909
+87752	1333	0.00	2012-10-09 16:06:45.454593	2012-10-09 16:06:45.454593
+87753	1334	0.00	2012-10-09 16:06:45.487527	2012-10-09 16:06:45.487527
+87754	1335	0.00	2012-10-09 16:06:45.520965	2012-10-09 16:06:45.520965
+87755	1336	0.00	2012-10-09 16:06:45.554439	2012-10-09 16:06:45.554439
+87756	1337	0.00	2012-10-09 16:06:45.587659	2012-10-09 16:06:45.587659
+87757	1338	0.00	2012-10-09 16:06:45.62129	2012-10-09 16:06:45.62129
+87758	1339	0.00	2012-10-09 16:06:45.654504	2012-10-09 16:06:45.654504
+87759	1340	0.00	2012-10-09 16:06:45.687668	2012-10-09 16:06:45.687668
+87760	1341	0.00	2012-10-09 16:06:45.721195	2012-10-09 16:06:45.721195
+87761	1342	0.00	2012-10-09 16:06:45.754343	2012-10-09 16:06:45.754343
+87762	1343	0.00	2012-10-09 16:06:45.787591	2012-10-09 16:06:45.787591
+87763	1344	0.00	2012-10-09 16:06:45.821403	2012-10-09 16:06:45.821403
+87764	1345	0.00	2012-10-09 16:06:45.85441	2012-10-09 16:06:45.85441
+87765	1346	0.00	2012-10-09 16:06:45.887535	2012-10-09 16:06:45.887535
+87766	1347	0.00	2012-10-09 16:06:45.92123	2012-10-09 16:06:45.92123
+87767	1348	0.00	2012-10-09 16:06:45.954253	2012-10-09 16:06:45.954253
+87768	1349	0.00	2012-10-09 16:06:45.987479	2012-10-09 16:06:45.987479
+87769	1350	0.00	2012-10-09 16:06:46.020629	2012-10-09 16:06:46.020629
+87770	1351	0.00	2012-10-09 16:06:46.054371	2012-10-09 16:06:46.054371
+87771	1352	0.00	2012-10-09 16:06:46.087555	2012-10-09 16:06:46.087555
+87772	1353	0.00	2012-10-09 16:06:46.121013	2012-10-09 16:06:46.121013
+87773	1354	0.00	2012-10-09 16:06:46.154349	2012-10-09 16:06:46.154349
+87774	1355	0.00	2012-10-09 16:06:46.187549	2012-10-09 16:06:46.187549
+87775	1356	0.00	2012-10-09 16:06:46.220947	2012-10-09 16:06:46.220947
+87776	1357	0.00	2012-10-09 16:06:46.254337	2012-10-09 16:06:46.254337
+87777	1358	0.00	2012-10-09 16:06:46.287423	2012-10-09 16:06:46.287423
+87778	1359	0.00	2012-10-09 16:06:46.320646	2012-10-09 16:06:46.320646
+87779	1360	0.00	2012-10-09 16:06:46.354282	2012-10-09 16:06:46.354282
+87780	1361	0.00	2012-10-09 16:06:46.387226	2012-10-09 16:06:46.387226
+87781	1362	0.00	2012-10-09 16:06:46.420543	2012-10-09 16:06:46.420543
+87782	1363	0.00	2012-10-09 16:06:46.454005	2012-10-09 16:06:46.454005
+87783	1364	0.00	2012-10-09 16:06:46.487334	2012-10-09 16:06:46.487334
+87784	1365	0.00	2012-10-09 16:06:46.520567	2012-10-09 16:06:46.520567
+87785	1366	0.00	2012-10-09 16:06:46.554239	2012-10-09 16:06:46.554239
+87786	1367	0.00	2012-10-09 16:06:46.587333	2012-10-09 16:06:46.587333
+87787	1368	0.00	2012-10-09 16:06:46.620746	2012-10-09 16:06:46.620746
+87788	1369	0.00	2012-10-09 16:06:46.65452	2012-10-09 16:06:46.65452
+87789	1370	0.00	2012-10-09 16:06:46.732527	2012-10-09 16:06:46.732527
+87790	1371	0.00	2012-10-09 16:06:46.740445	2012-10-09 16:06:46.740445
+87791	1372	0.00	2012-10-09 16:06:46.748759	2012-10-09 16:06:46.748759
+87792	1373	0.00	2012-10-09 16:06:46.757415	2012-10-09 16:06:46.757415
+87793	1374	0.00	2012-10-09 16:06:46.765539	2012-10-09 16:06:46.765539
+87794	1375	0.00	2012-10-09 16:06:46.774027	2012-10-09 16:06:46.774027
+87795	1376	0.00	2012-10-09 16:06:46.782158	2012-10-09 16:06:46.782158
+87796	1377	0.00	2012-10-09 16:06:46.790503	2012-10-09 16:06:46.790503
+87797	1379	0.00	2012-10-09 16:06:46.798773	2012-10-09 16:06:46.798773
+87798	1380	0.00	2012-10-09 16:06:46.807286	2012-10-09 16:06:46.807286
+87799	1381	0.00	2012-10-09 16:06:46.815468	2012-10-09 16:06:46.815468
+87800	1382	0.00	2012-10-09 16:06:46.823975	2012-10-09 16:06:46.823975
+87801	1383	0.00	2012-10-09 16:06:46.832263	2012-10-09 16:06:46.832263
+87802	1384	0.00	2012-10-09 16:06:46.840673	2012-10-09 16:06:46.840673
+87803	1385	0.00	2012-10-09 16:06:46.848684	2012-10-09 16:06:46.848684
+87804	1386	0.00	2012-10-09 16:06:46.857402	2012-10-09 16:06:46.857402
+87805	1387	0.00	2012-10-09 16:06:46.865552	2012-10-09 16:06:46.865552
+87806	1388	0.00	2012-10-09 16:06:46.87364	2012-10-09 16:06:46.87364
+87807	1389	0.00	2012-10-09 16:06:46.882282	2012-10-09 16:06:46.882282
+87808	1390	0.00	2012-10-09 16:06:46.890524	2012-10-09 16:06:46.890524
+87809	1391	0.00	2012-10-09 16:06:46.899179	2012-10-09 16:06:46.899179
+87810	1392	0.00	2012-10-09 16:06:46.907237	2012-10-09 16:06:46.907237
+87811	1393	0.00	2012-10-09 16:06:46.91551	2012-10-09 16:06:46.91551
+87812	1394	0.00	2012-10-09 16:06:46.923959	2012-10-09 16:06:46.923959
+87813	1395	0.00	2012-10-09 16:06:46.93238	2012-10-09 16:06:46.93238
+87814	1396	0.00	2012-10-09 16:06:46.940859	2012-10-09 16:06:46.940859
+87815	1397	0.00	2012-10-09 16:06:46.948893	2012-10-09 16:06:46.948893
+87816	1398	0.00	2012-10-09 16:06:46.957308	2012-10-09 16:06:46.957308
+87817	1399	0.00	2012-10-09 16:06:46.965625	2012-10-09 16:06:46.965625
+87818	1400	0.00	2012-10-09 16:06:46.974111	2012-10-09 16:06:46.974111
+87819	1401	0.00	2012-10-09 16:06:46.982316	2012-10-09 16:06:46.982316
+87820	1402	0.00	2012-10-09 16:06:46.990463	2012-10-09 16:06:46.990463
+87821	1403	0.00	2012-10-09 16:06:46.998969	2012-10-09 16:06:46.998969
+87822	1404	0.00	2012-10-09 16:06:47.007286	2012-10-09 16:06:47.007286
+87823	1405	0.00	2012-10-09 16:06:47.015464	2012-10-09 16:06:47.015464
+87824	1406	0.00	2012-10-09 16:06:47.023938	2012-10-09 16:06:47.023938
+87825	1407	0.00	2012-10-09 16:06:47.032148	2012-10-09 16:06:47.032148
+87826	1408	0.00	2012-10-09 16:06:47.040559	2012-10-09 16:06:47.040559
+87827	1409	0.00	2012-10-09 16:06:47.049129	2012-10-09 16:06:47.049129
+87828	1410	0.00	2012-10-09 16:06:47.057253	2012-10-09 16:06:47.057253
+87829	1411	0.00	2012-10-09 16:06:47.065599	2012-10-09 16:06:47.065599
+87830	1412	0.00	2012-10-09 16:06:47.107873	2012-10-09 16:06:47.107873
+87831	1413	0.00	2012-10-09 16:06:47.115537	2012-10-09 16:06:47.115537
+87832	1414	0.00	2012-10-09 16:06:47.123821	2012-10-09 16:06:47.123821
+87833	1415	0.00	2012-10-09 16:06:47.131888	2012-10-09 16:06:47.131888
+87834	1416	0.00	2012-10-09 16:06:47.140218	2012-10-09 16:06:47.140218
+87835	1417	0.00	2012-10-09 16:06:47.148682	2012-10-09 16:06:47.148682
+87836	1418	0.00	2012-10-09 16:06:47.156835	2012-10-09 16:06:47.156835
+87837	1419	0.00	2012-10-09 16:06:47.165254	2012-10-09 16:06:47.165254
+87838	1420	0.00	2012-10-09 16:06:47.173492	2012-10-09 16:06:47.173492
+87839	1421	0.00	2012-10-09 16:06:47.18194	2012-10-09 16:06:47.18194
+87840	1422	0.00	2012-10-09 16:06:47.190466	2012-10-09 16:06:47.190466
+87841	1423	0.00	2012-10-09 16:06:47.198801	2012-10-09 16:06:47.198801
+87842	1424	0.00	2012-10-09 16:06:47.207265	2012-10-09 16:06:47.207265
+87843	1425	0.00	2012-10-09 16:06:47.21544	2012-10-09 16:06:47.21544
+87844	1426	0.00	2012-10-09 16:06:47.223647	2012-10-09 16:06:47.223647
+87845	1427	0.00	2012-10-09 16:06:47.232277	2012-10-09 16:06:47.232277
+87846	1428	0.00	2012-10-09 16:06:47.240488	2012-10-09 16:06:47.240488
+87847	1429	0.00	2012-10-09 16:06:47.248529	2012-10-09 16:06:47.248529
+87848	1430	0.00	2012-10-09 16:06:47.256895	2012-10-09 16:06:47.256895
+87849	1431	0.00	2012-10-09 16:06:47.265193	2012-10-09 16:06:47.265193
+87850	1432	0.00	2012-10-09 16:06:47.27352	2012-10-09 16:06:47.27352
+87851	1433	0.00	2012-10-09 16:06:47.281862	2012-10-09 16:06:47.281862
+87852	1434	0.00	2012-10-09 16:06:47.290194	2012-10-09 16:06:47.290194
+87853	1435	0.00	2012-10-09 16:06:47.298631	2012-10-09 16:06:47.298631
+87854	1436	0.00	2012-10-09 16:06:47.30687	2012-10-09 16:06:47.30687
+87855	1437	0.00	2012-10-09 16:06:47.315192	2012-10-09 16:06:47.315192
+87856	1438	0.00	2012-10-09 16:06:47.323931	2012-10-09 16:06:47.323931
+87857	1439	0.00	2012-10-09 16:06:47.332209	2012-10-09 16:06:47.332209
+87858	1440	0.00	2012-10-09 16:06:47.340402	2012-10-09 16:06:47.340402
+87859	1441	0.00	2012-10-09 16:06:47.348652	2012-10-09 16:06:47.348652
+87860	1442	0.00	2012-10-09 16:06:47.357355	2012-10-09 16:06:47.357355
+87861	1443	0.00	2012-10-09 16:06:47.3655	2012-10-09 16:06:47.3655
+87862	1444	0.00	2012-10-09 16:06:47.373619	2012-10-09 16:06:47.373619
+87863	1445	0.00	2012-10-09 16:06:47.382254	2012-10-09 16:06:47.382254
+87864	1446	0.00	2012-10-09 16:06:47.390467	2012-10-09 16:06:47.390467
+87865	1447	0.00	2012-10-09 16:06:47.398647	2012-10-09 16:06:47.398647
+87866	1448	0.00	2012-10-09 16:06:47.407167	2012-10-09 16:06:47.407167
+87867	1449	0.00	2012-10-09 16:06:47.41535	2012-10-09 16:06:47.41535
+87868	1450	0.00	2012-10-09 16:06:47.423565	2012-10-09 16:06:47.423565
+87869	1451	0.00	2012-10-09 16:06:47.431902	2012-10-09 16:06:47.431902
+87870	1452	0.00	2012-10-09 16:06:47.440443	2012-10-09 16:06:47.440443
+87871	1453	0.00	2012-10-09 16:06:47.482694	2012-10-09 16:06:47.482694
+87872	1454	0.00	2012-10-09 16:06:47.490454	2012-10-09 16:06:47.490454
+87873	1455	0.00	2012-10-09 16:06:47.498505	2012-10-09 16:06:47.498505
+87874	1456	0.00	2012-10-09 16:06:47.506883	2012-10-09 16:06:47.506883
+87875	1457	0.00	2012-10-09 16:06:47.515267	2012-10-09 16:06:47.515267
+87876	1458	0.00	2012-10-09 16:06:47.523902	2012-10-09 16:06:47.523902
+87877	1459	0.00	2012-10-09 16:06:47.532167	2012-10-09 16:06:47.532167
+87878	1460	0.00	2012-10-09 16:06:47.540363	2012-10-09 16:06:47.540363
+87879	1461	0.00	2012-10-09 16:06:47.548639	2012-10-09 16:06:47.548639
+87880	1462	0.00	2012-10-09 16:06:47.556994	2012-10-09 16:06:47.556994
+87881	1463	0.00	2012-10-09 16:06:47.565415	2012-10-09 16:06:47.565415
+87882	1464	0.00	2012-10-09 16:06:47.573905	2012-10-09 16:06:47.573905
+87883	1465	0.00	2012-10-09 16:06:47.582224	2012-10-09 16:06:47.582224
+87884	1466	0.00	2012-10-09 16:06:47.590472	2012-10-09 16:06:47.590472
+87885	1467	0.00	2012-10-09 16:06:47.598644	2012-10-09 16:06:47.598644
+87886	1468	0.00	2012-10-09 16:06:47.607386	2012-10-09 16:06:47.607386
+87887	1469	0.00	2012-10-09 16:06:47.615439	2012-10-09 16:06:47.615439
+87888	1470	0.00	2012-10-09 16:06:47.62369	2012-10-09 16:06:47.62369
+87889	1471	0.00	2012-10-09 16:06:47.632198	2012-10-09 16:06:47.632198
+87890	1472	0.00	2012-10-09 16:06:47.640222	2012-10-09 16:06:47.640222
+87891	1473	0.00	2012-10-09 16:06:47.648581	2012-10-09 16:06:47.648581
+87892	1474	0.00	2012-10-09 16:06:47.657225	2012-10-09 16:06:47.657225
+87893	1475	0.00	2012-10-09 16:06:47.665458	2012-10-09 16:06:47.665458
+87894	1476	0.00	2012-10-09 16:06:47.673641	2012-10-09 16:06:47.673641
+87895	1477	0.00	2012-10-09 16:06:47.682239	2012-10-09 16:06:47.682239
+87896	1478	0.00	2012-10-09 16:06:47.690457	2012-10-09 16:06:47.690457
+87897	1479	0.00	2012-10-09 16:06:47.698625	2012-10-09 16:06:47.698625
+87898	1480	0.00	2012-10-09 16:06:47.707181	2012-10-09 16:06:47.707181
+87899	1481	0.00	2012-10-09 16:06:47.715369	2012-10-09 16:06:47.715369
+87900	1482	0.00	2012-10-09 16:06:47.723609	2012-10-09 16:06:47.723609
+87901	1483	0.00	2012-10-09 16:06:47.732188	2012-10-09 16:06:47.732188
+87902	1484	0.00	2012-10-09 16:06:47.740377	2012-10-09 16:06:47.740377
+87903	1485	0.00	2012-10-09 16:06:47.748634	2012-10-09 16:06:47.748634
+87904	1486	0.00	2012-10-09 16:06:47.757254	2012-10-09 16:06:47.757254
+87905	1487	0.00	2012-10-09 16:06:47.765477	2012-10-09 16:06:47.765477
+87906	1488	0.00	2012-10-09 16:06:47.773866	2012-10-09 16:06:47.773866
+87907	1489	0.00	2012-10-09 16:06:47.782197	2012-10-09 16:06:47.782197
+87908	1490	0.00	2012-10-09 16:06:47.790456	2012-10-09 16:06:47.790456
+87909	1491	0.00	2012-10-09 16:06:47.798833	2012-10-09 16:06:47.798833
+87910	1492	0.00	2012-10-09 16:06:47.841059	2012-10-09 16:06:47.841059
+87911	1493	0.00	2012-10-09 16:06:47.848816	2012-10-09 16:06:47.848816
+87912	1494	0.00	2012-10-09 16:06:47.85725	2012-10-09 16:06:47.85725
+87913	1495	0.00	2012-10-09 16:06:47.865468	2012-10-09 16:06:47.865468
+87914	1496	0.00	2012-10-09 16:06:47.873886	2012-10-09 16:06:47.873886
+87915	1497	0.00	2012-10-09 16:06:47.882239	2012-10-09 16:06:47.882239
+87916	1498	0.00	2012-10-09 16:06:47.889969	2012-10-09 16:06:47.889969
+87917	1499	0.00	2012-10-09 16:06:47.898883	2012-10-09 16:06:47.898883
+87918	1500	0.00	2012-10-09 16:06:47.907269	2012-10-09 16:06:47.907269
+87919	1078	0.00	2012-10-09 16:06:47.915368	2012-10-09 16:06:47.915368
+87920	1378	0.00	2012-10-09 16:06:47.923476	2012-10-09 16:06:47.923476
+87921	852	42.69	2012-10-09 17:45:15.127265	2012-10-09 17:45:15.127265
+87922	883	0.00	2012-10-09 17:45:15.134915	2012-10-09 17:45:15.134915
+87923	882	0.00	2012-10-09 17:45:15.143017	2012-10-09 17:45:15.143017
+87924	881	0.00	2012-10-09 17:45:15.151424	2012-10-09 17:45:15.151424
+87925	880	0.00	2012-10-09 17:45:15.159456	2012-10-09 17:45:15.159456
+87926	879	0.00	2012-10-09 17:45:15.168165	2012-10-09 17:45:15.168165
+87927	878	0.00	2012-10-09 17:45:15.176402	2012-10-09 17:45:15.176402
+87928	877	0.00	2012-10-09 17:45:15.184589	2012-10-09 17:45:15.184589
+87929	876	0.00	2012-10-09 17:45:15.218107	2012-10-09 17:45:15.218107
+87930	875	0.00	2012-10-09 17:45:15.22623	2012-10-09 17:45:15.22623
+87931	874	0.00	2012-10-09 17:45:15.234617	2012-10-09 17:45:15.234617
+87932	873	0.00	2012-10-09 17:45:15.243218	2012-10-09 17:45:15.243218
+87933	872	0.00	2012-10-09 17:45:15.251398	2012-10-09 17:45:15.251398
+87934	871	0.00	2012-10-09 17:45:15.259569	2012-10-09 17:45:15.259569
+87935	870	0.00	2012-10-09 17:45:15.268213	2012-10-09 17:45:15.268213
+87936	869	0.00	2012-10-09 17:45:15.308331	2012-10-09 17:45:15.308331
+87937	868	0.00	2012-10-09 17:45:15.318635	2012-10-09 17:45:15.318635
+87938	867	0.00	2012-10-09 17:45:15.326544	2012-10-09 17:45:15.326544
+87939	866	0.00	2012-10-09 17:45:15.334632	2012-10-09 17:45:15.334632
+87940	865	0.00	2012-10-09 17:45:15.343312	2012-10-09 17:45:15.343312
+87941	864	0.00	2012-10-09 17:45:15.351443	2012-10-09 17:45:15.351443
+87942	863	0.00	2012-10-09 17:45:15.359827	2012-10-09 17:45:15.359827
+87943	862	0.00	2012-10-09 17:45:15.368013	2012-10-09 17:45:15.368013
+87944	861	0.00	2012-10-09 17:45:15.376425	2012-10-09 17:45:15.376425
+87945	860	0.00	2012-10-09 17:45:15.384507	2012-10-09 17:45:15.384507
+87946	859	0.00	2012-10-09 17:45:15.393229	2012-10-09 17:45:15.393229
+87947	858	0.00	2012-10-09 17:45:15.401438	2012-10-09 17:45:15.401438
+87948	857	0.00	2012-10-09 17:45:15.409605	2012-10-09 17:45:15.409605
+87949	856	0.00	2012-10-09 17:45:15.418179	2012-10-09 17:45:15.418179
+87950	855	0.00	2012-10-09 17:45:15.426416	2012-10-09 17:45:15.426416
+87951	854	0.00	2012-10-09 17:45:15.434599	2012-10-09 17:45:15.434599
+87952	853	0.00	2012-10-09 17:45:15.443154	2012-10-09 17:45:15.443154
+87953	851	0.00	2012-10-09 17:45:15.45139	2012-10-09 17:45:15.45139
+87954	850	0.00	2012-10-09 17:45:15.459709	2012-10-09 17:45:15.459709
+87955	849	0.00	2012-10-09 17:45:15.468131	2012-10-09 17:45:15.468131
+87956	848	0.00	2012-10-09 17:45:15.476382	2012-10-09 17:45:15.476382
+87957	847	0.00	2012-10-09 17:45:15.484518	2012-10-09 17:45:15.484518
+87958	846	0.00	2012-10-09 17:45:15.493131	2012-10-09 17:45:15.493131
+87959	845	0.00	2012-10-09 17:45:15.501368	2012-10-09 17:45:15.501368
+87960	844	0.00	2012-10-09 17:45:15.509724	2012-10-09 17:45:15.509724
+87961	843	0.00	2012-10-09 17:45:15.5181	2012-10-09 17:45:15.5181
+87962	842	0.00	2012-10-09 17:45:15.526347	2012-10-09 17:45:15.526347
+87963	841	0.00	2012-10-09 17:45:15.534605	2012-10-09 17:45:15.534605
+87964	840	0.00	2012-10-09 17:45:15.54324	2012-10-09 17:45:15.54324
+87965	839	0.00	2012-10-09 17:45:15.551438	2012-10-09 17:45:15.551438
+87966	838	0.00	2012-10-09 17:45:15.559599	2012-10-09 17:45:15.559599
+87967	837	0.00	2012-10-09 17:45:15.568202	2012-10-09 17:45:15.568202
+87968	836	0.00	2012-10-09 17:45:15.576281	2012-10-09 17:45:15.576281
+87969	835	0.00	2012-10-09 17:45:15.584588	2012-10-09 17:45:15.584588
+87970	834	0.00	2012-10-09 17:45:15.59315	2012-10-09 17:45:15.59315
+87971	833	0.00	2012-10-09 17:45:15.601393	2012-10-09 17:45:15.601393
+87972	832	0.00	2012-10-09 17:45:15.609352	2012-10-09 17:45:15.609352
+87973	831	0.00	2012-10-09 17:45:15.618132	2012-10-09 17:45:15.618132
+87974	830	0.00	2012-10-09 17:45:15.626404	2012-10-09 17:45:15.626404
+87975	829	0.00	2012-10-09 17:45:15.634532	2012-10-09 17:45:15.634532
+87976	828	0.00	2012-10-09 17:45:15.643146	2012-10-09 17:45:15.643146
+87977	827	0.00	2012-10-09 17:45:15.651369	2012-10-09 17:45:15.651369
+87978	826	0.00	2012-10-09 17:45:15.659796	2012-10-09 17:45:15.659796
+87979	825	0.00	2012-10-09 17:45:15.668147	2012-10-09 17:45:15.668147
+87980	824	0.00	2012-10-09 17:45:15.676354	2012-10-09 17:45:15.676354
+87981	823	0.00	2012-10-09 17:45:15.684824	2012-10-09 17:45:15.684824
+87982	822	0.00	2012-10-09 17:45:15.693111	2012-10-09 17:45:15.693111
+87983	821	0.00	2012-10-09 17:45:15.701429	2012-10-09 17:45:15.701429
+87984	820	0.00	2012-10-09 17:45:15.709811	2012-10-09 17:45:15.709811
+87985	819	0.00	2012-10-09 17:45:15.718151	2012-10-09 17:45:15.718151
+87986	818	0.00	2012-10-09 17:45:15.726408	2012-10-09 17:45:15.726408
+87987	817	0.00	2012-10-09 17:45:15.734616	2012-10-09 17:45:15.734616
+87988	816	0.00	2012-10-09 17:45:15.743208	2012-10-09 17:45:15.743208
+87989	815	0.00	2012-10-09 17:45:15.751409	2012-10-09 17:45:15.751409
+87990	814	0.00	2012-10-09 17:45:15.759873	2012-10-09 17:45:15.759873
+87991	813	0.00	2012-10-09 17:45:15.76816	2012-10-09 17:45:15.76816
+87992	812	0.00	2012-10-09 17:45:15.776394	2012-10-09 17:45:15.776394
+87993	811	0.00	2012-10-09 17:45:15.785	2012-10-09 17:45:15.785
+87994	810	0.00	2012-10-09 17:45:15.793159	2012-10-09 17:45:15.793159
+87995	809	0.00	2012-10-09 17:45:15.801502	2012-10-09 17:45:15.801502
+87996	808	0.00	2012-10-09 17:45:15.809973	2012-10-09 17:45:15.809973
+87997	807	0.00	2012-10-09 17:45:15.818152	2012-10-09 17:45:15.818152
+87998	806	0.00	2012-10-09 17:45:15.826497	2012-10-09 17:45:15.826497
+87999	805	0.00	2012-10-09 17:45:15.834968	2012-10-09 17:45:15.834968
+88000	804	0.00	2012-10-09 17:45:15.843252	2012-10-09 17:45:15.843252
+88001	803	0.00	2012-10-09 17:45:15.85147	2012-10-09 17:45:15.85147
+88002	802	0.00	2012-10-09 17:45:15.859886	2012-10-09 17:45:15.859886
+88003	801	0.00	2012-10-09 17:45:15.868228	2012-10-09 17:45:15.868228
+88004	800	0.00	2012-10-09 17:45:15.876454	2012-10-09 17:45:15.876454
+88005	799	0.00	2012-10-09 17:45:15.884893	2012-10-09 17:45:15.884893
+88006	798	0.00	2012-10-09 17:45:15.893116	2012-10-09 17:45:15.893116
+88007	797	0.00	2012-10-09 17:45:15.901441	2012-10-09 17:45:15.901441
+88008	796	0.00	2012-10-09 17:45:15.90989	2012-10-09 17:45:15.90989
+88009	795	0.00	2012-10-09 17:45:15.91834	2012-10-09 17:45:15.91834
+88010	794	0.00	2012-10-09 17:45:15.926543	2012-10-09 17:45:15.926543
+88011	793	0.00	2012-10-09 17:45:15.935069	2012-10-09 17:45:15.935069
+88012	792	0.00	2012-10-09 17:45:15.943342	2012-10-09 17:45:15.943342
+88013	791	0.00	2012-10-09 17:45:15.951475	2012-10-09 17:45:15.951475
+88014	790	0.00	2012-10-09 17:45:15.984579	2012-10-09 17:45:15.984579
+88015	789	0.00	2012-10-09 17:45:15.993558	2012-10-09 17:45:15.993558
+88016	788	0.00	2012-10-09 17:45:16.001598	2012-10-09 17:45:16.001598
+88017	787	0.00	2012-10-09 17:45:16.009628	2012-10-09 17:45:16.009628
+88018	786	0.00	2012-10-09 17:45:16.018377	2012-10-09 17:45:16.018377
+88019	785	0.00	2012-10-09 17:45:16.026853	2012-10-09 17:45:16.026853
+88020	784	0.00	2012-10-09 17:45:16.035193	2012-10-09 17:45:16.035193
+88021	783	0.00	2012-10-09 17:45:16.043254	2012-10-09 17:45:16.043254
+88022	782	0.00	2012-10-09 17:45:16.051625	2012-10-09 17:45:16.051625
+88023	781	0.00	2012-10-09 17:45:16.06024	2012-10-09 17:45:16.06024
+88024	780	0.00	2012-10-09 17:45:16.068365	2012-10-09 17:45:16.068365
+88025	779	0.00	2012-10-09 17:45:16.076632	2012-10-09 17:45:16.076632
+88026	778	0.00	2012-10-09 17:45:16.085227	2012-10-09 17:45:16.085227
+88027	777	0.00	2012-10-09 17:45:16.093292	2012-10-09 17:45:16.093292
+88028	776	0.00	2012-10-09 17:45:16.101601	2012-10-09 17:45:16.101601
+88029	775	0.00	2012-10-09 17:45:16.110172	2012-10-09 17:45:16.110172
+88030	774	0.00	2012-10-09 17:45:16.118257	2012-10-09 17:45:16.118257
+88031	773	0.00	2012-10-09 17:45:16.12661	2012-10-09 17:45:16.12661
+88032	772	0.00	2012-10-09 17:45:16.135204	2012-10-09 17:45:16.135204
+88033	771	0.00	2012-10-09 17:45:16.143418	2012-10-09 17:45:16.143418
+88034	770	0.00	2012-10-09 17:45:16.151607	2012-10-09 17:45:16.151607
+88035	769	0.00	2012-10-09 17:45:16.160177	2012-10-09 17:45:16.160177
+88036	768	0.00	2012-10-09 17:45:16.168247	2012-10-09 17:45:16.168247
+88037	767	0.00	2012-10-09 17:45:16.176582	2012-10-09 17:45:16.176582
+88038	766	0.00	2012-10-09 17:45:16.185188	2012-10-09 17:45:16.185188
+88039	765	0.00	2012-10-09 17:45:16.193188	2012-10-09 17:45:16.193188
+88040	884	0.00	2012-10-09 17:45:46.57659	2012-10-09 17:45:46.57659
+88041	885	0.00	2012-10-09 17:45:46.617624	2012-10-09 17:45:46.617624
+88042	886	0.00	2012-10-09 17:45:46.659311	2012-10-09 17:45:46.659311
+88043	887	0.00	2012-10-09 17:45:46.700816	2012-10-09 17:45:46.700816
+88044	888	0.00	2012-10-09 17:45:46.742787	2012-10-09 17:45:46.742787
+88045	889	0.00	2012-10-09 17:45:46.784163	2012-10-09 17:45:46.784163
+88046	890	0.00	2012-10-09 17:45:46.82623	2012-10-09 17:45:46.82623
+88047	891	0.00	2012-10-09 17:45:46.867418	2012-10-09 17:45:46.867418
+88048	892	0.00	2012-10-09 17:45:46.909155	2012-10-09 17:45:46.909155
+88049	893	0.00	2012-10-09 17:45:46.950703	2012-10-09 17:45:46.950703
+88050	894	0.00	2012-10-09 17:45:46.99235	2012-10-09 17:45:46.99235
+88051	895	0.00	2012-10-09 17:45:47.034301	2012-10-09 17:45:47.034301
+88052	896	0.00	2012-10-09 17:45:47.07589	2012-10-09 17:45:47.07589
+88053	897	0.00	2012-10-09 17:45:47.117329	2012-10-09 17:45:47.117329
+88054	898	0.00	2012-10-09 17:45:47.159032	2012-10-09 17:45:47.159032
+88055	899	0.00	2012-10-09 17:45:47.201285	2012-10-09 17:45:47.201285
+88056	900	0.00	2012-10-09 17:45:47.242501	2012-10-09 17:45:47.242501
+88057	901	0.00	2012-10-09 17:45:47.284167	2012-10-09 17:45:47.284167
+88058	902	0.00	2012-10-09 17:45:47.326386	2012-10-09 17:45:47.326386
+88059	903	0.00	2012-10-09 17:45:47.367026	2012-10-09 17:45:47.367026
+88060	904	0.00	2012-10-09 17:45:47.408678	2012-10-09 17:45:47.408678
+88061	905	0.00	2012-10-09 17:45:47.450322	2012-10-09 17:45:47.450322
+88062	906	0.00	2012-10-09 17:45:47.492521	2012-10-09 17:45:47.492521
+88063	907	0.00	2012-10-09 17:45:47.534425	2012-10-09 17:45:47.534425
+88064	908	0.00	2012-10-09 17:45:47.576223	2012-10-09 17:45:47.576223
+88065	909	0.00	2012-10-09 17:45:47.617402	2012-10-09 17:45:47.617402
+88066	910	0.00	2012-10-09 17:45:47.659045	2012-10-09 17:45:47.659045
+88067	911	0.00	2012-10-09 17:45:47.700572	2012-10-09 17:45:47.700572
+88068	912	0.00	2012-10-09 17:45:47.742356	2012-10-09 17:45:47.742356
+88069	913	0.00	2012-10-09 17:45:47.78399	2012-10-09 17:45:47.78399
+88070	914	0.00	2012-10-09 17:45:47.826183	2012-10-09 17:45:47.826183
+88071	915	0.00	2012-10-09 17:45:47.867495	2012-10-09 17:45:47.867495
+88072	916	0.00	2012-10-09 17:45:47.90895	2012-10-09 17:45:47.90895
+88073	917	0.00	2012-10-09 17:45:47.951062	2012-10-09 17:45:47.951062
+88074	918	0.00	2012-10-09 17:45:47.992296	2012-10-09 17:45:47.992296
+88075	919	0.00	2012-10-09 17:45:48.033891	2012-10-09 17:45:48.033891
+88076	920	0.00	2012-10-09 17:45:48.075829	2012-10-09 17:45:48.075829
+88077	921	0.00	2012-10-09 17:45:48.117482	2012-10-09 17:45:48.117482
+88078	922	0.00	2012-10-09 17:45:48.159388	2012-10-09 17:45:48.159388
+88079	923	0.00	2012-10-09 17:45:48.200425	2012-10-09 17:45:48.200425
+88080	924	0.00	2012-10-09 17:45:48.242167	2012-10-09 17:45:48.242167
+88081	925	0.00	2012-10-09 17:45:48.283826	2012-10-09 17:45:48.283826
+88082	926	0.00	2012-10-09 17:45:48.326072	2012-10-09 17:45:48.326072
+88083	927	0.00	2012-10-09 17:45:48.367427	2012-10-09 17:45:48.367427
+88084	928	0.00	2012-10-09 17:45:48.409536	2012-10-09 17:45:48.409536
+88085	929	0.00	2012-10-09 17:45:48.482272	2012-10-09 17:45:48.482272
+88086	930	0.00	2012-10-09 17:45:48.509223	2012-10-09 17:45:48.509223
+88087	931	0.00	2012-10-09 17:45:48.550056	2012-10-09 17:45:48.550056
+88088	932	0.00	2012-10-09 17:45:48.591678	2012-10-09 17:45:48.591678
+88089	933	0.00	2012-10-09 17:45:48.633526	2012-10-09 17:45:48.633526
+88090	934	0.00	2012-10-09 17:45:48.675436	2012-10-09 17:45:48.675436
+88091	935	0.00	2012-10-09 17:45:48.716916	2012-10-09 17:45:48.716916
+88092	936	0.00	2012-10-09 17:45:48.758269	2012-10-09 17:45:48.758269
+88093	937	0.00	2012-10-09 17:45:48.800315	2012-10-09 17:45:48.800315
+88094	938	0.00	2012-10-09 17:45:48.841891	2012-10-09 17:45:48.841891
+88095	939	0.00	2012-10-09 17:45:48.883387	2012-10-09 17:45:48.883387
+88096	940	0.00	2012-10-09 17:45:48.925	2012-10-09 17:45:48.925
+88097	941	0.00	2012-10-09 17:45:48.96651	2012-10-09 17:45:48.96651
+88098	942	0.00	2012-10-09 17:45:49.008347	2012-10-09 17:45:49.008347
+88099	943	0.00	2012-10-09 17:45:49.050194	2012-10-09 17:45:49.050194
+88100	944	0.00	2012-10-09 17:45:49.091582	2012-10-09 17:45:49.091582
+88101	945	0.00	2012-10-09 17:45:49.133442	2012-10-09 17:45:49.133442
+88102	946	0.00	2012-10-09 17:45:49.175191	2012-10-09 17:45:49.175191
+88103	947	0.00	2012-10-09 17:45:49.216387	2012-10-09 17:45:49.216387
+88104	948	0.00	2012-10-09 17:45:49.258051	2012-10-09 17:45:49.258051
+88105	949	0.00	2012-10-09 17:45:49.300246	2012-10-09 17:45:49.300246
+88106	950	0.00	2012-10-09 17:45:49.341346	2012-10-09 17:45:49.341346
+88107	951	0.00	2012-10-09 17:45:49.383008	2012-10-09 17:45:49.383008
+88108	952	0.00	2012-10-09 17:45:49.424613	2012-10-09 17:45:49.424613
+88109	953	0.00	2012-10-09 17:45:49.466494	2012-10-09 17:45:49.466494
+88110	954	0.00	2012-10-09 17:45:49.507873	2012-10-09 17:45:49.507873
+88111	955	0.00	2012-10-09 17:45:49.549565	2012-10-09 17:45:49.549565
+88112	956	0.00	2012-10-09 17:45:49.591892	2012-10-09 17:45:49.591892
+88113	957	0.00	2012-10-09 17:45:49.63287	2012-10-09 17:45:49.63287
+88114	958	0.00	2012-10-09 17:45:49.674932	2012-10-09 17:45:49.674932
+88115	959	0.00	2012-10-09 17:45:49.71624	2012-10-09 17:45:49.71624
+88116	960	0.00	2012-10-09 17:45:49.757871	2012-10-09 17:45:49.757871
+88117	961	0.00	2012-10-09 17:45:49.799474	2012-10-09 17:45:49.799474
+88118	962	0.00	2012-10-09 17:45:49.841442	2012-10-09 17:45:49.841442
+88119	963	0.00	2012-10-09 17:45:49.88322	2012-10-09 17:45:49.88322
+88120	964	0.00	2012-10-09 17:45:49.924481	2012-10-09 17:45:49.924481
+88121	965	0.00	2012-10-09 17:45:49.966293	2012-10-09 17:45:49.966293
+88122	966	0.00	2012-10-09 17:45:50.008863	2012-10-09 17:45:50.008863
+88123	967	0.00	2012-10-09 17:45:50.049929	2012-10-09 17:45:50.049929
+88124	968	0.00	2012-10-09 17:45:50.091416	2012-10-09 17:45:50.091416
+88125	969	0.00	2012-10-09 17:45:50.133226	2012-10-09 17:45:50.133226
+88126	970	0.00	2012-10-09 17:45:50.174385	2012-10-09 17:45:50.174385
+88127	971	0.00	2012-10-09 17:45:50.216467	2012-10-09 17:45:50.216467
+88128	972	0.00	2012-10-09 17:45:50.257705	2012-10-09 17:45:50.257705
+88129	973	0.00	2012-10-09 17:45:50.299251	2012-10-09 17:45:50.299251
+88130	974	0.00	2012-10-09 17:45:50.341307	2012-10-09 17:45:50.341307
+88131	975	0.00	2012-10-09 17:45:50.383201	2012-10-09 17:45:50.383201
+88132	976	0.00	2012-10-09 17:45:50.424321	2012-10-09 17:45:50.424321
+88133	977	0.00	2012-10-09 17:45:50.465963	2012-10-09 17:45:50.465963
+88134	978	0.00	2012-10-09 17:45:50.507552	2012-10-09 17:45:50.507552
+88135	979	0.00	2012-10-09 17:45:50.549851	2012-10-09 17:45:50.549851
+88136	1061	0.00	2012-10-09 17:45:50.590933	2012-10-09 17:45:50.590933
+88137	1062	0.00	2012-10-09 17:45:50.632809	2012-10-09 17:45:50.632809
+88138	1063	0.00	2012-10-09 17:45:50.674244	2012-10-09 17:45:50.674244
+88139	1064	0.00	2012-10-09 17:45:50.71583	2012-10-09 17:45:50.71583
+88140	1065	0.00	2012-10-09 17:45:50.757626	2012-10-09 17:45:50.757626
+88141	1066	0.00	2012-10-09 17:45:50.828981	2012-10-09 17:45:50.828981
+88142	1067	0.00	2012-10-09 17:45:50.862547	2012-10-09 17:45:50.862547
+88143	1068	0.00	2012-10-09 17:45:50.871271	2012-10-09 17:45:50.871271
+88144	1069	0.00	2012-10-09 17:45:50.87953	2012-10-09 17:45:50.87953
+88145	1070	0.00	2012-10-09 17:45:50.88789	2012-10-09 17:45:50.88789
+88146	1071	0.00	2012-10-09 17:45:50.896292	2012-10-09 17:45:50.896292
+88147	980	0.00	2012-10-09 17:45:50.904378	2012-10-09 17:45:50.904378
+88148	981	0.00	2012-10-09 17:45:50.91288	2012-10-09 17:45:50.91288
+88149	982	0.00	2012-10-09 17:45:50.921305	2012-10-09 17:45:50.921305
+88150	983	0.00	2012-10-09 17:45:50.92951	2012-10-09 17:45:50.92951
+88151	984	0.00	2012-10-09 17:45:50.937485	2012-10-09 17:45:50.937485
+88152	985	0.00	2012-10-09 17:45:50.946272	2012-10-09 17:45:50.946272
+88153	986	0.00	2012-10-09 17:45:50.954381	2012-10-09 17:45:50.954381
+88154	987	0.00	2012-10-09 17:45:50.962636	2012-10-09 17:45:50.962636
+88155	988	0.00	2012-10-09 17:45:50.971246	2012-10-09 17:45:50.971246
+88156	989	0.00	2012-10-09 17:45:50.979488	2012-10-09 17:45:50.979488
+88157	990	0.00	2012-10-09 17:45:50.987797	2012-10-09 17:45:50.987797
+88158	991	0.00	2012-10-09 17:45:50.996223	2012-10-09 17:45:50.996223
+88159	992	0.00	2012-10-09 17:45:51.004463	2012-10-09 17:45:51.004463
+88160	993	0.00	2012-10-09 17:45:51.012871	2012-10-09 17:45:51.012871
+88161	994	0.00	2012-10-09 17:45:51.021192	2012-10-09 17:45:51.021192
+88162	995	0.00	2012-10-09 17:45:51.029452	2012-10-09 17:45:51.029452
+88163	996	0.00	2012-10-09 17:45:51.037455	2012-10-09 17:45:51.037455
+88164	997	0.00	2012-10-09 17:45:51.046015	2012-10-09 17:45:51.046015
+88165	998	0.00	2012-10-09 17:45:51.054353	2012-10-09 17:45:51.054353
+88166	999	0.00	2012-10-09 17:45:51.062646	2012-10-09 17:45:51.062646
+88167	1000	0.00	2012-10-09 17:45:51.071192	2012-10-09 17:45:51.071192
+88168	1001	0.00	2012-10-09 17:45:51.079418	2012-10-09 17:45:51.079418
+88169	1002	0.00	2012-10-09 17:45:51.087783	2012-10-09 17:45:51.087783
+88170	1003	0.00	2012-10-09 17:45:51.096309	2012-10-09 17:45:51.096309
+88171	1004	0.00	2012-10-09 17:45:51.104366	2012-10-09 17:45:51.104366
+88172	1005	0.00	2012-10-09 17:45:51.112762	2012-10-09 17:45:51.112762
+88173	1006	0.00	2012-10-09 17:45:51.121264	2012-10-09 17:45:51.121264
+88174	1007	0.00	2012-10-09 17:45:51.129496	2012-10-09 17:45:51.129496
+88175	1008	0.00	2012-10-09 17:45:51.137786	2012-10-09 17:45:51.137786
+88176	1009	0.00	2012-10-09 17:45:51.146272	2012-10-09 17:45:51.146272
+88177	1010	0.00	2012-10-09 17:45:51.154514	2012-10-09 17:45:51.154514
+88178	1011	0.00	2012-10-09 17:45:51.16253	2012-10-09 17:45:51.16253
+88179	1012	0.00	2012-10-09 17:45:51.171198	2012-10-09 17:45:51.171198
+88180	1013	0.00	2012-10-09 17:45:51.179418	2012-10-09 17:45:51.179418
+88181	1014	0.00	2012-10-09 17:45:51.187646	2012-10-09 17:45:51.187646
+88182	1015	0.00	2012-10-09 17:45:51.196221	2012-10-09 17:45:51.196221
+88183	1016	0.00	2012-10-09 17:45:51.204501	2012-10-09 17:45:51.204501
+88184	1017	0.00	2012-10-09 17:45:51.212443	2012-10-09 17:45:51.212443
+88185	1018	0.00	2012-10-09 17:45:51.220862	2012-10-09 17:45:51.220862
+88186	1019	0.00	2012-10-09 17:45:51.229228	2012-10-09 17:45:51.229228
+88187	1020	0.00	2012-10-09 17:45:51.23746	2012-10-09 17:45:51.23746
+88188	1021	0.00	2012-10-09 17:45:51.245831	2012-10-09 17:45:51.245831
+88189	1022	0.00	2012-10-09 17:45:51.254231	2012-10-09 17:45:51.254231
+88190	1023	0.00	2012-10-09 17:45:51.262481	2012-10-09 17:45:51.262481
+88191	1024	0.00	2012-10-09 17:45:51.27082	2012-10-09 17:45:51.27082
+88192	1025	0.00	2012-10-09 17:45:51.279236	2012-10-09 17:45:51.279236
+88193	1026	0.00	2012-10-09 17:45:51.287485	2012-10-09 17:45:51.287485
+88194	1027	0.00	2012-10-09 17:45:51.295863	2012-10-09 17:45:51.295863
+88195	1028	0.00	2012-10-09 17:45:51.304359	2012-10-09 17:45:51.304359
+88196	1029	0.00	2012-10-09 17:45:51.346749	2012-10-09 17:45:51.346749
+88197	1030	0.00	2012-10-09 17:45:51.35413	2012-10-09 17:45:51.35413
+88198	1031	0.00	2012-10-09 17:45:51.362483	2012-10-09 17:45:51.362483
+88199	1032	0.00	2012-10-09 17:45:51.370841	2012-10-09 17:45:51.370841
+88200	1033	0.00	2012-10-09 17:45:51.37911	2012-10-09 17:45:51.37911
+88201	1034	0.00	2012-10-09 17:45:51.387396	2012-10-09 17:45:51.387396
+88202	1035	0.00	2012-10-09 17:45:51.396228	2012-10-09 17:45:51.396228
+88203	1036	0.00	2012-10-09 17:45:51.404346	2012-10-09 17:45:51.404346
+88204	1037	0.00	2012-10-09 17:45:51.412507	2012-10-09 17:45:51.412507
+88205	1038	0.00	2012-10-09 17:45:51.421294	2012-10-09 17:45:51.421294
+88206	1039	0.00	2012-10-09 17:45:51.429506	2012-10-09 17:45:51.429506
+88207	1040	0.00	2012-10-09 17:45:51.43765	2012-10-09 17:45:51.43765
+88208	1041	0.00	2012-10-09 17:45:51.446218	2012-10-09 17:45:51.446218
+88209	1042	0.00	2012-10-09 17:45:51.454386	2012-10-09 17:45:51.454386
+88210	1043	0.00	2012-10-09 17:45:51.46256	2012-10-09 17:45:51.46256
+88211	1044	0.00	2012-10-09 17:45:51.47122	2012-10-09 17:45:51.47122
+88212	1045	0.00	2012-10-09 17:45:51.479451	2012-10-09 17:45:51.479451
+88213	1046	0.00	2012-10-09 17:45:51.487785	2012-10-09 17:45:51.487785
+88214	1047	0.00	2012-10-09 17:45:51.496095	2012-10-09 17:45:51.496095
+88215	1048	0.00	2012-10-09 17:45:51.5045	2012-10-09 17:45:51.5045
+88216	1049	0.00	2012-10-09 17:45:51.512599	2012-10-09 17:45:51.512599
+88217	1050	0.00	2012-10-09 17:45:51.521247	2012-10-09 17:45:51.521247
+88218	1051	0.00	2012-10-09 17:45:51.529498	2012-10-09 17:45:51.529498
+88219	1052	0.00	2012-10-09 17:45:51.53792	2012-10-09 17:45:51.53792
+88220	1053	0.00	2012-10-09 17:45:51.546375	2012-10-09 17:45:51.546375
+88221	1054	0.00	2012-10-09 17:45:51.565003	2012-10-09 17:45:51.565003
+88222	1055	0.00	2012-10-09 17:45:51.582345	2012-10-09 17:45:51.582345
+88223	1056	0.00	2012-10-09 17:45:51.624629	2012-10-09 17:45:51.624629
+88224	1057	0.00	2012-10-09 17:45:51.666494	2012-10-09 17:45:51.666494
+88225	1058	0.00	2012-10-09 17:45:51.707982	2012-10-09 17:45:51.707982
+88226	1059	0.00	2012-10-09 17:45:51.749505	2012-10-09 17:45:51.749505
+88227	1060	0.00	2012-10-09 17:45:51.791419	2012-10-09 17:45:51.791419
+88228	1072	0.00	2012-10-09 17:45:51.832876	2012-10-09 17:45:51.832876
+88229	1073	0.00	2012-10-09 17:45:51.8745	2012-10-09 17:45:51.8745
+88230	1074	0.00	2012-10-09 17:45:51.915874	2012-10-09 17:45:51.915874
+88231	1075	0.00	2012-10-09 17:45:51.957774	2012-10-09 17:45:51.957774
+88232	1076	0.00	2012-10-09 17:45:51.999355	2012-10-09 17:45:51.999355
+88233	1077	0.00	2012-10-09 17:45:52.041382	2012-10-09 17:45:52.041382
+88234	1079	0.00	2012-10-09 17:45:52.082423	2012-10-09 17:45:52.082423
+88235	1080	0.00	2012-10-09 17:45:52.124163	2012-10-09 17:45:52.124163
+88236	1081	0.00	2012-10-09 17:45:52.16618	2012-10-09 17:45:52.16618
+88237	1082	0.00	2012-10-09 17:45:52.207463	2012-10-09 17:45:52.207463
+88238	1083	0.00	2012-10-09 17:45:52.249007	2012-10-09 17:45:52.249007
+88239	1084	0.00	2012-10-09 17:45:52.290919	2012-10-09 17:45:52.290919
+88240	1085	0.00	2012-10-09 17:45:52.332308	2012-10-09 17:45:52.332308
+88241	1086	0.00	2012-10-09 17:45:52.374307	2012-10-09 17:45:52.374307
+88242	1087	0.00	2012-10-09 17:45:52.415665	2012-10-09 17:45:52.415665
+88243	1088	0.00	2012-10-09 17:45:52.457297	2012-10-09 17:45:52.457297
+88244	1089	0.00	2012-10-09 17:45:52.499274	2012-10-09 17:45:52.499274
+88245	1090	0.00	2012-10-09 17:45:52.541136	2012-10-09 17:45:52.541136
+88246	1091	0.00	2012-10-09 17:45:52.582275	2012-10-09 17:45:52.582275
+88247	1092	0.00	2012-10-09 17:45:52.623926	2012-10-09 17:45:52.623926
+88248	1093	0.00	2012-10-09 17:45:52.665671	2012-10-09 17:45:52.665671
+88249	1094	0.00	2012-10-09 17:45:52.737882	2012-10-09 17:45:52.737882
+88250	1095	0.00	2012-10-09 17:45:52.765597	2012-10-09 17:45:52.765597
+88251	1096	0.00	2012-10-09 17:45:52.806755	2012-10-09 17:45:52.806755
+88252	1097	0.00	2012-10-09 17:45:52.848378	2012-10-09 17:45:52.848378
+88253	1098	0.00	2012-10-09 17:45:52.890128	2012-10-09 17:45:52.890128
+88254	1099	0.00	2012-10-09 17:45:52.931661	2012-10-09 17:45:52.931661
+88255	1100	0.00	2012-10-09 17:45:52.973293	2012-10-09 17:45:52.973293
+88256	1101	0.00	2012-10-09 17:45:53.014979	2012-10-09 17:45:53.014979
+88257	1102	0.00	2012-10-09 17:45:53.057116	2012-10-09 17:45:53.057116
+88258	1103	0.00	2012-10-09 17:45:53.098539	2012-10-09 17:45:53.098539
+88259	1104	0.00	2012-10-09 17:45:53.139901	2012-10-09 17:45:53.139901
+88260	1105	0.00	2012-10-09 17:45:53.181849	2012-10-09 17:45:53.181849
+88261	1106	0.00	2012-10-09 17:45:53.223472	2012-10-09 17:45:53.223472
+88262	1107	0.00	2012-10-09 17:45:53.264858	2012-10-09 17:45:53.264858
+88263	1108	0.00	2012-10-09 17:45:53.306563	2012-10-09 17:45:53.306563
+88264	1109	0.00	2012-10-09 17:45:53.348486	2012-10-09 17:45:53.348486
+88265	1110	0.00	2012-10-09 17:45:53.389743	2012-10-09 17:45:53.389743
+88266	1111	0.00	2012-10-09 17:45:53.43161	2012-10-09 17:45:53.43161
+88267	1112	0.00	2012-10-09 17:45:53.473076	2012-10-09 17:45:53.473076
+88268	1113	0.00	2012-10-09 17:45:53.51505	2012-10-09 17:45:53.51505
+88269	1114	0.00	2012-10-09 17:45:53.556866	2012-10-09 17:45:53.556866
+88270	1115	0.00	2012-10-09 17:45:53.598048	2012-10-09 17:45:53.598048
+88271	1116	0.00	2012-10-09 17:45:53.639744	2012-10-09 17:45:53.639744
+88272	1117	0.00	2012-10-09 17:45:53.681663	2012-10-09 17:45:53.681663
+88273	1118	0.00	2012-10-09 17:45:53.723352	2012-10-09 17:45:53.723352
+88274	1119	0.00	2012-10-09 17:45:53.765127	2012-10-09 17:45:53.765127
+88275	1120	0.00	2012-10-09 17:45:53.806438	2012-10-09 17:45:53.806438
+88276	1121	0.00	2012-10-09 17:45:53.848351	2012-10-09 17:45:53.848351
+88277	1122	0.00	2012-10-09 17:45:53.889187	2012-10-09 17:45:53.889187
+88278	1123	0.00	2012-10-09 17:45:53.931345	2012-10-09 17:45:53.931345
+88279	1124	0.00	2012-10-09 17:45:53.972917	2012-10-09 17:45:53.972917
+88280	1125	0.00	2012-10-09 17:45:54.014587	2012-10-09 17:45:54.014587
+88281	1126	0.00	2012-10-09 17:45:54.056611	2012-10-09 17:45:54.056611
+88282	1127	0.00	2012-10-09 17:45:54.09789	2012-10-09 17:45:54.09789
+88283	1128	0.00	2012-10-09 17:45:54.139435	2012-10-09 17:45:54.139435
+88284	1129	0.00	2012-10-09 17:45:54.181481	2012-10-09 17:45:54.181481
+88285	1130	0.00	2012-10-09 17:45:54.223248	2012-10-09 17:45:54.223248
+88286	1131	0.00	2012-10-09 17:45:54.264614	2012-10-09 17:45:54.264614
+88287	1132	0.00	2012-10-09 17:45:54.30606	2012-10-09 17:45:54.30606
+88288	1133	0.00	2012-10-09 17:45:54.34795	2012-10-09 17:45:54.34795
+88289	1134	0.00	2012-10-09 17:45:54.389341	2012-10-09 17:45:54.389341
+88290	1135	0.00	2012-10-09 17:45:54.430941	2012-10-09 17:45:54.430941
+88291	1136	0.00	2012-10-09 17:45:54.47315	2012-10-09 17:45:54.47315
+88292	1137	0.00	2012-10-09 17:45:54.51449	2012-10-09 17:45:54.51449
+88293	1138	0.00	2012-10-09 17:45:54.556339	2012-10-09 17:45:54.556339
+88294	1139	0.00	2012-10-09 17:45:54.597541	2012-10-09 17:45:54.597541
+88295	1140	0.00	2012-10-09 17:45:54.639308	2012-10-09 17:45:54.639308
+88296	1141	0.00	2012-10-09 17:45:54.681071	2012-10-09 17:45:54.681071
+88297	1142	0.00	2012-10-09 17:45:54.722487	2012-10-09 17:45:54.722487
+88298	1143	0.00	2012-10-09 17:45:54.764235	2012-10-09 17:45:54.764235
+88299	1144	0.00	2012-10-09 17:45:54.805755	2012-10-09 17:45:54.805755
+88300	1145	0.00	2012-10-09 17:45:54.84792	2012-10-09 17:45:54.84792
+88301	1146	0.00	2012-10-09 17:45:54.890259	2012-10-09 17:45:54.890259
+88302	1147	0.00	2012-10-09 17:45:54.947847	2012-10-09 17:45:54.947847
+88303	1148	0.00	2012-10-09 17:45:54.989191	2012-10-09 17:45:54.989191
+88304	1149	0.00	2012-10-09 17:45:55.030666	2012-10-09 17:45:55.030666
+88305	1150	0.00	2012-10-09 17:45:55.064066	2012-10-09 17:45:55.064066
+88306	1151	0.00	2012-10-09 17:45:55.097362	2012-10-09 17:45:55.097362
+88307	1152	0.00	2012-10-09 17:45:55.13922	2012-10-09 17:45:55.13922
+88308	1153	0.00	2012-10-09 17:45:55.180336	2012-10-09 17:45:55.180336
+88309	1154	0.00	2012-10-09 17:45:55.221947	2012-10-09 17:45:55.221947
+88310	1155	0.00	2012-10-09 17:45:55.264016	2012-10-09 17:45:55.264016
+88311	1156	0.00	2012-10-09 17:45:55.30537	2012-10-09 17:45:55.30537
+88312	1157	0.00	2012-10-09 17:45:55.347335	2012-10-09 17:45:55.347335
+88313	1158	0.00	2012-10-09 17:45:55.379774	2012-10-09 17:45:55.379774
+88314	1159	0.00	2012-10-09 17:45:55.42226	2012-10-09 17:45:55.42226
+88315	1160	0.00	2012-10-09 17:45:55.46391	2012-10-09 17:45:55.46391
+88316	1161	0.00	2012-10-09 17:45:55.505476	2012-10-09 17:45:55.505476
+88317	1162	0.00	2012-10-09 17:45:55.546817	2012-10-09 17:45:55.546817
+88318	1163	0.00	2012-10-09 17:45:55.588877	2012-10-09 17:45:55.588877
+88319	1164	0.00	2012-10-09 17:45:55.630254	2012-10-09 17:45:55.630254
+88320	1165	0.00	2012-10-09 17:45:55.672274	2012-10-09 17:45:55.672274
+88321	1166	0.00	2012-10-09 17:45:55.713728	2012-10-09 17:45:55.713728
+88322	1167	0.00	2012-10-09 17:45:55.755074	2012-10-09 17:45:55.755074
+88323	1168	0.00	2012-10-09 17:45:55.788346	2012-10-09 17:45:55.788346
+88324	1169	0.00	2012-10-09 17:45:55.830032	2012-10-09 17:45:55.830032
+88325	1170	0.00	2012-10-09 17:45:55.863643	2012-10-09 17:45:55.863643
+88326	1171	0.00	2012-10-09 17:45:55.897301	2012-10-09 17:45:55.897301
+88327	1172	0.00	2012-10-09 17:45:55.938534	2012-10-09 17:45:55.938534
+88328	1173	0.00	2012-10-09 17:45:55.979953	2012-10-09 17:45:55.979953
+88329	1174	0.00	2012-10-09 17:45:56.022003	2012-10-09 17:45:56.022003
+88330	1175	0.00	2012-10-09 17:45:56.063336	2012-10-09 17:45:56.063336
+88331	1176	0.00	2012-10-09 17:45:56.096571	2012-10-09 17:45:56.096571
+88332	1177	0.00	2012-10-09 17:45:56.12993	2012-10-09 17:45:56.12993
+88333	1178	0.00	2012-10-09 17:45:56.163272	2012-10-09 17:45:56.163272
+88334	1179	0.00	2012-10-09 17:45:56.196508	2012-10-09 17:45:56.196508
+88335	1180	0.00	2012-10-09 17:45:56.238539	2012-10-09 17:45:56.238539
+88336	1181	0.00	2012-10-09 17:45:56.279822	2012-10-09 17:45:56.279822
+88337	1182	0.00	2012-10-09 17:45:56.321569	2012-10-09 17:45:56.321569
+88338	1183	0.00	2012-10-09 17:45:56.363552	2012-10-09 17:45:56.363552
+88339	1184	0.00	2012-10-09 17:45:56.404927	2012-10-09 17:45:56.404927
+88340	1185	0.00	2012-10-09 17:45:56.44688	2012-10-09 17:45:56.44688
+88341	1186	0.00	2012-10-09 17:45:56.480195	2012-10-09 17:45:56.480195
+88342	1187	0.00	2012-10-09 17:45:56.521947	2012-10-09 17:45:56.521947
+88343	1188	0.00	2012-10-09 17:45:56.563456	2012-10-09 17:45:56.563456
+88344	1189	0.00	2012-10-09 17:45:56.597735	2012-10-09 17:45:56.597735
+88345	1190	0.00	2012-10-09 17:45:56.6145	2012-10-09 17:45:56.6145
+88346	1191	0.00	2012-10-09 17:45:56.656111	2012-10-09 17:45:56.656111
+88347	1192	0.00	2012-10-09 17:45:56.697642	2012-10-09 17:45:56.697642
+88348	1193	0.00	2012-10-09 17:45:56.739316	2012-10-09 17:45:56.739316
+88349	1194	0.00	2012-10-09 17:45:56.781241	2012-10-09 17:45:56.781241
+88350	1195	0.00	2012-10-09 17:45:56.822593	2012-10-09 17:45:56.822593
+88351	1196	0.00	2012-10-09 17:45:56.864593	2012-10-09 17:45:56.864593
+88352	1197	0.00	2012-10-09 17:45:56.906233	2012-10-09 17:45:56.906233
+88353	1198	0.00	2012-10-09 17:45:56.969505	2012-10-09 17:45:56.969505
+88354	1199	0.00	2012-10-09 17:45:56.977417	2012-10-09 17:45:56.977417
+88355	1200	0.00	2012-10-09 17:45:56.985702	2012-10-09 17:45:56.985702
+88356	1201	0.00	2012-10-09 17:45:56.994086	2012-10-09 17:45:56.994086
+88357	1202	0.00	2012-10-09 17:45:57.002386	2012-10-09 17:45:57.002386
+88358	1203	0.00	2012-10-09 17:45:57.01074	2012-10-09 17:45:57.01074
+88359	1204	0.00	2012-10-09 17:45:57.019043	2012-10-09 17:45:57.019043
+88360	1205	0.00	2012-10-09 17:45:57.027348	2012-10-09 17:45:57.027348
+88361	1206	0.00	2012-10-09 17:45:57.035612	2012-10-09 17:45:57.035612
+88362	1207	0.00	2012-10-09 17:45:57.04406	2012-10-09 17:45:57.04406
+88363	1208	0.00	2012-10-09 17:45:57.052591	2012-10-09 17:45:57.052591
+88364	1209	0.00	2012-10-09 17:45:57.061171	2012-10-09 17:45:57.061171
+88365	1210	0.00	2012-10-09 17:45:57.06931	2012-10-09 17:45:57.06931
+88366	1211	0.00	2012-10-09 17:45:57.07755	2012-10-09 17:45:57.07755
+88367	1212	0.00	2012-10-09 17:45:57.086188	2012-10-09 17:45:57.086188
+88368	1213	0.00	2012-10-09 17:45:57.09405	2012-10-09 17:45:57.09405
+88369	1214	0.00	2012-10-09 17:45:57.102293	2012-10-09 17:45:57.102293
+88370	1215	0.00	2012-10-09 17:45:57.110593	2012-10-09 17:45:57.110593
+88371	1216	0.00	2012-10-09 17:45:57.119076	2012-10-09 17:45:57.119076
+88372	1217	0.00	2012-10-09 17:45:57.12731	2012-10-09 17:45:57.12731
+88373	1218	0.00	2012-10-09 17:45:57.135619	2012-10-09 17:45:57.135619
+88374	1219	0.00	2012-10-09 17:45:57.143976	2012-10-09 17:45:57.143976
+88375	1220	0.00	2012-10-09 17:45:57.152334	2012-10-09 17:45:57.152334
+88376	1221	0.00	2012-10-09 17:45:57.1712	2012-10-09 17:45:57.1712
+88377	1222	0.00	2012-10-09 17:45:57.212003	2012-10-09 17:45:57.212003
+88378	1223	0.00	2012-10-09 17:45:57.236088	2012-10-09 17:45:57.236088
+88379	1224	0.00	2012-10-09 17:45:57.244061	2012-10-09 17:45:57.244061
+88380	1225	0.00	2012-10-09 17:45:57.252363	2012-10-09 17:45:57.252363
+88381	1226	0.00	2012-10-09 17:45:57.261213	2012-10-09 17:45:57.261213
+88382	1227	0.00	2012-10-09 17:45:57.26894	2012-10-09 17:45:57.26894
+88383	1228	0.00	2012-10-09 17:45:57.277261	2012-10-09 17:45:57.277261
+88384	1229	0.00	2012-10-09 17:45:57.285609	2012-10-09 17:45:57.285609
+88385	1230	0.00	2012-10-09 17:45:57.293935	2012-10-09 17:45:57.293935
+88386	1231	0.00	2012-10-09 17:45:57.302564	2012-10-09 17:45:57.302564
+88387	1232	0.00	2012-10-09 17:45:57.311288	2012-10-09 17:45:57.311288
+88388	1233	0.00	2012-10-09 17:45:57.319076	2012-10-09 17:45:57.319076
+88389	1234	0.00	2012-10-09 17:45:57.327325	2012-10-09 17:45:57.327325
+88390	1235	0.00	2012-10-09 17:45:57.335607	2012-10-09 17:45:57.335607
+88391	1236	0.00	2012-10-09 17:45:57.344065	2012-10-09 17:45:57.344065
+88392	1237	0.00	2012-10-09 17:45:57.352352	2012-10-09 17:45:57.352352
+88393	1238	0.00	2012-10-09 17:45:57.360629	2012-10-09 17:45:57.360629
+88394	1239	0.00	2012-10-09 17:45:57.369058	2012-10-09 17:45:57.369058
+88395	1240	0.00	2012-10-09 17:45:57.377339	2012-10-09 17:45:57.377339
+88396	1241	0.00	2012-10-09 17:45:57.385693	2012-10-09 17:45:57.385693
+88397	1242	0.00	2012-10-09 17:45:57.394052	2012-10-09 17:45:57.394052
+88398	1243	0.00	2012-10-09 17:45:57.402263	2012-10-09 17:45:57.402263
+88399	1244	0.00	2012-10-09 17:45:57.41095	2012-10-09 17:45:57.41095
+88400	1245	0.00	2012-10-09 17:45:57.419061	2012-10-09 17:45:57.419061
+88401	1246	0.00	2012-10-09 17:45:57.42735	2012-10-09 17:45:57.42735
+88402	1247	0.00	2012-10-09 17:45:57.435985	2012-10-09 17:45:57.435985
+88403	1248	0.00	2012-10-09 17:45:57.478332	2012-10-09 17:45:57.478332
+88404	1249	0.00	2012-10-09 17:45:57.486245	2012-10-09 17:45:57.486245
+88405	1250	0.00	2012-10-09 17:45:57.494012	2012-10-09 17:45:57.494012
+88406	1251	0.00	2012-10-09 17:45:57.502274	2012-10-09 17:45:57.502274
+88407	1252	0.00	2012-10-09 17:45:57.510672	2012-10-09 17:45:57.510672
+88408	1253	0.00	2012-10-09 17:45:57.519389	2012-10-09 17:45:57.519389
+88409	1254	0.00	2012-10-09 17:45:57.527522	2012-10-09 17:45:57.527522
+88410	1255	0.00	2012-10-09 17:45:57.536049	2012-10-09 17:45:57.536049
+88411	1256	0.00	2012-10-09 17:45:57.54437	2012-10-09 17:45:57.54437
+88412	1257	0.00	2012-10-09 17:45:57.552567	2012-10-09 17:45:57.552567
+88413	1258	0.00	2012-10-09 17:45:57.561016	2012-10-09 17:45:57.561016
+88414	1259	0.00	2012-10-09 17:45:57.569308	2012-10-09 17:45:57.569308
+88415	1260	0.00	2012-10-09 17:45:57.57762	2012-10-09 17:45:57.57762
+88416	1261	0.00	2012-10-09 17:45:57.585937	2012-10-09 17:45:57.585937
+88417	1262	0.00	2012-10-09 17:45:57.594322	2012-10-09 17:45:57.594322
+88418	1263	0.00	2012-10-09 17:45:57.602389	2012-10-09 17:45:57.602389
+88419	1264	0.00	2012-10-09 17:45:57.611062	2012-10-09 17:45:57.611062
+88420	1265	0.00	2012-10-09 17:45:57.619371	2012-10-09 17:45:57.619371
+88421	1266	0.00	2012-10-09 17:45:57.627343	2012-10-09 17:45:57.627343
+88422	1267	0.00	2012-10-09 17:45:57.635616	2012-10-09 17:45:57.635616
+88423	1268	0.00	2012-10-09 17:45:57.644368	2012-10-09 17:45:57.644368
+88424	1269	0.00	2012-10-09 17:45:57.652537	2012-10-09 17:45:57.652537
+88425	1270	0.00	2012-10-09 17:45:57.661053	2012-10-09 17:45:57.661053
+88426	1271	0.00	2012-10-09 17:45:57.669208	2012-10-09 17:45:57.669208
+88427	1272	0.00	2012-10-09 17:45:57.677467	2012-10-09 17:45:57.677467
+88428	1273	0.00	2012-10-09 17:45:57.685846	2012-10-09 17:45:57.685846
+88429	1274	0.00	2012-10-09 17:45:57.694264	2012-10-09 17:45:57.694264
+88430	1275	0.00	2012-10-09 17:45:57.702539	2012-10-09 17:45:57.702539
+88431	1276	0.00	2012-10-09 17:45:57.710985	2012-10-09 17:45:57.710985
+88432	1277	0.00	2012-10-09 17:45:57.719328	2012-10-09 17:45:57.719328
+88433	1278	0.00	2012-10-09 17:45:57.727057	2012-10-09 17:45:57.727057
+88434	1279	0.00	2012-10-09 17:45:57.735397	2012-10-09 17:45:57.735397
+88435	1280	0.00	2012-10-09 17:45:57.743656	2012-10-09 17:45:57.743656
+88436	1281	0.00	2012-10-09 17:45:57.752502	2012-10-09 17:45:57.752502
+88437	1282	0.00	2012-10-09 17:45:57.761262	2012-10-09 17:45:57.761262
+88438	1283	0.00	2012-10-09 17:45:57.769049	2012-10-09 17:45:57.769049
+88439	1284	0.00	2012-10-09 17:45:57.777637	2012-10-09 17:45:57.777637
+88440	1285	0.00	2012-10-09 17:45:57.785713	2012-10-09 17:45:57.785713
+88441	1286	0.00	2012-10-09 17:45:57.794459	2012-10-09 17:45:57.794459
+88442	1287	0.00	2012-10-09 17:45:57.802763	2012-10-09 17:45:57.802763
+88443	1288	0.00	2012-10-09 17:45:57.81104	2012-10-09 17:45:57.81104
+88444	1289	0.00	2012-10-09 17:45:57.81939	2012-10-09 17:45:57.81939
+88445	1290	0.00	2012-10-09 17:45:57.827629	2012-10-09 17:45:57.827629
+88446	1291	0.00	2012-10-09 17:45:57.836196	2012-10-09 17:45:57.836196
+88447	1292	0.00	2012-10-09 17:45:57.84434	2012-10-09 17:45:57.84434
+88448	1293	0.00	2012-10-09 17:45:57.852848	2012-10-09 17:45:57.852848
+88449	1294	0.00	2012-10-09 17:45:57.86123	2012-10-09 17:45:57.86123
+88450	1295	0.00	2012-10-09 17:45:57.869133	2012-10-09 17:45:57.869133
+88451	1296	0.00	2012-10-09 17:45:57.87795	2012-10-09 17:45:57.87795
+88452	1297	0.00	2012-10-09 17:45:57.919715	2012-10-09 17:45:57.919715
+88453	1298	0.00	2012-10-09 17:45:57.927448	2012-10-09 17:45:57.927448
+88454	1299	0.00	2012-10-09 17:45:57.936222	2012-10-09 17:45:57.936222
+88455	1300	0.00	2012-10-09 17:45:57.94447	2012-10-09 17:45:57.94447
+88456	1301	0.00	2012-10-09 17:45:57.952654	2012-10-09 17:45:57.952654
+88457	1302	0.00	2012-10-09 17:45:57.961276	2012-10-09 17:45:57.961276
+88458	1303	0.00	2012-10-09 17:45:57.969268	2012-10-09 17:45:57.969268
+88459	1304	0.00	2012-10-09 17:45:57.977659	2012-10-09 17:45:57.977659
+88460	1305	0.00	2012-10-09 17:45:57.98612	2012-10-09 17:45:57.98612
+88461	1306	0.00	2012-10-09 17:45:57.994009	2012-10-09 17:45:57.994009
+88462	1307	0.00	2012-10-09 17:45:58.002318	2012-10-09 17:45:58.002318
+88463	1308	0.00	2012-10-09 17:45:58.010661	2012-10-09 17:45:58.010661
+88464	1309	0.00	2012-10-09 17:45:58.018984	2012-10-09 17:45:58.018984
+88465	1310	0.00	2012-10-09 17:45:58.027284	2012-10-09 17:45:58.027284
+88466	1311	0.00	2012-10-09 17:45:58.035677	2012-10-09 17:45:58.035677
+88467	1312	0.00	2012-10-09 17:45:58.044055	2012-10-09 17:45:58.044055
+88468	1313	0.00	2012-10-09 17:45:58.052391	2012-10-09 17:45:58.052391
+88469	1314	0.00	2012-10-09 17:45:58.060684	2012-10-09 17:45:58.060684
+88470	1315	0.00	2012-10-09 17:45:58.069061	2012-10-09 17:45:58.069061
+88471	1316	0.00	2012-10-09 17:45:58.077282	2012-10-09 17:45:58.077282
+88472	1317	0.00	2012-10-09 17:45:58.086193	2012-10-09 17:45:58.086193
+88473	1318	0.00	2012-10-09 17:45:58.094384	2012-10-09 17:45:58.094384
+88474	1319	0.00	2012-10-09 17:45:58.102538	2012-10-09 17:45:58.102538
+88475	1320	0.00	2012-10-09 17:45:58.111193	2012-10-09 17:45:58.111193
+88476	1321	0.00	2012-10-09 17:45:58.119307	2012-10-09 17:45:58.119307
+88477	1322	0.00	2012-10-09 17:45:58.127544	2012-10-09 17:45:58.127544
+88478	1323	0.00	2012-10-09 17:45:58.136133	2012-10-09 17:45:58.136133
+88479	1324	0.00	2012-10-09 17:45:58.144306	2012-10-09 17:45:58.144306
+88480	1325	0.00	2012-10-09 17:45:58.152533	2012-10-09 17:45:58.152533
+88481	1326	0.00	2012-10-09 17:45:58.161036	2012-10-09 17:45:58.161036
+88482	1327	0.00	2012-10-09 17:45:58.169305	2012-10-09 17:45:58.169305
+88483	1328	0.00	2012-10-09 17:45:58.177575	2012-10-09 17:45:58.177575
+88484	1329	0.00	2012-10-09 17:45:58.185763	2012-10-09 17:45:58.185763
+88485	1330	0.00	2012-10-09 17:45:58.194332	2012-10-09 17:45:58.194332
+88486	1331	0.00	2012-10-09 17:45:58.202555	2012-10-09 17:45:58.202555
+88487	1332	0.00	2012-10-09 17:45:58.210887	2012-10-09 17:45:58.210887
+88488	1333	0.00	2012-10-09 17:45:58.219278	2012-10-09 17:45:58.219278
+88489	1334	0.00	2012-10-09 17:45:58.227344	2012-10-09 17:45:58.227344
+88490	1335	0.00	2012-10-09 17:45:58.235661	2012-10-09 17:45:58.235661
+88491	1336	0.00	2012-10-09 17:45:58.244036	2012-10-09 17:45:58.244036
+88492	1337	0.00	2012-10-09 17:45:58.252384	2012-10-09 17:45:58.252384
+88493	1338	0.00	2012-10-09 17:45:58.260843	2012-10-09 17:45:58.260843
+88494	1339	0.00	2012-10-09 17:45:58.269261	2012-10-09 17:45:58.269261
+88495	1340	0.00	2012-10-09 17:45:58.277588	2012-10-09 17:45:58.277588
+88496	1341	0.00	2012-10-09 17:45:58.286056	2012-10-09 17:45:58.286056
+88497	1342	0.00	2012-10-09 17:45:58.294409	2012-10-09 17:45:58.294409
+88498	1343	0.00	2012-10-09 17:45:58.302652	2012-10-09 17:45:58.302652
+88499	1344	0.00	2012-10-09 17:45:58.342873	2012-10-09 17:45:58.342873
+88500	1345	0.00	2012-10-09 17:45:58.35299	2012-10-09 17:45:58.35299
+88501	1346	0.00	2012-10-09 17:45:58.361274	2012-10-09 17:45:58.361274
+88502	1347	0.00	2012-10-09 17:45:58.369227	2012-10-09 17:45:58.369227
+88503	1348	0.00	2012-10-09 17:45:58.3779	2012-10-09 17:45:58.3779
+88504	1349	0.00	2012-10-09 17:45:58.386233	2012-10-09 17:45:58.386233
+88505	1350	0.00	2012-10-09 17:45:58.394342	2012-10-09 17:45:58.394342
+88506	1351	0.00	2012-10-09 17:45:58.40266	2012-10-09 17:45:58.40266
+88507	1352	0.00	2012-10-09 17:45:58.411246	2012-10-09 17:45:58.411246
+88508	1353	0.00	2012-10-09 17:45:58.419056	2012-10-09 17:45:58.419056
+88509	1354	0.00	2012-10-09 17:45:58.427328	2012-10-09 17:45:58.427328
+88510	1355	0.00	2012-10-09 17:45:58.436123	2012-10-09 17:45:58.436123
+88511	1356	0.00	2012-10-09 17:45:58.444161	2012-10-09 17:45:58.444161
+88512	1357	0.00	2012-10-09 17:45:58.45252	2012-10-09 17:45:58.45252
+88513	1358	0.00	2012-10-09 17:45:58.460706	2012-10-09 17:45:58.460706
+88514	1359	0.00	2012-10-09 17:45:58.469201	2012-10-09 17:45:58.469201
+88515	1360	0.00	2012-10-09 17:45:58.477294	2012-10-09 17:45:58.477294
+88516	1361	0.00	2012-10-09 17:45:58.485531	2012-10-09 17:45:58.485531
+88517	1362	0.00	2012-10-09 17:45:58.493931	2012-10-09 17:45:58.493931
+88518	1363	0.00	2012-10-09 17:45:58.502326	2012-10-09 17:45:58.502326
+88519	1364	0.00	2012-10-09 17:45:58.510535	2012-10-09 17:45:58.510535
+88520	1365	0.00	2012-10-09 17:45:58.519357	2012-10-09 17:45:58.519357
+88521	1366	0.00	2012-10-09 17:45:58.527445	2012-10-09 17:45:58.527445
+88522	1367	0.00	2012-10-09 17:45:58.535635	2012-10-09 17:45:58.535635
+88523	1368	0.00	2012-10-09 17:45:58.544216	2012-10-09 17:45:58.544216
+88524	1369	0.00	2012-10-09 17:45:58.552388	2012-10-09 17:45:58.552388
+88525	1370	0.00	2012-10-09 17:45:58.560977	2012-10-09 17:45:58.560977
+88526	1371	0.00	2012-10-09 17:45:58.569235	2012-10-09 17:45:58.569235
+88527	1372	0.00	2012-10-09 17:45:58.577261	2012-10-09 17:45:58.577261
+88528	1373	0.00	2012-10-09 17:45:58.585512	2012-10-09 17:45:58.585512
+88529	1374	0.00	2012-10-09 17:45:58.594209	2012-10-09 17:45:58.594209
+88530	1375	0.00	2012-10-09 17:45:58.602525	2012-10-09 17:45:58.602525
+88531	1376	0.00	2012-10-09 17:45:58.610631	2012-10-09 17:45:58.610631
+88532	1377	0.00	2012-10-09 17:45:58.619353	2012-10-09 17:45:58.619353
+88533	1379	0.00	2012-10-09 17:45:58.62759	2012-10-09 17:45:58.62759
+88534	1380	0.00	2012-10-09 17:45:58.635621	2012-10-09 17:45:58.635621
+88535	1381	0.00	2012-10-09 17:45:58.643957	2012-10-09 17:45:58.643957
+88536	1382	0.00	2012-10-09 17:45:58.652343	2012-10-09 17:45:58.652343
+88537	1383	0.00	2012-10-09 17:45:58.660625	2012-10-09 17:45:58.660625
+88538	1384	0.00	2012-10-09 17:45:58.668968	2012-10-09 17:45:58.668968
+88539	1385	0.00	2012-10-09 17:45:58.677514	2012-10-09 17:45:58.677514
+88540	1386	0.00	2012-10-09 17:45:58.686123	2012-10-09 17:45:58.686123
+88541	1387	0.00	2012-10-09 17:45:58.693952	2012-10-09 17:45:58.693952
+88542	1388	0.00	2012-10-09 17:45:58.702335	2012-10-09 17:45:58.702335
+88543	1389	0.00	2012-10-09 17:45:58.710581	2012-10-09 17:45:58.710581
+88544	1390	0.00	2012-10-09 17:45:58.719141	2012-10-09 17:45:58.719141
+88545	1391	0.00	2012-10-09 17:45:58.727747	2012-10-09 17:45:58.727747
+88546	1392	0.00	2012-10-09 17:45:58.768464	2012-10-09 17:45:58.768464
+88547	1393	0.00	2012-10-09 17:45:58.777571	2012-10-09 17:45:58.777571
+88548	1394	0.00	2012-10-09 17:45:58.785646	2012-10-09 17:45:58.785646
+88549	1395	0.00	2012-10-09 17:45:58.794265	2012-10-09 17:45:58.794265
+88550	1396	0.00	2012-10-09 17:45:58.802491	2012-10-09 17:45:58.802491
+88551	1397	0.00	2012-10-09 17:45:58.810996	2012-10-09 17:45:58.810996
+88552	1398	0.00	2012-10-09 17:45:58.819134	2012-10-09 17:45:58.819134
+88553	1399	0.00	2012-10-09 17:45:58.827424	2012-10-09 17:45:58.827424
+88554	1400	0.00	2012-10-09 17:45:58.835987	2012-10-09 17:45:58.835987
+88555	1401	0.00	2012-10-09 17:45:58.844072	2012-10-09 17:45:58.844072
+88556	1402	0.00	2012-10-09 17:45:58.852441	2012-10-09 17:45:58.852441
+88557	1403	0.00	2012-10-09 17:45:58.860982	2012-10-09 17:45:58.860982
+88558	1404	0.00	2012-10-09 17:45:58.868866	2012-10-09 17:45:58.868866
+88559	1405	0.00	2012-10-09 17:45:58.877286	2012-10-09 17:45:58.877286
+88560	1406	0.00	2012-10-09 17:45:58.885476	2012-10-09 17:45:58.885476
+88561	1407	0.00	2012-10-09 17:45:58.893973	2012-10-09 17:45:58.893973
+88562	1408	0.00	2012-10-09 17:45:58.902318	2012-10-09 17:45:58.902318
+88563	1409	0.00	2012-10-09 17:45:58.910534	2012-10-09 17:45:58.910534
+88564	1410	0.00	2012-10-09 17:45:58.91897	2012-10-09 17:45:58.91897
+88565	1411	0.00	2012-10-09 17:45:58.927267	2012-10-09 17:45:58.927267
+88566	1412	0.00	2012-10-09 17:45:58.9356	2012-10-09 17:45:58.9356
+88567	1413	0.00	2012-10-09 17:45:58.943901	2012-10-09 17:45:58.943901
+88568	1414	0.00	2012-10-09 17:45:58.952327	2012-10-09 17:45:58.952327
+88569	1415	0.00	2012-10-09 17:45:58.960411	2012-10-09 17:45:58.960411
+88570	1416	0.00	2012-10-09 17:45:58.968902	2012-10-09 17:45:58.968902
+88571	1417	0.00	2012-10-09 17:45:58.977263	2012-10-09 17:45:58.977263
+88572	1418	0.00	2012-10-09 17:45:58.985551	2012-10-09 17:45:58.985551
+88573	1419	0.00	2012-10-09 17:45:58.993944	2012-10-09 17:45:58.993944
+88574	1420	0.00	2012-10-09 17:45:59.002314	2012-10-09 17:45:59.002314
+88575	1421	0.00	2012-10-09 17:45:59.010554	2012-10-09 17:45:59.010554
+88576	1422	0.00	2012-10-09 17:45:59.018948	2012-10-09 17:45:59.018948
+88577	1423	0.00	2012-10-09 17:45:59.027274	2012-10-09 17:45:59.027274
+88578	1424	0.00	2012-10-09 17:45:59.035503	2012-10-09 17:45:59.035503
+88579	1425	0.00	2012-10-09 17:45:59.043752	2012-10-09 17:45:59.043752
+88580	1426	0.00	2012-10-09 17:45:59.052307	2012-10-09 17:45:59.052307
+88581	1427	0.00	2012-10-09 17:45:59.060478	2012-10-09 17:45:59.060478
+88582	1428	0.00	2012-10-09 17:45:59.068911	2012-10-09 17:45:59.068911
+88583	1429	0.00	2012-10-09 17:45:59.077256	2012-10-09 17:45:59.077256
+88584	1430	0.00	2012-10-09 17:45:59.085517	2012-10-09 17:45:59.085517
+88585	1431	0.00	2012-10-09 17:45:59.093878	2012-10-09 17:45:59.093878
+88586	1432	0.00	2012-10-09 17:45:59.102276	2012-10-09 17:45:59.102276
+88587	1433	0.00	2012-10-09 17:45:59.110527	2012-10-09 17:45:59.110527
+88588	1434	0.00	2012-10-09 17:45:59.118876	2012-10-09 17:45:59.118876
+88589	1435	0.00	2012-10-09 17:45:59.127275	2012-10-09 17:45:59.127275
+88590	1436	0.00	2012-10-09 17:45:59.135506	2012-10-09 17:45:59.135506
+88591	1437	0.00	2012-10-09 17:45:59.144248	2012-10-09 17:45:59.144248
+88592	1438	0.00	2012-10-09 17:45:59.18498	2012-10-09 17:45:59.18498
+88593	1439	0.00	2012-10-09 17:45:59.193999	2012-10-09 17:45:59.193999
+88594	1440	0.00	2012-10-09 17:45:59.202343	2012-10-09 17:45:59.202343
+88595	1441	0.00	2012-10-09 17:45:59.210613	2012-10-09 17:45:59.210613
+88596	1442	0.00	2012-10-09 17:45:59.218954	2012-10-09 17:45:59.218954
+88597	1443	0.00	2012-10-09 17:45:59.22726	2012-10-09 17:45:59.22726
+88598	1444	0.00	2012-10-09 17:45:59.235668	2012-10-09 17:45:59.235668
+88599	1445	0.00	2012-10-09 17:45:59.243938	2012-10-09 17:45:59.243938
+88600	1446	0.00	2012-10-09 17:45:59.252256	2012-10-09 17:45:59.252256
+88601	1447	0.00	2012-10-09 17:45:59.260587	2012-10-09 17:45:59.260587
+88602	1448	0.00	2012-10-09 17:45:59.268935	2012-10-09 17:45:59.268935
+88603	1449	0.00	2012-10-09 17:45:59.277292	2012-10-09 17:45:59.277292
+88604	1450	0.00	2012-10-09 17:45:59.286023	2012-10-09 17:45:59.286023
+88605	1451	0.00	2012-10-09 17:45:59.294255	2012-10-09 17:45:59.294255
+88606	1452	0.00	2012-10-09 17:45:59.302454	2012-10-09 17:45:59.302454
+88607	1453	0.00	2012-10-09 17:45:59.311038	2012-10-09 17:45:59.311038
+88608	1454	0.00	2012-10-09 17:45:59.319263	2012-10-09 17:45:59.319263
+88609	1455	0.00	2012-10-09 17:45:59.327596	2012-10-09 17:45:59.327596
+88610	1456	0.00	2012-10-09 17:45:59.335946	2012-10-09 17:45:59.335946
+88611	1457	0.00	2012-10-09 17:45:59.344242	2012-10-09 17:45:59.344242
+88612	1458	0.00	2012-10-09 17:45:59.352474	2012-10-09 17:45:59.352474
+88613	1459	0.00	2012-10-09 17:45:59.361044	2012-10-09 17:45:59.361044
+88614	1460	0.00	2012-10-09 17:45:59.369305	2012-10-09 17:45:59.369305
+88615	1461	0.00	2012-10-09 17:45:59.37743	2012-10-09 17:45:59.37743
+88616	1462	0.00	2012-10-09 17:45:59.385955	2012-10-09 17:45:59.385955
+88617	1463	0.00	2012-10-09 17:45:59.394279	2012-10-09 17:45:59.394279
+88618	1464	0.00	2012-10-09 17:45:59.402531	2012-10-09 17:45:59.402531
+88619	1465	0.00	2012-10-09 17:45:59.411117	2012-10-09 17:45:59.411117
+88620	1466	0.00	2012-10-09 17:45:59.419269	2012-10-09 17:45:59.419269
+88621	1467	0.00	2012-10-09 17:45:59.427521	2012-10-09 17:45:59.427521
+88622	1468	0.00	2012-10-09 17:45:59.435509	2012-10-09 17:45:59.435509
+88623	1469	0.00	2012-10-09 17:45:59.44411	2012-10-09 17:45:59.44411
+88624	1470	0.00	2012-10-09 17:45:59.452463	2012-10-09 17:45:59.452463
+88625	1471	0.00	2012-10-09 17:45:59.460741	2012-10-09 17:45:59.460741
+88626	1472	0.00	2012-10-09 17:45:59.469222	2012-10-09 17:45:59.469222
+88627	1473	0.00	2012-10-09 17:45:59.477312	2012-10-09 17:45:59.477312
+88628	1474	0.00	2012-10-09 17:45:59.485603	2012-10-09 17:45:59.485603
+88629	1475	0.00	2012-10-09 17:45:59.494206	2012-10-09 17:45:59.494206
+88630	1476	0.00	2012-10-09 17:45:59.502451	2012-10-09 17:45:59.502451
+88631	1477	0.00	2012-10-09 17:45:59.510808	2012-10-09 17:45:59.510808
+88632	1478	0.00	2012-10-09 17:45:59.5192	2012-10-09 17:45:59.5192
+88633	1479	0.00	2012-10-09 17:45:59.52733	2012-10-09 17:45:59.52733
+88634	1480	0.00	2012-10-09 17:45:59.535645	2012-10-09 17:45:59.535645
+88635	1481	0.00	2012-10-09 17:45:59.544255	2012-10-09 17:45:59.544255
+88636	1482	0.00	2012-10-09 17:45:59.553066	2012-10-09 17:45:59.553066
+88637	1483	0.00	2012-10-09 17:45:59.594614	2012-10-09 17:45:59.594614
+88638	1484	0.00	2012-10-09 17:45:59.602443	2012-10-09 17:45:59.602443
+88639	1485	0.00	2012-10-09 17:45:59.610603	2012-10-09 17:45:59.610603
+88640	1486	0.00	2012-10-09 17:45:59.619204	2012-10-09 17:45:59.619204
+88641	1487	0.00	2012-10-09 17:45:59.627445	2012-10-09 17:45:59.627445
+88642	1488	0.00	2012-10-09 17:45:59.635622	2012-10-09 17:45:59.635622
+88643	1489	0.00	2012-10-09 17:45:59.6443	2012-10-09 17:45:59.6443
+88644	1490	0.00	2012-10-09 17:45:59.652504	2012-10-09 17:45:59.652504
+88645	1491	0.00	2012-10-09 17:45:59.660548	2012-10-09 17:45:59.660548
+88646	1492	0.00	2012-10-09 17:45:59.668958	2012-10-09 17:45:59.668958
+88647	1493	0.00	2012-10-09 17:45:59.677334	2012-10-09 17:45:59.677334
+88648	1494	0.00	2012-10-09 17:45:59.685394	2012-10-09 17:45:59.685394
+88649	1495	0.00	2012-10-09 17:45:59.693934	2012-10-09 17:45:59.693934
+88650	1496	0.00	2012-10-09 17:45:59.702295	2012-10-09 17:45:59.702295
+88651	1497	0.00	2012-10-09 17:45:59.710604	2012-10-09 17:45:59.710604
+88652	1498	0.00	2012-10-09 17:45:59.718962	2012-10-09 17:45:59.718962
+88653	1499	0.00	2012-10-09 17:45:59.727196	2012-10-09 17:45:59.727196
+88654	1500	0.00	2012-10-09 17:45:59.735569	2012-10-09 17:45:59.735569
+88655	1078	0.00	2012-10-09 17:45:59.744061	2012-10-09 17:45:59.744061
+88656	1378	0.00	2012-10-09 17:45:59.752325	2012-10-09 17:45:59.752325
+88657	884	0.00	2012-10-09 18:02:34.441655	2012-10-09 18:02:34.441655
+88658	885	0.00	2012-10-09 18:02:34.449621	2012-10-09 18:02:34.449621
+88659	886	0.00	2012-10-09 18:02:34.457749	2012-10-09 18:02:34.457749
+88660	887	0.00	2012-10-09 18:02:34.466204	2012-10-09 18:02:34.466204
+88661	888	0.00	2012-10-09 18:02:34.474247	2012-10-09 18:02:34.474247
+88662	889	0.00	2012-10-09 18:02:34.482596	2012-10-09 18:02:34.482596
+88663	890	0.00	2012-10-09 18:02:34.491033	2012-10-09 18:02:34.491033
+88664	891	0.00	2012-10-09 18:02:34.499354	2012-10-09 18:02:34.499354
+88665	892	0.00	2012-10-09 18:02:34.507588	2012-10-09 18:02:34.507588
+88666	893	0.00	2012-10-09 18:02:34.515955	2012-10-09 18:02:34.515955
+88667	894	0.00	2012-10-09 18:02:34.52436	2012-10-09 18:02:34.52436
+88668	895	0.00	2012-10-09 18:02:34.532716	2012-10-09 18:02:34.532716
+88669	896	0.00	2012-10-09 18:02:34.540731	2012-10-09 18:02:34.540731
+88670	897	0.00	2012-10-09 18:02:34.549167	2012-10-09 18:02:34.549167
+88671	898	0.00	2012-10-09 18:02:34.557455	2012-10-09 18:02:34.557455
+88672	899	0.00	2012-10-09 18:02:34.565812	2012-10-09 18:02:34.565812
+88673	900	0.00	2012-10-09 18:02:34.574449	2012-10-09 18:02:34.574449
+88674	901	0.00	2012-10-09 18:02:34.582845	2012-10-09 18:02:34.582845
+88675	902	0.00	2012-10-09 18:02:34.590829	2012-10-09 18:02:34.590829
+88676	903	0.00	2012-10-09 18:02:34.598735	2012-10-09 18:02:34.598735
+88677	904	0.00	2012-10-09 18:02:34.607391	2012-10-09 18:02:34.607391
+88678	905	0.00	2012-10-09 18:02:34.615821	2012-10-09 18:02:34.615821
+88679	906	0.00	2012-10-09 18:02:34.624142	2012-10-09 18:02:34.624142
+88680	907	0.00	2012-10-09 18:02:34.632385	2012-10-09 18:02:34.632385
+88681	908	0.00	2012-10-09 18:02:34.640804	2012-10-09 18:02:34.640804
+88682	909	0.00	2012-10-09 18:02:34.649078	2012-10-09 18:02:34.649078
+88683	910	0.00	2012-10-09 18:02:34.6574	2012-10-09 18:02:34.6574
+88684	911	0.00	2012-10-09 18:02:34.66561	2012-10-09 18:02:34.66561
+88685	912	0.00	2012-10-09 18:02:34.674377	2012-10-09 18:02:34.674377
+88686	913	0.00	2012-10-09 18:02:34.682537	2012-10-09 18:02:34.682537
+88687	914	0.00	2012-10-09 18:02:34.690727	2012-10-09 18:02:34.690727
+88688	915	0.00	2012-10-09 18:02:34.699078	2012-10-09 18:02:34.699078
+88689	916	0.00	2012-10-09 18:02:34.707359	2012-10-09 18:02:34.707359
+88690	917	0.00	2012-10-09 18:02:34.71576	2012-10-09 18:02:34.71576
+88691	918	0.00	2012-10-09 18:02:34.724096	2012-10-09 18:02:34.724096
+88692	919	0.00	2012-10-09 18:02:34.770366	2012-10-09 18:02:34.770366
+88693	920	0.00	2012-10-09 18:02:34.783109	2012-10-09 18:02:34.783109
+88694	921	0.00	2012-10-09 18:02:34.790893	2012-10-09 18:02:34.790893
+88695	922	0.00	2012-10-09 18:02:34.799391	2012-10-09 18:02:34.799391
+88696	923	0.00	2012-10-09 18:02:34.80764	2012-10-09 18:02:34.80764
+88697	924	0.00	2012-10-09 18:02:34.816277	2012-10-09 18:02:34.816277
+88698	925	0.00	2012-10-09 18:02:34.824283	2012-10-09 18:02:34.824283
+88699	926	0.00	2012-10-09 18:02:34.832601	2012-10-09 18:02:34.832601
+88700	927	0.00	2012-10-09 18:02:34.841238	2012-10-09 18:02:34.841238
+88701	928	0.00	2012-10-09 18:02:34.849412	2012-10-09 18:02:34.849412
+88702	929	0.00	2012-10-09 18:02:34.857856	2012-10-09 18:02:34.857856
+88703	930	0.00	2012-10-09 18:02:34.866158	2012-10-09 18:02:34.866158
+88704	931	0.00	2012-10-09 18:02:34.874404	2012-10-09 18:02:34.874404
+88705	932	0.00	2012-10-09 18:02:34.882556	2012-10-09 18:02:34.882556
+88706	933	0.00	2012-10-09 18:02:34.891153	2012-10-09 18:02:34.891153
+88707	934	0.00	2012-10-09 18:02:34.899362	2012-10-09 18:02:34.899362
+88708	935	0.00	2012-10-09 18:02:34.907608	2012-10-09 18:02:34.907608
+88709	936	0.00	2012-10-09 18:02:34.916213	2012-10-09 18:02:34.916213
+88710	937	0.00	2012-10-09 18:02:34.92443	2012-10-09 18:02:34.92443
+88711	938	0.00	2012-10-09 18:02:34.932843	2012-10-09 18:02:34.932843
+88712	939	0.00	2012-10-09 18:02:34.941239	2012-10-09 18:02:34.941239
+88713	940	0.00	2012-10-09 18:02:34.949394	2012-10-09 18:02:34.949394
+88714	941	0.00	2012-10-09 18:02:34.95754	2012-10-09 18:02:34.95754
+88715	942	0.00	2012-10-09 18:02:34.965611	2012-10-09 18:02:34.965611
+88716	943	0.00	2012-10-09 18:02:34.974007	2012-10-09 18:02:34.974007
+88717	944	0.00	2012-10-09 18:02:34.982308	2012-10-09 18:02:34.982308
+88718	945	0.00	2012-10-09 18:02:34.990599	2012-10-09 18:02:34.990599
+88719	946	0.00	2012-10-09 18:02:34.999079	2012-10-09 18:02:34.999079
+88720	947	0.00	2012-10-09 18:02:35.007775	2012-10-09 18:02:35.007775
+88721	948	0.00	2012-10-09 18:02:35.015986	2012-10-09 18:02:35.015986
+88722	949	0.00	2012-10-09 18:02:35.024355	2012-10-09 18:02:35.024355
+88723	950	0.00	2012-10-09 18:02:35.032349	2012-10-09 18:02:35.032349
+88724	951	0.00	2012-10-09 18:02:35.041106	2012-10-09 18:02:35.041106
+88725	952	0.00	2012-10-09 18:02:35.048941	2012-10-09 18:02:35.048941
+88726	953	0.00	2012-10-09 18:02:35.057472	2012-10-09 18:02:35.057472
+88727	954	0.00	2012-10-09 18:02:35.065528	2012-10-09 18:02:35.065528
+88728	955	0.00	2012-10-09 18:02:35.074383	2012-10-09 18:02:35.074383
+88729	956	0.00	2012-10-09 18:02:35.082638	2012-10-09 18:02:35.082638
+88730	957	0.00	2012-10-09 18:02:35.091381	2012-10-09 18:02:35.091381
+88731	958	0.00	2012-10-09 18:02:35.099047	2012-10-09 18:02:35.099047
+88732	959	0.00	2012-10-09 18:02:35.107325	2012-10-09 18:02:35.107325
+88733	960	0.00	2012-10-09 18:02:35.115617	2012-10-09 18:02:35.115617
+88734	961	0.00	2012-10-09 18:02:35.124041	2012-10-09 18:02:35.124041
+88735	962	0.00	2012-10-09 18:02:35.132329	2012-10-09 18:02:35.132329
+88736	963	0.00	2012-10-09 18:02:35.140632	2012-10-09 18:02:35.140632
+88737	964	0.00	2012-10-09 18:02:35.149389	2012-10-09 18:02:35.149389
+88738	965	0.00	2012-10-09 18:02:35.157589	2012-10-09 18:02:35.157589
+88739	966	0.00	2012-10-09 18:02:35.165895	2012-10-09 18:02:35.165895
+88740	967	0.00	2012-10-09 18:02:35.174334	2012-10-09 18:02:35.174334
+88741	968	0.00	2012-10-09 18:02:35.182581	2012-10-09 18:02:35.182581
+88742	969	0.00	2012-10-09 18:02:35.191157	2012-10-09 18:02:35.191157
+88743	970	0.00	2012-10-09 18:02:35.240429	2012-10-09 18:02:35.240429
+88744	971	0.00	2012-10-09 18:02:35.28201	2012-10-09 18:02:35.28201
+88745	972	0.00	2012-10-09 18:02:35.299323	2012-10-09 18:02:35.299323
+88746	973	0.00	2012-10-09 18:02:35.30763	2012-10-09 18:02:35.30763
+88747	974	0.00	2012-10-09 18:02:35.316211	2012-10-09 18:02:35.316211
+88748	975	0.00	2012-10-09 18:02:35.324253	2012-10-09 18:02:35.324253
+88749	976	0.00	2012-10-09 18:02:35.332642	2012-10-09 18:02:35.332642
+88750	977	0.00	2012-10-09 18:02:35.341141	2012-10-09 18:02:35.341141
+88751	978	0.00	2012-10-09 18:02:35.349334	2012-10-09 18:02:35.349334
+88752	979	0.00	2012-10-09 18:02:35.357801	2012-10-09 18:02:35.357801
+88753	1061	0.00	2012-10-09 18:02:35.366245	2012-10-09 18:02:35.366245
+88754	1062	0.00	2012-10-09 18:02:35.374373	2012-10-09 18:02:35.374373
+88755	1063	0.00	2012-10-09 18:02:35.382591	2012-10-09 18:02:35.382591
+88756	1064	0.00	2012-10-09 18:02:35.390977	2012-10-09 18:02:35.390977
+88757	1065	0.00	2012-10-09 18:02:35.427223	2012-10-09 18:02:35.427223
+88758	1066	0.00	2012-10-09 18:02:35.441196	2012-10-09 18:02:35.441196
+88759	1067	0.00	2012-10-09 18:02:35.449432	2012-10-09 18:02:35.449432
+88760	1068	0.00	2012-10-09 18:02:35.457633	2012-10-09 18:02:35.457633
+88761	1069	0.00	2012-10-09 18:02:35.46631	2012-10-09 18:02:35.46631
+88762	1070	0.00	2012-10-09 18:02:35.474396	2012-10-09 18:02:35.474396
+88763	1071	0.00	2012-10-09 18:02:35.482488	2012-10-09 18:02:35.482488
+88764	980	0.00	2012-10-09 18:02:35.490792	2012-10-09 18:02:35.490792
+88765	981	0.00	2012-10-09 18:02:35.499086	2012-10-09 18:02:35.499086
+88766	982	0.00	2012-10-09 18:02:35.507382	2012-10-09 18:02:35.507382
+88767	983	0.00	2012-10-09 18:02:35.515699	2012-10-09 18:02:35.515699
+88768	984	0.00	2012-10-09 18:02:35.524102	2012-10-09 18:02:35.524102
+88769	985	0.00	2012-10-09 18:02:35.532471	2012-10-09 18:02:35.532471
+88770	986	0.00	2012-10-09 18:02:35.540799	2012-10-09 18:02:35.540799
+88771	987	0.00	2012-10-09 18:02:35.54904	2012-10-09 18:02:35.54904
+88772	988	0.00	2012-10-09 18:02:35.557741	2012-10-09 18:02:35.557741
+88773	989	0.00	2012-10-09 18:02:35.566137	2012-10-09 18:02:35.566137
+88774	990	0.00	2012-10-09 18:02:35.574283	2012-10-09 18:02:35.574283
+88775	991	0.00	2012-10-09 18:02:35.582886	2012-10-09 18:02:35.582886
+88776	992	0.00	2012-10-09 18:02:35.591118	2012-10-09 18:02:35.591118
+88777	993	0.00	2012-10-09 18:02:35.599514	2012-10-09 18:02:35.599514
+88778	994	0.00	2012-10-09 18:02:35.607643	2012-10-09 18:02:35.607643
+88779	995	0.00	2012-10-09 18:02:35.616244	2012-10-09 18:02:35.616244
+88780	996	0.00	2012-10-09 18:02:35.624427	2012-10-09 18:02:35.624427
+88781	997	0.00	2012-10-09 18:02:35.632529	2012-10-09 18:02:35.632529
+88782	998	0.00	2012-10-09 18:02:35.641132	2012-10-09 18:02:35.641132
+88783	999	0.00	2012-10-09 18:02:35.649345	2012-10-09 18:02:35.649345
+88784	1000	0.00	2012-10-09 18:02:35.657641	2012-10-09 18:02:35.657641
+88785	1001	0.00	2012-10-09 18:02:35.666288	2012-10-09 18:02:35.666288
+88786	1002	0.00	2012-10-09 18:02:35.67448	2012-10-09 18:02:35.67448
+88787	1003	0.00	2012-10-09 18:02:35.682749	2012-10-09 18:02:35.682749
+88788	1004	0.00	2012-10-09 18:02:35.691229	2012-10-09 18:02:35.691229
+88789	1005	0.00	2012-10-09 18:02:35.699466	2012-10-09 18:02:35.699466
+88790	1006	0.00	2012-10-09 18:02:35.70762	2012-10-09 18:02:35.70762
+88791	1007	0.00	2012-10-09 18:02:35.716228	2012-10-09 18:02:35.716228
+88792	1008	0.00	2012-10-09 18:02:35.724222	2012-10-09 18:02:35.724222
+88793	1009	0.00	2012-10-09 18:02:35.732783	2012-10-09 18:02:35.732783
+88794	1010	0.00	2012-10-09 18:02:35.741207	2012-10-09 18:02:35.741207
+88795	1011	0.00	2012-10-09 18:02:35.749415	2012-10-09 18:02:35.749415
+88796	1012	0.00	2012-10-09 18:02:35.757733	2012-10-09 18:02:35.757733
+88797	1013	0.00	2012-10-09 18:02:35.766312	2012-10-09 18:02:35.766312
+88798	1014	0.00	2012-10-09 18:02:35.774387	2012-10-09 18:02:35.774387
+88799	1015	0.00	2012-10-09 18:02:35.782433	2012-10-09 18:02:35.782433
+88800	1016	0.00	2012-10-09 18:02:35.790757	2012-10-09 18:02:35.790757
+88801	1017	0.00	2012-10-09 18:02:35.799084	2012-10-09 18:02:35.799084
+88802	1018	0.00	2012-10-09 18:02:35.843746	2012-10-09 18:02:35.843746
+88803	1019	0.00	2012-10-09 18:02:35.857929	2012-10-09 18:02:35.857929
+88804	1020	0.00	2012-10-09 18:02:35.865822	2012-10-09 18:02:35.865822
+88805	1021	0.00	2012-10-09 18:02:35.874179	2012-10-09 18:02:35.874179
+88806	1022	0.00	2012-10-09 18:02:35.882429	2012-10-09 18:02:35.882429
+88807	1023	0.00	2012-10-09 18:02:35.890812	2012-10-09 18:02:35.890812
+88808	1024	0.00	2012-10-09 18:02:35.899098	2012-10-09 18:02:35.899098
+88809	1025	0.00	2012-10-09 18:02:35.907439	2012-10-09 18:02:35.907439
+88810	1026	0.00	2012-10-09 18:02:35.915793	2012-10-09 18:02:35.915793
+88811	1027	0.00	2012-10-09 18:02:35.924069	2012-10-09 18:02:35.924069
+88812	1028	0.00	2012-10-09 18:02:35.932908	2012-10-09 18:02:35.932908
+88813	1029	0.00	2012-10-09 18:02:35.941145	2012-10-09 18:02:35.941145
+88814	1030	0.00	2012-10-09 18:02:35.949397	2012-10-09 18:02:35.949397
+88815	1031	0.00	2012-10-09 18:02:35.957583	2012-10-09 18:02:35.957583
+88816	1032	0.00	2012-10-09 18:02:35.966034	2012-10-09 18:02:35.966034
+88817	1033	0.00	2012-10-09 18:02:35.974389	2012-10-09 18:02:35.974389
+88818	1034	0.00	2012-10-09 18:02:35.982625	2012-10-09 18:02:35.982625
+88819	1035	0.00	2012-10-09 18:02:35.991119	2012-10-09 18:02:35.991119
+88820	1036	0.00	2012-10-09 18:02:35.999352	2012-10-09 18:02:35.999352
+88821	1037	0.00	2012-10-09 18:02:36.007606	2012-10-09 18:02:36.007606
+88822	1038	0.00	2012-10-09 18:02:36.016277	2012-10-09 18:02:36.016277
+88823	1039	0.00	2012-10-09 18:02:36.024368	2012-10-09 18:02:36.024368
+88824	1040	0.00	2012-10-09 18:02:36.032435	2012-10-09 18:02:36.032435
+88825	1041	0.00	2012-10-09 18:02:36.040659	2012-10-09 18:02:36.040659
+88826	1042	0.00	2012-10-09 18:02:36.049024	2012-10-09 18:02:36.049024
+88827	1043	0.00	2012-10-09 18:02:36.057346	2012-10-09 18:02:36.057346
+88828	1044	0.00	2012-10-09 18:02:36.065566	2012-10-09 18:02:36.065566
+88829	1045	0.00	2012-10-09 18:02:36.074027	2012-10-09 18:02:36.074027
+88830	1046	0.00	2012-10-09 18:02:36.082362	2012-10-09 18:02:36.082362
+88831	1047	0.00	2012-10-09 18:02:36.090595	2012-10-09 18:02:36.090595
+88832	1048	0.00	2012-10-09 18:02:36.099044	2012-10-09 18:02:36.099044
+88833	1049	0.00	2012-10-09 18:02:36.107348	2012-10-09 18:02:36.107348
+88834	1050	0.00	2012-10-09 18:02:36.115608	2012-10-09 18:02:36.115608
+88835	1051	0.00	2012-10-09 18:02:36.124022	2012-10-09 18:02:36.124022
+88836	1052	0.00	2012-10-09 18:02:36.132343	2012-10-09 18:02:36.132343
+88837	1053	0.00	2012-10-09 18:02:36.140623	2012-10-09 18:02:36.140623
+88838	1054	0.00	2012-10-09 18:02:36.149085	2012-10-09 18:02:36.149085
+88839	1055	0.00	2012-10-09 18:02:36.157383	2012-10-09 18:02:36.157383
+88840	1056	0.00	2012-10-09 18:02:36.165576	2012-10-09 18:02:36.165576
+88841	1057	0.00	2012-10-09 18:02:36.174017	2012-10-09 18:02:36.174017
+88842	1058	0.00	2012-10-09 18:02:36.182343	2012-10-09 18:02:36.182343
+88843	1059	0.00	2012-10-09 18:02:36.190611	2012-10-09 18:02:36.190611
+88844	1060	0.00	2012-10-09 18:02:36.199016	2012-10-09 18:02:36.199016
+88845	1072	0.00	2012-10-09 18:02:36.207315	2012-10-09 18:02:36.207315
+88846	1073	0.00	2012-10-09 18:02:36.215631	2012-10-09 18:02:36.215631
+88847	1074	0.00	2012-10-09 18:02:36.223997	2012-10-09 18:02:36.223997
+88848	1075	0.00	2012-10-09 18:02:36.23232	2012-10-09 18:02:36.23232
+88849	1076	0.00	2012-10-09 18:02:36.240606	2012-10-09 18:02:36.240606
+88850	1077	0.00	2012-10-09 18:02:36.248995	2012-10-09 18:02:36.248995
+88851	1079	0.00	2012-10-09 18:02:36.257303	2012-10-09 18:02:36.257303
+88852	1080	0.00	2012-10-09 18:02:36.265583	2012-10-09 18:02:36.265583
+88853	1081	0.00	2012-10-09 18:02:36.27407	2012-10-09 18:02:36.27407
+88854	1082	0.00	2012-10-09 18:02:36.282658	2012-10-09 18:02:36.282658
+88855	1083	0.00	2012-10-09 18:02:36.291216	2012-10-09 18:02:36.291216
+88856	1084	0.00	2012-10-09 18:02:36.299309	2012-10-09 18:02:36.299309
+88857	1085	0.00	2012-10-09 18:02:36.307633	2012-10-09 18:02:36.307633
+88858	1086	0.00	2012-10-09 18:02:36.316188	2012-10-09 18:02:36.316188
+88859	1087	0.00	2012-10-09 18:02:36.324429	2012-10-09 18:02:36.324429
+88860	1088	0.00	2012-10-09 18:02:36.332536	2012-10-09 18:02:36.332536
+88861	1089	0.00	2012-10-09 18:02:36.340969	2012-10-09 18:02:36.340969
+88862	1090	0.00	2012-10-09 18:02:36.349317	2012-10-09 18:02:36.349317
+88863	1091	0.00	2012-10-09 18:02:36.357484	2012-10-09 18:02:36.357484
+88864	1092	0.00	2012-10-09 18:02:36.365976	2012-10-09 18:02:36.365976
+88865	1093	0.00	2012-10-09 18:02:36.408118	2012-10-09 18:02:36.408118
+88866	1094	0.00	2012-10-09 18:02:36.4159	2012-10-09 18:02:36.4159
+88867	1095	0.00	2012-10-09 18:02:36.424087	2012-10-09 18:02:36.424087
+88868	1096	0.00	2012-10-09 18:02:36.432418	2012-10-09 18:02:36.432418
+88869	1097	0.00	2012-10-09 18:02:36.440729	2012-10-09 18:02:36.440729
+88870	1098	0.00	2012-10-09 18:02:36.449087	2012-10-09 18:02:36.449087
+88871	1099	0.00	2012-10-09 18:02:36.457377	2012-10-09 18:02:36.457377
+88872	1100	0.00	2012-10-09 18:02:36.465703	2012-10-09 18:02:36.465703
+88873	1101	0.00	2012-10-09 18:02:36.474122	2012-10-09 18:02:36.474122
+88874	1102	0.00	2012-10-09 18:02:36.482685	2012-10-09 18:02:36.482685
+88875	1103	0.00	2012-10-09 18:02:36.491319	2012-10-09 18:02:36.491319
+88876	1104	0.00	2012-10-09 18:02:36.499443	2012-10-09 18:02:36.499443
+88877	1105	0.00	2012-10-09 18:02:36.507869	2012-10-09 18:02:36.507869
+88878	1106	0.00	2012-10-09 18:02:36.516284	2012-10-09 18:02:36.516284
+88879	1107	0.00	2012-10-09 18:02:36.524418	2012-10-09 18:02:36.524418
+88880	1108	0.00	2012-10-09 18:02:36.532755	2012-10-09 18:02:36.532755
+88881	1109	0.00	2012-10-09 18:02:36.541185	2012-10-09 18:02:36.541185
+88882	1110	0.00	2012-10-09 18:02:36.549405	2012-10-09 18:02:36.549405
+88883	1111	0.00	2012-10-09 18:02:36.557575	2012-10-09 18:02:36.557575
+88884	1112	0.00	2012-10-09 18:02:36.566245	2012-10-09 18:02:36.566245
+88885	1113	0.00	2012-10-09 18:02:36.574472	2012-10-09 18:02:36.574472
+88886	1114	0.00	2012-10-09 18:02:36.582765	2012-10-09 18:02:36.582765
+88887	1115	0.00	2012-10-09 18:02:36.591194	2012-10-09 18:02:36.591194
+88888	1116	0.00	2012-10-09 18:02:36.599263	2012-10-09 18:02:36.599263
+88889	1117	0.00	2012-10-09 18:02:36.60759	2012-10-09 18:02:36.60759
+88890	1118	0.00	2012-10-09 18:02:36.615607	2012-10-09 18:02:36.615607
+88891	1119	0.00	2012-10-09 18:02:36.623963	2012-10-09 18:02:36.623963
+88892	1120	0.00	2012-10-09 18:02:36.632315	2012-10-09 18:02:36.632315
+88893	1121	0.00	2012-10-09 18:02:36.641002	2012-10-09 18:02:36.641002
+88894	1122	0.00	2012-10-09 18:02:36.649364	2012-10-09 18:02:36.649364
+88895	1123	0.00	2012-10-09 18:02:36.657519	2012-10-09 18:02:36.657519
+88896	1124	0.00	2012-10-09 18:02:36.666225	2012-10-09 18:02:36.666225
+88897	1125	0.00	2012-10-09 18:02:36.674412	2012-10-09 18:02:36.674412
+88898	1126	0.00	2012-10-09 18:02:36.682656	2012-10-09 18:02:36.682656
+88899	1127	0.00	2012-10-09 18:02:36.690846	2012-10-09 18:02:36.690846
+88900	1128	0.00	2012-10-09 18:02:36.699179	2012-10-09 18:02:36.699179
+88901	1129	0.00	2012-10-09 18:02:36.707468	2012-10-09 18:02:36.707468
+88902	1130	0.00	2012-10-09 18:02:36.715747	2012-10-09 18:02:36.715747
+88903	1131	0.00	2012-10-09 18:02:36.724053	2012-10-09 18:02:36.724053
+88904	1132	0.00	2012-10-09 18:02:36.732375	2012-10-09 18:02:36.732375
+88905	1133	0.00	2012-10-09 18:02:36.741195	2012-10-09 18:02:36.741195
+88906	1134	0.00	2012-10-09 18:02:36.749309	2012-10-09 18:02:36.749309
+88907	1135	0.00	2012-10-09 18:02:36.757674	2012-10-09 18:02:36.757674
+88908	1136	0.00	2012-10-09 18:02:36.766268	2012-10-09 18:02:36.766268
+88909	1137	0.00	2012-10-09 18:02:36.774453	2012-10-09 18:02:36.774453
+88910	1138	0.00	2012-10-09 18:02:36.782855	2012-10-09 18:02:36.782855
+88911	1139	0.00	2012-10-09 18:02:36.791264	2012-10-09 18:02:36.791264
+88912	1140	0.00	2012-10-09 18:02:36.799492	2012-10-09 18:02:36.799492
+88913	1141	0.00	2012-10-09 18:02:36.85042	2012-10-09 18:02:36.85042
+88914	1142	0.00	2012-10-09 18:02:36.857868	2012-10-09 18:02:36.857868
+88915	1143	0.00	2012-10-09 18:02:36.866203	2012-10-09 18:02:36.866203
+88916	1144	0.00	2012-10-09 18:02:36.874417	2012-10-09 18:02:36.874417
+88917	1145	0.00	2012-10-09 18:02:36.882647	2012-10-09 18:02:36.882647
+88918	1146	0.00	2012-10-09 18:02:36.891272	2012-10-09 18:02:36.891272
+88919	1147	0.00	2012-10-09 18:02:36.899182	2012-10-09 18:02:36.899182
+88920	1148	0.00	2012-10-09 18:02:36.907469	2012-10-09 18:02:36.907469
+88921	1149	0.00	2012-10-09 18:02:36.915806	2012-10-09 18:02:36.915806
+88922	1150	0.00	2012-10-09 18:02:36.924075	2012-10-09 18:02:36.924075
+88923	1151	0.00	2012-10-09 18:02:36.932381	2012-10-09 18:02:36.932381
+88924	1152	0.00	2012-10-09 18:02:36.94081	2012-10-09 18:02:36.94081
+88925	1153	0.00	2012-10-09 18:02:36.949074	2012-10-09 18:02:36.949074
+88926	1154	0.00	2012-10-09 18:02:36.957442	2012-10-09 18:02:36.957442
+88927	1155	0.00	2012-10-09 18:02:36.965694	2012-10-09 18:02:36.965694
+88928	1156	0.00	2012-10-09 18:02:36.974294	2012-10-09 18:02:36.974294
+88929	1157	0.00	2012-10-09 18:02:36.982598	2012-10-09 18:02:36.982598
+88930	1158	0.00	2012-10-09 18:02:36.991177	2012-10-09 18:02:36.991177
+88931	1159	0.00	2012-10-09 18:02:36.999405	2012-10-09 18:02:36.999405
+88932	1160	0.00	2012-10-09 18:02:37.007831	2012-10-09 18:02:37.007831
+88933	1161	0.00	2012-10-09 18:02:37.016181	2012-10-09 18:02:37.016181
+88934	1162	0.00	2012-10-09 18:02:37.024139	2012-10-09 18:02:37.024139
+88935	1163	0.00	2012-10-09 18:02:37.032431	2012-10-09 18:02:37.032431
+88936	1164	0.00	2012-10-09 18:02:37.040782	2012-10-09 18:02:37.040782
+88937	1165	0.00	2012-10-09 18:02:37.04921	2012-10-09 18:02:37.04921
+88938	1166	0.00	2012-10-09 18:02:37.057472	2012-10-09 18:02:37.057472
+88939	1167	0.00	2012-10-09 18:02:37.06584	2012-10-09 18:02:37.06584
+88940	1168	0.00	2012-10-09 18:02:37.074124	2012-10-09 18:02:37.074124
+88941	1169	0.00	2012-10-09 18:02:37.082445	2012-10-09 18:02:37.082445
+88942	1170	0.00	2012-10-09 18:02:37.09079	2012-10-09 18:02:37.09079
+88943	1171	0.00	2012-10-09 18:02:37.099057	2012-10-09 18:02:37.099057
+88944	1172	0.00	2012-10-09 18:02:37.107433	2012-10-09 18:02:37.107433
+88945	1173	0.00	2012-10-09 18:02:37.115801	2012-10-09 18:02:37.115801
+88946	1174	0.00	2012-10-09 18:02:37.124081	2012-10-09 18:02:37.124081
+88947	1175	0.00	2012-10-09 18:02:37.132618	2012-10-09 18:02:37.132618
+88948	1176	0.00	2012-10-09 18:02:37.140981	2012-10-09 18:02:37.140981
+88949	1177	0.00	2012-10-09 18:02:37.149278	2012-10-09 18:02:37.149278
+88950	1178	0.00	2012-10-09 18:02:37.157568	2012-10-09 18:02:37.157568
+88951	1179	0.00	2012-10-09 18:02:37.165917	2012-10-09 18:02:37.165917
+88952	1180	0.00	2012-10-09 18:02:37.174301	2012-10-09 18:02:37.174301
+88953	1181	0.00	2012-10-09 18:02:37.182476	2012-10-09 18:02:37.182476
+88954	1182	0.00	2012-10-09 18:02:37.191328	2012-10-09 18:02:37.191328
+88955	1183	0.00	2012-10-09 18:02:37.199321	2012-10-09 18:02:37.199321
+88956	1184	0.00	2012-10-09 18:02:37.207554	2012-10-09 18:02:37.207554
+88957	1185	0.00	2012-10-09 18:02:37.215978	2012-10-09 18:02:37.215978
+88958	1186	0.00	2012-10-09 18:02:37.224439	2012-10-09 18:02:37.224439
+88959	1187	0.00	2012-10-09 18:02:37.232395	2012-10-09 18:02:37.232395
+88960	1188	0.00	2012-10-09 18:02:37.24114	2012-10-09 18:02:37.24114
+88961	1189	0.00	2012-10-09 18:02:37.249319	2012-10-09 18:02:37.249319
+88962	1190	0.00	2012-10-09 18:02:37.257513	2012-10-09 18:02:37.257513
+88963	1191	0.00	2012-10-09 18:02:37.265969	2012-10-09 18:02:37.265969
+88964	1192	0.00	2012-10-09 18:02:37.27438	2012-10-09 18:02:37.27438
+88965	1193	0.00	2012-10-09 18:02:37.282581	2012-10-09 18:02:37.282581
+88966	1194	0.00	2012-10-09 18:02:37.290945	2012-10-09 18:02:37.290945
+88967	1195	0.00	2012-10-09 18:02:37.299376	2012-10-09 18:02:37.299376
+88968	1196	0.00	2012-10-09 18:02:37.307522	2012-10-09 18:02:37.307522
+88969	1197	0.00	2012-10-09 18:02:37.3162	2012-10-09 18:02:37.3162
+88970	1198	0.00	2012-10-09 18:02:37.324339	2012-10-09 18:02:37.324339
+88971	1199	0.00	2012-10-09 18:02:37.332537	2012-10-09 18:02:37.332537
+88972	1200	0.00	2012-10-09 18:02:37.370194	2012-10-09 18:02:37.370194
+88973	1201	0.00	2012-10-09 18:02:37.382811	2012-10-09 18:02:37.382811
+88974	1202	0.00	2012-10-09 18:02:37.390789	2012-10-09 18:02:37.390789
+88975	1203	0.00	2012-10-09 18:02:37.399081	2012-10-09 18:02:37.399081
+88976	1204	0.00	2012-10-09 18:02:37.407413	2012-10-09 18:02:37.407413
+88977	1205	0.00	2012-10-09 18:02:37.415799	2012-10-09 18:02:37.415799
+88978	1206	0.00	2012-10-09 18:02:37.424146	2012-10-09 18:02:37.424146
+88979	1207	0.00	2012-10-09 18:02:37.432353	2012-10-09 18:02:37.432353
+88980	1208	0.00	2012-10-09 18:02:37.441243	2012-10-09 18:02:37.441243
+88981	1209	0.00	2012-10-09 18:02:37.449378	2012-10-09 18:02:37.449378
+88982	1210	0.00	2012-10-09 18:02:37.457576	2012-10-09 18:02:37.457576
+88983	1211	0.00	2012-10-09 18:02:37.466186	2012-10-09 18:02:37.466186
+88984	1212	0.00	2012-10-09 18:02:37.474413	2012-10-09 18:02:37.474413
+88985	1213	0.00	2012-10-09 18:02:37.482451	2012-10-09 18:02:37.482451
+88986	1214	0.00	2012-10-09 18:02:37.490979	2012-10-09 18:02:37.490979
+88987	1215	0.00	2012-10-09 18:02:37.499476	2012-10-09 18:02:37.499476
+88988	1216	0.00	2012-10-09 18:02:37.507321	2012-10-09 18:02:37.507321
+88989	1217	0.00	2012-10-09 18:02:37.515757	2012-10-09 18:02:37.515757
+88990	1218	0.00	2012-10-09 18:02:37.524133	2012-10-09 18:02:37.524133
+88991	1219	0.00	2012-10-09 18:02:37.532423	2012-10-09 18:02:37.532423
+88992	1220	0.00	2012-10-09 18:02:37.540794	2012-10-09 18:02:37.540794
+88993	1221	0.00	2012-10-09 18:02:37.549106	2012-10-09 18:02:37.549106
+88994	1222	0.00	2012-10-09 18:02:37.55741	2012-10-09 18:02:37.55741
+88995	1223	0.00	2012-10-09 18:02:37.56583	2012-10-09 18:02:37.56583
+88996	1224	0.00	2012-10-09 18:02:37.574411	2012-10-09 18:02:37.574411
+88997	1225	0.00	2012-10-09 18:02:37.582587	2012-10-09 18:02:37.582587
+88998	1226	0.00	2012-10-09 18:02:37.591262	2012-10-09 18:02:37.591262
+88999	1227	0.00	2012-10-09 18:02:37.599391	2012-10-09 18:02:37.599391
+89000	1228	0.00	2012-10-09 18:02:37.607501	2012-10-09 18:02:37.607501
+89001	1229	0.00	2012-10-09 18:02:37.616205	2012-10-09 18:02:37.616205
+89002	1230	0.00	2012-10-09 18:02:37.624357	2012-10-09 18:02:37.624357
+89003	1231	0.00	2012-10-09 18:02:37.632351	2012-10-09 18:02:37.632351
+89004	1232	0.00	2012-10-09 18:02:37.640999	2012-10-09 18:02:37.640999
+89005	1233	0.00	2012-10-09 18:02:37.649289	2012-10-09 18:02:37.649289
+89006	1234	0.00	2012-10-09 18:02:37.657579	2012-10-09 18:02:37.657579
+89007	1235	0.00	2012-10-09 18:02:37.666186	2012-10-09 18:02:37.666186
+89008	1236	0.00	2012-10-09 18:02:37.67416	2012-10-09 18:02:37.67416
+89009	1237	0.00	2012-10-09 18:02:37.68236	2012-10-09 18:02:37.68236
+89010	1238	0.00	2012-10-09 18:02:37.690763	2012-10-09 18:02:37.690763
+89011	1239	0.00	2012-10-09 18:02:37.699097	2012-10-09 18:02:37.699097
+89012	1240	0.00	2012-10-09 18:02:37.707522	2012-10-09 18:02:37.707522
+89013	1241	0.00	2012-10-09 18:02:37.716212	2012-10-09 18:02:37.716212
+89014	1242	0.00	2012-10-09 18:02:37.724633	2012-10-09 18:02:37.724633
+89015	1243	0.00	2012-10-09 18:02:37.732638	2012-10-09 18:02:37.732638
+89016	1244	0.00	2012-10-09 18:02:37.740874	2012-10-09 18:02:37.740874
+89017	1245	0.00	2012-10-09 18:02:37.749243	2012-10-09 18:02:37.749243
+89018	1246	0.00	2012-10-09 18:02:37.757467	2012-10-09 18:02:37.757467
+89019	1247	0.00	2012-10-09 18:02:37.765855	2012-10-09 18:02:37.765855
+89020	1248	0.00	2012-10-09 18:02:37.774264	2012-10-09 18:02:37.774264
+89021	1249	0.00	2012-10-09 18:02:37.782972	2012-10-09 18:02:37.782972
+89022	1250	0.00	2012-10-09 18:02:37.791293	2012-10-09 18:02:37.791293
+89023	1251	0.00	2012-10-09 18:02:37.84073	2012-10-09 18:02:37.84073
+89024	1252	0.00	2012-10-09 18:02:37.849468	2012-10-09 18:02:37.849468
+89025	1253	0.00	2012-10-09 18:02:37.857813	2012-10-09 18:02:37.857813
+89026	1254	0.00	2012-10-09 18:02:37.865958	2012-10-09 18:02:37.865958
+89027	1255	0.00	2012-10-09 18:02:37.874425	2012-10-09 18:02:37.874425
+89028	1256	0.00	2012-10-09 18:02:37.882615	2012-10-09 18:02:37.882615
+89029	1257	0.00	2012-10-09 18:02:37.891205	2012-10-09 18:02:37.891205
+89030	1258	0.00	2012-10-09 18:02:37.899434	2012-10-09 18:02:37.899434
+89031	1259	0.00	2012-10-09 18:02:37.907687	2012-10-09 18:02:37.907687
+89032	1260	0.00	2012-10-09 18:02:37.915841	2012-10-09 18:02:37.915841
+89033	1261	0.00	2012-10-09 18:02:37.924094	2012-10-09 18:02:37.924094
+89034	1262	0.00	2012-10-09 18:02:37.932445	2012-10-09 18:02:37.932445
+89035	1263	0.00	2012-10-09 18:02:37.940774	2012-10-09 18:02:37.940774
+89036	1264	0.00	2012-10-09 18:02:37.949057	2012-10-09 18:02:37.949057
+89037	1265	0.00	2012-10-09 18:02:37.957364	2012-10-09 18:02:37.957364
+89038	1266	0.00	2012-10-09 18:02:37.965644	2012-10-09 18:02:37.965644
+89039	1267	0.00	2012-10-09 18:02:37.974062	2012-10-09 18:02:37.974062
+89040	1268	0.00	2012-10-09 18:02:37.982414	2012-10-09 18:02:37.982414
+89041	1269	0.00	2012-10-09 18:02:37.990758	2012-10-09 18:02:37.990758
+89042	1270	0.00	2012-10-09 18:02:37.999005	2012-10-09 18:02:37.999005
+89043	1271	0.00	2012-10-09 18:02:38.007366	2012-10-09 18:02:38.007366
+89044	1272	0.00	2012-10-09 18:02:38.01564	2012-10-09 18:02:38.01564
+89045	1273	0.00	2012-10-09 18:02:38.024178	2012-10-09 18:02:38.024178
+89046	1274	0.00	2012-10-09 18:02:38.032456	2012-10-09 18:02:38.032456
+89047	1275	0.00	2012-10-09 18:02:38.040794	2012-10-09 18:02:38.040794
+89048	1276	0.00	2012-10-09 18:02:38.049053	2012-10-09 18:02:38.049053
+89049	1277	0.00	2012-10-09 18:02:38.05763	2012-10-09 18:02:38.05763
+89050	1278	0.00	2012-10-09 18:02:38.065977	2012-10-09 18:02:38.065977
+89051	1279	0.00	2012-10-09 18:02:38.074423	2012-10-09 18:02:38.074423
+89052	1280	0.00	2012-10-09 18:02:38.082618	2012-10-09 18:02:38.082618
+89053	1281	0.00	2012-10-09 18:02:38.090913	2012-10-09 18:02:38.090913
+89054	1282	0.00	2012-10-09 18:02:38.099397	2012-10-09 18:02:38.099397
+89055	1283	0.00	2012-10-09 18:02:38.107563	2012-10-09 18:02:38.107563
+89056	1284	0.00	2012-10-09 18:02:38.116266	2012-10-09 18:02:38.116266
+89057	1285	0.00	2012-10-09 18:02:38.124351	2012-10-09 18:02:38.124351
+89058	1286	0.00	2012-10-09 18:02:38.132519	2012-10-09 18:02:38.132519
+89059	1287	0.00	2012-10-09 18:02:38.140889	2012-10-09 18:02:38.140889
+89060	1288	0.00	2012-10-09 18:02:38.1494	2012-10-09 18:02:38.1494
+89061	1289	0.00	2012-10-09 18:02:38.157514	2012-10-09 18:02:38.157514
+89062	1290	0.00	2012-10-09 18:02:38.16617	2012-10-09 18:02:38.16617
+89063	1291	0.00	2012-10-09 18:02:38.174365	2012-10-09 18:02:38.174365
+89064	1292	0.00	2012-10-09 18:02:38.182289	2012-10-09 18:02:38.182289
+89065	1293	0.00	2012-10-09 18:02:38.191148	2012-10-09 18:02:38.191148
+89066	1294	0.00	2012-10-09 18:02:38.199324	2012-10-09 18:02:38.199324
+89067	1295	0.00	2012-10-09 18:02:38.207508	2012-10-09 18:02:38.207508
+89068	1296	0.00	2012-10-09 18:02:38.215994	2012-10-09 18:02:38.215994
+89069	1297	0.00	2012-10-09 18:02:38.224339	2012-10-09 18:02:38.224339
+89070	1298	0.00	2012-10-09 18:02:38.232516	2012-10-09 18:02:38.232516
+89071	1299	0.00	2012-10-09 18:02:38.240956	2012-10-09 18:02:38.240956
+89072	1300	0.00	2012-10-09 18:02:38.249346	2012-10-09 18:02:38.249346
+89073	1301	0.00	2012-10-09 18:02:38.2573	2012-10-09 18:02:38.2573
+89074	1302	0.00	2012-10-09 18:02:38.26555	2012-10-09 18:02:38.26555
+89075	1303	0.00	2012-10-09 18:02:38.27405	2012-10-09 18:02:38.27405
+89076	1304	0.00	2012-10-09 18:02:38.282312	2012-10-09 18:02:38.282312
+89077	1305	0.00	2012-10-09 18:02:38.290574	2012-10-09 18:02:38.290574
+89078	1306	0.00	2012-10-09 18:02:38.298998	2012-10-09 18:02:38.298998
+89079	1307	0.00	2012-10-09 18:02:38.307312	2012-10-09 18:02:38.307312
+89080	1308	0.00	2012-10-09 18:02:38.34564	2012-10-09 18:02:38.34564
+89081	1309	0.00	2012-10-09 18:02:38.357422	2012-10-09 18:02:38.357422
+89082	1310	0.00	2012-10-09 18:02:38.365684	2012-10-09 18:02:38.365684
+89083	1311	0.00	2012-10-09 18:02:38.374072	2012-10-09 18:02:38.374072
+89084	1312	0.00	2012-10-09 18:02:38.382373	2012-10-09 18:02:38.382373
+89085	1313	0.00	2012-10-09 18:02:38.391171	2012-10-09 18:02:38.391171
+89086	1314	0.00	2012-10-09 18:02:38.399367	2012-10-09 18:02:38.399367
+89087	1315	0.00	2012-10-09 18:02:38.407597	2012-10-09 18:02:38.407597
+89088	1316	0.00	2012-10-09 18:02:38.41619	2012-10-09 18:02:38.41619
+89089	1317	0.00	2012-10-09 18:02:38.424297	2012-10-09 18:02:38.424297
+89090	1318	0.00	2012-10-09 18:02:38.432619	2012-10-09 18:02:38.432619
+89091	1319	0.00	2012-10-09 18:02:38.440997	2012-10-09 18:02:38.440997
+89092	1320	0.00	2012-10-09 18:02:38.449372	2012-10-09 18:02:38.449372
+89093	1321	0.00	2012-10-09 18:02:38.457598	2012-10-09 18:02:38.457598
+89094	1322	0.00	2012-10-09 18:02:38.4662	2012-10-09 18:02:38.4662
+89095	1323	0.00	2012-10-09 18:02:38.474179	2012-10-09 18:02:38.474179
+89096	1324	0.00	2012-10-09 18:02:38.482526	2012-10-09 18:02:38.482526
+89097	1325	0.00	2012-10-09 18:02:38.491153	2012-10-09 18:02:38.491153
+89098	1326	0.00	2012-10-09 18:02:38.499435	2012-10-09 18:02:38.499435
+89099	1327	0.00	2012-10-09 18:02:38.507311	2012-10-09 18:02:38.507311
+89100	1328	0.00	2012-10-09 18:02:38.515614	2012-10-09 18:02:38.515614
+89101	1329	0.00	2012-10-09 18:02:38.523949	2012-10-09 18:02:38.523949
+89102	1330	0.00	2012-10-09 18:02:38.532253	2012-10-09 18:02:38.532253
+89103	1331	0.00	2012-10-09 18:02:38.54061	2012-10-09 18:02:38.54061
+89104	1332	0.00	2012-10-09 18:02:38.549061	2012-10-09 18:02:38.549061
+89105	1333	0.00	2012-10-09 18:02:38.557436	2012-10-09 18:02:38.557436
+89106	1334	0.00	2012-10-09 18:02:38.565755	2012-10-09 18:02:38.565755
+89107	1335	0.00	2012-10-09 18:02:38.574055	2012-10-09 18:02:38.574055
+89108	1336	0.00	2012-10-09 18:02:38.582469	2012-10-09 18:02:38.582469
+89109	1337	0.00	2012-10-09 18:02:38.590816	2012-10-09 18:02:38.590816
+89110	1338	0.00	2012-10-09 18:02:38.599407	2012-10-09 18:02:38.599407
+89111	1339	0.00	2012-10-09 18:02:38.607417	2012-10-09 18:02:38.607417
+89112	1340	0.00	2012-10-09 18:02:38.615841	2012-10-09 18:02:38.615841
+89113	1341	0.00	2012-10-09 18:02:38.624252	2012-10-09 18:02:38.624252
+89114	1342	0.00	2012-10-09 18:02:38.632438	2012-10-09 18:02:38.632438
+89115	1343	0.00	2012-10-09 18:02:38.64083	2012-10-09 18:02:38.64083
+89116	1344	0.00	2012-10-09 18:02:38.64914	2012-10-09 18:02:38.64914
+89117	1345	0.00	2012-10-09 18:02:38.65743	2012-10-09 18:02:38.65743
+89118	1346	0.00	2012-10-09 18:02:38.665864	2012-10-09 18:02:38.665864
+89119	1347	0.00	2012-10-09 18:02:38.674228	2012-10-09 18:02:38.674228
+89120	1348	0.00	2012-10-09 18:02:38.682489	2012-10-09 18:02:38.682489
+89121	1349	0.00	2012-10-09 18:02:38.690862	2012-10-09 18:02:38.690862
+89122	1350	0.00	2012-10-09 18:02:38.69927	2012-10-09 18:02:38.69927
+89123	1351	0.00	2012-10-09 18:02:38.707461	2012-10-09 18:02:38.707461
+89124	1352	0.00	2012-10-09 18:02:38.716017	2012-10-09 18:02:38.716017
+89125	1353	0.00	2012-10-09 18:02:38.724452	2012-10-09 18:02:38.724452
+89126	1354	0.00	2012-10-09 18:02:38.732614	2012-10-09 18:02:38.732614
+89127	1355	0.00	2012-10-09 18:02:38.741284	2012-10-09 18:02:38.741284
+89128	1356	0.00	2012-10-09 18:02:38.749438	2012-10-09 18:02:38.749438
+89129	1357	0.00	2012-10-09 18:02:38.757904	2012-10-09 18:02:38.757904
+89130	1358	0.00	2012-10-09 18:02:38.766198	2012-10-09 18:02:38.766198
+89131	1359	0.00	2012-10-09 18:02:38.774343	2012-10-09 18:02:38.774343
+89132	1360	0.00	2012-10-09 18:02:38.782758	2012-10-09 18:02:38.782758
+89133	1361	0.00	2012-10-09 18:02:38.832194	2012-10-09 18:02:38.832194
+89134	1362	0.00	2012-10-09 18:02:38.841324	2012-10-09 18:02:38.841324
+89135	1363	0.00	2012-10-09 18:02:38.849365	2012-10-09 18:02:38.849365
+89136	1364	0.00	2012-10-09 18:02:38.857491	2012-10-09 18:02:38.857491
+89137	1365	0.00	2012-10-09 18:02:38.865993	2012-10-09 18:02:38.865993
+89138	1366	0.00	2012-10-09 18:02:38.874136	2012-10-09 18:02:38.874136
+89139	1367	0.00	2012-10-09 18:02:38.882419	2012-10-09 18:02:38.882419
+89140	1368	0.00	2012-10-09 18:02:38.890794	2012-10-09 18:02:38.890794
+89141	1369	0.00	2012-10-09 18:02:38.899084	2012-10-09 18:02:38.899084
+89142	1370	0.00	2012-10-09 18:02:38.90738	2012-10-09 18:02:38.90738
+89143	1371	0.00	2012-10-09 18:02:38.915711	2012-10-09 18:02:38.915711
+89144	1372	0.00	2012-10-09 18:02:38.924059	2012-10-09 18:02:38.924059
+89145	1373	0.00	2012-10-09 18:02:38.932346	2012-10-09 18:02:38.932346
+89146	1374	0.00	2012-10-09 18:02:38.940647	2012-10-09 18:02:38.940647
+89147	1375	0.00	2012-10-09 18:02:38.949384	2012-10-09 18:02:38.949384
+89148	1376	0.00	2012-10-09 18:02:38.957594	2012-10-09 18:02:38.957594
+89149	1377	0.00	2012-10-09 18:02:38.965966	2012-10-09 18:02:38.965966
+89150	1379	0.00	2012-10-09 18:02:38.974221	2012-10-09 18:02:38.974221
+89151	1380	0.00	2012-10-09 18:02:38.982453	2012-10-09 18:02:38.982453
+89152	1381	0.00	2012-10-09 18:02:38.990977	2012-10-09 18:02:38.990977
+89153	1382	0.00	2012-10-09 18:02:38.999245	2012-10-09 18:02:38.999245
+89154	1383	0.00	2012-10-09 18:02:39.007477	2012-10-09 18:02:39.007477
+89155	1384	0.00	2012-10-09 18:02:39.015967	2012-10-09 18:02:39.015967
+89156	1385	0.00	2012-10-09 18:02:39.024325	2012-10-09 18:02:39.024325
+89157	1386	0.00	2012-10-09 18:02:39.032462	2012-10-09 18:02:39.032462
+89158	1387	0.00	2012-10-09 18:02:39.040968	2012-10-09 18:02:39.040968
+89159	1388	0.00	2012-10-09 18:02:39.04935	2012-10-09 18:02:39.04935
+89160	1389	0.00	2012-10-09 18:02:39.057434	2012-10-09 18:02:39.057434
+89161	1390	0.00	2012-10-09 18:02:39.066133	2012-10-09 18:02:39.066133
+89162	1391	0.00	2012-10-09 18:02:39.074283	2012-10-09 18:02:39.074283
+89163	1392	0.00	2012-10-09 18:02:39.082395	2012-10-09 18:02:39.082395
+89164	1393	0.00	2012-10-09 18:02:39.090756	2012-10-09 18:02:39.090756
+89165	1394	0.00	2012-10-09 18:02:39.099068	2012-10-09 18:02:39.099068
+89166	1395	0.00	2012-10-09 18:02:39.10736	2012-10-09 18:02:39.10736
+89167	1396	0.00	2012-10-09 18:02:39.115636	2012-10-09 18:02:39.115636
+89168	1397	0.00	2012-10-09 18:02:39.124111	2012-10-09 18:02:39.124111
+89169	1398	0.00	2012-10-09 18:02:39.132352	2012-10-09 18:02:39.132352
+89170	1399	0.00	2012-10-09 18:02:39.140713	2012-10-09 18:02:39.140713
+89171	1400	0.00	2012-10-09 18:02:39.148638	2012-10-09 18:02:39.148638
+89172	1401	0.00	2012-10-09 18:02:39.156935	2012-10-09 18:02:39.156935
+89173	1402	0.00	2012-10-09 18:02:39.165333	2012-10-09 18:02:39.165333
+89174	1403	0.00	2012-10-09 18:02:39.173727	2012-10-09 18:02:39.173727
+89175	1404	0.00	2012-10-09 18:02:39.181998	2012-10-09 18:02:39.181998
+89176	1405	0.00	2012-10-09 18:02:39.191073	2012-10-09 18:02:39.191073
+89177	1406	0.00	2012-10-09 18:02:39.214443	2012-10-09 18:02:39.214443
+89178	1407	0.00	2012-10-09 18:02:39.256157	2012-10-09 18:02:39.256157
+89179	1408	0.00	2012-10-09 18:02:39.28891	2012-10-09 18:02:39.28891
+89180	1409	0.00	2012-10-09 18:02:39.322031	2012-10-09 18:02:39.322031
+89181	1410	0.00	2012-10-09 18:02:39.355212	2012-10-09 18:02:39.355212
+89182	1411	0.00	2012-10-09 18:02:39.388894	2012-10-09 18:02:39.388894
+89183	1412	0.00	2012-10-09 18:02:39.422275	2012-10-09 18:02:39.422275
+89184	1413	0.00	2012-10-09 18:02:39.455219	2012-10-09 18:02:39.455219
+89185	1414	0.00	2012-10-09 18:02:39.488621	2012-10-09 18:02:39.488621
+89186	1415	0.00	2012-10-09 18:02:39.521791	2012-10-09 18:02:39.521791
+89187	1416	0.00	2012-10-09 18:02:39.555125	2012-10-09 18:02:39.555125
+89188	1417	0.00	2012-10-09 18:02:39.619581	2012-10-09 18:02:39.619581
+89189	1418	0.00	2012-10-09 18:02:39.649353	2012-10-09 18:02:39.649353
+89190	1419	0.00	2012-10-09 18:02:39.657332	2012-10-09 18:02:39.657332
+89191	1420	0.00	2012-10-09 18:02:39.665667	2012-10-09 18:02:39.665667
+89192	1421	0.00	2012-10-09 18:02:39.673995	2012-10-09 18:02:39.673995
+89193	1422	0.00	2012-10-09 18:02:39.682327	2012-10-09 18:02:39.682327
+89194	1423	0.00	2012-10-09 18:02:39.690623	2012-10-09 18:02:39.690623
+89195	1424	0.00	2012-10-09 18:02:39.699074	2012-10-09 18:02:39.699074
+89196	1425	0.00	2012-10-09 18:02:39.707323	2012-10-09 18:02:39.707323
+89197	1426	0.00	2012-10-09 18:02:39.715597	2012-10-09 18:02:39.715597
+89198	1427	0.00	2012-10-09 18:02:39.724058	2012-10-09 18:02:39.724058
+89199	1428	0.00	2012-10-09 18:02:39.732333	2012-10-09 18:02:39.732333
+89200	1429	0.00	2012-10-09 18:02:39.740601	2012-10-09 18:02:39.740601
+89201	1430	0.00	2012-10-09 18:02:39.748976	2012-10-09 18:02:39.748976
+89202	1431	0.00	2012-10-09 18:02:39.757392	2012-10-09 18:02:39.757392
+89203	1432	0.00	2012-10-09 18:02:39.765603	2012-10-09 18:02:39.765603
+89204	1433	0.00	2012-10-09 18:02:39.774289	2012-10-09 18:02:39.774289
+89205	1434	0.00	2012-10-09 18:02:39.782446	2012-10-09 18:02:39.782446
+89206	1435	0.00	2012-10-09 18:02:39.790592	2012-10-09 18:02:39.790592
+89207	1436	0.00	2012-10-09 18:02:39.798938	2012-10-09 18:02:39.798938
+89208	1437	0.00	2012-10-09 18:02:39.807361	2012-10-09 18:02:39.807361
+89209	1438	0.00	2012-10-09 18:02:39.815581	2012-10-09 18:02:39.815581
+89210	1439	0.00	2012-10-09 18:02:39.823933	2012-10-09 18:02:39.823933
+89211	1440	0.00	2012-10-09 18:02:39.832338	2012-10-09 18:02:39.832338
+89212	1441	0.00	2012-10-09 18:02:39.841164	2012-10-09 18:02:39.841164
+89213	1442	0.00	2012-10-09 18:02:39.849281	2012-10-09 18:02:39.849281
+89214	1443	0.00	2012-10-09 18:02:39.85749	2012-10-09 18:02:39.85749
+89215	1444	0.00	2012-10-09 18:02:39.865998	2012-10-09 18:02:39.865998
+89216	1445	0.00	2012-10-09 18:02:39.874386	2012-10-09 18:02:39.874386
+89217	1446	0.00	2012-10-09 18:02:39.882484	2012-10-09 18:02:39.882484
+89218	1447	0.00	2012-10-09 18:02:39.891063	2012-10-09 18:02:39.891063
+89219	1448	0.00	2012-10-09 18:02:39.899393	2012-10-09 18:02:39.899393
+89220	1449	0.00	2012-10-09 18:02:39.907516	2012-10-09 18:02:39.907516
+89221	1450	0.00	2012-10-09 18:02:39.915957	2012-10-09 18:02:39.915957
+89222	1451	0.00	2012-10-09 18:02:39.92432	2012-10-09 18:02:39.92432
+89223	1452	0.00	2012-10-09 18:02:39.932381	2012-10-09 18:02:39.932381
+89224	1453	0.00	2012-10-09 18:02:39.94088	2012-10-09 18:02:39.94088
+89225	1454	0.00	2012-10-09 18:02:39.949137	2012-10-09 18:02:39.949137
+89226	1455	0.00	2012-10-09 18:02:39.957431	2012-10-09 18:02:39.957431
+89227	1456	0.00	2012-10-09 18:02:39.965947	2012-10-09 18:02:39.965947
+89228	1457	0.00	2012-10-09 18:02:39.973968	2012-10-09 18:02:39.973968
+89229	1458	0.00	2012-10-09 18:02:39.982308	2012-10-09 18:02:39.982308
+89230	1459	0.00	2012-10-09 18:02:39.990547	2012-10-09 18:02:39.990547
+89231	1460	0.00	2012-10-09 18:02:39.998987	2012-10-09 18:02:39.998987
+89232	1461	0.00	2012-10-09 18:02:40.007305	2012-10-09 18:02:40.007305
+89233	1462	0.00	2012-10-09 18:02:40.015623	2012-10-09 18:02:40.015623
+89234	1463	0.00	2012-10-09 18:02:40.024161	2012-10-09 18:02:40.024161
+89235	1464	0.00	2012-10-09 18:02:40.032957	2012-10-09 18:02:40.032957
+89236	1465	0.00	2012-10-09 18:02:40.041357	2012-10-09 18:02:40.041357
+89237	1466	0.00	2012-10-09 18:02:40.049361	2012-10-09 18:02:40.049361
+89238	1467	0.00	2012-10-09 18:02:40.057825	2012-10-09 18:02:40.057825
+89239	1468	0.00	2012-10-09 18:02:40.097068	2012-10-09 18:02:40.097068
+89240	1469	0.00	2012-10-09 18:02:40.10822	2012-10-09 18:02:40.10822
+89241	1470	0.00	2012-10-09 18:02:40.115684	2012-10-09 18:02:40.115684
+89242	1471	0.00	2012-10-09 18:02:40.123997	2012-10-09 18:02:40.123997
+89243	1472	0.00	2012-10-09 18:02:40.171745	2012-10-09 18:02:40.171745
+89244	1473	0.00	2012-10-09 18:02:40.183325	2012-10-09 18:02:40.183325
+89245	1474	0.00	2012-10-09 18:02:40.191257	2012-10-09 18:02:40.191257
+89246	1475	0.00	2012-10-09 18:02:40.199467	2012-10-09 18:02:40.199467
+89247	1476	0.00	2012-10-09 18:02:40.20756	2012-10-09 18:02:40.20756
+89248	1477	0.00	2012-10-09 18:02:40.216034	2012-10-09 18:02:40.216034
+89249	1478	0.00	2012-10-09 18:02:40.224357	2012-10-09 18:02:40.224357
+89250	1479	0.00	2012-10-09 18:02:40.23239	2012-10-09 18:02:40.23239
+89251	1480	0.00	2012-10-09 18:02:40.24064	2012-10-09 18:02:40.24064
+89252	1481	0.00	2012-10-09 18:02:40.249279	2012-10-09 18:02:40.249279
+89253	1482	0.00	2012-10-09 18:02:40.257489	2012-10-09 18:02:40.257489
+89254	1483	0.00	2012-10-09 18:02:40.266002	2012-10-09 18:02:40.266002
+89255	1484	0.00	2012-10-09 18:02:40.274219	2012-10-09 18:02:40.274219
+89256	1485	0.00	2012-10-09 18:02:40.282477	2012-10-09 18:02:40.282477
+89257	1486	0.00	2012-10-09 18:02:40.290723	2012-10-09 18:02:40.290723
+89258	1487	0.00	2012-10-09 18:02:40.298964	2012-10-09 18:02:40.298964
+89259	1488	0.00	2012-10-09 18:02:40.307316	2012-10-09 18:02:40.307316
+89260	1489	0.00	2012-10-09 18:02:40.315562	2012-10-09 18:02:40.315562
+89261	1490	0.00	2012-10-09 18:02:40.323877	2012-10-09 18:02:40.323877
+89262	1491	0.00	2012-10-09 18:02:40.332198	2012-10-09 18:02:40.332198
+89263	1492	0.00	2012-10-09 18:02:40.340471	2012-10-09 18:02:40.340471
+89264	1493	0.00	2012-10-09 18:02:40.348873	2012-10-09 18:02:40.348873
+89265	1494	0.00	2012-10-09 18:02:40.3573	2012-10-09 18:02:40.3573
+89266	1495	0.00	2012-10-09 18:02:40.365529	2012-10-09 18:02:40.365529
+89267	1496	0.00	2012-10-09 18:02:40.373906	2012-10-09 18:02:40.373906
+89268	1497	0.00	2012-10-09 18:02:40.382242	2012-10-09 18:02:40.382242
+89269	1498	0.00	2012-10-09 18:02:40.39054	2012-10-09 18:02:40.39054
+89270	1499	0.00	2012-10-09 18:02:40.398911	2012-10-09 18:02:40.398911
+89271	1500	0.00	2012-10-09 18:02:40.407236	2012-10-09 18:02:40.407236
+89272	1078	0.00	2012-10-09 18:02:40.415594	2012-10-09 18:02:40.415594
+89273	1378	0.00	2012-10-09 18:02:40.423981	2012-10-09 18:02:40.423981
+89274	852	41.50	2012-10-09 18:03:01.649977	2012-10-09 18:03:01.649977
+89275	883	0.00	2012-10-09 18:03:01.657664	2012-10-09 18:03:01.657664
+89276	882	0.00	2012-10-09 18:03:01.665978	2012-10-09 18:03:01.665978
+89277	881	0.00	2012-10-09 18:03:01.674315	2012-10-09 18:03:01.674315
+89278	880	0.00	2012-10-09 18:03:01.682646	2012-10-09 18:03:01.682646
+89279	879	0.00	2012-10-09 18:03:01.691062	2012-10-09 18:03:01.691062
+89280	878	0.00	2012-10-09 18:03:01.699395	2012-10-09 18:03:01.699395
+89281	877	0.00	2012-10-09 18:03:01.707418	2012-10-09 18:03:01.707418
+89282	876	0.00	2012-10-09 18:03:01.716219	2012-10-09 18:03:01.716219
+89283	875	0.00	2012-10-09 18:03:01.72404	2012-10-09 18:03:01.72404
+89284	874	0.00	2012-10-09 18:03:01.732349	2012-10-09 18:03:01.732349
+89285	873	0.00	2012-10-09 18:03:01.741273	2012-10-09 18:03:01.741273
+89286	872	0.00	2012-10-09 18:03:01.74912	2012-10-09 18:03:01.74912
+89287	871	0.00	2012-10-09 18:03:01.75765	2012-10-09 18:03:01.75765
+89288	870	0.00	2012-10-09 18:03:01.76639	2012-10-09 18:03:01.76639
+89289	869	0.00	2012-10-09 18:03:01.774446	2012-10-09 18:03:01.774446
+89290	868	0.00	2012-10-09 18:03:01.815951	2012-10-09 18:03:01.815951
+89291	867	0.00	2012-10-09 18:03:01.824117	2012-10-09 18:03:01.824117
+89292	866	0.00	2012-10-09 18:03:01.832351	2012-10-09 18:03:01.832351
+89293	865	0.00	2012-10-09 18:03:01.840734	2012-10-09 18:03:01.840734
+89294	864	0.00	2012-10-09 18:03:01.848966	2012-10-09 18:03:01.848966
+89295	863	0.00	2012-10-09 18:03:01.857277	2012-10-09 18:03:01.857277
+89296	862	0.00	2012-10-09 18:03:01.865888	2012-10-09 18:03:01.865888
+89297	861	0.00	2012-10-09 18:03:01.874086	2012-10-09 18:03:01.874086
+89298	860	0.00	2012-10-09 18:03:01.882551	2012-10-09 18:03:01.882551
+89299	859	0.00	2012-10-09 18:03:01.890644	2012-10-09 18:03:01.890644
+89300	858	0.00	2012-10-09 18:03:01.898958	2012-10-09 18:03:01.898958
+89301	857	0.00	2012-10-09 18:03:01.9073	2012-10-09 18:03:01.9073
+89302	856	0.00	2012-10-09 18:03:01.915597	2012-10-09 18:03:01.915597
+89303	855	0.00	2012-10-09 18:03:01.923967	2012-10-09 18:03:01.923967
+89304	854	0.00	2012-10-09 18:03:01.932262	2012-10-09 18:03:01.932262
+89305	853	0.00	2012-10-09 18:03:01.940626	2012-10-09 18:03:01.940626
+89306	851	0.00	2012-10-09 18:03:01.94946	2012-10-09 18:03:01.94946
+89307	850	0.00	2012-10-09 18:03:01.957351	2012-10-09 18:03:01.957351
+89308	849	0.00	2012-10-09 18:03:01.96566	2012-10-09 18:03:01.96566
+89309	848	0.00	2012-10-09 18:03:01.974031	2012-10-09 18:03:01.974031
+89310	847	0.00	2012-10-09 18:03:01.98227	2012-10-09 18:03:01.98227
+89311	846	0.00	2012-10-09 18:03:01.990587	2012-10-09 18:03:01.990587
+89312	845	0.00	2012-10-09 18:03:01.998937	2012-10-09 18:03:01.998937
+89313	844	0.00	2012-10-09 18:03:02.00722	2012-10-09 18:03:02.00722
+89314	843	0.00	2012-10-09 18:03:02.015575	2012-10-09 18:03:02.015575
+89315	842	0.00	2012-10-09 18:03:02.023966	2012-10-09 18:03:02.023966
+89316	841	0.00	2012-10-09 18:03:02.033856	2012-10-09 18:03:02.033856
+89317	840	0.00	2012-10-09 18:03:02.04093	2012-10-09 18:03:02.04093
+89318	839	0.00	2012-10-09 18:03:02.050348	2012-10-09 18:03:02.050348
+89319	838	0.00	2012-10-09 18:03:02.067032	2012-10-09 18:03:02.067032
+89320	837	0.00	2012-10-09 18:03:02.084314	2012-10-09 18:03:02.084314
+89321	836	0.00	2012-10-09 18:03:02.100559	2012-10-09 18:03:02.100559
+89322	835	0.00	2012-10-09 18:03:02.117111	2012-10-09 18:03:02.117111
+89323	834	0.00	2012-10-09 18:03:02.13404	2012-10-09 18:03:02.13404
+89324	833	0.00	2012-10-09 18:03:02.150553	2012-10-09 18:03:02.150553
+89325	832	0.00	2012-10-09 18:03:02.167001	2012-10-09 18:03:02.167001
+89326	831	0.00	2012-10-09 18:03:02.183663	2012-10-09 18:03:02.183663
+89327	830	0.00	2012-10-09 18:03:02.200354	2012-10-09 18:03:02.200354
+89328	829	0.00	2012-10-09 18:03:02.217026	2012-10-09 18:03:02.217026
+89329	828	0.00	2012-10-09 18:03:02.234039	2012-10-09 18:03:02.234039
+89330	827	0.00	2012-10-09 18:03:02.25048	2012-10-09 18:03:02.25048
+89331	826	0.00	2012-10-09 18:03:02.267191	2012-10-09 18:03:02.267191
+89332	825	0.00	2012-10-09 18:03:02.275445	2012-10-09 18:03:02.275445
+89333	824	0.00	2012-10-09 18:03:02.284292	2012-10-09 18:03:02.284292
+89334	823	0.00	2012-10-09 18:03:02.292341	2012-10-09 18:03:02.292341
+89335	822	0.00	2012-10-09 18:03:02.333561	2012-10-09 18:03:02.333561
+89336	821	0.00	2012-10-09 18:03:02.342464	2012-10-09 18:03:02.342464
+89337	820	0.00	2012-10-09 18:03:02.350367	2012-10-09 18:03:02.350367
+89338	819	0.00	2012-10-09 18:03:02.358624	2012-10-09 18:03:02.358624
+89339	818	0.00	2012-10-09 18:03:02.366894	2012-10-09 18:03:02.366894
+89340	817	0.00	2012-10-09 18:03:02.375224	2012-10-09 18:03:02.375224
+89341	816	0.00	2012-10-09 18:03:02.383608	2012-10-09 18:03:02.383608
+89342	815	0.00	2012-10-09 18:03:02.392313	2012-10-09 18:03:02.392313
+89343	814	0.00	2012-10-09 18:03:02.400527	2012-10-09 18:03:02.400527
+89344	813	0.00	2012-10-09 18:03:02.408939	2012-10-09 18:03:02.408939
+89345	812	0.00	2012-10-09 18:03:02.417444	2012-10-09 18:03:02.417444
+89346	811	0.00	2012-10-09 18:03:02.425891	2012-10-09 18:03:02.425891
+89347	810	0.00	2012-10-09 18:03:02.434236	2012-10-09 18:03:02.434236
+89348	809	0.00	2012-10-09 18:03:02.442051	2012-10-09 18:03:02.442051
+89349	808	0.00	2012-10-09 18:03:02.450321	2012-10-09 18:03:02.450321
+89350	807	0.00	2012-10-09 18:03:02.458667	2012-10-09 18:03:02.458667
+89351	806	0.00	2012-10-09 18:03:02.467003	2012-10-09 18:03:02.467003
+89352	805	0.00	2012-10-09 18:03:02.475314	2012-10-09 18:03:02.475314
+89353	804	0.00	2012-10-09 18:03:02.48395	2012-10-09 18:03:02.48395
+89354	803	0.00	2012-10-09 18:03:02.492291	2012-10-09 18:03:02.492291
+89355	802	0.00	2012-10-09 18:03:02.500459	2012-10-09 18:03:02.500459
+89356	801	0.00	2012-10-09 18:03:02.509139	2012-10-09 18:03:02.509139
+89357	800	0.00	2012-10-09 18:03:02.51735	2012-10-09 18:03:02.51735
+89358	799	0.00	2012-10-09 18:03:02.525359	2012-10-09 18:03:02.525359
+89359	798	0.00	2012-10-09 18:03:02.534263	2012-10-09 18:03:02.534263
+89360	797	0.00	2012-10-09 18:03:02.542069	2012-10-09 18:03:02.542069
+89361	796	0.00	2012-10-09 18:03:02.55042	2012-10-09 18:03:02.55042
+89362	795	0.00	2012-10-09 18:03:02.558755	2012-10-09 18:03:02.558755
+89363	794	0.00	2012-10-09 18:03:02.567109	2012-10-09 18:03:02.567109
+89364	793	0.00	2012-10-09 18:03:02.57546	2012-10-09 18:03:02.57546
+89365	792	0.00	2012-10-09 18:03:02.583653	2012-10-09 18:03:02.583653
+89366	791	0.00	2012-10-09 18:03:02.592053	2012-10-09 18:03:02.592053
+89367	790	0.00	2012-10-09 18:03:02.600347	2012-10-09 18:03:02.600347
+89368	789	0.00	2012-10-09 18:03:02.609183	2012-10-09 18:03:02.609183
+89369	788	0.00	2012-10-09 18:03:02.617287	2012-10-09 18:03:02.617287
+89370	787	0.00	2012-10-09 18:03:02.625294	2012-10-09 18:03:02.625294
+89371	786	0.00	2012-10-09 18:03:02.63363	2012-10-09 18:03:02.63363
+89372	785	0.00	2012-10-09 18:03:02.642073	2012-10-09 18:03:02.642073
+89373	784	0.00	2012-10-09 18:03:02.65041	2012-10-09 18:03:02.65041
+89374	783	0.00	2012-10-09 18:03:02.658644	2012-10-09 18:03:02.658644
+89375	782	0.00	2012-10-09 18:03:02.667351	2012-10-09 18:03:02.667351
+89376	781	0.00	2012-10-09 18:03:02.675836	2012-10-09 18:03:02.675836
+89377	780	0.00	2012-10-09 18:03:02.684336	2012-10-09 18:03:02.684336
+89378	779	0.00	2012-10-09 18:03:02.692362	2012-10-09 18:03:02.692362
+89379	778	0.00	2012-10-09 18:03:02.73345	2012-10-09 18:03:02.73345
+89380	777	0.00	2012-10-09 18:03:02.74293	2012-10-09 18:03:02.74293
+89381	776	0.00	2012-10-09 18:03:02.750465	2012-10-09 18:03:02.750465
+89382	775	0.00	2012-10-09 18:03:02.758858	2012-10-09 18:03:02.758858
+89383	774	0.00	2012-10-09 18:03:02.76714	2012-10-09 18:03:02.76714
+89384	773	0.00	2012-10-09 18:03:02.775413	2012-10-09 18:03:02.775413
+89385	772	0.00	2012-10-09 18:03:02.784205	2012-10-09 18:03:02.784205
+89386	771	0.00	2012-10-09 18:03:02.792344	2012-10-09 18:03:02.792344
+89387	770	0.00	2012-10-09 18:03:02.80073	2012-10-09 18:03:02.80073
+89388	769	0.00	2012-10-09 18:03:02.809196	2012-10-09 18:03:02.809196
+89389	768	0.00	2012-10-09 18:03:02.817424	2012-10-09 18:03:02.817424
+89390	767	0.00	2012-10-09 18:03:02.825622	2012-10-09 18:03:02.825622
+89391	766	0.00	2012-10-09 18:03:02.834209	2012-10-09 18:03:02.834209
+89392	765	0.00	2012-10-09 18:03:02.842377	2012-10-09 18:03:02.842377
+89393	884	0.00	2012-10-10 01:00:35.412136	2012-10-10 01:00:35.412136
+89394	885	0.00	2012-10-10 01:00:35.420125	2012-10-10 01:00:35.420125
+89395	886	0.00	2012-10-10 01:00:35.428293	2012-10-10 01:00:35.428293
+89396	887	0.00	2012-10-10 01:00:35.436291	2012-10-10 01:00:35.436291
+89397	888	0.00	2012-10-10 01:00:35.444802	2012-10-10 01:00:35.444802
+89398	889	0.00	2012-10-10 01:00:35.453065	2012-10-10 01:00:35.453065
+89399	890	0.00	2012-10-10 01:00:35.461315	2012-10-10 01:00:35.461315
+89400	891	0.00	2012-10-10 01:00:35.469542	2012-10-10 01:00:35.469542
+89401	892	0.00	2012-10-10 01:00:35.478188	2012-10-10 01:00:35.478188
+89402	893	0.00	2012-10-10 01:00:35.486327	2012-10-10 01:00:35.486327
+89403	894	0.00	2012-10-10 01:00:35.494462	2012-10-10 01:00:35.494462
+89404	895	0.00	2012-10-10 01:00:35.503303	2012-10-10 01:00:35.503303
+89405	896	0.00	2012-10-10 01:00:35.511374	2012-10-10 01:00:35.511374
+89406	897	0.00	2012-10-10 01:00:35.519406	2012-10-10 01:00:35.519406
+89407	898	0.00	2012-10-10 01:00:35.52814	2012-10-10 01:00:35.52814
+89408	899	0.00	2012-10-10 01:00:35.53631	2012-10-10 01:00:35.53631
+89409	900	0.00	2012-10-10 01:00:35.544403	2012-10-10 01:00:35.544403
+89410	901	0.00	2012-10-10 01:00:35.553152	2012-10-10 01:00:35.553152
+89411	902	0.00	2012-10-10 01:00:35.561347	2012-10-10 01:00:35.561347
+89412	903	0.00	2012-10-10 01:00:35.569392	2012-10-10 01:00:35.569392
+89413	904	0.00	2012-10-10 01:00:35.578193	2012-10-10 01:00:35.578193
+89414	905	0.00	2012-10-10 01:00:35.586123	2012-10-10 01:00:35.586123
+89415	906	0.00	2012-10-10 01:00:35.594423	2012-10-10 01:00:35.594423
+89416	907	0.00	2012-10-10 01:00:35.602721	2012-10-10 01:00:35.602721
+89417	908	0.00	2012-10-10 01:00:35.611135	2012-10-10 01:00:35.611135
+89418	909	0.00	2012-10-10 01:00:35.619403	2012-10-10 01:00:35.619403
+89419	910	0.00	2012-10-10 01:00:35.627751	2012-10-10 01:00:35.627751
+89420	911	0.00	2012-10-10 01:00:35.636158	2012-10-10 01:00:35.636158
+89421	912	0.00	2012-10-10 01:00:35.644391	2012-10-10 01:00:35.644391
+89422	913	0.00	2012-10-10 01:00:35.652776	2012-10-10 01:00:35.652776
+89423	914	0.00	2012-10-10 01:00:35.661145	2012-10-10 01:00:35.661145
+89424	915	0.00	2012-10-10 01:00:35.669367	2012-10-10 01:00:35.669367
+89425	916	0.00	2012-10-10 01:00:35.677768	2012-10-10 01:00:35.677768
+89426	917	0.00	2012-10-10 01:00:35.686119	2012-10-10 01:00:35.686119
+89427	918	0.00	2012-10-10 01:00:35.694374	2012-10-10 01:00:35.694374
+89428	919	0.00	2012-10-10 01:00:35.70274	2012-10-10 01:00:35.70274
+89429	920	0.00	2012-10-10 01:00:35.711134	2012-10-10 01:00:35.711134
+89430	921	0.00	2012-10-10 01:00:35.719377	2012-10-10 01:00:35.719377
+89431	922	0.00	2012-10-10 01:00:35.727747	2012-10-10 01:00:35.727747
+89432	923	0.00	2012-10-10 01:00:35.73611	2012-10-10 01:00:35.73611
+89433	924	0.00	2012-10-10 01:00:35.744364	2012-10-10 01:00:35.744364
+89434	925	0.00	2012-10-10 01:00:35.752724	2012-10-10 01:00:35.752724
+89435	926	0.00	2012-10-10 01:00:35.761118	2012-10-10 01:00:35.761118
+89436	927	0.00	2012-10-10 01:00:35.769332	2012-10-10 01:00:35.769332
+89437	928	0.00	2012-10-10 01:00:35.777727	2012-10-10 01:00:35.777727
+89438	929	0.00	2012-10-10 01:00:35.78634	2012-10-10 01:00:35.78634
+89439	930	0.00	2012-10-10 01:00:35.7948	2012-10-10 01:00:35.7948
+89440	931	0.00	2012-10-10 01:00:35.802951	2012-10-10 01:00:35.802951
+89441	932	0.00	2012-10-10 01:00:35.811294	2012-10-10 01:00:35.811294
+89442	933	0.00	2012-10-10 01:00:35.819723	2012-10-10 01:00:35.819723
+89443	934	0.00	2012-10-10 01:00:35.828264	2012-10-10 01:00:35.828264
+89444	935	0.00	2012-10-10 01:00:35.836262	2012-10-10 01:00:35.836262
+89445	936	0.00	2012-10-10 01:00:35.844732	2012-10-10 01:00:35.844732
+89446	937	0.00	2012-10-10 01:00:35.853041	2012-10-10 01:00:35.853041
+89447	938	0.00	2012-10-10 01:00:35.861283	2012-10-10 01:00:35.861283
+89448	939	0.00	2012-10-10 01:00:35.86979	2012-10-10 01:00:35.86979
+89449	940	0.00	2012-10-10 01:00:35.878193	2012-10-10 01:00:35.878193
+89450	941	0.00	2012-10-10 01:00:35.88638	2012-10-10 01:00:35.88638
+89451	942	0.00	2012-10-10 01:00:35.920654	2012-10-10 01:00:35.920654
+89452	943	0.00	2012-10-10 01:00:35.928222	2012-10-10 01:00:35.928222
+89453	944	0.00	2012-10-10 01:00:35.936404	2012-10-10 01:00:35.936404
+89454	945	0.00	2012-10-10 01:00:35.944868	2012-10-10 01:00:35.944868
+89455	946	0.00	2012-10-10 01:00:35.953153	2012-10-10 01:00:35.953153
+89456	947	0.00	2012-10-10 01:00:35.961341	2012-10-10 01:00:35.961341
+89457	948	0.00	2012-10-10 01:00:35.969432	2012-10-10 01:00:35.969432
+89458	949	0.00	2012-10-10 01:00:35.978304	2012-10-10 01:00:35.978304
+89459	950	0.00	2012-10-10 01:00:35.986402	2012-10-10 01:00:35.986402
+89460	951	0.00	2012-10-10 01:00:35.994782	2012-10-10 01:00:35.994782
+89461	952	0.00	2012-10-10 01:00:36.003212	2012-10-10 01:00:36.003212
+89462	953	0.00	2012-10-10 01:00:36.01147	2012-10-10 01:00:36.01147
+89463	954	0.00	2012-10-10 01:00:36.019861	2012-10-10 01:00:36.019861
+89464	955	0.00	2012-10-10 01:00:36.028177	2012-10-10 01:00:36.028177
+89465	956	0.00	2012-10-10 01:00:36.03638	2012-10-10 01:00:36.03638
+89466	957	0.00	2012-10-10 01:00:36.044782	2012-10-10 01:00:36.044782
+89467	958	0.00	2012-10-10 01:00:36.053185	2012-10-10 01:00:36.053185
+89468	959	0.00	2012-10-10 01:00:36.061329	2012-10-10 01:00:36.061329
+89469	960	0.00	2012-10-10 01:00:36.069512	2012-10-10 01:00:36.069512
+89470	961	0.00	2012-10-10 01:00:36.078327	2012-10-10 01:00:36.078327
+89471	962	0.00	2012-10-10 01:00:36.086373	2012-10-10 01:00:36.086373
+89472	963	0.00	2012-10-10 01:00:36.094933	2012-10-10 01:00:36.094933
+89473	964	0.00	2012-10-10 01:00:36.1033	2012-10-10 01:00:36.1033
+89474	965	0.00	2012-10-10 01:00:36.1114	2012-10-10 01:00:36.1114
+89475	966	0.00	2012-10-10 01:00:36.119823	2012-10-10 01:00:36.119823
+89476	967	0.00	2012-10-10 01:00:36.128329	2012-10-10 01:00:36.128329
+89477	968	0.00	2012-10-10 01:00:36.136352	2012-10-10 01:00:36.136352
+89478	969	0.00	2012-10-10 01:00:36.144835	2012-10-10 01:00:36.144835
+89479	970	0.00	2012-10-10 01:00:36.153141	2012-10-10 01:00:36.153141
+89480	971	0.00	2012-10-10 01:00:36.161344	2012-10-10 01:00:36.161344
+89481	972	0.00	2012-10-10 01:00:36.169858	2012-10-10 01:00:36.169858
+89482	973	0.00	2012-10-10 01:00:36.178176	2012-10-10 01:00:36.178176
+89483	974	0.00	2012-10-10 01:00:36.186346	2012-10-10 01:00:36.186346
+89484	975	0.00	2012-10-10 01:00:36.194511	2012-10-10 01:00:36.194511
+89485	976	0.00	2012-10-10 01:00:36.203109	2012-10-10 01:00:36.203109
+89486	977	0.00	2012-10-10 01:00:36.211416	2012-10-10 01:00:36.211416
+89487	978	0.00	2012-10-10 01:00:36.219948	2012-10-10 01:00:36.219948
+89488	979	0.00	2012-10-10 01:00:36.228124	2012-10-10 01:00:36.228124
+89489	1061	0.00	2012-10-10 01:00:36.236377	2012-10-10 01:00:36.236377
+89490	1062	0.00	2012-10-10 01:00:36.244798	2012-10-10 01:00:36.244798
+89491	1063	0.00	2012-10-10 01:00:36.253269	2012-10-10 01:00:36.253269
+89492	1064	0.00	2012-10-10 01:00:36.261426	2012-10-10 01:00:36.261426
+89493	1065	0.00	2012-10-10 01:00:36.269533	2012-10-10 01:00:36.269533
+89494	1066	0.00	2012-10-10 01:00:36.278249	2012-10-10 01:00:36.278249
+89495	1067	0.00	2012-10-10 01:00:36.286495	2012-10-10 01:00:36.286495
+89496	1068	0.00	2012-10-10 01:00:36.294802	2012-10-10 01:00:36.294802
+89497	1069	0.00	2012-10-10 01:00:36.303192	2012-10-10 01:00:36.303192
+89498	1070	0.00	2012-10-10 01:00:36.311409	2012-10-10 01:00:36.311409
+89499	1071	0.00	2012-10-10 01:00:36.319843	2012-10-10 01:00:36.319843
+89500	980	0.00	2012-10-10 01:00:36.32815	2012-10-10 01:00:36.32815
+89501	981	0.00	2012-10-10 01:00:36.336441	2012-10-10 01:00:36.336441
+89502	982	0.00	2012-10-10 01:00:36.344795	2012-10-10 01:00:36.344795
+89503	983	0.00	2012-10-10 01:00:36.353308	2012-10-10 01:00:36.353308
+89504	984	0.00	2012-10-10 01:00:36.361429	2012-10-10 01:00:36.361429
+89505	985	0.00	2012-10-10 01:00:36.369815	2012-10-10 01:00:36.369815
+89506	986	0.00	2012-10-10 01:00:36.37816	2012-10-10 01:00:36.37816
+89507	987	0.00	2012-10-10 01:00:36.386467	2012-10-10 01:00:36.386467
+89508	988	0.00	2012-10-10 01:00:36.394865	2012-10-10 01:00:36.394865
+89509	989	0.00	2012-10-10 01:00:36.403232	2012-10-10 01:00:36.403232
+89510	990	0.00	2012-10-10 01:00:36.411515	2012-10-10 01:00:36.411515
+89511	991	0.00	2012-10-10 01:00:36.420087	2012-10-10 01:00:36.420087
+89512	992	0.00	2012-10-10 01:00:36.428234	2012-10-10 01:00:36.428234
+89513	993	0.00	2012-10-10 01:00:36.473544	2012-10-10 01:00:36.473544
+89514	994	0.00	2012-10-10 01:00:36.487415	2012-10-10 01:00:36.487415
+89515	995	0.00	2012-10-10 01:00:36.494966	2012-10-10 01:00:36.494966
+89516	996	0.00	2012-10-10 01:00:36.503282	2012-10-10 01:00:36.503282
+89517	997	0.00	2012-10-10 01:00:36.511395	2012-10-10 01:00:36.511395
+89518	998	0.00	2012-10-10 01:00:36.519926	2012-10-10 01:00:36.519926
+89519	999	0.00	2012-10-10 01:00:36.528213	2012-10-10 01:00:36.528213
+89520	1000	0.00	2012-10-10 01:00:36.536329	2012-10-10 01:00:36.536329
+89521	1001	0.00	2012-10-10 01:00:36.544883	2012-10-10 01:00:36.544883
+89522	1002	0.00	2012-10-10 01:00:36.553284	2012-10-10 01:00:36.553284
+89523	1003	0.00	2012-10-10 01:00:36.561476	2012-10-10 01:00:36.561476
+89524	1004	0.00	2012-10-10 01:00:36.570024	2012-10-10 01:00:36.570024
+89525	1005	0.00	2012-10-10 01:00:36.578266	2012-10-10 01:00:36.578266
+89526	1006	0.00	2012-10-10 01:00:36.586485	2012-10-10 01:00:36.586485
+89527	1007	0.00	2012-10-10 01:00:36.594756	2012-10-10 01:00:36.594756
+89528	1008	0.00	2012-10-10 01:00:36.603202	2012-10-10 01:00:36.603202
+89529	1009	0.00	2012-10-10 01:00:36.611226	2012-10-10 01:00:36.611226
+89530	1010	0.00	2012-10-10 01:00:36.619763	2012-10-10 01:00:36.619763
+89531	1011	0.00	2012-10-10 01:00:36.628152	2012-10-10 01:00:36.628152
+89532	1012	0.00	2012-10-10 01:00:36.636222	2012-10-10 01:00:36.636222
+89533	1013	0.00	2012-10-10 01:00:36.644445	2012-10-10 01:00:36.644445
+89534	1014	0.00	2012-10-10 01:00:36.65284	2012-10-10 01:00:36.65284
+89535	1015	0.00	2012-10-10 01:00:36.661118	2012-10-10 01:00:36.661118
+89536	1016	0.00	2012-10-10 01:00:36.669423	2012-10-10 01:00:36.669423
+89537	1017	0.00	2012-10-10 01:00:36.690292	2012-10-10 01:00:36.690292
+89538	1018	0.00	2012-10-10 01:00:36.707341	2012-10-10 01:00:36.707341
+89539	1019	0.00	2012-10-10 01:00:36.749153	2012-10-10 01:00:36.749153
+89540	1020	0.00	2012-10-10 01:00:36.791032	2012-10-10 01:00:36.791032
+89541	1021	0.00	2012-10-10 01:00:36.832303	2012-10-10 01:00:36.832303
+89542	1022	0.00	2012-10-10 01:00:36.874188	2012-10-10 01:00:36.874188
+89543	1023	0.00	2012-10-10 01:00:36.915748	2012-10-10 01:00:36.915748
+89544	1024	0.00	2012-10-10 01:00:36.957243	2012-10-10 01:00:36.957243
+89545	1025	0.00	2012-10-10 01:00:36.999043	2012-10-10 01:00:36.999043
+89546	1026	0.00	2012-10-10 01:00:37.040767	2012-10-10 01:00:37.040767
+89547	1027	0.00	2012-10-10 01:00:37.082265	2012-10-10 01:00:37.082265
+89548	1028	0.00	2012-10-10 01:00:37.124028	2012-10-10 01:00:37.124028
+89549	1029	0.00	2012-10-10 01:00:37.165523	2012-10-10 01:00:37.165523
+89550	1030	0.00	2012-10-10 01:00:37.207302	2012-10-10 01:00:37.207302
+89551	1031	0.00	2012-10-10 01:00:37.248765	2012-10-10 01:00:37.248765
+89552	1032	0.00	2012-10-10 01:00:37.290409	2012-10-10 01:00:37.290409
+89553	1033	0.00	2012-10-10 01:00:37.332155	2012-10-10 01:00:37.332155
+89554	1034	0.00	2012-10-10 01:00:37.373802	2012-10-10 01:00:37.373802
+89555	1035	0.00	2012-10-10 01:00:37.415332	2012-10-10 01:00:37.415332
+89556	1036	0.00	2012-10-10 01:00:37.457378	2012-10-10 01:00:37.457378
+89557	1037	0.00	2012-10-10 01:00:37.498765	2012-10-10 01:00:37.498765
+89558	1038	0.00	2012-10-10 01:00:37.540286	2012-10-10 01:00:37.540286
+89559	1039	0.00	2012-10-10 01:00:37.581899	2012-10-10 01:00:37.581899
+89560	1040	0.00	2012-10-10 01:00:37.623506	2012-10-10 01:00:37.623506
+89561	1041	0.00	2012-10-10 01:00:37.665283	2012-10-10 01:00:37.665283
+89562	1042	0.00	2012-10-10 01:00:37.707256	2012-10-10 01:00:37.707256
+89563	1043	0.00	2012-10-10 01:00:37.748663	2012-10-10 01:00:37.748663
+89564	1044	0.00	2012-10-10 01:00:37.790216	2012-10-10 01:00:37.790216
+89565	1045	0.00	2012-10-10 01:00:37.831869	2012-10-10 01:00:37.831869
+89566	1046	0.00	2012-10-10 01:00:37.873528	2012-10-10 01:00:37.873528
+89567	1047	0.00	2012-10-10 01:00:37.915125	2012-10-10 01:00:37.915125
+89568	1048	0.00	2012-10-10 01:00:37.956723	2012-10-10 01:00:37.956723
+89569	1049	0.00	2012-10-10 01:00:37.998471	2012-10-10 01:00:37.998471
+89570	1050	0.00	2012-10-10 01:00:38.040257	2012-10-10 01:00:38.040257
+89571	1051	0.00	2012-10-10 01:00:38.081731	2012-10-10 01:00:38.081731
+89572	1052	0.00	2012-10-10 01:00:38.12338	2012-10-10 01:00:38.12338
+89573	1053	0.00	2012-10-10 01:00:38.165202	2012-10-10 01:00:38.165202
+89574	1054	0.00	2012-10-10 01:00:38.206837	2012-10-10 01:00:38.206837
+89575	1055	0.00	2012-10-10 01:00:38.248359	2012-10-10 01:00:38.248359
+89576	1056	0.00	2012-10-10 01:00:38.290354	2012-10-10 01:00:38.290354
+89577	1057	0.00	2012-10-10 01:00:38.33178	2012-10-10 01:00:38.33178
+89578	1058	0.00	2012-10-10 01:00:38.373253	2012-10-10 01:00:38.373253
+89579	1059	0.00	2012-10-10 01:00:38.415109	2012-10-10 01:00:38.415109
+89580	1060	0.00	2012-10-10 01:00:38.456489	2012-10-10 01:00:38.456489
+89581	1072	0.00	2012-10-10 01:00:38.498241	2012-10-10 01:00:38.498241
+89582	1073	0.00	2012-10-10 01:00:38.540086	2012-10-10 01:00:38.540086
+89583	1074	0.00	2012-10-10 01:00:38.581844	2012-10-10 01:00:38.581844
+89584	1075	0.00	2012-10-10 01:00:38.623184	2012-10-10 01:00:38.623184
+89585	1076	0.00	2012-10-10 01:00:38.664761	2012-10-10 01:00:38.664761
+89586	1077	0.00	2012-10-10 01:00:38.706519	2012-10-10 01:00:38.706519
+89587	1079	0.00	2012-10-10 01:00:38.774951	2012-10-10 01:00:38.774951
+89588	1080	0.00	2012-10-10 01:00:38.79668	2012-10-10 01:00:38.79668
+89589	1081	0.00	2012-10-10 01:00:38.830006	2012-10-10 01:00:38.830006
+89590	1082	0.00	2012-10-10 01:00:38.86324	2012-10-10 01:00:38.86324
+89591	1083	0.00	2012-10-10 01:00:38.904938	2012-10-10 01:00:38.904938
+89592	1084	0.00	2012-10-10 01:00:38.946393	2012-10-10 01:00:38.946393
+89593	1085	0.00	2012-10-10 01:00:38.988342	2012-10-10 01:00:38.988342
+89594	1086	0.00	2012-10-10 01:00:39.030527	2012-10-10 01:00:39.030527
+89595	1087	0.00	2012-10-10 01:00:39.071384	2012-10-10 01:00:39.071384
+89596	1088	0.00	2012-10-10 01:00:39.113319	2012-10-10 01:00:39.113319
+89597	1089	0.00	2012-10-10 01:00:39.154802	2012-10-10 01:00:39.154802
+89598	1090	0.00	2012-10-10 01:00:39.188297	2012-10-10 01:00:39.188297
+89599	1091	0.00	2012-10-10 01:00:39.221231	2012-10-10 01:00:39.221231
+89600	1092	0.00	2012-10-10 01:00:39.263229	2012-10-10 01:00:39.263229
+89601	1093	0.00	2012-10-10 01:00:39.304827	2012-10-10 01:00:39.304827
+89602	1094	0.00	2012-10-10 01:00:39.346257	2012-10-10 01:00:39.346257
+89603	1095	0.00	2012-10-10 01:00:39.38796	2012-10-10 01:00:39.38796
+89604	1096	0.00	2012-10-10 01:00:39.429507	2012-10-10 01:00:39.429507
+89605	1097	0.00	2012-10-10 01:00:39.471212	2012-10-10 01:00:39.471212
+89606	1098	0.00	2012-10-10 01:00:39.513104	2012-10-10 01:00:39.513104
+89607	1099	0.00	2012-10-10 01:00:39.554494	2012-10-10 01:00:39.554494
+89608	1100	0.00	2012-10-10 01:00:39.596249	2012-10-10 01:00:39.596249
+89609	1101	0.00	2012-10-10 01:00:39.637818	2012-10-10 01:00:39.637818
+89610	1102	0.00	2012-10-10 01:00:39.679382	2012-10-10 01:00:39.679382
+89611	1103	0.00	2012-10-10 01:00:39.721216	2012-10-10 01:00:39.721216
+89612	1104	0.00	2012-10-10 01:00:39.762902	2012-10-10 01:00:39.762902
+89613	1105	0.00	2012-10-10 01:00:39.804399	2012-10-10 01:00:39.804399
+89614	1106	0.00	2012-10-10 01:00:39.846353	2012-10-10 01:00:39.846353
+89615	1107	0.00	2012-10-10 01:00:39.887808	2012-10-10 01:00:39.887808
+89616	1108	0.00	2012-10-10 01:00:39.929316	2012-10-10 01:00:39.929316
+89617	1109	0.00	2012-10-10 01:00:39.971167	2012-10-10 01:00:39.971167
+89618	1110	0.00	2012-10-10 01:00:40.012572	2012-10-10 01:00:40.012572
+89619	1111	0.00	2012-10-10 01:00:40.054207	2012-10-10 01:00:40.054207
+89620	1112	0.00	2012-10-10 01:00:40.096252	2012-10-10 01:00:40.096252
+89621	1113	0.00	2012-10-10 01:00:40.137645	2012-10-10 01:00:40.137645
+89622	1114	0.00	2012-10-10 01:00:40.17119	2012-10-10 01:00:40.17119
+89623	1115	0.00	2012-10-10 01:00:40.212833	2012-10-10 01:00:40.212833
+89624	1116	0.00	2012-10-10 01:00:40.254193	2012-10-10 01:00:40.254193
+89625	1117	0.00	2012-10-10 01:00:40.29593	2012-10-10 01:00:40.29593
+89626	1118	0.00	2012-10-10 01:00:40.337656	2012-10-10 01:00:40.337656
+89627	1119	0.00	2012-10-10 01:00:40.379266	2012-10-10 01:00:40.379266
+89628	1120	0.00	2012-10-10 01:00:40.421087	2012-10-10 01:00:40.421087
+89629	1121	0.00	2012-10-10 01:00:40.462505	2012-10-10 01:00:40.462505
+89630	1122	0.00	2012-10-10 01:00:40.504344	2012-10-10 01:00:40.504344
+89631	1123	0.00	2012-10-10 01:00:40.546088	2012-10-10 01:00:40.546088
+89632	1124	0.00	2012-10-10 01:00:40.587368	2012-10-10 01:00:40.587368
+89633	1125	0.00	2012-10-10 01:00:40.629168	2012-10-10 01:00:40.629168
+89634	1126	0.00	2012-10-10 01:00:40.66235	2012-10-10 01:00:40.66235
+89635	1127	0.00	2012-10-10 01:00:40.704384	2012-10-10 01:00:40.704384
+89636	1128	0.00	2012-10-10 01:00:40.745796	2012-10-10 01:00:40.745796
+89637	1129	0.00	2012-10-10 01:00:40.787347	2012-10-10 01:00:40.787347
+89638	1130	0.00	2012-10-10 01:00:40.829356	2012-10-10 01:00:40.829356
+89639	1131	0.00	2012-10-10 01:00:40.870379	2012-10-10 01:00:40.870379
+89640	1132	0.00	2012-10-10 01:00:40.912313	2012-10-10 01:00:40.912313
+89641	1133	0.00	2012-10-10 01:00:40.954054	2012-10-10 01:00:40.954054
+89642	1134	0.00	2012-10-10 01:00:40.987278	2012-10-10 01:00:40.987278
+89643	1135	0.00	2012-10-10 01:00:41.028789	2012-10-10 01:00:41.028789
+89644	1136	0.00	2012-10-10 01:00:41.070549	2012-10-10 01:00:41.070549
+89645	1137	0.00	2012-10-10 01:00:41.103874	2012-10-10 01:00:41.103874
+89646	1138	0.00	2012-10-10 01:00:41.145927	2012-10-10 01:00:41.145927
+89647	1139	0.00	2012-10-10 01:00:41.187355	2012-10-10 01:00:41.187355
+89648	1140	0.00	2012-10-10 01:00:41.228943	2012-10-10 01:00:41.228943
+89649	1141	0.00	2012-10-10 01:00:41.270539	2012-10-10 01:00:41.270539
+89650	1142	0.00	2012-10-10 01:00:41.304136	2012-10-10 01:00:41.304136
+89651	1143	0.00	2012-10-10 01:00:41.337458	2012-10-10 01:00:41.337458
+89652	1144	0.00	2012-10-10 01:00:41.370511	2012-10-10 01:00:41.370511
+89653	1145	0.00	2012-10-10 01:00:41.412445	2012-10-10 01:00:41.412445
+89654	1146	0.00	2012-10-10 01:00:41.445471	2012-10-10 01:00:41.445471
+89655	1147	0.00	2012-10-10 01:00:41.487434	2012-10-10 01:00:41.487434
+89656	1148	0.00	2012-10-10 01:00:41.547891	2012-10-10 01:00:41.547891
+89657	1149	0.00	2012-10-10 01:00:41.585099	2012-10-10 01:00:41.585099
+89658	1150	0.00	2012-10-10 01:00:41.593288	2012-10-10 01:00:41.593288
+89659	1151	0.00	2012-10-10 01:00:41.601494	2012-10-10 01:00:41.601494
+89660	1152	0.00	2012-10-10 01:00:41.610086	2012-10-10 01:00:41.610086
+89661	1153	0.00	2012-10-10 01:00:41.653774	2012-10-10 01:00:41.653774
+89662	1154	0.00	2012-10-10 01:00:41.668725	2012-10-10 01:00:41.668725
+89663	1155	0.00	2012-10-10 01:00:41.687212	2012-10-10 01:00:41.687212
+89664	1156	0.00	2012-10-10 01:00:41.704248	2012-10-10 01:00:41.704248
+89665	1157	0.00	2012-10-10 01:00:41.745863	2012-10-10 01:00:41.745863
+89666	1158	0.00	2012-10-10 01:00:41.787316	2012-10-10 01:00:41.787316
+89667	1159	0.00	2012-10-10 01:00:41.82921	2012-10-10 01:00:41.82921
+89668	1160	0.00	2012-10-10 01:00:41.870807	2012-10-10 01:00:41.870807
+89669	1161	0.00	2012-10-10 01:00:41.912328	2012-10-10 01:00:41.912328
+89670	1162	0.00	2012-10-10 01:00:41.954131	2012-10-10 01:00:41.954131
+89671	1163	0.00	2012-10-10 01:00:41.995782	2012-10-10 01:00:41.995782
+89672	1164	0.00	2012-10-10 01:00:42.037285	2012-10-10 01:00:42.037285
+89673	1165	0.00	2012-10-10 01:00:42.07928	2012-10-10 01:00:42.07928
+89674	1166	0.00	2012-10-10 01:00:42.120861	2012-10-10 01:00:42.120861
+89675	1167	0.00	2012-10-10 01:00:42.162248	2012-10-10 01:00:42.162248
+89676	1168	0.00	2012-10-10 01:00:42.204373	2012-10-10 01:00:42.204373
+89677	1169	0.00	2012-10-10 01:00:42.24551	2012-10-10 01:00:42.24551
+89678	1170	0.00	2012-10-10 01:00:42.287122	2012-10-10 01:00:42.287122
+89679	1171	0.00	2012-10-10 01:00:42.32906	2012-10-10 01:00:42.32906
+89680	1172	0.00	2012-10-10 01:00:42.370455	2012-10-10 01:00:42.370455
+89681	1173	0.00	2012-10-10 01:00:42.412405	2012-10-10 01:00:42.412405
+89682	1174	0.00	2012-10-10 01:00:42.453912	2012-10-10 01:00:42.453912
+89683	1175	0.00	2012-10-10 01:00:42.495377	2012-10-10 01:00:42.495377
+89684	1176	0.00	2012-10-10 01:00:42.537157	2012-10-10 01:00:42.537157
+89685	1177	0.00	2012-10-10 01:00:42.578841	2012-10-10 01:00:42.578841
+89686	1178	0.00	2012-10-10 01:00:42.62039	2012-10-10 01:00:42.62039
+89687	1179	0.00	2012-10-10 01:00:42.662357	2012-10-10 01:00:42.662357
+89688	1180	0.00	2012-10-10 01:00:42.703799	2012-10-10 01:00:42.703799
+89689	1181	0.00	2012-10-10 01:00:42.745267	2012-10-10 01:00:42.745267
+89690	1182	0.00	2012-10-10 01:00:42.787085	2012-10-10 01:00:42.787085
+89691	1183	0.00	2012-10-10 01:00:42.828748	2012-10-10 01:00:42.828748
+89692	1184	0.00	2012-10-10 01:00:42.870243	2012-10-10 01:00:42.870243
+89693	1185	0.00	2012-10-10 01:00:42.912243	2012-10-10 01:00:42.912243
+89694	1186	0.00	2012-10-10 01:00:42.953857	2012-10-10 01:00:42.953857
+89695	1187	0.00	2012-10-10 01:00:42.995191	2012-10-10 01:00:42.995191
+89696	1188	0.00	2012-10-10 01:00:43.036871	2012-10-10 01:00:43.036871
+89697	1189	0.00	2012-10-10 01:00:43.078843	2012-10-10 01:00:43.078843
+89698	1190	0.00	2012-10-10 01:00:43.120251	2012-10-10 01:00:43.120251
+89699	1191	0.00	2012-10-10 01:00:43.153492	2012-10-10 01:00:43.153492
+89700	1192	0.00	2012-10-10 01:00:43.195189	2012-10-10 01:00:43.195189
+89701	1193	0.00	2012-10-10 01:00:43.236771	2012-10-10 01:00:43.236771
+89702	1194	0.00	2012-10-10 01:00:43.278168	2012-10-10 01:00:43.278168
+89703	1195	0.00	2012-10-10 01:00:43.320388	2012-10-10 01:00:43.320388
+89704	1196	0.00	2012-10-10 01:00:43.361859	2012-10-10 01:00:43.361859
+89705	1197	0.00	2012-10-10 01:00:43.403299	2012-10-10 01:00:43.403299
+89706	1198	0.00	2012-10-10 01:00:43.445311	2012-10-10 01:00:43.445311
+89707	1199	0.00	2012-10-10 01:00:43.486809	2012-10-10 01:00:43.486809
+89708	1200	0.00	2012-10-10 01:00:43.528301	2012-10-10 01:00:43.528301
+89709	1201	0.00	2012-10-10 01:00:43.570262	2012-10-10 01:00:43.570262
+89710	1202	0.00	2012-10-10 01:00:43.61152	2012-10-10 01:00:43.61152
+89711	1203	0.00	2012-10-10 01:00:43.653243	2012-10-10 01:00:43.653243
+89712	1204	0.00	2012-10-10 01:00:43.695011	2012-10-10 01:00:43.695011
+89713	1205	0.00	2012-10-10 01:00:43.736915	2012-10-10 01:00:43.736915
+89714	1206	0.00	2012-10-10 01:00:43.778194	2012-10-10 01:00:43.778194
+89715	1207	0.00	2012-10-10 01:00:43.819747	2012-10-10 01:00:43.819747
+89716	1208	0.00	2012-10-10 01:00:43.861828	2012-10-10 01:00:43.861828
+89717	1209	0.00	2012-10-10 01:00:43.903248	2012-10-10 01:00:43.903248
+89718	1210	0.00	2012-10-10 01:00:43.944834	2012-10-10 01:00:43.944834
+89719	1211	0.00	2012-10-10 01:00:43.986482	2012-10-10 01:00:43.986482
+89720	1212	0.00	2012-10-10 01:00:44.028839	2012-10-10 01:00:44.028839
+89721	1213	0.00	2012-10-10 01:00:44.06991	2012-10-10 01:00:44.06991
+89722	1214	0.00	2012-10-10 01:00:44.111443	2012-10-10 01:00:44.111443
+89723	1215	0.00	2012-10-10 01:00:44.144865	2012-10-10 01:00:44.144865
+89724	1216	0.00	2012-10-10 01:00:44.186363	2012-10-10 01:00:44.186363
+89725	1217	0.00	2012-10-10 01:00:44.228313	2012-10-10 01:00:44.228313
+89726	1218	0.00	2012-10-10 01:00:44.269791	2012-10-10 01:00:44.269791
+89727	1219	0.00	2012-10-10 01:00:44.311257	2012-10-10 01:00:44.311257
+89728	1220	0.00	2012-10-10 01:00:44.344791	2012-10-10 01:00:44.344791
+89729	1221	0.00	2012-10-10 01:00:44.386228	2012-10-10 01:00:44.386228
+89730	1222	0.00	2012-10-10 01:00:44.42803	2012-10-10 01:00:44.42803
+89731	1223	0.00	2012-10-10 01:00:44.48894	2012-10-10 01:00:44.48894
+89732	1224	0.00	2012-10-10 01:00:44.511028	2012-10-10 01:00:44.511028
+89733	1225	0.00	2012-10-10 01:00:44.544236	2012-10-10 01:00:44.544236
+89734	1226	0.00	2012-10-10 01:00:44.577401	2012-10-10 01:00:44.577401
+89735	1227	0.00	2012-10-10 01:00:44.61083	2012-10-10 01:00:44.61083
+89736	1228	0.00	2012-10-10 01:00:44.644337	2012-10-10 01:00:44.644337
+89737	1229	0.00	2012-10-10 01:00:44.677331	2012-10-10 01:00:44.677331
+89738	1230	0.00	2012-10-10 01:00:44.719209	2012-10-10 01:00:44.719209
+89739	1231	0.00	2012-10-10 01:00:44.752303	2012-10-10 01:00:44.752303
+89740	1232	0.00	2012-10-10 01:00:44.785856	2012-10-10 01:00:44.785856
+89741	1233	0.00	2012-10-10 01:00:44.819348	2012-10-10 01:00:44.819348
+89742	1234	0.00	2012-10-10 01:00:44.852113	2012-10-10 01:00:44.852113
+89743	1235	0.00	2012-10-10 01:00:44.885716	2012-10-10 01:00:44.885716
+89744	1236	0.00	2012-10-10 01:00:44.919135	2012-10-10 01:00:44.919135
+89745	1237	0.00	2012-10-10 01:00:44.95227	2012-10-10 01:00:44.95227
+89746	1238	0.00	2012-10-10 01:00:44.985868	2012-10-10 01:00:44.985868
+89747	1239	0.00	2012-10-10 01:00:45.019228	2012-10-10 01:00:45.019228
+89748	1240	0.00	2012-10-10 01:00:45.052235	2012-10-10 01:00:45.052235
+89749	1241	0.00	2012-10-10 01:00:45.08564	2012-10-10 01:00:45.08564
+89750	1242	0.00	2012-10-10 01:00:45.119081	2012-10-10 01:00:45.119081
+89751	1243	0.00	2012-10-10 01:00:45.152288	2012-10-10 01:00:45.152288
+89752	1244	0.00	2012-10-10 01:00:45.18549	2012-10-10 01:00:45.18549
+89753	1245	0.00	2012-10-10 01:00:45.219036	2012-10-10 01:00:45.219036
+89754	1246	0.00	2012-10-10 01:00:45.252263	2012-10-10 01:00:45.252263
+89755	1247	0.00	2012-10-10 01:00:45.285773	2012-10-10 01:00:45.285773
+89756	1248	0.00	2012-10-10 01:00:45.31894	2012-10-10 01:00:45.31894
+89757	1249	0.00	2012-10-10 01:00:45.352393	2012-10-10 01:00:45.352393
+89758	1250	0.00	2012-10-10 01:00:45.385471	2012-10-10 01:00:45.385471
+89759	1251	0.00	2012-10-10 01:00:45.418899	2012-10-10 01:00:45.418899
+89760	1252	0.00	2012-10-10 01:00:45.45218	2012-10-10 01:00:45.45218
+89761	1253	0.00	2012-10-10 01:00:45.485344	2012-10-10 01:00:45.485344
+89762	1254	0.00	2012-10-10 01:00:45.518864	2012-10-10 01:00:45.518864
+89763	1255	0.00	2012-10-10 01:00:45.552363	2012-10-10 01:00:45.552363
+89764	1256	0.00	2012-10-10 01:00:45.585477	2012-10-10 01:00:45.585477
+89765	1257	0.00	2012-10-10 01:00:45.618829	2012-10-10 01:00:45.618829
+89766	1258	0.00	2012-10-10 01:00:45.652147	2012-10-10 01:00:45.652147
+89767	1259	0.00	2012-10-10 01:00:45.68527	2012-10-10 01:00:45.68527
+89768	1260	0.00	2012-10-10 01:00:45.718538	2012-10-10 01:00:45.718538
+89769	1261	0.00	2012-10-10 01:00:45.752291	2012-10-10 01:00:45.752291
+89770	1262	0.00	2012-10-10 01:00:45.785299	2012-10-10 01:00:45.785299
+89771	1263	0.00	2012-10-10 01:00:45.818924	2012-10-10 01:00:45.818924
+89772	1264	0.00	2012-10-10 01:00:45.851991	2012-10-10 01:00:45.851991
+89773	1265	0.00	2012-10-10 01:00:45.885224	2012-10-10 01:00:45.885224
+89774	1266	0.00	2012-10-10 01:00:45.918462	2012-10-10 01:00:45.918462
+89775	1267	0.00	2012-10-10 01:00:45.952059	2012-10-10 01:00:45.952059
+89776	1268	0.00	2012-10-10 01:00:45.985305	2012-10-10 01:00:45.985305
+89777	1269	0.00	2012-10-10 01:00:46.018516	2012-10-10 01:00:46.018516
+89778	1270	0.00	2012-10-10 01:00:46.051888	2012-10-10 01:00:46.051888
+89779	1271	0.00	2012-10-10 01:00:46.085317	2012-10-10 01:00:46.085317
+89780	1272	0.00	2012-10-10 01:00:46.118497	2012-10-10 01:00:46.118497
+89781	1273	0.00	2012-10-10 01:00:46.152067	2012-10-10 01:00:46.152067
+89782	1274	0.00	2012-10-10 01:00:46.185261	2012-10-10 01:00:46.185261
+89783	1275	0.00	2012-10-10 01:00:46.21843	2012-10-10 01:00:46.21843
+89784	1276	0.00	2012-10-10 01:00:46.251455	2012-10-10 01:00:46.251455
+89785	1277	0.00	2012-10-10 01:00:46.284835	2012-10-10 01:00:46.284835
+89786	1278	0.00	2012-10-10 01:00:46.31815	2012-10-10 01:00:46.31815
+89787	1279	0.00	2012-10-10 01:00:46.351434	2012-10-10 01:00:46.351434
+89788	1280	0.00	2012-10-10 01:00:46.384783	2012-10-10 01:00:46.384783
+89789	1281	0.00	2012-10-10 01:00:46.418222	2012-10-10 01:00:46.418222
+89790	1282	0.00	2012-10-10 01:00:46.451413	2012-10-10 01:00:46.451413
+89791	1283	0.00	2012-10-10 01:00:46.485308	2012-10-10 01:00:46.485308
+89792	1284	0.00	2012-10-10 01:00:46.518403	2012-10-10 01:00:46.518403
+89793	1285	0.00	2012-10-10 01:00:46.551822	2012-10-10 01:00:46.551822
+89794	1286	0.00	2012-10-10 01:00:46.585377	2012-10-10 01:00:46.585377
+89795	1287	0.00	2012-10-10 01:00:46.61835	2012-10-10 01:00:46.61835
+89796	1288	0.00	2012-10-10 01:00:46.652137	2012-10-10 01:00:46.652137
+89797	1289	0.00	2012-10-10 01:00:46.701999	2012-10-10 01:00:46.701999
+89798	1290	0.00	2012-10-10 01:00:46.71854	2012-10-10 01:00:46.71854
+89799	1291	0.00	2012-10-10 01:00:46.752092	2012-10-10 01:00:46.752092
+89800	1292	0.00	2012-10-10 01:00:46.78527	2012-10-10 01:00:46.78527
+89801	1293	0.00	2012-10-10 01:00:46.818422	2012-10-10 01:00:46.818422
+89802	1294	0.00	2012-10-10 01:00:46.852014	2012-10-10 01:00:46.852014
+89803	1295	0.00	2012-10-10 01:00:46.885348	2012-10-10 01:00:46.885348
+89804	1296	0.00	2012-10-10 01:00:46.918421	2012-10-10 01:00:46.918421
+89805	1297	0.00	2012-10-10 01:00:46.951833	2012-10-10 01:00:46.951833
+89806	1298	0.00	2012-10-10 01:00:46.985339	2012-10-10 01:00:46.985339
+89807	1299	0.00	2012-10-10 01:00:47.018362	2012-10-10 01:00:47.018362
+89808	1300	0.00	2012-10-10 01:00:47.051808	2012-10-10 01:00:47.051808
+89809	1301	0.00	2012-10-10 01:00:47.124982	2012-10-10 01:00:47.124982
+89810	1302	0.00	2012-10-10 01:00:47.141501	2012-10-10 01:00:47.141501
+89811	1303	0.00	2012-10-10 01:00:47.149875	2012-10-10 01:00:47.149875
+89812	1304	0.00	2012-10-10 01:00:47.158343	2012-10-10 01:00:47.158343
+89813	1305	0.00	2012-10-10 01:00:47.166371	2012-10-10 01:00:47.166371
+89814	1306	0.00	2012-10-10 01:00:47.175111	2012-10-10 01:00:47.175111
+89815	1307	0.00	2012-10-10 01:00:47.18329	2012-10-10 01:00:47.18329
+89816	1308	0.00	2012-10-10 01:00:47.191447	2012-10-10 01:00:47.191447
+89817	1309	0.00	2012-10-10 01:00:47.199823	2012-10-10 01:00:47.199823
+89818	1310	0.00	2012-10-10 01:00:47.208139	2012-10-10 01:00:47.208139
+89819	1311	0.00	2012-10-10 01:00:47.21652	2012-10-10 01:00:47.21652
+89820	1312	0.00	2012-10-10 01:00:47.22481	2012-10-10 01:00:47.22481
+89821	1313	0.00	2012-10-10 01:00:47.233214	2012-10-10 01:00:47.233214
+89822	1314	0.00	2012-10-10 01:00:47.241498	2012-10-10 01:00:47.241498
+89823	1315	0.00	2012-10-10 01:00:47.249787	2012-10-10 01:00:47.249787
+89824	1316	0.00	2012-10-10 01:00:47.258215	2012-10-10 01:00:47.258215
+89825	1317	0.00	2012-10-10 01:00:47.26642	2012-10-10 01:00:47.26642
+89826	1318	0.00	2012-10-10 01:00:47.274863	2012-10-10 01:00:47.274863
+89827	1319	0.00	2012-10-10 01:00:47.283179	2012-10-10 01:00:47.283179
+89828	1320	0.00	2012-10-10 01:00:47.291434	2012-10-10 01:00:47.291434
+89829	1321	0.00	2012-10-10 01:00:47.29986	2012-10-10 01:00:47.29986
+89830	1322	0.00	2012-10-10 01:00:47.308306	2012-10-10 01:00:47.308306
+89831	1323	0.00	2012-10-10 01:00:47.316377	2012-10-10 01:00:47.316377
+89832	1324	0.00	2012-10-10 01:00:47.32479	2012-10-10 01:00:47.32479
+89833	1325	0.00	2012-10-10 01:00:47.333236	2012-10-10 01:00:47.333236
+89834	1326	0.00	2012-10-10 01:00:47.341501	2012-10-10 01:00:47.341501
+89835	1327	0.00	2012-10-10 01:00:47.349837	2012-10-10 01:00:47.349837
+89836	1328	0.00	2012-10-10 01:00:47.358331	2012-10-10 01:00:47.358331
+89837	1329	0.00	2012-10-10 01:00:47.366242	2012-10-10 01:00:47.366242
+89838	1330	0.00	2012-10-10 01:00:47.374831	2012-10-10 01:00:47.374831
+89839	1331	0.00	2012-10-10 01:00:47.383294	2012-10-10 01:00:47.383294
+89840	1332	0.00	2012-10-10 01:00:47.391423	2012-10-10 01:00:47.391423
+89841	1333	0.00	2012-10-10 01:00:47.399774	2012-10-10 01:00:47.399774
+89842	1334	0.00	2012-10-10 01:00:47.408257	2012-10-10 01:00:47.408257
+89843	1335	0.00	2012-10-10 01:00:47.416494	2012-10-10 01:00:47.416494
+89844	1336	0.00	2012-10-10 01:00:47.425009	2012-10-10 01:00:47.425009
+89845	1337	0.00	2012-10-10 01:00:47.433206	2012-10-10 01:00:47.433206
+89846	1338	0.00	2012-10-10 01:00:47.441462	2012-10-10 01:00:47.441462
+89847	1339	0.00	2012-10-10 01:00:47.449948	2012-10-10 01:00:47.449948
+89848	1340	0.00	2012-10-10 01:00:47.458184	2012-10-10 01:00:47.458184
+89849	1341	0.00	2012-10-10 01:00:47.466386	2012-10-10 01:00:47.466386
+89850	1342	0.00	2012-10-10 01:00:47.474724	2012-10-10 01:00:47.474724
+89851	1343	0.00	2012-10-10 01:00:47.483195	2012-10-10 01:00:47.483195
+89852	1344	0.00	2012-10-10 01:00:47.491454	2012-10-10 01:00:47.491454
+89853	1345	0.00	2012-10-10 01:00:47.499754	2012-10-10 01:00:47.499754
+89854	1346	0.00	2012-10-10 01:00:47.508258	2012-10-10 01:00:47.508258
+89855	1347	0.00	2012-10-10 01:00:47.516352	2012-10-10 01:00:47.516352
+89856	1348	0.00	2012-10-10 01:00:47.525019	2012-10-10 01:00:47.525019
+89857	1349	0.00	2012-10-10 01:00:47.533151	2012-10-10 01:00:47.533151
+89858	1350	0.00	2012-10-10 01:00:47.541428	2012-10-10 01:00:47.541428
+89859	1351	0.00	2012-10-10 01:00:47.54981	2012-10-10 01:00:47.54981
+89860	1352	0.00	2012-10-10 01:00:47.558134	2012-10-10 01:00:47.558134
+89861	1353	0.00	2012-10-10 01:00:47.566387	2012-10-10 01:00:47.566387
+89862	1354	0.00	2012-10-10 01:00:47.574816	2012-10-10 01:00:47.574816
+89863	1355	0.00	2012-10-10 01:00:47.583117	2012-10-10 01:00:47.583117
+89864	1356	0.00	2012-10-10 01:00:47.591392	2012-10-10 01:00:47.591392
+89865	1357	0.00	2012-10-10 01:00:47.599804	2012-10-10 01:00:47.599804
+89866	1358	0.00	2012-10-10 01:00:47.60813	2012-10-10 01:00:47.60813
+89867	1359	0.00	2012-10-10 01:00:47.6164	2012-10-10 01:00:47.6164
+89868	1360	0.00	2012-10-10 01:00:47.624831	2012-10-10 01:00:47.624831
+89869	1361	0.00	2012-10-10 01:00:47.633102	2012-10-10 01:00:47.633102
+89870	1362	0.00	2012-10-10 01:00:47.64142	2012-10-10 01:00:47.64142
+89871	1363	0.00	2012-10-10 01:00:47.649777	2012-10-10 01:00:47.649777
+89872	1364	0.00	2012-10-10 01:00:47.658239	2012-10-10 01:00:47.658239
+89873	1365	0.00	2012-10-10 01:00:47.666455	2012-10-10 01:00:47.666455
+89874	1366	0.00	2012-10-10 01:00:47.675006	2012-10-10 01:00:47.675006
+89875	1367	0.00	2012-10-10 01:00:47.711619	2012-10-10 01:00:47.711619
+89876	1368	0.00	2012-10-10 01:00:47.725038	2012-10-10 01:00:47.725038
+89877	1369	0.00	2012-10-10 01:00:47.733265	2012-10-10 01:00:47.733265
+89878	1370	0.00	2012-10-10 01:00:47.741452	2012-10-10 01:00:47.741452
+89879	1371	0.00	2012-10-10 01:00:47.74982	2012-10-10 01:00:47.74982
+89880	1372	0.00	2012-10-10 01:00:47.758241	2012-10-10 01:00:47.758241
+89881	1373	0.00	2012-10-10 01:00:47.766462	2012-10-10 01:00:47.766462
+89882	1374	0.00	2012-10-10 01:00:47.775009	2012-10-10 01:00:47.775009
+89883	1375	0.00	2012-10-10 01:00:47.783187	2012-10-10 01:00:47.783187
+89884	1376	0.00	2012-10-10 01:00:47.791517	2012-10-10 01:00:47.791517
+89885	1377	0.00	2012-10-10 01:00:47.799816	2012-10-10 01:00:47.799816
+89886	1379	0.00	2012-10-10 01:00:47.808265	2012-10-10 01:00:47.808265
+89887	1380	0.00	2012-10-10 01:00:47.816458	2012-10-10 01:00:47.816458
+89888	1381	0.00	2012-10-10 01:00:47.824823	2012-10-10 01:00:47.824823
+89889	1382	0.00	2012-10-10 01:00:47.833288	2012-10-10 01:00:47.833288
+89890	1383	0.00	2012-10-10 01:00:47.841497	2012-10-10 01:00:47.841497
+89891	1384	0.00	2012-10-10 01:00:47.849828	2012-10-10 01:00:47.849828
+89892	1385	0.00	2012-10-10 01:00:47.858153	2012-10-10 01:00:47.858153
+89893	1386	0.00	2012-10-10 01:00:47.866277	2012-10-10 01:00:47.866277
+89894	1387	0.00	2012-10-10 01:00:47.874815	2012-10-10 01:00:47.874815
+89895	1388	0.00	2012-10-10 01:00:47.883182	2012-10-10 01:00:47.883182
+89896	1389	0.00	2012-10-10 01:00:47.891827	2012-10-10 01:00:47.891827
+89897	1390	0.00	2012-10-10 01:00:47.899861	2012-10-10 01:00:47.899861
+89898	1391	0.00	2012-10-10 01:00:47.908185	2012-10-10 01:00:47.908185
+89899	1392	0.00	2012-10-10 01:00:47.916359	2012-10-10 01:00:47.916359
+89900	1393	0.00	2012-10-10 01:00:47.925041	2012-10-10 01:00:47.925041
+89901	1394	0.00	2012-10-10 01:00:47.933241	2012-10-10 01:00:47.933241
+89902	1395	0.00	2012-10-10 01:00:47.941473	2012-10-10 01:00:47.941473
+89903	1396	0.00	2012-10-10 01:00:47.949912	2012-10-10 01:00:47.949912
+89904	1397	0.00	2012-10-10 01:00:47.958212	2012-10-10 01:00:47.958212
+89905	1398	0.00	2012-10-10 01:00:47.966463	2012-10-10 01:00:47.966463
+89906	1399	0.00	2012-10-10 01:00:47.974985	2012-10-10 01:00:47.974985
+89907	1400	0.00	2012-10-10 01:00:47.983193	2012-10-10 01:00:47.983193
+89908	1401	0.00	2012-10-10 01:00:47.991447	2012-10-10 01:00:47.991447
+89909	1402	0.00	2012-10-10 01:00:47.999828	2012-10-10 01:00:47.999828
+89910	1403	0.00	2012-10-10 01:00:48.00831	2012-10-10 01:00:48.00831
+89911	1404	0.00	2012-10-10 01:00:48.016437	2012-10-10 01:00:48.016437
+89912	1405	0.00	2012-10-10 01:00:48.024934	2012-10-10 01:00:48.024934
+89913	1406	0.00	2012-10-10 01:00:48.033307	2012-10-10 01:00:48.033307
+89914	1407	0.00	2012-10-10 01:00:48.04147	2012-10-10 01:00:48.04147
+89915	1408	0.00	2012-10-10 01:00:48.049781	2012-10-10 01:00:48.049781
+89916	1409	0.00	2012-10-10 01:00:48.058184	2012-10-10 01:00:48.058184
+89917	1410	0.00	2012-10-10 01:00:48.066425	2012-10-10 01:00:48.066425
+89918	1411	0.00	2012-10-10 01:00:48.074844	2012-10-10 01:00:48.074844
+89919	1412	0.00	2012-10-10 01:00:48.083159	2012-10-10 01:00:48.083159
+89920	1413	0.00	2012-10-10 01:00:48.091516	2012-10-10 01:00:48.091516
+89921	1414	0.00	2012-10-10 01:00:48.099842	2012-10-10 01:00:48.099842
+89922	1415	0.00	2012-10-10 01:00:48.108166	2012-10-10 01:00:48.108166
+89923	1416	0.00	2012-10-10 01:00:48.116513	2012-10-10 01:00:48.116513
+89924	1417	0.00	2012-10-10 01:00:48.124857	2012-10-10 01:00:48.124857
+89925	1418	0.00	2012-10-10 01:00:48.133185	2012-10-10 01:00:48.133185
+89926	1419	0.00	2012-10-10 01:00:48.141824	2012-10-10 01:00:48.141824
+89927	1420	0.00	2012-10-10 01:00:48.150101	2012-10-10 01:00:48.150101
+89928	1421	0.00	2012-10-10 01:00:48.15824	2012-10-10 01:00:48.15824
+89929	1422	0.00	2012-10-10 01:00:48.166443	2012-10-10 01:00:48.166443
+89930	1423	0.00	2012-10-10 01:00:48.17515	2012-10-10 01:00:48.17515
+89931	1424	0.00	2012-10-10 01:00:48.183281	2012-10-10 01:00:48.183281
+89932	1425	0.00	2012-10-10 01:00:48.191639	2012-10-10 01:00:48.191639
+89933	1426	0.00	2012-10-10 01:00:48.200032	2012-10-10 01:00:48.200032
+89934	1427	0.00	2012-10-10 01:00:48.208209	2012-10-10 01:00:48.208209
+89935	1428	0.00	2012-10-10 01:00:48.21646	2012-10-10 01:00:48.21646
+89936	1429	0.00	2012-10-10 01:00:48.225189	2012-10-10 01:00:48.225189
+89937	1430	0.00	2012-10-10 01:00:48.262392	2012-10-10 01:00:48.262392
+89938	1431	0.00	2012-10-10 01:00:48.274962	2012-10-10 01:00:48.274962
+89939	1432	0.00	2012-10-10 01:00:48.283295	2012-10-10 01:00:48.283295
+89940	1433	0.00	2012-10-10 01:00:48.29147	2012-10-10 01:00:48.29147
+89941	1434	0.00	2012-10-10 01:00:48.299834	2012-10-10 01:00:48.299834
+89942	1435	0.00	2012-10-10 01:00:48.308294	2012-10-10 01:00:48.308294
+89943	1436	0.00	2012-10-10 01:00:48.316419	2012-10-10 01:00:48.316419
+89944	1437	0.00	2012-10-10 01:00:48.324801	2012-10-10 01:00:48.324801
+89945	1438	0.00	2012-10-10 01:00:48.33315	2012-10-10 01:00:48.33315
+89946	1439	0.00	2012-10-10 01:00:48.341462	2012-10-10 01:00:48.341462
+89947	1440	0.00	2012-10-10 01:00:48.349806	2012-10-10 01:00:48.349806
+89948	1441	0.00	2012-10-10 01:00:48.358265	2012-10-10 01:00:48.358265
+89949	1442	0.00	2012-10-10 01:00:48.366441	2012-10-10 01:00:48.366441
+89950	1443	0.00	2012-10-10 01:00:48.375085	2012-10-10 01:00:48.375085
+89951	1444	0.00	2012-10-10 01:00:48.38318	2012-10-10 01:00:48.38318
+89952	1445	0.00	2012-10-10 01:00:48.391413	2012-10-10 01:00:48.391413
+89953	1446	0.00	2012-10-10 01:00:48.399961	2012-10-10 01:00:48.399961
+89954	1447	0.00	2012-10-10 01:00:48.40824	2012-10-10 01:00:48.40824
+89955	1448	0.00	2012-10-10 01:00:48.416413	2012-10-10 01:00:48.416413
+89956	1449	0.00	2012-10-10 01:00:48.462554	2012-10-10 01:00:48.462554
+89957	1450	0.00	2012-10-10 01:00:48.475476	2012-10-10 01:00:48.475476
+89958	1451	0.00	2012-10-10 01:00:48.483227	2012-10-10 01:00:48.483227
+89959	1452	0.00	2012-10-10 01:00:48.491578	2012-10-10 01:00:48.491578
+89960	1453	0.00	2012-10-10 01:00:48.49983	2012-10-10 01:00:48.49983
+89961	1454	0.00	2012-10-10 01:00:48.508294	2012-10-10 01:00:48.508294
+89962	1455	0.00	2012-10-10 01:00:48.516455	2012-10-10 01:00:48.516455
+89963	1456	0.00	2012-10-10 01:00:48.524809	2012-10-10 01:00:48.524809
+89964	1457	0.00	2012-10-10 01:00:48.533154	2012-10-10 01:00:48.533154
+89965	1458	0.00	2012-10-10 01:00:48.541476	2012-10-10 01:00:48.541476
+89966	1459	0.00	2012-10-10 01:00:48.549797	2012-10-10 01:00:48.549797
+89967	1460	0.00	2012-10-10 01:00:48.558109	2012-10-10 01:00:48.558109
+89968	1461	0.00	2012-10-10 01:00:48.566454	2012-10-10 01:00:48.566454
+89969	1462	0.00	2012-10-10 01:00:48.574804	2012-10-10 01:00:48.574804
+89970	1463	0.00	2012-10-10 01:00:48.583199	2012-10-10 01:00:48.583199
+89971	1464	0.00	2012-10-10 01:00:48.591808	2012-10-10 01:00:48.591808
+89972	1465	0.00	2012-10-10 01:00:48.599869	2012-10-10 01:00:48.599869
+89973	1466	0.00	2012-10-10 01:00:48.608152	2012-10-10 01:00:48.608152
+89974	1467	0.00	2012-10-10 01:00:48.616262	2012-10-10 01:00:48.616262
+89975	1468	0.00	2012-10-10 01:00:48.624557	2012-10-10 01:00:48.624557
+89976	1469	0.00	2012-10-10 01:00:48.632995	2012-10-10 01:00:48.632995
+89977	1470	0.00	2012-10-10 01:00:48.641208	2012-10-10 01:00:48.641208
+89978	1471	0.00	2012-10-10 01:00:48.649497	2012-10-10 01:00:48.649497
+89979	1472	0.00	2012-10-10 01:00:48.657912	2012-10-10 01:00:48.657912
+89980	1473	0.00	2012-10-10 01:00:48.666154	2012-10-10 01:00:48.666154
+89981	1474	0.00	2012-10-10 01:00:48.674523	2012-10-10 01:00:48.674523
+89982	1475	0.00	2012-10-10 01:00:48.682922	2012-10-10 01:00:48.682922
+89983	1476	0.00	2012-10-10 01:00:48.691142	2012-10-10 01:00:48.691142
+89984	1477	0.00	2012-10-10 01:00:48.699488	2012-10-10 01:00:48.699488
+89985	1478	0.00	2012-10-10 01:00:48.707903	2012-10-10 01:00:48.707903
+89986	1479	0.00	2012-10-10 01:00:48.716203	2012-10-10 01:00:48.716203
+89987	1480	0.00	2012-10-10 01:00:48.724447	2012-10-10 01:00:48.724447
+89988	1481	0.00	2012-10-10 01:00:48.732866	2012-10-10 01:00:48.732866
+89989	1482	0.00	2012-10-10 01:00:48.741106	2012-10-10 01:00:48.741106
+89990	1483	0.00	2012-10-10 01:00:48.749449	2012-10-10 01:00:48.749449
+89991	1484	0.00	2012-10-10 01:00:48.757864	2012-10-10 01:00:48.757864
+89992	1485	0.00	2012-10-10 01:00:48.766146	2012-10-10 01:00:48.766146
+89993	1486	0.00	2012-10-10 01:00:48.774416	2012-10-10 01:00:48.774416
+89994	1487	0.00	2012-10-10 01:00:48.782859	2012-10-10 01:00:48.782859
+89995	1488	0.00	2012-10-10 01:00:48.791124	2012-10-10 01:00:48.791124
+89996	1489	0.00	2012-10-10 01:00:48.799447	2012-10-10 01:00:48.799447
+89997	1490	0.00	2012-10-10 01:00:48.807792	2012-10-10 01:00:48.807792
+89998	1491	0.00	2012-10-10 01:00:48.816117	2012-10-10 01:00:48.816117
+89999	1492	0.00	2012-10-10 01:00:48.824421	2012-10-10 01:00:48.824421
+90000	1493	0.00	2012-10-10 01:00:48.832804	2012-10-10 01:00:48.832804
+90001	1494	0.00	2012-10-10 01:00:48.8411	2012-10-10 01:00:48.8411
+90002	1495	0.00	2012-10-10 01:00:48.849544	2012-10-10 01:00:48.849544
+90003	1496	0.00	2012-10-10 01:00:48.857931	2012-10-10 01:00:48.857931
+90004	1497	0.00	2012-10-10 01:00:48.86622	2012-10-10 01:00:48.86622
+90005	1498	0.00	2012-10-10 01:00:48.874498	2012-10-10 01:00:48.874498
+90006	1499	0.00	2012-10-10 01:00:48.882765	2012-10-10 01:00:48.882765
+90007	1500	0.00	2012-10-10 01:00:48.891186	2012-10-10 01:00:48.891186
+90008	1078	0.00	2012-10-10 01:00:48.89959	2012-10-10 01:00:48.89959
+90009	1378	0.00	2012-10-10 01:00:48.908023	2012-10-10 01:00:48.908023
+90010	852	41.33	2012-10-10 01:01:09.375511	2012-10-10 01:01:09.375511
+90011	883	0.00	2012-10-10 01:01:09.383097	2012-10-10 01:01:09.383097
+90012	882	0.00	2012-10-10 01:01:09.391339	2012-10-10 01:01:09.391339
+90013	881	0.00	2012-10-10 01:01:09.399655	2012-10-10 01:01:09.399655
+90014	880	0.00	2012-10-10 01:01:09.408077	2012-10-10 01:01:09.408077
+90015	879	0.00	2012-10-10 01:01:09.416262	2012-10-10 01:01:09.416262
+90016	878	0.00	2012-10-10 01:01:09.424545	2012-10-10 01:01:09.424545
+90017	877	0.00	2012-10-10 01:01:09.43305	2012-10-10 01:01:09.43305
+90018	876	0.00	2012-10-10 01:01:09.441188	2012-10-10 01:01:09.441188
+90019	875	0.00	2012-10-10 01:01:09.449515	2012-10-10 01:01:09.449515
+90020	874	0.00	2012-10-10 01:01:09.457919	2012-10-10 01:01:09.457919
+90021	873	0.00	2012-10-10 01:01:09.466231	2012-10-10 01:01:09.466231
+90022	872	0.00	2012-10-10 01:01:09.474493	2012-10-10 01:01:09.474493
+90023	871	0.00	2012-10-10 01:01:09.48291	2012-10-10 01:01:09.48291
+90024	870	0.00	2012-10-10 01:01:09.491329	2012-10-10 01:01:09.491329
+90025	869	0.00	2012-10-10 01:01:09.499561	2012-10-10 01:01:09.499561
+90026	868	0.00	2012-10-10 01:01:09.507909	2012-10-10 01:01:09.507909
+90027	867	0.00	2012-10-10 01:01:09.516264	2012-10-10 01:01:09.516264
+90028	866	0.00	2012-10-10 01:01:09.524582	2012-10-10 01:01:09.524582
+90029	865	0.00	2012-10-10 01:01:09.533051	2012-10-10 01:01:09.533051
+90030	864	0.00	2012-10-10 01:01:09.54141	2012-10-10 01:01:09.54141
+90031	863	0.00	2012-10-10 01:01:09.549586	2012-10-10 01:01:09.549586
+90032	862	0.00	2012-10-10 01:01:09.558127	2012-10-10 01:01:09.558127
+90033	861	0.00	2012-10-10 01:01:09.5664	2012-10-10 01:01:09.5664
+90034	860	0.00	2012-10-10 01:01:09.574821	2012-10-10 01:01:09.574821
+90035	859	0.00	2012-10-10 01:01:09.614474	2012-10-10 01:01:09.614474
+90036	858	0.00	2012-10-10 01:01:09.625027	2012-10-10 01:01:09.625027
+90037	857	0.00	2012-10-10 01:01:09.632997	2012-10-10 01:01:09.632997
+90038	856	0.00	2012-10-10 01:01:09.641283	2012-10-10 01:01:09.641283
+90039	855	0.00	2012-10-10 01:01:09.64956	2012-10-10 01:01:09.64956
+90040	854	0.00	2012-10-10 01:01:09.658017	2012-10-10 01:01:09.658017
+90041	853	0.00	2012-10-10 01:01:09.70929	2012-10-10 01:01:09.70929
+90042	851	0.00	2012-10-10 01:01:09.716547	2012-10-10 01:01:09.716547
+90043	850	0.00	2012-10-10 01:01:09.724647	2012-10-10 01:01:09.724647
+90044	849	0.00	2012-10-10 01:01:09.732949	2012-10-10 01:01:09.732949
+90045	848	0.00	2012-10-10 01:01:09.741251	2012-10-10 01:01:09.741251
+90046	847	0.00	2012-10-10 01:01:09.749527	2012-10-10 01:01:09.749527
+90047	846	0.00	2012-10-10 01:01:09.757924	2012-10-10 01:01:09.757924
+90048	845	0.00	2012-10-10 01:01:09.766219	2012-10-10 01:01:09.766219
+90049	844	0.00	2012-10-10 01:01:09.774536	2012-10-10 01:01:09.774536
+90050	843	0.00	2012-10-10 01:01:09.783067	2012-10-10 01:01:09.783067
+90051	842	0.00	2012-10-10 01:01:09.791299	2012-10-10 01:01:09.791299
+90052	841	0.00	2012-10-10 01:01:09.79964	2012-10-10 01:01:09.79964
+90053	840	0.00	2012-10-10 01:01:09.808025	2012-10-10 01:01:09.808025
+90054	839	0.00	2012-10-10 01:01:09.8163	2012-10-10 01:01:09.8163
+90055	838	0.00	2012-10-10 01:01:09.824657	2012-10-10 01:01:09.824657
+90056	837	0.00	2012-10-10 01:01:09.833009	2012-10-10 01:01:09.833009
+90057	836	0.00	2012-10-10 01:01:09.841275	2012-10-10 01:01:09.841275
+90058	835	0.00	2012-10-10 01:01:09.849566	2012-10-10 01:01:09.849566
+90059	834	0.00	2012-10-10 01:01:09.858023	2012-10-10 01:01:09.858023
+90060	833	0.00	2012-10-10 01:01:09.866283	2012-10-10 01:01:09.866283
+90061	832	0.00	2012-10-10 01:01:09.874645	2012-10-10 01:01:09.874645
+90062	831	0.00	2012-10-10 01:01:09.883114	2012-10-10 01:01:09.883114
+90063	830	0.00	2012-10-10 01:01:09.891342	2012-10-10 01:01:09.891342
+90064	829	0.00	2012-10-10 01:01:09.899698	2012-10-10 01:01:09.899698
+90065	828	0.00	2012-10-10 01:01:09.908062	2012-10-10 01:01:09.908062
+90066	827	0.00	2012-10-10 01:01:09.916307	2012-10-10 01:01:09.916307
+90067	826	0.00	2012-10-10 01:01:09.924638	2012-10-10 01:01:09.924638
+90068	825	0.00	2012-10-10 01:01:09.933032	2012-10-10 01:01:09.933032
+90069	824	0.00	2012-10-10 01:01:09.941288	2012-10-10 01:01:09.941288
+90070	823	0.00	2012-10-10 01:01:09.949651	2012-10-10 01:01:09.949651
+90071	822	0.00	2012-10-10 01:01:09.958001	2012-10-10 01:01:09.958001
+90072	821	0.00	2012-10-10 01:01:09.966222	2012-10-10 01:01:09.966222
+90073	820	0.00	2012-10-10 01:01:09.974622	2012-10-10 01:01:09.974622
+90074	819	0.00	2012-10-10 01:01:09.98298	2012-10-10 01:01:09.98298
+90075	818	0.00	2012-10-10 01:01:09.99128	2012-10-10 01:01:09.99128
+90076	817	0.00	2012-10-10 01:01:09.999642	2012-10-10 01:01:09.999642
+90077	816	0.00	2012-10-10 01:01:10.008111	2012-10-10 01:01:10.008111
+90078	815	0.00	2012-10-10 01:01:10.016324	2012-10-10 01:01:10.016324
+90079	814	0.00	2012-10-10 01:01:10.024722	2012-10-10 01:01:10.024722
+90080	813	0.00	2012-10-10 01:01:10.033034	2012-10-10 01:01:10.033034
+90081	812	0.00	2012-10-10 01:01:10.041342	2012-10-10 01:01:10.041342
+90082	811	0.00	2012-10-10 01:01:10.049706	2012-10-10 01:01:10.049706
+90083	810	0.00	2012-10-10 01:01:10.058106	2012-10-10 01:01:10.058106
+90084	809	0.00	2012-10-10 01:01:10.066318	2012-10-10 01:01:10.066318
+90085	808	0.00	2012-10-10 01:01:10.07463	2012-10-10 01:01:10.07463
+90086	807	0.00	2012-10-10 01:01:10.083051	2012-10-10 01:01:10.083051
+90087	806	0.00	2012-10-10 01:01:10.091306	2012-10-10 01:01:10.091306
+90088	805	0.00	2012-10-10 01:01:10.099713	2012-10-10 01:01:10.099713
+90089	804	0.00	2012-10-10 01:01:10.108033	2012-10-10 01:01:10.108033
+90090	803	0.00	2012-10-10 01:01:10.116357	2012-10-10 01:01:10.116357
+90091	802	0.00	2012-10-10 01:01:10.124727	2012-10-10 01:01:10.124727
+90092	801	0.00	2012-10-10 01:01:10.133114	2012-10-10 01:01:10.133114
+90093	800	0.00	2012-10-10 01:01:10.141374	2012-10-10 01:01:10.141374
+90094	799	0.00	2012-10-10 01:01:10.14974	2012-10-10 01:01:10.14974
+90095	798	0.00	2012-10-10 01:01:10.158098	2012-10-10 01:01:10.158098
+90096	797	0.00	2012-10-10 01:01:10.197144	2012-10-10 01:01:10.197144
+90097	796	0.00	2012-10-10 01:01:10.208461	2012-10-10 01:01:10.208461
+90098	795	0.00	2012-10-10 01:01:10.216351	2012-10-10 01:01:10.216351
+90099	794	0.00	2012-10-10 01:01:10.224748	2012-10-10 01:01:10.224748
+90100	793	0.00	2012-10-10 01:01:10.233164	2012-10-10 01:01:10.233164
+90101	792	0.00	2012-10-10 01:01:10.241451	2012-10-10 01:01:10.241451
+90102	791	0.00	2012-10-10 01:01:10.249761	2012-10-10 01:01:10.249761
+90103	790	0.00	2012-10-10 01:01:10.258078	2012-10-10 01:01:10.258078
+90104	789	0.00	2012-10-10 01:01:10.266483	2012-10-10 01:01:10.266483
+90105	788	0.00	2012-10-10 01:01:10.274875	2012-10-10 01:01:10.274875
+90106	787	0.00	2012-10-10 01:01:10.283168	2012-10-10 01:01:10.283168
+90107	786	0.00	2012-10-10 01:01:10.291451	2012-10-10 01:01:10.291451
+90108	785	0.00	2012-10-10 01:01:10.299979	2012-10-10 01:01:10.299979
+90109	784	0.00	2012-10-10 01:01:10.308281	2012-10-10 01:01:10.308281
+90110	783	0.00	2012-10-10 01:01:10.316548	2012-10-10 01:01:10.316548
+90111	782	0.00	2012-10-10 01:01:10.324915	2012-10-10 01:01:10.324915
+90112	781	0.00	2012-10-10 01:01:10.333205	2012-10-10 01:01:10.333205
+90113	780	0.00	2012-10-10 01:01:10.341526	2012-10-10 01:01:10.341526
+90114	779	0.00	2012-10-10 01:01:10.349918	2012-10-10 01:01:10.349918
+90115	778	0.00	2012-10-10 01:01:10.358263	2012-10-10 01:01:10.358263
+90116	777	0.00	2012-10-10 01:01:10.366562	2012-10-10 01:01:10.366562
+90117	776	0.00	2012-10-10 01:01:10.374938	2012-10-10 01:01:10.374938
+90118	775	0.00	2012-10-10 01:01:10.383199	2012-10-10 01:01:10.383199
+90119	774	0.00	2012-10-10 01:01:10.391504	2012-10-10 01:01:10.391504
+90120	773	0.00	2012-10-10 01:01:10.399881	2012-10-10 01:01:10.399881
+90121	772	0.00	2012-10-10 01:01:10.408208	2012-10-10 01:01:10.408208
+90122	771	0.00	2012-10-10 01:01:10.416507	2012-10-10 01:01:10.416507
+90123	770	0.00	2012-10-10 01:01:10.424878	2012-10-10 01:01:10.424878
+90124	769	0.00	2012-10-10 01:01:10.433181	2012-10-10 01:01:10.433181
+90125	768	0.00	2012-10-10 01:01:10.44151	2012-10-10 01:01:10.44151
+90126	767	0.00	2012-10-10 01:01:10.449864	2012-10-10 01:01:10.449864
+90127	766	0.00	2012-10-10 01:01:10.458227	2012-10-10 01:01:10.458227
+90128	765	0.00	2012-10-10 01:01:10.466486	2012-10-10 01:01:10.466486
+90129	884	0.00	2012-10-11 01:00:41.095657	2012-10-11 01:00:41.095657
+90130	885	0.00	2012-10-11 01:00:41.103376	2012-10-11 01:00:41.103376
+90131	886	0.00	2012-10-11 01:00:41.111315	2012-10-11 01:00:41.111315
+90132	887	0.00	2012-10-11 01:00:41.119786	2012-10-11 01:00:41.119786
+90133	888	0.00	2012-10-11 01:00:41.128083	2012-10-11 01:00:41.128083
+90134	889	0.00	2012-10-11 01:00:41.136314	2012-10-11 01:00:41.136314
+90135	890	0.00	2012-10-11 01:00:41.14454	2012-10-11 01:00:41.14454
+90136	891	0.00	2012-10-11 01:00:41.153091	2012-10-11 01:00:41.153091
+90137	892	0.00	2012-10-11 01:00:41.161277	2012-10-11 01:00:41.161277
+90138	893	0.00	2012-10-11 01:00:41.169775	2012-10-11 01:00:41.169775
+90139	894	0.00	2012-10-11 01:00:41.178113	2012-10-11 01:00:41.178113
+90140	895	0.00	2012-10-11 01:00:41.18646	2012-10-11 01:00:41.18646
+90141	896	0.00	2012-10-11 01:00:41.194877	2012-10-11 01:00:41.194877
+90142	897	0.00	2012-10-11 01:00:41.203337	2012-10-11 01:00:41.203337
+90143	898	0.00	2012-10-11 01:00:41.21134	2012-10-11 01:00:41.21134
+90144	899	0.00	2012-10-11 01:00:41.219864	2012-10-11 01:00:41.219864
+90145	900	0.00	2012-10-11 01:00:41.228138	2012-10-11 01:00:41.228138
+90146	901	0.00	2012-10-11 01:00:41.23634	2012-10-11 01:00:41.23634
+90147	902	0.00	2012-10-11 01:00:41.244405	2012-10-11 01:00:41.244405
+90148	903	0.00	2012-10-11 01:00:41.253159	2012-10-11 01:00:41.253159
+90149	904	0.00	2012-10-11 01:00:41.26137	2012-10-11 01:00:41.26137
+90150	905	0.00	2012-10-11 01:00:41.269443	2012-10-11 01:00:41.269443
+90151	906	0.00	2012-10-11 01:00:41.278309	2012-10-11 01:00:41.278309
+90152	907	0.00	2012-10-11 01:00:41.286303	2012-10-11 01:00:41.286303
+90153	908	0.00	2012-10-11 01:00:41.2948	2012-10-11 01:00:41.2948
+90154	909	0.00	2012-10-11 01:00:41.303244	2012-10-11 01:00:41.303244
+90155	910	0.00	2012-10-11 01:00:41.311355	2012-10-11 01:00:41.311355
+90156	911	0.00	2012-10-11 01:00:41.31981	2012-10-11 01:00:41.31981
+90157	912	0.00	2012-10-11 01:00:41.328299	2012-10-11 01:00:41.328299
+90158	913	0.00	2012-10-11 01:00:41.336289	2012-10-11 01:00:41.336289
+90159	914	0.00	2012-10-11 01:00:41.344855	2012-10-11 01:00:41.344855
+90160	915	0.00	2012-10-11 01:00:41.353035	2012-10-11 01:00:41.353035
+90161	916	0.00	2012-10-11 01:00:41.361314	2012-10-11 01:00:41.361314
+90162	917	0.00	2012-10-11 01:00:41.369371	2012-10-11 01:00:41.369371
+90163	918	0.00	2012-10-11 01:00:41.378094	2012-10-11 01:00:41.378094
+90164	919	0.00	2012-10-11 01:00:41.386375	2012-10-11 01:00:41.386375
+90165	920	0.00	2012-10-11 01:00:41.394874	2012-10-11 01:00:41.394874
+90166	921	0.00	2012-10-11 01:00:41.403122	2012-10-11 01:00:41.403122
+90167	922	0.00	2012-10-11 01:00:41.411365	2012-10-11 01:00:41.411365
+90168	923	0.00	2012-10-11 01:00:41.419398	2012-10-11 01:00:41.419398
+90169	924	0.00	2012-10-11 01:00:41.428307	2012-10-11 01:00:41.428307
+90170	925	0.00	2012-10-11 01:00:41.436309	2012-10-11 01:00:41.436309
+90171	926	0.00	2012-10-11 01:00:41.444802	2012-10-11 01:00:41.444802
+90172	927	0.00	2012-10-11 01:00:41.453316	2012-10-11 01:00:41.453316
+90173	928	0.00	2012-10-11 01:00:41.461287	2012-10-11 01:00:41.461287
+90174	929	0.00	2012-10-11 01:00:41.46976	2012-10-11 01:00:41.46976
+90175	930	0.00	2012-10-11 01:00:41.478116	2012-10-11 01:00:41.478116
+90176	931	0.00	2012-10-11 01:00:41.486314	2012-10-11 01:00:41.486314
+90177	932	0.00	2012-10-11 01:00:41.494707	2012-10-11 01:00:41.494707
+90178	933	0.00	2012-10-11 01:00:41.503304	2012-10-11 01:00:41.503304
+90179	934	0.00	2012-10-11 01:00:41.511266	2012-10-11 01:00:41.511266
+90180	935	0.00	2012-10-11 01:00:41.519832	2012-10-11 01:00:41.519832
+90181	936	0.00	2012-10-11 01:00:41.528094	2012-10-11 01:00:41.528094
+90182	937	0.00	2012-10-11 01:00:41.536297	2012-10-11 01:00:41.536297
+90183	938	0.00	2012-10-11 01:00:41.544507	2012-10-11 01:00:41.544507
+90184	939	0.00	2012-10-11 01:00:41.553271	2012-10-11 01:00:41.553271
+90185	940	0.00	2012-10-11 01:00:41.561248	2012-10-11 01:00:41.561248
+90186	941	0.00	2012-10-11 01:00:41.569846	2012-10-11 01:00:41.569846
+90187	942	0.00	2012-10-11 01:00:41.604263	2012-10-11 01:00:41.604263
+90188	943	0.00	2012-10-11 01:00:41.611451	2012-10-11 01:00:41.611451
+90189	944	0.00	2012-10-11 01:00:41.619789	2012-10-11 01:00:41.619789
+90190	945	0.00	2012-10-11 01:00:41.628231	2012-10-11 01:00:41.628231
+90191	946	0.00	2012-10-11 01:00:41.636336	2012-10-11 01:00:41.636336
+90192	947	0.00	2012-10-11 01:00:41.644536	2012-10-11 01:00:41.644536
+90193	948	0.00	2012-10-11 01:00:41.653138	2012-10-11 01:00:41.653138
+90194	949	0.00	2012-10-11 01:00:41.661362	2012-10-11 01:00:41.661362
+90195	950	0.00	2012-10-11 01:00:41.66954	2012-10-11 01:00:41.66954
+90196	951	0.00	2012-10-11 01:00:41.677786	2012-10-11 01:00:41.677786
+90197	952	0.00	2012-10-11 01:00:41.686341	2012-10-11 01:00:41.686341
+90198	953	0.00	2012-10-11 01:00:41.694503	2012-10-11 01:00:41.694503
+90199	954	0.00	2012-10-11 01:00:41.703378	2012-10-11 01:00:41.703378
+90200	955	0.00	2012-10-11 01:00:41.711328	2012-10-11 01:00:41.711328
+90201	956	0.00	2012-10-11 01:00:41.719458	2012-10-11 01:00:41.719458
+90202	957	0.00	2012-10-11 01:00:41.728113	2012-10-11 01:00:41.728113
+90203	958	0.00	2012-10-11 01:00:41.736364	2012-10-11 01:00:41.736364
+90204	959	0.00	2012-10-11 01:00:41.744463	2012-10-11 01:00:41.744463
+90205	960	0.00	2012-10-11 01:00:41.753193	2012-10-11 01:00:41.753193
+90206	961	0.00	2012-10-11 01:00:41.761362	2012-10-11 01:00:41.761362
+90207	962	0.00	2012-10-11 01:00:41.769846	2012-10-11 01:00:41.769846
+90208	963	0.00	2012-10-11 01:00:41.778193	2012-10-11 01:00:41.778193
+90209	964	0.00	2012-10-11 01:00:41.786374	2012-10-11 01:00:41.786374
+90210	965	0.00	2012-10-11 01:00:41.794622	2012-10-11 01:00:41.794622
+90211	966	0.00	2012-10-11 01:00:41.803147	2012-10-11 01:00:41.803147
+90212	967	0.00	2012-10-11 01:00:41.811375	2012-10-11 01:00:41.811375
+90213	968	0.00	2012-10-11 01:00:41.81951	2012-10-11 01:00:41.81951
+90214	969	0.00	2012-10-11 01:00:41.828163	2012-10-11 01:00:41.828163
+90215	970	0.00	2012-10-11 01:00:41.836374	2012-10-11 01:00:41.836374
+90216	971	0.00	2012-10-11 01:00:41.844877	2012-10-11 01:00:41.844877
+90217	972	0.00	2012-10-11 01:00:41.853195	2012-10-11 01:00:41.853195
+90218	973	0.00	2012-10-11 01:00:41.861371	2012-10-11 01:00:41.861371
+90219	974	0.00	2012-10-11 01:00:41.869406	2012-10-11 01:00:41.869406
+90220	975	0.00	2012-10-11 01:00:41.878166	2012-10-11 01:00:41.878166
+90221	976	0.00	2012-10-11 01:00:41.886361	2012-10-11 01:00:41.886361
+90222	977	0.00	2012-10-11 01:00:41.894892	2012-10-11 01:00:41.894892
+90223	978	0.00	2012-10-11 01:00:41.90317	2012-10-11 01:00:41.90317
+90224	979	0.00	2012-10-11 01:00:41.911399	2012-10-11 01:00:41.911399
+90225	1061	0.00	2012-10-11 01:00:41.919847	2012-10-11 01:00:41.919847
+90226	1062	0.00	2012-10-11 01:00:41.928228	2012-10-11 01:00:41.928228
+90227	1063	0.00	2012-10-11 01:00:41.936409	2012-10-11 01:00:41.936409
+90228	1064	0.00	2012-10-11 01:00:41.944895	2012-10-11 01:00:41.944895
+90229	1065	0.00	2012-10-11 01:00:41.953222	2012-10-11 01:00:41.953222
+90230	1066	0.00	2012-10-11 01:00:41.961399	2012-10-11 01:00:41.961399
+90231	1067	0.00	2012-10-11 01:00:41.969824	2012-10-11 01:00:41.969824
+90232	1068	0.00	2012-10-11 01:00:41.978206	2012-10-11 01:00:41.978206
+90233	1069	0.00	2012-10-11 01:00:41.986387	2012-10-11 01:00:41.986387
+90234	1070	0.00	2012-10-11 01:00:41.994845	2012-10-11 01:00:41.994845
+90235	1071	0.00	2012-10-11 01:00:42.003236	2012-10-11 01:00:42.003236
+90236	980	0.00	2012-10-11 01:00:42.011368	2012-10-11 01:00:42.011368
+90237	981	0.00	2012-10-11 01:00:42.019853	2012-10-11 01:00:42.019853
+90238	982	0.00	2012-10-11 01:00:42.0283	2012-10-11 01:00:42.0283
+90239	983	0.00	2012-10-11 01:00:42.036526	2012-10-11 01:00:42.036526
+90240	984	0.00	2012-10-11 01:00:42.04513	2012-10-11 01:00:42.04513
+90241	985	0.00	2012-10-11 01:00:42.053276	2012-10-11 01:00:42.053276
+90242	986	0.00	2012-10-11 01:00:42.06141	2012-10-11 01:00:42.06141
+90243	987	0.00	2012-10-11 01:00:42.069821	2012-10-11 01:00:42.069821
+90244	988	0.00	2012-10-11 01:00:42.078228	2012-10-11 01:00:42.078228
+90245	989	0.00	2012-10-11 01:00:42.086556	2012-10-11 01:00:42.086556
+90246	990	0.00	2012-10-11 01:00:42.095139	2012-10-11 01:00:42.095139
+90247	991	0.00	2012-10-11 01:00:42.103184	2012-10-11 01:00:42.103184
+90248	992	0.00	2012-10-11 01:00:42.111469	2012-10-11 01:00:42.111469
+90249	993	0.00	2012-10-11 01:00:42.157281	2012-10-11 01:00:42.157281
+90250	994	0.00	2012-10-11 01:00:42.1705	2012-10-11 01:00:42.1705
+90251	995	0.00	2012-10-11 01:00:42.178264	2012-10-11 01:00:42.178264
+90252	996	0.00	2012-10-11 01:00:42.186515	2012-10-11 01:00:42.186515
+90253	997	0.00	2012-10-11 01:00:42.194779	2012-10-11 01:00:42.194779
+90254	998	0.00	2012-10-11 01:00:42.203267	2012-10-11 01:00:42.203267
+90255	999	0.00	2012-10-11 01:00:42.211437	2012-10-11 01:00:42.211437
+90256	1000	0.00	2012-10-11 01:00:42.220088	2012-10-11 01:00:42.220088
+90257	1001	0.00	2012-10-11 01:00:42.228203	2012-10-11 01:00:42.228203
+90258	1002	0.00	2012-10-11 01:00:42.236478	2012-10-11 01:00:42.236478
+90259	1003	0.00	2012-10-11 01:00:42.244852	2012-10-11 01:00:42.244852
+90260	1004	0.00	2012-10-11 01:00:42.253291	2012-10-11 01:00:42.253291
+90261	1005	0.00	2012-10-11 01:00:42.261498	2012-10-11 01:00:42.261498
+90262	1006	0.00	2012-10-11 01:00:42.270027	2012-10-11 01:00:42.270027
+90263	1007	0.00	2012-10-11 01:00:42.278255	2012-10-11 01:00:42.278255
+90264	1008	0.00	2012-10-11 01:00:42.286492	2012-10-11 01:00:42.286492
+90265	1009	0.00	2012-10-11 01:00:42.294771	2012-10-11 01:00:42.294771
+90266	1010	0.00	2012-10-11 01:00:42.30325	2012-10-11 01:00:42.30325
+90267	1011	0.00	2012-10-11 01:00:42.311217	2012-10-11 01:00:42.311217
+90268	1012	0.00	2012-10-11 01:00:42.319466	2012-10-11 01:00:42.319466
+90269	1013	0.00	2012-10-11 01:00:42.327868	2012-10-11 01:00:42.327868
+90270	1014	0.00	2012-10-11 01:00:42.336149	2012-10-11 01:00:42.336149
+90271	1015	0.00	2012-10-11 01:00:42.345032	2012-10-11 01:00:42.345032
+90272	1016	0.00	2012-10-11 01:00:42.3532	2012-10-11 01:00:42.3532
+90273	1017	0.00	2012-10-11 01:00:42.361532	2012-10-11 01:00:42.361532
+90274	1018	0.00	2012-10-11 01:00:42.370023	2012-10-11 01:00:42.370023
+90275	1019	0.00	2012-10-11 01:00:42.378138	2012-10-11 01:00:42.378138
+90276	1020	0.00	2012-10-11 01:00:42.386505	2012-10-11 01:00:42.386505
+90277	1021	0.00	2012-10-11 01:00:42.394783	2012-10-11 01:00:42.394783
+90278	1022	0.00	2012-10-11 01:00:42.403242	2012-10-11 01:00:42.403242
+90279	1023	0.00	2012-10-11 01:00:42.411461	2012-10-11 01:00:42.411461
+90280	1024	0.00	2012-10-11 01:00:42.419768	2012-10-11 01:00:42.419768
+90281	1025	0.00	2012-10-11 01:00:42.428229	2012-10-11 01:00:42.428229
+90282	1026	0.00	2012-10-11 01:00:42.436423	2012-10-11 01:00:42.436423
+90283	1027	0.00	2012-10-11 01:00:42.44479	2012-10-11 01:00:42.44479
+90284	1028	0.00	2012-10-11 01:00:42.453193	2012-10-11 01:00:42.453193
+90285	1029	0.00	2012-10-11 01:00:42.46139	2012-10-11 01:00:42.46139
+90286	1030	0.00	2012-10-11 01:00:42.469792	2012-10-11 01:00:42.469792
+90287	1031	0.00	2012-10-11 01:00:42.478209	2012-10-11 01:00:42.478209
+90288	1032	0.00	2012-10-11 01:00:42.486486	2012-10-11 01:00:42.486486
+90289	1033	0.00	2012-10-11 01:00:42.494719	2012-10-11 01:00:42.494719
+90290	1034	0.00	2012-10-11 01:00:42.503197	2012-10-11 01:00:42.503197
+90291	1035	0.00	2012-10-11 01:00:42.511375	2012-10-11 01:00:42.511375
+90292	1036	0.00	2012-10-11 01:00:42.519789	2012-10-11 01:00:42.519789
+90293	1037	0.00	2012-10-11 01:00:42.5282	2012-10-11 01:00:42.5282
+90294	1038	0.00	2012-10-11 01:00:42.536493	2012-10-11 01:00:42.536493
+90295	1039	0.00	2012-10-11 01:00:42.544868	2012-10-11 01:00:42.544868
+90296	1040	0.00	2012-10-11 01:00:42.553161	2012-10-11 01:00:42.553161
+90297	1041	0.00	2012-10-11 01:00:42.561383	2012-10-11 01:00:42.561383
+90298	1042	0.00	2012-10-11 01:00:42.569504	2012-10-11 01:00:42.569504
+90299	1043	0.00	2012-10-11 01:00:42.578142	2012-10-11 01:00:42.578142
+90300	1044	0.00	2012-10-11 01:00:42.586491	2012-10-11 01:00:42.586491
+90301	1045	0.00	2012-10-11 01:00:42.594867	2012-10-11 01:00:42.594867
+90302	1046	0.00	2012-10-11 01:00:42.603346	2012-10-11 01:00:42.603346
+90303	1047	0.00	2012-10-11 01:00:42.611758	2012-10-11 01:00:42.611758
+90304	1048	0.00	2012-10-11 01:00:42.620016	2012-10-11 01:00:42.620016
+90305	1049	0.00	2012-10-11 01:00:42.628234	2012-10-11 01:00:42.628234
+90306	1050	0.00	2012-10-11 01:00:42.636414	2012-10-11 01:00:42.636414
+90307	1051	0.00	2012-10-11 01:00:42.644832	2012-10-11 01:00:42.644832
+90308	1052	0.00	2012-10-11 01:00:42.653251	2012-10-11 01:00:42.653251
+90309	1053	0.00	2012-10-11 01:00:42.661446	2012-10-11 01:00:42.661446
+90310	1054	0.00	2012-10-11 01:00:42.670021	2012-10-11 01:00:42.670021
+90311	1055	0.00	2012-10-11 01:00:42.678231	2012-10-11 01:00:42.678231
+90312	1056	0.00	2012-10-11 01:00:42.686489	2012-10-11 01:00:42.686489
+90313	1057	0.00	2012-10-11 01:00:42.694746	2012-10-11 01:00:42.694746
+90314	1058	0.00	2012-10-11 01:00:42.703242	2012-10-11 01:00:42.703242
+90315	1059	0.00	2012-10-11 01:00:42.711382	2012-10-11 01:00:42.711382
+90316	1060	0.00	2012-10-11 01:00:42.719762	2012-10-11 01:00:42.719762
+90317	1072	0.00	2012-10-11 01:00:42.728195	2012-10-11 01:00:42.728195
+90318	1073	0.00	2012-10-11 01:00:42.736439	2012-10-11 01:00:42.736439
+90319	1074	0.00	2012-10-11 01:00:42.744879	2012-10-11 01:00:42.744879
+90320	1075	0.00	2012-10-11 01:00:42.753192	2012-10-11 01:00:42.753192
+90321	1076	0.00	2012-10-11 01:00:42.761363	2012-10-11 01:00:42.761363
+90322	1077	0.00	2012-10-11 01:00:42.769536	2012-10-11 01:00:42.769536
+90323	1079	0.00	2012-10-11 01:00:42.804873	2012-10-11 01:00:42.804873
+90324	1080	0.00	2012-10-11 01:00:42.811529	2012-10-11 01:00:42.811529
+90325	1081	0.00	2012-10-11 01:00:42.819813	2012-10-11 01:00:42.819813
+90326	1082	0.00	2012-10-11 01:00:42.828198	2012-10-11 01:00:42.828198
+90327	1083	0.00	2012-10-11 01:00:42.836392	2012-10-11 01:00:42.836392
+90328	1084	0.00	2012-10-11 01:00:42.844642	2012-10-11 01:00:42.844642
+90329	1085	0.00	2012-10-11 01:00:42.85318	2012-10-11 01:00:42.85318
+90330	1086	0.00	2012-10-11 01:00:42.861473	2012-10-11 01:00:42.861473
+90331	1087	0.00	2012-10-11 01:00:42.869902	2012-10-11 01:00:42.869902
+90332	1088	0.00	2012-10-11 01:00:42.878192	2012-10-11 01:00:42.878192
+90333	1089	0.00	2012-10-11 01:00:42.886533	2012-10-11 01:00:42.886533
+90334	1090	0.00	2012-10-11 01:00:42.895087	2012-10-11 01:00:42.895087
+90335	1091	0.00	2012-10-11 01:00:42.90318	2012-10-11 01:00:42.90318
+90336	1092	0.00	2012-10-11 01:00:42.911466	2012-10-11 01:00:42.911466
+90337	1093	0.00	2012-10-11 01:00:42.919843	2012-10-11 01:00:42.919843
+90338	1094	0.00	2012-10-11 01:00:42.928167	2012-10-11 01:00:42.928167
+90339	1095	0.00	2012-10-11 01:00:42.936468	2012-10-11 01:00:42.936468
+90340	1096	0.00	2012-10-11 01:00:42.944838	2012-10-11 01:00:42.944838
+90341	1097	0.00	2012-10-11 01:00:42.95324	2012-10-11 01:00:42.95324
+90342	1098	0.00	2012-10-11 01:00:42.961456	2012-10-11 01:00:42.961456
+90343	1099	0.00	2012-10-11 01:00:42.969795	2012-10-11 01:00:42.969795
+90344	1100	0.00	2012-10-11 01:00:42.978266	2012-10-11 01:00:42.978266
+90345	1101	0.00	2012-10-11 01:00:42.986473	2012-10-11 01:00:42.986473
+90346	1102	0.00	2012-10-11 01:00:42.995018	2012-10-11 01:00:42.995018
+90347	1103	0.00	2012-10-11 01:00:43.003213	2012-10-11 01:00:43.003213
+90348	1104	0.00	2012-10-11 01:00:43.011449	2012-10-11 01:00:43.011449
+90349	1105	0.00	2012-10-11 01:00:43.02007	2012-10-11 01:00:43.02007
+90350	1106	0.00	2012-10-11 01:00:43.028228	2012-10-11 01:00:43.028228
+90351	1107	0.00	2012-10-11 01:00:43.036309	2012-10-11 01:00:43.036309
+90352	1108	0.00	2012-10-11 01:00:43.044498	2012-10-11 01:00:43.044498
+90353	1109	0.00	2012-10-11 01:00:43.053204	2012-10-11 01:00:43.053204
+90354	1110	0.00	2012-10-11 01:00:43.061469	2012-10-11 01:00:43.061469
+90355	1111	0.00	2012-10-11 01:00:43.070052	2012-10-11 01:00:43.070052
+90356	1112	0.00	2012-10-11 01:00:43.078358	2012-10-11 01:00:43.078358
+90357	1113	0.00	2012-10-11 01:00:43.086384	2012-10-11 01:00:43.086384
+90358	1114	0.00	2012-10-11 01:00:43.09503	2012-10-11 01:00:43.09503
+90359	1115	0.00	2012-10-11 01:00:43.103197	2012-10-11 01:00:43.103197
+90360	1116	0.00	2012-10-11 01:00:43.111519	2012-10-11 01:00:43.111519
+90361	1117	0.00	2012-10-11 01:00:43.119915	2012-10-11 01:00:43.119915
+90362	1118	0.00	2012-10-11 01:00:43.128351	2012-10-11 01:00:43.128351
+90363	1119	0.00	2012-10-11 01:00:43.136849	2012-10-11 01:00:43.136849
+90364	1120	0.00	2012-10-11 01:00:43.145139	2012-10-11 01:00:43.145139
+90365	1121	0.00	2012-10-11 01:00:43.153253	2012-10-11 01:00:43.153253
+90366	1122	0.00	2012-10-11 01:00:43.161457	2012-10-11 01:00:43.161457
+90367	1123	0.00	2012-10-11 01:00:43.169978	2012-10-11 01:00:43.169978
+90368	1124	0.00	2012-10-11 01:00:43.178262	2012-10-11 01:00:43.178262
+90369	1125	0.00	2012-10-11 01:00:43.186767	2012-10-11 01:00:43.186767
+90370	1126	0.00	2012-10-11 01:00:43.195087	2012-10-11 01:00:43.195087
+90371	1127	0.00	2012-10-11 01:00:43.20323	2012-10-11 01:00:43.20323
+90372	1128	0.00	2012-10-11 01:00:43.211467	2012-10-11 01:00:43.211467
+90373	1129	0.00	2012-10-11 01:00:43.219869	2012-10-11 01:00:43.219869
+90374	1130	0.00	2012-10-11 01:00:43.228273	2012-10-11 01:00:43.228273
+90375	1131	0.00	2012-10-11 01:00:43.236699	2012-10-11 01:00:43.236699
+90376	1132	0.00	2012-10-11 01:00:43.244917	2012-10-11 01:00:43.244917
+90377	1133	0.00	2012-10-11 01:00:43.253237	2012-10-11 01:00:43.253237
+90378	1134	0.00	2012-10-11 01:00:43.261478	2012-10-11 01:00:43.261478
+90379	1135	0.00	2012-10-11 01:00:43.270035	2012-10-11 01:00:43.270035
+90380	1136	0.00	2012-10-11 01:00:43.27819	2012-10-11 01:00:43.27819
+90381	1137	0.00	2012-10-11 01:00:43.286463	2012-10-11 01:00:43.286463
+90382	1138	0.00	2012-10-11 01:00:43.295086	2012-10-11 01:00:43.295086
+90383	1139	0.00	2012-10-11 01:00:43.303222	2012-10-11 01:00:43.303222
+90384	1140	0.00	2012-10-11 01:00:43.311834	2012-10-11 01:00:43.311834
+90385	1141	0.00	2012-10-11 01:00:43.319934	2012-10-11 01:00:43.319934
+90386	1142	0.00	2012-10-11 01:00:43.328267	2012-10-11 01:00:43.328267
+90387	1143	0.00	2012-10-11 01:00:43.336432	2012-10-11 01:00:43.336432
+90388	1144	0.00	2012-10-11 01:00:43.344821	2012-10-11 01:00:43.344821
+90389	1145	0.00	2012-10-11 01:00:43.353361	2012-10-11 01:00:43.353361
+90390	1146	0.00	2012-10-11 01:00:43.361938	2012-10-11 01:00:43.361938
+90391	1147	0.00	2012-10-11 01:00:43.370212	2012-10-11 01:00:43.370212
+90392	1148	0.00	2012-10-11 01:00:43.405828	2012-10-11 01:00:43.405828
+90393	1149	0.00	2012-10-11 01:00:43.411494	2012-10-11 01:00:43.411494
+90394	1150	0.00	2012-10-11 01:00:43.419789	2012-10-11 01:00:43.419789
+90395	1151	0.00	2012-10-11 01:00:43.42818	2012-10-11 01:00:43.42818
+90396	1152	0.00	2012-10-11 01:00:43.436486	2012-10-11 01:00:43.436486
+90397	1153	0.00	2012-10-11 01:00:43.480389	2012-10-11 01:00:43.480389
+90398	1154	0.00	2012-10-11 01:00:43.495472	2012-10-11 01:00:43.495472
+90399	1155	0.00	2012-10-11 01:00:43.503206	2012-10-11 01:00:43.503206
+90400	1156	0.00	2012-10-11 01:00:43.51188	2012-10-11 01:00:43.51188
+90401	1157	0.00	2012-10-11 01:00:43.519873	2012-10-11 01:00:43.519873
+90402	1158	0.00	2012-10-11 01:00:43.528295	2012-10-11 01:00:43.528295
+90403	1159	0.00	2012-10-11 01:00:43.536475	2012-10-11 01:00:43.536475
+90404	1160	0.00	2012-10-11 01:00:43.545126	2012-10-11 01:00:43.545126
+90405	1161	0.00	2012-10-11 01:00:43.553305	2012-10-11 01:00:43.553305
+90406	1162	0.00	2012-10-11 01:00:43.561466	2012-10-11 01:00:43.561466
+90407	1163	0.00	2012-10-11 01:00:43.569865	2012-10-11 01:00:43.569865
+90408	1164	0.00	2012-10-11 01:00:43.578268	2012-10-11 01:00:43.578268
+90409	1165	0.00	2012-10-11 01:00:43.586496	2012-10-11 01:00:43.586496
+90410	1166	0.00	2012-10-11 01:00:43.595008	2012-10-11 01:00:43.595008
+90411	1167	0.00	2012-10-11 01:00:43.603205	2012-10-11 01:00:43.603205
+90412	1168	0.00	2012-10-11 01:00:43.611479	2012-10-11 01:00:43.611479
+90413	1169	0.00	2012-10-11 01:00:43.620003	2012-10-11 01:00:43.620003
+90414	1170	0.00	2012-10-11 01:00:43.628197	2012-10-11 01:00:43.628197
+90415	1171	0.00	2012-10-11 01:00:43.636407	2012-10-11 01:00:43.636407
+90416	1172	0.00	2012-10-11 01:00:43.644672	2012-10-11 01:00:43.644672
+90417	1173	0.00	2012-10-11 01:00:43.653225	2012-10-11 01:00:43.653225
+90418	1174	0.00	2012-10-11 01:00:43.661477	2012-10-11 01:00:43.661477
+90419	1175	0.00	2012-10-11 01:00:43.669899	2012-10-11 01:00:43.669899
+90420	1176	0.00	2012-10-11 01:00:43.678352	2012-10-11 01:00:43.678352
+90421	1177	0.00	2012-10-11 01:00:43.68636	2012-10-11 01:00:43.68636
+90422	1178	0.00	2012-10-11 01:00:43.695183	2012-10-11 01:00:43.695183
+90423	1179	0.00	2012-10-11 01:00:43.703142	2012-10-11 01:00:43.703142
+90424	1180	0.00	2012-10-11 01:00:43.711426	2012-10-11 01:00:43.711426
+90425	1181	0.00	2012-10-11 01:00:43.719973	2012-10-11 01:00:43.719973
+90426	1182	0.00	2012-10-11 01:00:43.728197	2012-10-11 01:00:43.728197
+90427	1183	0.00	2012-10-11 01:00:43.736396	2012-10-11 01:00:43.736396
+90428	1184	0.00	2012-10-11 01:00:43.744836	2012-10-11 01:00:43.744836
+90429	1185	0.00	2012-10-11 01:00:43.753126	2012-10-11 01:00:43.753126
+90430	1186	0.00	2012-10-11 01:00:43.761445	2012-10-11 01:00:43.761445
+90431	1187	0.00	2012-10-11 01:00:43.769807	2012-10-11 01:00:43.769807
+90432	1188	0.00	2012-10-11 01:00:43.778267	2012-10-11 01:00:43.778267
+90433	1189	0.00	2012-10-11 01:00:43.786633	2012-10-11 01:00:43.786633
+90434	1190	0.00	2012-10-11 01:00:43.794894	2012-10-11 01:00:43.794894
+90435	1191	0.00	2012-10-11 01:00:43.803165	2012-10-11 01:00:43.803165
+90436	1192	0.00	2012-10-11 01:00:43.811453	2012-10-11 01:00:43.811453
+90437	1193	0.00	2012-10-11 01:00:43.819895	2012-10-11 01:00:43.819895
+90438	1194	0.00	2012-10-11 01:00:43.828165	2012-10-11 01:00:43.828165
+90439	1195	0.00	2012-10-11 01:00:43.836373	2012-10-11 01:00:43.836373
+90440	1196	0.00	2012-10-11 01:00:43.844904	2012-10-11 01:00:43.844904
+90441	1197	0.00	2012-10-11 01:00:43.853131	2012-10-11 01:00:43.853131
+90442	1198	0.00	2012-10-11 01:00:43.861911	2012-10-11 01:00:43.861911
+90443	1199	0.00	2012-10-11 01:00:43.869858	2012-10-11 01:00:43.869858
+90444	1200	0.00	2012-10-11 01:00:43.87812	2012-10-11 01:00:43.87812
+90445	1201	0.00	2012-10-11 01:00:43.886401	2012-10-11 01:00:43.886401
+90446	1202	0.00	2012-10-11 01:00:43.894851	2012-10-11 01:00:43.894851
+90447	1203	0.00	2012-10-11 01:00:43.903122	2012-10-11 01:00:43.903122
+90448	1204	0.00	2012-10-11 01:00:43.911435	2012-10-11 01:00:43.911435
+90449	1205	0.00	2012-10-11 01:00:43.919824	2012-10-11 01:00:43.919824
+90450	1206	0.00	2012-10-11 01:00:43.928118	2012-10-11 01:00:43.928118
+90451	1207	0.00	2012-10-11 01:00:43.936403	2012-10-11 01:00:43.936403
+90452	1208	0.00	2012-10-11 01:00:43.944832	2012-10-11 01:00:43.944832
+90453	1209	0.00	2012-10-11 01:00:43.953241	2012-10-11 01:00:43.953241
+90454	1210	0.00	2012-10-11 01:00:43.961427	2012-10-11 01:00:43.961427
+90455	1211	0.00	2012-10-11 01:00:43.969753	2012-10-11 01:00:43.969753
+90456	1212	0.00	2012-10-11 01:00:43.978235	2012-10-11 01:00:43.978235
+90457	1213	0.00	2012-10-11 01:00:43.986232	2012-10-11 01:00:43.986232
+90458	1214	0.00	2012-10-11 01:00:43.995041	2012-10-11 01:00:43.995041
+90459	1215	0.00	2012-10-11 01:00:44.003581	2012-10-11 01:00:44.003581
+90460	1216	0.00	2012-10-11 01:00:44.011395	2012-10-11 01:00:44.011395
+90461	1217	0.00	2012-10-11 01:00:44.019734	2012-10-11 01:00:44.019734
+90462	1218	0.00	2012-10-11 01:00:44.028067	2012-10-11 01:00:44.028067
+90463	1219	0.00	2012-10-11 01:00:44.051593	2012-10-11 01:00:44.051593
+90464	1220	0.00	2012-10-11 01:00:44.068837	2012-10-11 01:00:44.068837
+90465	1221	0.00	2012-10-11 01:00:44.10903	2012-10-11 01:00:44.10903
+90466	1222	0.00	2012-10-11 01:00:44.142246	2012-10-11 01:00:44.142246
+90467	1223	0.00	2012-10-11 01:00:44.203251	2012-10-11 01:00:44.203251
+90468	1224	0.00	2012-10-11 01:00:44.236223	2012-10-11 01:00:44.236223
+90469	1225	0.00	2012-10-11 01:00:44.244489	2012-10-11 01:00:44.244489
+90470	1226	0.00	2012-10-11 01:00:44.252871	2012-10-11 01:00:44.252871
+90471	1227	0.00	2012-10-11 01:00:44.261151	2012-10-11 01:00:44.261151
+90472	1228	0.00	2012-10-11 01:00:44.269508	2012-10-11 01:00:44.269508
+90473	1229	0.00	2012-10-11 01:00:44.277732	2012-10-11 01:00:44.277732
+90474	1230	0.00	2012-10-11 01:00:44.286146	2012-10-11 01:00:44.286146
+90475	1231	0.00	2012-10-11 01:00:44.294469	2012-10-11 01:00:44.294469
+90476	1232	0.00	2012-10-11 01:00:44.302863	2012-10-11 01:00:44.302863
+90477	1233	0.00	2012-10-11 01:00:44.311162	2012-10-11 01:00:44.311162
+90478	1234	0.00	2012-10-11 01:00:44.319437	2012-10-11 01:00:44.319437
+90479	1235	0.00	2012-10-11 01:00:44.327819	2012-10-11 01:00:44.327819
+90480	1236	0.00	2012-10-11 01:00:44.336148	2012-10-11 01:00:44.336148
+90481	1237	0.00	2012-10-11 01:00:44.344457	2012-10-11 01:00:44.344457
+90482	1238	0.00	2012-10-11 01:00:44.35281	2012-10-11 01:00:44.35281
+90483	1239	0.00	2012-10-11 01:00:44.361127	2012-10-11 01:00:44.361127
+90484	1240	0.00	2012-10-11 01:00:44.369429	2012-10-11 01:00:44.369429
+90485	1241	0.00	2012-10-11 01:00:44.377807	2012-10-11 01:00:44.377807
+90486	1242	0.00	2012-10-11 01:00:44.386145	2012-10-11 01:00:44.386145
+90487	1243	0.00	2012-10-11 01:00:44.39443	2012-10-11 01:00:44.39443
+90488	1244	0.00	2012-10-11 01:00:44.402784	2012-10-11 01:00:44.402784
+90489	1245	0.00	2012-10-11 01:00:44.411275	2012-10-11 01:00:44.411275
+90490	1246	0.00	2012-10-11 01:00:44.419517	2012-10-11 01:00:44.419517
+90491	1247	0.00	2012-10-11 01:00:44.427946	2012-10-11 01:00:44.427946
+90492	1248	0.00	2012-10-11 01:00:44.436186	2012-10-11 01:00:44.436186
+90493	1249	0.00	2012-10-11 01:00:44.444556	2012-10-11 01:00:44.444556
+90494	1250	0.00	2012-10-11 01:00:44.452923	2012-10-11 01:00:44.452923
+90495	1251	0.00	2012-10-11 01:00:44.46123	2012-10-11 01:00:44.46123
+90496	1252	0.00	2012-10-11 01:00:44.469515	2012-10-11 01:00:44.469515
+90497	1253	0.00	2012-10-11 01:00:44.477923	2012-10-11 01:00:44.477923
+90498	1254	0.00	2012-10-11 01:00:44.486154	2012-10-11 01:00:44.486154
+90499	1255	0.00	2012-10-11 01:00:44.494494	2012-10-11 01:00:44.494494
+90500	1256	0.00	2012-10-11 01:00:44.50299	2012-10-11 01:00:44.50299
+90501	1257	0.00	2012-10-11 01:00:44.511294	2012-10-11 01:00:44.511294
+90502	1258	0.00	2012-10-11 01:00:44.519617	2012-10-11 01:00:44.519617
+90503	1259	0.00	2012-10-11 01:00:44.528001	2012-10-11 01:00:44.528001
+90504	1260	0.00	2012-10-11 01:00:44.536253	2012-10-11 01:00:44.536253
+90505	1261	0.00	2012-10-11 01:00:44.544605	2012-10-11 01:00:44.544605
+90506	1262	0.00	2012-10-11 01:00:44.553034	2012-10-11 01:00:44.553034
+90507	1263	0.00	2012-10-11 01:00:44.561291	2012-10-11 01:00:44.561291
+90508	1264	0.00	2012-10-11 01:00:44.569591	2012-10-11 01:00:44.569591
+90509	1265	0.00	2012-10-11 01:00:44.577993	2012-10-11 01:00:44.577993
+90510	1266	0.00	2012-10-11 01:00:44.586249	2012-10-11 01:00:44.586249
+90511	1267	0.00	2012-10-11 01:00:44.594549	2012-10-11 01:00:44.594549
+90512	1268	0.00	2012-10-11 01:00:44.602959	2012-10-11 01:00:44.602959
+90513	1269	0.00	2012-10-11 01:00:44.611241	2012-10-11 01:00:44.611241
+90514	1270	0.00	2012-10-11 01:00:44.619595	2012-10-11 01:00:44.619595
+90515	1271	0.00	2012-10-11 01:00:44.627965	2012-10-11 01:00:44.627965
+90516	1272	0.00	2012-10-11 01:00:44.636236	2012-10-11 01:00:44.636236
+90517	1273	0.00	2012-10-11 01:00:44.644559	2012-10-11 01:00:44.644559
+90518	1274	0.00	2012-10-11 01:00:44.653024	2012-10-11 01:00:44.653024
+90519	1275	0.00	2012-10-11 01:00:44.661258	2012-10-11 01:00:44.661258
+90520	1276	0.00	2012-10-11 01:00:44.669647	2012-10-11 01:00:44.669647
+90521	1277	0.00	2012-10-11 01:00:44.678038	2012-10-11 01:00:44.678038
+90522	1278	0.00	2012-10-11 01:00:44.686324	2012-10-11 01:00:44.686324
+90523	1279	0.00	2012-10-11 01:00:44.694638	2012-10-11 01:00:44.694638
+90524	1280	0.00	2012-10-11 01:00:44.703052	2012-10-11 01:00:44.703052
+90525	1281	0.00	2012-10-11 01:00:44.711355	2012-10-11 01:00:44.711355
+90526	1282	0.00	2012-10-11 01:00:44.719641	2012-10-11 01:00:44.719641
+90527	1283	0.00	2012-10-11 01:00:44.728067	2012-10-11 01:00:44.728067
+90528	1284	0.00	2012-10-11 01:00:44.736372	2012-10-11 01:00:44.736372
+90529	1285	0.00	2012-10-11 01:00:44.744835	2012-10-11 01:00:44.744835
+90530	1286	0.00	2012-10-11 01:00:44.75319	2012-10-11 01:00:44.75319
+90531	1287	0.00	2012-10-11 01:00:44.76143	2012-10-11 01:00:44.76143
+90532	1288	0.00	2012-10-11 01:00:44.770091	2012-10-11 01:00:44.770091
+90533	1289	0.00	2012-10-11 01:00:44.803445	2012-10-11 01:00:44.803445
+90534	1290	0.00	2012-10-11 01:00:44.811352	2012-10-11 01:00:44.811352
+90535	1291	0.00	2012-10-11 01:00:44.819691	2012-10-11 01:00:44.819691
+90536	1292	0.00	2012-10-11 01:00:44.828067	2012-10-11 01:00:44.828067
+90537	1293	0.00	2012-10-11 01:00:44.836309	2012-10-11 01:00:44.836309
+90538	1294	0.00	2012-10-11 01:00:44.844687	2012-10-11 01:00:44.844687
+90539	1295	0.00	2012-10-11 01:00:44.853045	2012-10-11 01:00:44.853045
+90540	1296	0.00	2012-10-11 01:00:44.86133	2012-10-11 01:00:44.86133
+90541	1297	0.00	2012-10-11 01:00:44.869666	2012-10-11 01:00:44.869666
+90542	1298	0.00	2012-10-11 01:00:44.878006	2012-10-11 01:00:44.878006
+90543	1299	0.00	2012-10-11 01:00:44.886323	2012-10-11 01:00:44.886323
+90544	1300	0.00	2012-10-11 01:00:44.894739	2012-10-11 01:00:44.894739
+90545	1301	0.00	2012-10-11 01:00:44.943115	2012-10-11 01:00:44.943115
+90546	1302	0.00	2012-10-11 01:00:44.953084	2012-10-11 01:00:44.953084
+90547	1303	0.00	2012-10-11 01:00:44.961265	2012-10-11 01:00:44.961265
+90548	1304	0.00	2012-10-11 01:00:44.969561	2012-10-11 01:00:44.969561
+90549	1305	0.00	2012-10-11 01:00:44.978008	2012-10-11 01:00:44.978008
+90550	1306	0.00	2012-10-11 01:00:44.986277	2012-10-11 01:00:44.986277
+90551	1307	0.00	2012-10-11 01:00:44.99473	2012-10-11 01:00:44.99473
+90552	1308	0.00	2012-10-11 01:00:45.003088	2012-10-11 01:00:45.003088
+90553	1309	0.00	2012-10-11 01:00:45.01141	2012-10-11 01:00:45.01141
+90554	1310	0.00	2012-10-11 01:00:45.019702	2012-10-11 01:00:45.019702
+90555	1311	0.00	2012-10-11 01:00:45.028056	2012-10-11 01:00:45.028056
+90556	1312	0.00	2012-10-11 01:00:45.036296	2012-10-11 01:00:45.036296
+90557	1313	0.00	2012-10-11 01:00:45.044629	2012-10-11 01:00:45.044629
+90558	1314	0.00	2012-10-11 01:00:45.053016	2012-10-11 01:00:45.053016
+90559	1315	0.00	2012-10-11 01:00:45.061304	2012-10-11 01:00:45.061304
+90560	1316	0.00	2012-10-11 01:00:45.069623	2012-10-11 01:00:45.069623
+90561	1317	0.00	2012-10-11 01:00:45.077991	2012-10-11 01:00:45.077991
+90562	1318	0.00	2012-10-11 01:00:45.086273	2012-10-11 01:00:45.086273
+90563	1319	0.00	2012-10-11 01:00:45.094625	2012-10-11 01:00:45.094625
+90564	1320	0.00	2012-10-11 01:00:45.102986	2012-10-11 01:00:45.102986
+90565	1321	0.00	2012-10-11 01:00:45.11126	2012-10-11 01:00:45.11126
+90566	1322	0.00	2012-10-11 01:00:45.119526	2012-10-11 01:00:45.119526
+90567	1323	0.00	2012-10-11 01:00:45.127945	2012-10-11 01:00:45.127945
+90568	1324	0.00	2012-10-11 01:00:45.136219	2012-10-11 01:00:45.136219
+90569	1325	0.00	2012-10-11 01:00:45.144521	2012-10-11 01:00:45.144521
+90570	1326	0.00	2012-10-11 01:00:45.152937	2012-10-11 01:00:45.152937
+90571	1327	0.00	2012-10-11 01:00:45.161171	2012-10-11 01:00:45.161171
+90572	1328	0.00	2012-10-11 01:00:45.169527	2012-10-11 01:00:45.169527
+90573	1329	0.00	2012-10-11 01:00:45.177925	2012-10-11 01:00:45.177925
+90574	1330	0.00	2012-10-11 01:00:45.186191	2012-10-11 01:00:45.186191
+90575	1331	0.00	2012-10-11 01:00:45.194484	2012-10-11 01:00:45.194484
+90576	1332	0.00	2012-10-11 01:00:45.202883	2012-10-11 01:00:45.202883
+90577	1333	0.00	2012-10-11 01:00:45.211197	2012-10-11 01:00:45.211197
+90578	1334	0.00	2012-10-11 01:00:45.2195	2012-10-11 01:00:45.2195
+90579	1335	0.00	2012-10-11 01:00:45.227905	2012-10-11 01:00:45.227905
+90580	1336	0.00	2012-10-11 01:00:45.23616	2012-10-11 01:00:45.23616
+90581	1337	0.00	2012-10-11 01:00:45.244442	2012-10-11 01:00:45.244442
+90582	1338	0.00	2012-10-11 01:00:45.253037	2012-10-11 01:00:45.253037
+90583	1339	0.00	2012-10-11 01:00:45.261274	2012-10-11 01:00:45.261274
+90584	1340	0.00	2012-10-11 01:00:45.269605	2012-10-11 01:00:45.269605
+90585	1341	0.00	2012-10-11 01:00:45.278013	2012-10-11 01:00:45.278013
+90586	1342	0.00	2012-10-11 01:00:45.286247	2012-10-11 01:00:45.286247
+90587	1343	0.00	2012-10-11 01:00:45.294616	2012-10-11 01:00:45.294616
+90588	1344	0.00	2012-10-11 01:00:45.302994	2012-10-11 01:00:45.302994
+90589	1345	0.00	2012-10-11 01:00:45.311254	2012-10-11 01:00:45.311254
+90590	1346	0.00	2012-10-11 01:00:45.319618	2012-10-11 01:00:45.319618
+90591	1347	0.00	2012-10-11 01:00:45.327981	2012-10-11 01:00:45.327981
+90592	1348	0.00	2012-10-11 01:00:45.336243	2012-10-11 01:00:45.336243
+90593	1349	0.00	2012-10-11 01:00:45.344548	2012-10-11 01:00:45.344548
+90594	1350	0.00	2012-10-11 01:00:45.352933	2012-10-11 01:00:45.352933
+90595	1351	0.00	2012-10-11 01:00:45.361223	2012-10-11 01:00:45.361223
+90596	1352	0.00	2012-10-11 01:00:45.369531	2012-10-11 01:00:45.369531
+90597	1353	0.00	2012-10-11 01:00:45.37793	2012-10-11 01:00:45.37793
+90598	1354	0.00	2012-10-11 01:00:45.386215	2012-10-11 01:00:45.386215
+90599	1355	0.00	2012-10-11 01:00:45.39452	2012-10-11 01:00:45.39452
+90600	1356	0.00	2012-10-11 01:00:45.402912	2012-10-11 01:00:45.402912
+90601	1357	0.00	2012-10-11 01:00:45.411181	2012-10-11 01:00:45.411181
+90602	1358	0.00	2012-10-11 01:00:45.419497	2012-10-11 01:00:45.419497
+90603	1359	0.00	2012-10-11 01:00:45.427923	2012-10-11 01:00:45.427923
+90604	1360	0.00	2012-10-11 01:00:45.436201	2012-10-11 01:00:45.436201
+90605	1361	0.00	2012-10-11 01:00:45.444516	2012-10-11 01:00:45.444516
+90606	1362	0.00	2012-10-11 01:00:45.452893	2012-10-11 01:00:45.452893
+90607	1363	0.00	2012-10-11 01:00:45.461167	2012-10-11 01:00:45.461167
+90608	1364	0.00	2012-10-11 01:00:45.469487	2012-10-11 01:00:45.469487
+90609	1365	0.00	2012-10-11 01:00:45.477867	2012-10-11 01:00:45.477867
+90610	1366	0.00	2012-10-11 01:00:45.486201	2012-10-11 01:00:45.486201
+90611	1367	0.00	2012-10-11 01:00:45.523205	2012-10-11 01:00:45.523205
+90612	1368	0.00	2012-10-11 01:00:45.528123	2012-10-11 01:00:45.528123
+90613	1369	0.00	2012-10-11 01:00:45.536304	2012-10-11 01:00:45.536304
+90614	1370	0.00	2012-10-11 01:00:45.544313	2012-10-11 01:00:45.544313
+90615	1371	0.00	2012-10-11 01:00:45.552655	2012-10-11 01:00:45.552655
+90616	1372	0.00	2012-10-11 01:00:45.561261	2012-10-11 01:00:45.561261
+90617	1373	0.00	2012-10-11 01:00:45.569622	2012-10-11 01:00:45.569622
+90618	1374	0.00	2012-10-11 01:00:45.578024	2012-10-11 01:00:45.578024
+90619	1375	0.00	2012-10-11 01:00:45.5863	2012-10-11 01:00:45.5863
+90620	1376	0.00	2012-10-11 01:00:45.594629	2012-10-11 01:00:45.594629
+90621	1377	0.00	2012-10-11 01:00:45.603009	2012-10-11 01:00:45.603009
+90622	1379	0.00	2012-10-11 01:00:45.611264	2012-10-11 01:00:45.611264
+90623	1380	0.00	2012-10-11 01:00:45.619571	2012-10-11 01:00:45.619571
+90624	1381	0.00	2012-10-11 01:00:45.627999	2012-10-11 01:00:45.627999
+90625	1382	0.00	2012-10-11 01:00:45.636277	2012-10-11 01:00:45.636277
+90626	1383	0.00	2012-10-11 01:00:45.644653	2012-10-11 01:00:45.644653
+90627	1384	0.00	2012-10-11 01:00:45.653122	2012-10-11 01:00:45.653122
+90628	1385	0.00	2012-10-11 01:00:45.661298	2012-10-11 01:00:45.661298
+90629	1386	0.00	2012-10-11 01:00:45.669645	2012-10-11 01:00:45.669645
+90630	1387	0.00	2012-10-11 01:00:45.678011	2012-10-11 01:00:45.678011
+90631	1388	0.00	2012-10-11 01:00:45.686341	2012-10-11 01:00:45.686341
+90632	1389	0.00	2012-10-11 01:00:45.694675	2012-10-11 01:00:45.694675
+90633	1390	0.00	2012-10-11 01:00:45.702987	2012-10-11 01:00:45.702987
+90634	1391	0.00	2012-10-11 01:00:45.711295	2012-10-11 01:00:45.711295
+90635	1392	0.00	2012-10-11 01:00:45.719648	2012-10-11 01:00:45.719648
+90636	1393	0.00	2012-10-11 01:00:45.728077	2012-10-11 01:00:45.728077
+90637	1394	0.00	2012-10-11 01:00:45.736295	2012-10-11 01:00:45.736295
+90638	1395	0.00	2012-10-11 01:00:45.744601	2012-10-11 01:00:45.744601
+90639	1396	0.00	2012-10-11 01:00:45.752994	2012-10-11 01:00:45.752994
+90640	1397	0.00	2012-10-11 01:00:45.761327	2012-10-11 01:00:45.761327
+90641	1398	0.00	2012-10-11 01:00:45.769604	2012-10-11 01:00:45.769604
+90642	1399	0.00	2012-10-11 01:00:45.77801	2012-10-11 01:00:45.77801
+90643	1400	0.00	2012-10-11 01:00:45.786268	2012-10-11 01:00:45.786268
+90644	1401	0.00	2012-10-11 01:00:45.794555	2012-10-11 01:00:45.794555
+90645	1402	0.00	2012-10-11 01:00:45.803	2012-10-11 01:00:45.803
+90646	1403	0.00	2012-10-11 01:00:45.811229	2012-10-11 01:00:45.811229
+90647	1404	0.00	2012-10-11 01:00:45.819629	2012-10-11 01:00:45.819629
+90648	1405	0.00	2012-10-11 01:00:45.828207	2012-10-11 01:00:45.828207
+90649	1406	0.00	2012-10-11 01:00:45.836407	2012-10-11 01:00:45.836407
+90650	1407	0.00	2012-10-11 01:00:45.844723	2012-10-11 01:00:45.844723
+90651	1408	0.00	2012-10-11 01:00:45.853113	2012-10-11 01:00:45.853113
+90652	1409	0.00	2012-10-11 01:00:45.861376	2012-10-11 01:00:45.861376
+90653	1410	0.00	2012-10-11 01:00:45.869716	2012-10-11 01:00:45.869716
+90654	1411	0.00	2012-10-11 01:00:45.878114	2012-10-11 01:00:45.878114
+90655	1412	0.00	2012-10-11 01:00:45.886369	2012-10-11 01:00:45.886369
+90656	1413	0.00	2012-10-11 01:00:45.894708	2012-10-11 01:00:45.894708
+90657	1414	0.00	2012-10-11 01:00:45.903116	2012-10-11 01:00:45.903116
+90658	1415	0.00	2012-10-11 01:00:45.911361	2012-10-11 01:00:45.911361
+90659	1416	0.00	2012-10-11 01:00:45.919743	2012-10-11 01:00:45.919743
+90660	1417	0.00	2012-10-11 01:00:45.928081	2012-10-11 01:00:45.928081
+90661	1418	0.00	2012-10-11 01:00:45.936373	2012-10-11 01:00:45.936373
+90662	1419	0.00	2012-10-11 01:00:45.944763	2012-10-11 01:00:45.944763
+90663	1420	0.00	2012-10-11 01:00:45.953093	2012-10-11 01:00:45.953093
+90664	1421	0.00	2012-10-11 01:00:45.961322	2012-10-11 01:00:45.961322
+90665	1422	0.00	2012-10-11 01:00:45.969712	2012-10-11 01:00:45.969712
+90666	1423	0.00	2012-10-11 01:00:45.978144	2012-10-11 01:00:45.978144
+90667	1424	0.00	2012-10-11 01:00:45.98633	2012-10-11 01:00:45.98633
+90668	1425	0.00	2012-10-11 01:00:45.994742	2012-10-11 01:00:45.994742
+90669	1426	0.00	2012-10-11 01:00:46.003112	2012-10-11 01:00:46.003112
+90670	1427	0.00	2012-10-11 01:00:46.011337	2012-10-11 01:00:46.011337
+90671	1428	0.00	2012-10-11 01:00:46.019649	2012-10-11 01:00:46.019649
+90672	1429	0.00	2012-10-11 01:00:46.028202	2012-10-11 01:00:46.028202
+90673	1430	0.00	2012-10-11 01:00:46.065534	2012-10-11 01:00:46.065534
+90674	1431	0.00	2012-10-11 01:00:46.078066	2012-10-11 01:00:46.078066
+90675	1432	0.00	2012-10-11 01:00:46.086258	2012-10-11 01:00:46.086258
+90676	1433	0.00	2012-10-11 01:00:46.094535	2012-10-11 01:00:46.094535
+90677	1434	0.00	2012-10-11 01:00:46.102978	2012-10-11 01:00:46.102978
+90678	1435	0.00	2012-10-11 01:00:46.11135	2012-10-11 01:00:46.11135
+90679	1436	0.00	2012-10-11 01:00:46.119677	2012-10-11 01:00:46.119677
+90680	1437	0.00	2012-10-11 01:00:46.128048	2012-10-11 01:00:46.128048
+90681	1438	0.00	2012-10-11 01:00:46.136306	2012-10-11 01:00:46.136306
+90682	1439	0.00	2012-10-11 01:00:46.144648	2012-10-11 01:00:46.144648
+90683	1440	0.00	2012-10-11 01:00:46.153027	2012-10-11 01:00:46.153027
+90684	1441	0.00	2012-10-11 01:00:46.161298	2012-10-11 01:00:46.161298
+90685	1442	0.00	2012-10-11 01:00:46.169639	2012-10-11 01:00:46.169639
+90686	1443	0.00	2012-10-11 01:00:46.178088	2012-10-11 01:00:46.178088
+90687	1444	0.00	2012-10-11 01:00:46.186355	2012-10-11 01:00:46.186355
+90688	1445	0.00	2012-10-11 01:00:46.194699	2012-10-11 01:00:46.194699
+90689	1446	0.00	2012-10-11 01:00:46.203	2012-10-11 01:00:46.203
+90690	1447	0.00	2012-10-11 01:00:46.211278	2012-10-11 01:00:46.211278
+90691	1448	0.00	2012-10-11 01:00:46.219628	2012-10-11 01:00:46.219628
+90692	1449	0.00	2012-10-11 01:00:46.265436	2012-10-11 01:00:46.265436
+90693	1450	0.00	2012-10-11 01:00:46.278727	2012-10-11 01:00:46.278727
+90694	1451	0.00	2012-10-11 01:00:46.286444	2012-10-11 01:00:46.286444
+90695	1452	0.00	2012-10-11 01:00:46.294714	2012-10-11 01:00:46.294714
+90696	1453	0.00	2012-10-11 01:00:46.303071	2012-10-11 01:00:46.303071
+90697	1454	0.00	2012-10-11 01:00:46.311348	2012-10-11 01:00:46.311348
+90698	1455	0.00	2012-10-11 01:00:46.319695	2012-10-11 01:00:46.319695
+90699	1456	0.00	2012-10-11 01:00:46.328056	2012-10-11 01:00:46.328056
+90700	1457	0.00	2012-10-11 01:00:46.33631	2012-10-11 01:00:46.33631
+90701	1458	0.00	2012-10-11 01:00:46.34463	2012-10-11 01:00:46.34463
+90702	1459	0.00	2012-10-11 01:00:46.353022	2012-10-11 01:00:46.353022
+90703	1460	0.00	2012-10-11 01:00:46.361269	2012-10-11 01:00:46.361269
+90704	1461	0.00	2012-10-11 01:00:46.36956	2012-10-11 01:00:46.36956
+90705	1462	0.00	2012-10-11 01:00:46.378029	2012-10-11 01:00:46.378029
+90706	1463	0.00	2012-10-11 01:00:46.386255	2012-10-11 01:00:46.386255
+90707	1464	0.00	2012-10-11 01:00:46.394628	2012-10-11 01:00:46.394628
+90708	1465	0.00	2012-10-11 01:00:46.402953	2012-10-11 01:00:46.402953
+90709	1466	0.00	2012-10-11 01:00:46.411323	2012-10-11 01:00:46.411323
+90710	1467	0.00	2012-10-11 01:00:46.419634	2012-10-11 01:00:46.419634
+90711	1468	0.00	2012-10-11 01:00:46.427978	2012-10-11 01:00:46.427978
+90712	1469	0.00	2012-10-11 01:00:46.43625	2012-10-11 01:00:46.43625
+90713	1470	0.00	2012-10-11 01:00:46.444518	2012-10-11 01:00:46.444518
+90714	1471	0.00	2012-10-11 01:00:46.452942	2012-10-11 01:00:46.452942
+90715	1472	0.00	2012-10-11 01:00:46.461246	2012-10-11 01:00:46.461246
+90716	1473	0.00	2012-10-11 01:00:46.469519	2012-10-11 01:00:46.469519
+90717	1474	0.00	2012-10-11 01:00:46.477922	2012-10-11 01:00:46.477922
+90718	1475	0.00	2012-10-11 01:00:46.486227	2012-10-11 01:00:46.486227
+90719	1476	0.00	2012-10-11 01:00:46.494497	2012-10-11 01:00:46.494497
+90720	1477	0.00	2012-10-11 01:00:46.502766	2012-10-11 01:00:46.502766
+90721	1478	0.00	2012-10-11 01:00:46.511343	2012-10-11 01:00:46.511343
+90722	1479	0.00	2012-10-11 01:00:46.519613	2012-10-11 01:00:46.519613
+90723	1480	0.00	2012-10-11 01:00:46.528034	2012-10-11 01:00:46.528034
+90724	1481	0.00	2012-10-11 01:00:46.53628	2012-10-11 01:00:46.53628
+90725	1482	0.00	2012-10-11 01:00:46.544625	2012-10-11 01:00:46.544625
+90726	1483	0.00	2012-10-11 01:00:46.553035	2012-10-11 01:00:46.553035
+90727	1484	0.00	2012-10-11 01:00:46.561298	2012-10-11 01:00:46.561298
+90728	1485	0.00	2012-10-11 01:00:46.569609	2012-10-11 01:00:46.569609
+90729	1486	0.00	2012-10-11 01:00:46.577959	2012-10-11 01:00:46.577959
+90730	1487	0.00	2012-10-11 01:00:46.586255	2012-10-11 01:00:46.586255
+90731	1488	0.00	2012-10-11 01:00:46.594547	2012-10-11 01:00:46.594547
+90732	1489	0.00	2012-10-11 01:00:46.602853	2012-10-11 01:00:46.602853
+90733	1490	0.00	2012-10-11 01:00:46.611281	2012-10-11 01:00:46.611281
+90734	1491	0.00	2012-10-11 01:00:46.61955	2012-10-11 01:00:46.61955
+90735	1492	0.00	2012-10-11 01:00:46.627959	2012-10-11 01:00:46.627959
+90736	1493	0.00	2012-10-11 01:00:46.63623	2012-10-11 01:00:46.63623
+90737	1494	0.00	2012-10-11 01:00:46.644624	2012-10-11 01:00:46.644624
+90738	1495	0.00	2012-10-11 01:00:46.65297	2012-10-11 01:00:46.65297
+90739	1496	0.00	2012-10-11 01:00:46.661221	2012-10-11 01:00:46.661221
+90740	1497	0.00	2012-10-11 01:00:46.669525	2012-10-11 01:00:46.669525
+90741	1498	0.00	2012-10-11 01:00:46.677928	2012-10-11 01:00:46.677928
+90742	1499	0.00	2012-10-11 01:00:46.686169	2012-10-11 01:00:46.686169
+90743	1500	0.00	2012-10-11 01:00:46.694517	2012-10-11 01:00:46.694517
+90744	1078	0.00	2012-10-11 01:00:46.703025	2012-10-11 01:00:46.703025
+90745	1378	0.00	2012-10-11 01:00:46.711313	2012-10-11 01:00:46.711313
+90746	852	41.33	2012-10-11 01:01:18.707467	2012-10-11 01:01:18.707467
+90747	883	0.00	2012-10-11 01:01:18.715234	2012-10-11 01:01:18.715234
+90748	882	0.00	2012-10-11 01:01:18.723394	2012-10-11 01:01:18.723394
+90749	881	0.00	2012-10-11 01:01:18.732089	2012-10-11 01:01:18.732089
+90750	880	0.00	2012-10-11 01:01:18.74022	2012-10-11 01:01:18.74022
+90751	879	0.00	2012-10-11 01:01:18.74842	2012-10-11 01:01:18.74842
+90752	878	0.00	2012-10-11 01:01:18.756898	2012-10-11 01:01:18.756898
+90753	877	0.00	2012-10-11 01:01:18.765257	2012-10-11 01:01:18.765257
+90754	876	0.00	2012-10-11 01:01:18.773298	2012-10-11 01:01:18.773298
+90755	875	0.00	2012-10-11 01:01:18.781822	2012-10-11 01:01:18.781822
+90756	874	0.00	2012-10-11 01:01:18.790261	2012-10-11 01:01:18.790261
+90757	873	0.00	2012-10-11 01:01:18.798464	2012-10-11 01:01:18.798464
+90758	872	0.00	2012-10-11 01:01:18.807066	2012-10-11 01:01:18.807066
+90759	871	0.00	2012-10-11 01:01:18.81527	2012-10-11 01:01:18.81527
+90760	870	0.00	2012-10-11 01:01:18.823414	2012-10-11 01:01:18.823414
+90761	869	0.00	2012-10-11 01:01:18.831785	2012-10-11 01:01:18.831785
+90762	868	0.00	2012-10-11 01:01:18.840231	2012-10-11 01:01:18.840231
+90763	867	0.00	2012-10-11 01:01:18.848523	2012-10-11 01:01:18.848523
+90764	866	0.00	2012-10-11 01:01:18.857031	2012-10-11 01:01:18.857031
+90765	865	0.00	2012-10-11 01:01:18.865296	2012-10-11 01:01:18.865296
+90766	864	0.00	2012-10-11 01:01:18.873672	2012-10-11 01:01:18.873672
+90767	863	0.00	2012-10-11 01:01:18.882227	2012-10-11 01:01:18.882227
+90768	862	0.00	2012-10-11 01:01:18.890415	2012-10-11 01:01:18.890415
+90769	861	0.00	2012-10-11 01:01:18.898858	2012-10-11 01:01:18.898858
+90770	860	0.00	2012-10-11 01:01:18.907573	2012-10-11 01:01:18.907573
+90771	859	0.00	2012-10-11 01:01:18.949274	2012-10-11 01:01:18.949274
+90772	858	0.00	2012-10-11 01:01:18.957217	2012-10-11 01:01:18.957217
+90773	857	0.00	2012-10-11 01:01:18.965394	2012-10-11 01:01:18.965394
+90774	856	0.00	2012-10-11 01:01:18.973556	2012-10-11 01:01:18.973556
+90775	855	0.00	2012-10-11 01:01:18.982124	2012-10-11 01:01:18.982124
+90776	854	0.00	2012-10-11 01:01:18.990342	2012-10-11 01:01:18.990342
+90777	853	0.00	2012-10-11 01:01:18.998632	2012-10-11 01:01:18.998632
+90778	851	0.00	2012-10-11 01:01:19.007548	2012-10-11 01:01:19.007548
+90779	850	0.00	2012-10-11 01:01:19.015427	2012-10-11 01:01:19.015427
+90780	849	0.00	2012-10-11 01:01:19.023558	2012-10-11 01:01:19.023558
+90781	848	0.00	2012-10-11 01:01:19.032132	2012-10-11 01:01:19.032132
+90782	847	0.00	2012-10-11 01:01:19.054751	2012-10-11 01:01:19.054751
+90783	846	0.00	2012-10-11 01:01:19.096246	2012-10-11 01:01:19.096246
+90784	845	0.00	2012-10-11 01:01:19.137736	2012-10-11 01:01:19.137736
+90785	844	0.00	2012-10-11 01:01:19.171049	2012-10-11 01:01:19.171049
+90786	843	0.00	2012-10-11 01:01:19.204306	2012-10-11 01:01:19.204306
+90787	842	0.00	2012-10-11 01:01:19.237677	2012-10-11 01:01:19.237677
+90788	841	0.00	2012-10-11 01:01:19.271042	2012-10-11 01:01:19.271042
+90789	840	0.00	2012-10-11 01:01:19.304317	2012-10-11 01:01:19.304317
+90790	839	0.00	2012-10-11 01:01:19.337621	2012-10-11 01:01:19.337621
+90791	838	0.00	2012-10-11 01:01:19.371232	2012-10-11 01:01:19.371232
+90792	837	0.00	2012-10-11 01:01:19.41253	2012-10-11 01:01:19.41253
+90793	836	0.00	2012-10-11 01:01:19.445607	2012-10-11 01:01:19.445607
+90794	835	0.00	2012-10-11 01:01:19.478957	2012-10-11 01:01:19.478957
+90795	834	0.00	2012-10-11 01:01:19.512257	2012-10-11 01:01:19.512257
+90796	833	0.00	2012-10-11 01:01:19.546821	2012-10-11 01:01:19.546821
+90797	832	0.00	2012-10-11 01:01:19.579875	2012-10-11 01:01:19.579875
+90798	831	0.00	2012-10-11 01:01:19.612221	2012-10-11 01:01:19.612221
+90799	830	0.00	2012-10-11 01:01:19.645492	2012-10-11 01:01:19.645492
+90800	829	0.00	2012-10-11 01:01:19.678827	2012-10-11 01:01:19.678827
+90801	828	0.00	2012-10-11 01:01:19.712185	2012-10-11 01:01:19.712185
+90802	827	0.00	2012-10-11 01:01:19.746055	2012-10-11 01:01:19.746055
+90803	826	0.00	2012-10-11 01:01:19.779156	2012-10-11 01:01:19.779156
+90804	825	0.00	2012-10-11 01:01:19.812373	2012-10-11 01:01:19.812373
+90805	824	0.00	2012-10-11 01:01:19.846101	2012-10-11 01:01:19.846101
+90806	823	0.00	2012-10-11 01:01:19.879291	2012-10-11 01:01:19.879291
+90807	822	0.00	2012-10-11 01:01:19.912396	2012-10-11 01:01:19.912396
+90808	821	0.00	2012-10-11 01:01:19.945831	2012-10-11 01:01:19.945831
+90809	820	0.00	2012-10-11 01:01:19.979194	2012-10-11 01:01:19.979194
+90810	819	0.00	2012-10-11 01:01:20.012469	2012-10-11 01:01:20.012469
+90811	818	0.00	2012-10-11 01:01:20.045854	2012-10-11 01:01:20.045854
+90812	817	0.00	2012-10-11 01:01:20.079181	2012-10-11 01:01:20.079181
+90813	816	0.00	2012-10-11 01:01:20.112422	2012-10-11 01:01:20.112422
+90814	815	0.00	2012-10-11 01:01:20.145812	2012-10-11 01:01:20.145812
+90815	814	0.00	2012-10-11 01:01:20.179142	2012-10-11 01:01:20.179142
+90816	813	0.00	2012-10-11 01:01:20.21238	2012-10-11 01:01:20.21238
+90817	812	0.00	2012-10-11 01:01:20.245472	2012-10-11 01:01:20.245472
+90818	811	0.00	2012-10-11 01:01:20.279276	2012-10-11 01:01:20.279276
+90819	810	0.00	2012-10-11 01:01:20.312375	2012-10-11 01:01:20.312375
+90820	809	0.00	2012-10-11 01:01:20.345511	2012-10-11 01:01:20.345511
+90821	808	0.00	2012-10-11 01:01:20.379131	2012-10-11 01:01:20.379131
+90822	807	0.00	2012-10-11 01:01:20.412319	2012-10-11 01:01:20.412319
+90823	806	0.00	2012-10-11 01:01:20.445509	2012-10-11 01:01:20.445509
+90824	805	0.00	2012-10-11 01:01:20.51007	2012-10-11 01:01:20.51007
+90825	804	0.00	2012-10-11 01:01:20.537295	2012-10-11 01:01:20.537295
+90826	803	0.00	2012-10-11 01:01:20.570341	2012-10-11 01:01:20.570341
+90827	802	0.00	2012-10-11 01:01:20.603327	2012-10-11 01:01:20.603327
+90828	801	0.00	2012-10-11 01:01:20.63711	2012-10-11 01:01:20.63711
+90829	800	0.00	2012-10-11 01:01:20.670334	2012-10-11 01:01:20.670334
+90830	799	0.00	2012-10-11 01:01:20.703423	2012-10-11 01:01:20.703423
+90831	798	0.00	2012-10-11 01:01:20.7371	2012-10-11 01:01:20.7371
+90832	797	0.00	2012-10-11 01:01:20.770332	2012-10-11 01:01:20.770332
+90833	796	0.00	2012-10-11 01:01:20.803526	2012-10-11 01:01:20.803526
+90834	795	0.00	2012-10-11 01:01:20.837007	2012-10-11 01:01:20.837007
+90835	794	0.00	2012-10-11 01:01:20.870238	2012-10-11 01:01:20.870238
+90836	793	0.00	2012-10-11 01:01:20.903441	2012-10-11 01:01:20.903441
+90837	792	0.00	2012-10-11 01:01:20.936869	2012-10-11 01:01:20.936869
+90838	791	0.00	2012-10-11 01:01:20.970303	2012-10-11 01:01:20.970303
+90839	790	0.00	2012-10-11 01:01:21.003318	2012-10-11 01:01:21.003318
+90840	789	0.00	2012-10-11 01:01:21.036832	2012-10-11 01:01:21.036832
+90841	788	0.00	2012-10-11 01:01:21.070119	2012-10-11 01:01:21.070119
+90842	787	0.00	2012-10-11 01:01:21.104146	2012-10-11 01:01:21.104146
+90843	786	0.00	2012-10-11 01:01:21.121181	2012-10-11 01:01:21.121181
+90844	785	0.00	2012-10-11 01:01:21.162841	2012-10-11 01:01:21.162841
+90845	784	0.00	2012-10-11 01:01:21.204339	2012-10-11 01:01:21.204339
+90846	783	0.00	2012-10-11 01:01:21.237992	2012-10-11 01:01:21.237992
+90847	782	0.00	2012-10-11 01:01:21.271132	2012-10-11 01:01:21.271132
+90848	781	0.00	2012-10-11 01:01:21.304305	2012-10-11 01:01:21.304305
+90849	780	0.00	2012-10-11 01:01:21.337203	2012-10-11 01:01:21.337203
+90850	779	0.00	2012-10-11 01:01:21.370407	2012-10-11 01:01:21.370407
+90851	778	0.00	2012-10-11 01:01:21.403975	2012-10-11 01:01:21.403975
+90852	777	0.00	2012-10-11 01:01:21.437193	2012-10-11 01:01:21.437193
+90853	776	0.00	2012-10-11 01:01:21.470349	2012-10-11 01:01:21.470349
+90854	775	0.00	2012-10-11 01:01:21.503749	2012-10-11 01:01:21.503749
+90855	774	0.00	2012-10-11 01:01:21.537078	2012-10-11 01:01:21.537078
+90856	773	0.00	2012-10-11 01:01:21.570386	2012-10-11 01:01:21.570386
+90857	772	0.00	2012-10-11 01:01:21.603847	2012-10-11 01:01:21.603847
+90858	771	0.00	2012-10-11 01:01:21.637197	2012-10-11 01:01:21.637197
+90859	770	0.00	2012-10-11 01:01:21.67038	2012-10-11 01:01:21.67038
+90860	769	0.00	2012-10-11 01:01:21.703481	2012-10-11 01:01:21.703481
+90861	768	0.00	2012-10-11 01:01:21.737144	2012-10-11 01:01:21.737144
+90862	767	0.00	2012-10-11 01:01:21.770393	2012-10-11 01:01:21.770393
+90863	766	0.00	2012-10-11 01:01:21.803467	2012-10-11 01:01:21.803467
+90864	765	0.00	2012-10-11 01:01:21.837047	2012-10-11 01:01:21.837047
+90865	884	0.00	2012-10-12 01:00:25.79331	2012-10-12 01:00:25.79331
+90866	885	0.00	2012-10-12 01:00:25.834589	2012-10-12 01:00:25.834589
+90867	886	0.00	2012-10-12 01:00:25.875672	2012-10-12 01:00:25.875672
+90868	887	0.00	2012-10-12 01:00:25.917253	2012-10-12 01:00:25.917253
+90869	888	0.00	2012-10-12 01:00:25.958935	2012-10-12 01:00:25.958935
+90870	889	0.00	2012-10-12 01:00:26.000464	2012-10-12 01:00:26.000464
+90871	890	0.00	2012-10-12 01:00:26.042238	2012-10-12 01:00:26.042238
+90872	891	0.00	2012-10-12 01:00:26.083896	2012-10-12 01:00:26.083896
+90873	892	0.00	2012-10-12 01:00:26.125432	2012-10-12 01:00:26.125432
+90874	893	0.00	2012-10-12 01:00:26.167203	2012-10-12 01:00:26.167203
+90875	894	0.00	2012-10-12 01:00:26.208879	2012-10-12 01:00:26.208879
+90876	895	0.00	2012-10-12 01:00:26.250555	2012-10-12 01:00:26.250555
+90877	896	0.00	2012-10-12 01:00:26.292167	2012-10-12 01:00:26.292167
+90878	897	0.00	2012-10-12 01:00:26.340219	2012-10-12 01:00:26.340219
+90879	898	0.00	2012-10-12 01:00:26.355324	2012-10-12 01:00:26.355324
+90880	899	0.00	2012-10-12 01:00:26.363725	2012-10-12 01:00:26.363725
+90881	900	0.00	2012-10-12 01:00:26.372087	2012-10-12 01:00:26.372087
+90882	901	0.00	2012-10-12 01:00:26.380273	2012-10-12 01:00:26.380273
+90883	902	0.00	2012-10-12 01:00:26.388709	2012-10-12 01:00:26.388709
+90884	903	0.00	2012-10-12 01:00:26.397052	2012-10-12 01:00:26.397052
+90885	904	0.00	2012-10-12 01:00:26.405334	2012-10-12 01:00:26.405334
+90886	905	0.00	2012-10-12 01:00:26.413719	2012-10-12 01:00:26.413719
+90887	906	0.00	2012-10-12 01:00:26.422108	2012-10-12 01:00:26.422108
+90888	907	0.00	2012-10-12 01:00:26.430317	2012-10-12 01:00:26.430317
+90889	908	0.00	2012-10-12 01:00:26.438693	2012-10-12 01:00:26.438693
+90890	909	0.00	2012-10-12 01:00:26.447111	2012-10-12 01:00:26.447111
+90891	910	0.00	2012-10-12 01:00:26.455313	2012-10-12 01:00:26.455313
+90892	911	0.00	2012-10-12 01:00:26.463635	2012-10-12 01:00:26.463635
+90893	912	0.00	2012-10-12 01:00:26.472041	2012-10-12 01:00:26.472041
+90894	913	0.00	2012-10-12 01:00:26.480297	2012-10-12 01:00:26.480297
+90895	914	0.00	2012-10-12 01:00:26.488767	2012-10-12 01:00:26.488767
+90896	915	0.00	2012-10-12 01:00:26.497193	2012-10-12 01:00:26.497193
+90897	916	0.00	2012-10-12 01:00:26.505316	2012-10-12 01:00:26.505316
+90898	917	0.00	2012-10-12 01:00:26.513729	2012-10-12 01:00:26.513729
+90899	918	0.00	2012-10-12 01:00:26.522129	2012-10-12 01:00:26.522129
+90900	919	0.00	2012-10-12 01:00:26.530353	2012-10-12 01:00:26.530353
+90901	920	0.00	2012-10-12 01:00:26.538718	2012-10-12 01:00:26.538718
+90902	921	0.00	2012-10-12 01:00:26.547142	2012-10-12 01:00:26.547142
+90903	922	0.00	2012-10-12 01:00:26.555344	2012-10-12 01:00:26.555344
+90904	923	0.00	2012-10-12 01:00:26.563719	2012-10-12 01:00:26.563719
+90905	924	0.00	2012-10-12 01:00:26.57212	2012-10-12 01:00:26.57212
+90906	925	0.00	2012-10-12 01:00:26.580333	2012-10-12 01:00:26.580333
+90907	926	0.00	2012-10-12 01:00:26.588687	2012-10-12 01:00:26.588687
+90908	927	0.00	2012-10-12 01:00:26.597139	2012-10-12 01:00:26.597139
+90909	928	0.00	2012-10-12 01:00:26.605327	2012-10-12 01:00:26.605327
+90910	929	0.00	2012-10-12 01:00:26.613712	2012-10-12 01:00:26.613712
+90911	930	0.00	2012-10-12 01:00:26.622085	2012-10-12 01:00:26.622085
+90912	931	0.00	2012-10-12 01:00:26.630324	2012-10-12 01:00:26.630324
+90913	932	0.00	2012-10-12 01:00:26.638663	2012-10-12 01:00:26.638663
+90914	933	0.00	2012-10-12 01:00:26.647081	2012-10-12 01:00:26.647081
+90915	934	0.00	2012-10-12 01:00:26.655312	2012-10-12 01:00:26.655312
+90916	935	0.00	2012-10-12 01:00:26.663681	2012-10-12 01:00:26.663681
+90917	936	0.00	2012-10-12 01:00:26.698412	2012-10-12 01:00:26.698412
+90918	937	0.00	2012-10-12 01:00:26.70552	2012-10-12 01:00:26.70552
+90919	938	0.00	2012-10-12 01:00:26.713695	2012-10-12 01:00:26.713695
+90920	939	0.00	2012-10-12 01:00:26.722113	2012-10-12 01:00:26.722113
+90921	940	0.00	2012-10-12 01:00:26.730321	2012-10-12 01:00:26.730321
+90922	941	0.00	2012-10-12 01:00:26.738669	2012-10-12 01:00:26.738669
+90923	942	0.00	2012-10-12 01:00:26.747089	2012-10-12 01:00:26.747089
+90924	943	0.00	2012-10-12 01:00:26.755437	2012-10-12 01:00:26.755437
+90925	944	0.00	2012-10-12 01:00:26.763778	2012-10-12 01:00:26.763778
+90926	945	0.00	2012-10-12 01:00:26.772159	2012-10-12 01:00:26.772159
+90927	946	0.00	2012-10-12 01:00:26.780354	2012-10-12 01:00:26.780354
+90928	947	0.00	2012-10-12 01:00:26.788787	2012-10-12 01:00:26.788787
+90929	948	0.00	2012-10-12 01:00:26.797133	2012-10-12 01:00:26.797133
+90930	949	0.00	2012-10-12 01:00:26.805381	2012-10-12 01:00:26.805381
+90931	950	0.00	2012-10-12 01:00:26.813886	2012-10-12 01:00:26.813886
+90932	951	0.00	2012-10-12 01:00:26.822137	2012-10-12 01:00:26.822137
+90933	952	0.00	2012-10-12 01:00:26.830482	2012-10-12 01:00:26.830482
+90934	953	0.00	2012-10-12 01:00:26.838922	2012-10-12 01:00:26.838922
+90935	954	0.00	2012-10-12 01:00:26.847142	2012-10-12 01:00:26.847142
+90936	955	0.00	2012-10-12 01:00:26.855552	2012-10-12 01:00:26.855552
+90937	956	0.00	2012-10-12 01:00:26.863761	2012-10-12 01:00:26.863761
+90938	957	0.00	2012-10-12 01:00:26.872236	2012-10-12 01:00:26.872236
+90939	958	0.00	2012-10-12 01:00:26.880412	2012-10-12 01:00:26.880412
+90940	959	0.00	2012-10-12 01:00:26.88878	2012-10-12 01:00:26.88878
+90941	960	0.00	2012-10-12 01:00:26.897141	2012-10-12 01:00:26.897141
+90942	961	0.00	2012-10-12 01:00:26.905401	2012-10-12 01:00:26.905401
+90943	962	0.00	2012-10-12 01:00:26.913861	2012-10-12 01:00:26.913861
+90944	963	0.00	2012-10-12 01:00:26.92213	2012-10-12 01:00:26.92213
+90945	964	0.00	2012-10-12 01:00:26.930368	2012-10-12 01:00:26.930368
+90946	965	0.00	2012-10-12 01:00:26.938796	2012-10-12 01:00:26.938796
+90947	966	0.00	2012-10-12 01:00:26.947132	2012-10-12 01:00:26.947132
+90948	967	0.00	2012-10-12 01:00:26.955461	2012-10-12 01:00:26.955461
+90949	968	0.00	2012-10-12 01:00:26.963787	2012-10-12 01:00:26.963787
+90950	969	0.00	2012-10-12 01:00:26.972106	2012-10-12 01:00:26.972106
+90951	970	0.00	2012-10-12 01:00:26.980363	2012-10-12 01:00:26.980363
+90952	971	0.00	2012-10-12 01:00:26.988897	2012-10-12 01:00:26.988897
+90953	972	0.00	2012-10-12 01:00:26.997136	2012-10-12 01:00:26.997136
+90954	973	0.00	2012-10-12 01:00:27.005356	2012-10-12 01:00:27.005356
+90955	974	0.00	2012-10-12 01:00:27.013802	2012-10-12 01:00:27.013802
+90956	975	0.00	2012-10-12 01:00:27.02212	2012-10-12 01:00:27.02212
+90957	976	0.00	2012-10-12 01:00:27.030357	2012-10-12 01:00:27.030357
+90958	977	0.00	2012-10-12 01:00:27.038792	2012-10-12 01:00:27.038792
+90959	978	0.00	2012-10-12 01:00:27.047152	2012-10-12 01:00:27.047152
+90960	979	0.00	2012-10-12 01:00:27.055348	2012-10-12 01:00:27.055348
+90961	1061	0.00	2012-10-12 01:00:27.063933	2012-10-12 01:00:27.063933
+90962	1062	0.00	2012-10-12 01:00:27.072192	2012-10-12 01:00:27.072192
+90963	1063	0.00	2012-10-12 01:00:27.080477	2012-10-12 01:00:27.080477
+90964	1064	0.00	2012-10-12 01:00:27.088824	2012-10-12 01:00:27.088824
+90965	1065	0.00	2012-10-12 01:00:27.09713	2012-10-12 01:00:27.09713
+90966	1066	0.00	2012-10-12 01:00:27.105454	2012-10-12 01:00:27.105454
+90967	1067	0.00	2012-10-12 01:00:27.151346	2012-10-12 01:00:27.151346
+90968	1068	0.00	2012-10-12 01:00:27.164364	2012-10-12 01:00:27.164364
+90969	1069	0.00	2012-10-12 01:00:27.172245	2012-10-12 01:00:27.172245
+90970	1070	0.00	2012-10-12 01:00:27.180405	2012-10-12 01:00:27.180405
+90971	1071	0.00	2012-10-12 01:00:27.188798	2012-10-12 01:00:27.188798
+90972	980	0.00	2012-10-12 01:00:27.19716	2012-10-12 01:00:27.19716
+90973	981	0.00	2012-10-12 01:00:27.205433	2012-10-12 01:00:27.205433
+90974	982	0.00	2012-10-12 01:00:27.213766	2012-10-12 01:00:27.213766
+90975	983	0.00	2012-10-12 01:00:27.222167	2012-10-12 01:00:27.222167
+90976	984	0.00	2012-10-12 01:00:27.230538	2012-10-12 01:00:27.230538
+90977	985	0.00	2012-10-12 01:00:27.238872	2012-10-12 01:00:27.238872
+90978	986	0.00	2012-10-12 01:00:27.247197	2012-10-12 01:00:27.247197
+90979	987	0.00	2012-10-12 01:00:27.255443	2012-10-12 01:00:27.255443
+90980	988	0.00	2012-10-12 01:00:27.263855	2012-10-12 01:00:27.263855
+90981	989	0.00	2012-10-12 01:00:27.272228	2012-10-12 01:00:27.272228
+90982	990	0.00	2012-10-12 01:00:27.28054	2012-10-12 01:00:27.28054
+90983	991	0.00	2012-10-12 01:00:27.288884	2012-10-12 01:00:27.288884
+90984	992	0.00	2012-10-12 01:00:27.297206	2012-10-12 01:00:27.297206
+90985	993	0.00	2012-10-12 01:00:27.305414	2012-10-12 01:00:27.305414
+90986	994	0.00	2012-10-12 01:00:27.313794	2012-10-12 01:00:27.313794
+90987	995	0.00	2012-10-12 01:00:27.322158	2012-10-12 01:00:27.322158
+90988	996	0.00	2012-10-12 01:00:27.33042	2012-10-12 01:00:27.33042
+90989	997	0.00	2012-10-12 01:00:27.338766	2012-10-12 01:00:27.338766
+90990	998	0.00	2012-10-12 01:00:27.347091	2012-10-12 01:00:27.347091
+90991	999	0.00	2012-10-12 01:00:27.355386	2012-10-12 01:00:27.355386
+90992	1000	0.00	2012-10-12 01:00:27.363755	2012-10-12 01:00:27.363755
+90993	1001	0.00	2012-10-12 01:00:27.372184	2012-10-12 01:00:27.372184
+90994	1002	0.00	2012-10-12 01:00:27.380424	2012-10-12 01:00:27.380424
+90995	1003	0.00	2012-10-12 01:00:27.388832	2012-10-12 01:00:27.388832
+90996	1004	0.00	2012-10-12 01:00:27.397139	2012-10-12 01:00:27.397139
+90997	1005	0.00	2012-10-12 01:00:27.40542	2012-10-12 01:00:27.40542
+90998	1006	0.00	2012-10-12 01:00:27.413794	2012-10-12 01:00:27.413794
+90999	1007	0.00	2012-10-12 01:00:27.422094	2012-10-12 01:00:27.422094
+91000	1008	0.00	2012-10-12 01:00:27.430393	2012-10-12 01:00:27.430393
+91001	1009	0.00	2012-10-12 01:00:27.438785	2012-10-12 01:00:27.438785
+91002	1010	0.00	2012-10-12 01:00:27.447151	2012-10-12 01:00:27.447151
+91003	1011	0.00	2012-10-12 01:00:27.45539	2012-10-12 01:00:27.45539
+91004	1012	0.00	2012-10-12 01:00:27.463776	2012-10-12 01:00:27.463776
+91005	1013	0.00	2012-10-12 01:00:27.472116	2012-10-12 01:00:27.472116
+91006	1014	0.00	2012-10-12 01:00:27.480379	2012-10-12 01:00:27.480379
+91007	1015	0.00	2012-10-12 01:00:27.48876	2012-10-12 01:00:27.48876
+91008	1016	0.00	2012-10-12 01:00:27.497139	2012-10-12 01:00:27.497139
+91009	1017	0.00	2012-10-12 01:00:27.505363	2012-10-12 01:00:27.505363
+91010	1018	0.00	2012-10-12 01:00:27.513748	2012-10-12 01:00:27.513748
+91011	1019	0.00	2012-10-12 01:00:27.522127	2012-10-12 01:00:27.522127
+91012	1020	0.00	2012-10-12 01:00:27.530486	2012-10-12 01:00:27.530486
+91013	1021	0.00	2012-10-12 01:00:27.538829	2012-10-12 01:00:27.538829
+91014	1022	0.00	2012-10-12 01:00:27.547145	2012-10-12 01:00:27.547145
+91015	1023	0.00	2012-10-12 01:00:27.555413	2012-10-12 01:00:27.555413
+91016	1024	0.00	2012-10-12 01:00:27.563798	2012-10-12 01:00:27.563798
+91017	1025	0.00	2012-10-12 01:00:27.5721	2012-10-12 01:00:27.5721
+91018	1026	0.00	2012-10-12 01:00:27.580405	2012-10-12 01:00:27.580405
+91019	1027	0.00	2012-10-12 01:00:27.588845	2012-10-12 01:00:27.588845
+91020	1028	0.00	2012-10-12 01:00:27.59716	2012-10-12 01:00:27.59716
+91021	1029	0.00	2012-10-12 01:00:27.605404	2012-10-12 01:00:27.605404
+91022	1030	0.00	2012-10-12 01:00:27.613785	2012-10-12 01:00:27.613785
+91023	1031	0.00	2012-10-12 01:00:27.622148	2012-10-12 01:00:27.622148
+91024	1032	0.00	2012-10-12 01:00:27.63039	2012-10-12 01:00:27.63039
+91025	1033	0.00	2012-10-12 01:00:27.638767	2012-10-12 01:00:27.638767
+91026	1034	0.00	2012-10-12 01:00:27.647095	2012-10-12 01:00:27.647095
+91027	1035	0.00	2012-10-12 01:00:27.655377	2012-10-12 01:00:27.655377
+91028	1036	0.00	2012-10-12 01:00:27.663749	2012-10-12 01:00:27.663749
+91029	1037	0.00	2012-10-12 01:00:27.672118	2012-10-12 01:00:27.672118
+91030	1038	0.00	2012-10-12 01:00:27.680355	2012-10-12 01:00:27.680355
+91031	1039	0.00	2012-10-12 01:00:27.688735	2012-10-12 01:00:27.688735
+91032	1040	0.00	2012-10-12 01:00:27.69711	2012-10-12 01:00:27.69711
+91033	1041	0.00	2012-10-12 01:00:27.705339	2012-10-12 01:00:27.705339
+91034	1042	0.00	2012-10-12 01:00:27.71374	2012-10-12 01:00:27.71374
+91035	1043	0.00	2012-10-12 01:00:27.7221	2012-10-12 01:00:27.7221
+91036	1044	0.00	2012-10-12 01:00:27.730344	2012-10-12 01:00:27.730344
+91037	1045	0.00	2012-10-12 01:00:27.738712	2012-10-12 01:00:27.738712
+91038	1046	0.00	2012-10-12 01:00:27.747064	2012-10-12 01:00:27.747064
+91039	1047	0.00	2012-10-12 01:00:27.755331	2012-10-12 01:00:27.755331
+91040	1048	0.00	2012-10-12 01:00:27.763714	2012-10-12 01:00:27.763714
+91041	1049	0.00	2012-10-12 01:00:27.797546	2012-10-12 01:00:27.797546
+91042	1050	0.00	2012-10-12 01:00:27.805587	2012-10-12 01:00:27.805587
+91043	1051	0.00	2012-10-12 01:00:27.813865	2012-10-12 01:00:27.813865
+91044	1052	0.00	2012-10-12 01:00:27.8222	2012-10-12 01:00:27.8222
+91045	1053	0.00	2012-10-12 01:00:27.83048	2012-10-12 01:00:27.83048
+91046	1054	0.00	2012-10-12 01:00:27.838897	2012-10-12 01:00:27.838897
+91047	1055	0.00	2012-10-12 01:00:27.84716	2012-10-12 01:00:27.84716
+91048	1056	0.00	2012-10-12 01:00:27.855426	2012-10-12 01:00:27.855426
+91049	1057	0.00	2012-10-12 01:00:27.863855	2012-10-12 01:00:27.863855
+91050	1058	0.00	2012-10-12 01:00:27.872135	2012-10-12 01:00:27.872135
+91051	1059	0.00	2012-10-12 01:00:27.880449	2012-10-12 01:00:27.880449
+91052	1060	0.00	2012-10-12 01:00:27.88883	2012-10-12 01:00:27.88883
+91053	1072	0.00	2012-10-12 01:00:27.897137	2012-10-12 01:00:27.897137
+91054	1073	0.00	2012-10-12 01:00:27.905445	2012-10-12 01:00:27.905445
+91055	1074	0.00	2012-10-12 01:00:27.913813	2012-10-12 01:00:27.913813
+91056	1075	0.00	2012-10-12 01:00:27.922143	2012-10-12 01:00:27.922143
+91057	1076	0.00	2012-10-12 01:00:27.930447	2012-10-12 01:00:27.930447
+91058	1077	0.00	2012-10-12 01:00:27.938824	2012-10-12 01:00:27.938824
+91059	1079	0.00	2012-10-12 01:00:27.947092	2012-10-12 01:00:27.947092
+91060	1080	0.00	2012-10-12 01:00:27.955459	2012-10-12 01:00:27.955459
+91061	1081	0.00	2012-10-12 01:00:27.963836	2012-10-12 01:00:27.963836
+91062	1082	0.00	2012-10-12 01:00:27.972139	2012-10-12 01:00:27.972139
+91063	1083	0.00	2012-10-12 01:00:27.980421	2012-10-12 01:00:27.980421
+91064	1084	0.00	2012-10-12 01:00:27.9888	2012-10-12 01:00:27.9888
+91065	1085	0.00	2012-10-12 01:00:27.997136	2012-10-12 01:00:27.997136
+91066	1086	0.00	2012-10-12 01:00:28.00541	2012-10-12 01:00:28.00541
+91067	1087	0.00	2012-10-12 01:00:28.013807	2012-10-12 01:00:28.013807
+91068	1088	0.00	2012-10-12 01:00:28.022157	2012-10-12 01:00:28.022157
+91069	1089	0.00	2012-10-12 01:00:28.030397	2012-10-12 01:00:28.030397
+91070	1090	0.00	2012-10-12 01:00:28.038788	2012-10-12 01:00:28.038788
+91071	1091	0.00	2012-10-12 01:00:28.047185	2012-10-12 01:00:28.047185
+91072	1092	0.00	2012-10-12 01:00:28.055476	2012-10-12 01:00:28.055476
+91073	1093	0.00	2012-10-12 01:00:28.063839	2012-10-12 01:00:28.063839
+91074	1094	0.00	2012-10-12 01:00:28.072169	2012-10-12 01:00:28.072169
+91075	1095	0.00	2012-10-12 01:00:28.080453	2012-10-12 01:00:28.080453
+91076	1096	0.00	2012-10-12 01:00:28.088884	2012-10-12 01:00:28.088884
+91077	1097	0.00	2012-10-12 01:00:28.097139	2012-10-12 01:00:28.097139
+91078	1098	0.00	2012-10-12 01:00:28.105457	2012-10-12 01:00:28.105457
+91079	1099	0.00	2012-10-12 01:00:28.113687	2012-10-12 01:00:28.113687
+91080	1100	0.00	2012-10-12 01:00:28.122202	2012-10-12 01:00:28.122202
+91081	1101	0.00	2012-10-12 01:00:28.130459	2012-10-12 01:00:28.130459
+91082	1102	0.00	2012-10-12 01:00:28.138806	2012-10-12 01:00:28.138806
+91083	1103	0.00	2012-10-12 01:00:28.147146	2012-10-12 01:00:28.147146
+91084	1104	0.00	2012-10-12 01:00:28.155451	2012-10-12 01:00:28.155451
+91085	1105	0.00	2012-10-12 01:00:28.163881	2012-10-12 01:00:28.163881
+91086	1106	0.00	2012-10-12 01:00:28.172264	2012-10-12 01:00:28.172264
+91087	1107	0.00	2012-10-12 01:00:28.180532	2012-10-12 01:00:28.180532
+91088	1108	0.00	2012-10-12 01:00:28.188958	2012-10-12 01:00:28.188958
+91089	1109	0.00	2012-10-12 01:00:28.19722	2012-10-12 01:00:28.19722
+91090	1110	0.00	2012-10-12 01:00:28.205527	2012-10-12 01:00:28.205527
+91091	1111	0.00	2012-10-12 01:00:28.213926	2012-10-12 01:00:28.213926
+91092	1112	0.00	2012-10-12 01:00:28.222243	2012-10-12 01:00:28.222243
+91093	1113	0.00	2012-10-12 01:00:28.23055	2012-10-12 01:00:28.23055
+91094	1114	0.00	2012-10-12 01:00:28.238966	2012-10-12 01:00:28.238966
+91095	1115	0.00	2012-10-12 01:00:28.247211	2012-10-12 01:00:28.247211
+91096	1116	0.00	2012-10-12 01:00:28.255546	2012-10-12 01:00:28.255546
+91097	1117	0.00	2012-10-12 01:00:28.263953	2012-10-12 01:00:28.263953
+91098	1118	0.00	2012-10-12 01:00:28.272234	2012-10-12 01:00:28.272234
+91099	1119	0.00	2012-10-12 01:00:28.28056	2012-10-12 01:00:28.28056
+91100	1120	0.00	2012-10-12 01:00:28.288971	2012-10-12 01:00:28.288971
+91101	1121	0.00	2012-10-12 01:00:28.29726	2012-10-12 01:00:28.29726
+91102	1122	0.00	2012-10-12 01:00:28.305535	2012-10-12 01:00:28.305535
+91103	1123	0.00	2012-10-12 01:00:28.313967	2012-10-12 01:00:28.313967
+91104	1124	0.00	2012-10-12 01:00:28.32224	2012-10-12 01:00:28.32224
+91105	1125	0.00	2012-10-12 01:00:28.330539	2012-10-12 01:00:28.330539
+91106	1126	0.00	2012-10-12 01:00:28.338991	2012-10-12 01:00:28.338991
+91107	1127	0.00	2012-10-12 01:00:28.347251	2012-10-12 01:00:28.347251
+91108	1128	0.00	2012-10-12 01:00:28.355539	2012-10-12 01:00:28.355539
+91109	1129	0.00	2012-10-12 01:00:28.364248	2012-10-12 01:00:28.364248
+91110	1130	0.00	2012-10-12 01:00:28.397606	2012-10-12 01:00:28.397606
+91111	1131	0.00	2012-10-12 01:00:28.405465	2012-10-12 01:00:28.405465
+91112	1132	0.00	2012-10-12 01:00:28.413815	2012-10-12 01:00:28.413815
+91113	1133	0.00	2012-10-12 01:00:28.422122	2012-10-12 01:00:28.422122
+91114	1134	0.00	2012-10-12 01:00:28.430428	2012-10-12 01:00:28.430428
+91115	1135	0.00	2012-10-12 01:00:28.477808	2012-10-12 01:00:28.477808
+91116	1136	0.00	2012-10-12 01:00:28.489038	2012-10-12 01:00:28.489038
+91117	1137	0.00	2012-10-12 01:00:28.497196	2012-10-12 01:00:28.497196
+91118	1138	0.00	2012-10-12 01:00:28.505489	2012-10-12 01:00:28.505489
+91119	1139	0.00	2012-10-12 01:00:28.51387	2012-10-12 01:00:28.51387
+91120	1140	0.00	2012-10-12 01:00:28.522161	2012-10-12 01:00:28.522161
+91121	1141	0.00	2012-10-12 01:00:28.530476	2012-10-12 01:00:28.530476
+91122	1142	0.00	2012-10-12 01:00:28.538852	2012-10-12 01:00:28.538852
+91123	1143	0.00	2012-10-12 01:00:28.547105	2012-10-12 01:00:28.547105
+91124	1144	0.00	2012-10-12 01:00:28.555575	2012-10-12 01:00:28.555575
+91125	1145	0.00	2012-10-12 01:00:28.563971	2012-10-12 01:00:28.563971
+91126	1146	0.00	2012-10-12 01:00:28.572211	2012-10-12 01:00:28.572211
+91127	1147	0.00	2012-10-12 01:00:28.580487	2012-10-12 01:00:28.580487
+91128	1148	0.00	2012-10-12 01:00:28.58891	2012-10-12 01:00:28.58891
+91129	1149	0.00	2012-10-12 01:00:28.597182	2012-10-12 01:00:28.597182
+91130	1150	0.00	2012-10-12 01:00:28.605471	2012-10-12 01:00:28.605471
+91131	1151	0.00	2012-10-12 01:00:28.613908	2012-10-12 01:00:28.613908
+91132	1152	0.00	2012-10-12 01:00:28.622169	2012-10-12 01:00:28.622169
+91133	1153	0.00	2012-10-12 01:00:28.630471	2012-10-12 01:00:28.630471
+91134	1154	0.00	2012-10-12 01:00:28.638888	2012-10-12 01:00:28.638888
+91135	1155	0.00	2012-10-12 01:00:28.647098	2012-10-12 01:00:28.647098
+91136	1156	0.00	2012-10-12 01:00:28.655446	2012-10-12 01:00:28.655446
+91137	1157	0.00	2012-10-12 01:00:28.663819	2012-10-12 01:00:28.663819
+91138	1158	0.00	2012-10-12 01:00:28.672123	2012-10-12 01:00:28.672123
+91139	1159	0.00	2012-10-12 01:00:28.680431	2012-10-12 01:00:28.680431
+91140	1160	0.00	2012-10-12 01:00:28.68888	2012-10-12 01:00:28.68888
+91141	1161	0.00	2012-10-12 01:00:28.697117	2012-10-12 01:00:28.697117
+91142	1162	0.00	2012-10-12 01:00:28.705422	2012-10-12 01:00:28.705422
+91143	1163	0.00	2012-10-12 01:00:28.713793	2012-10-12 01:00:28.713793
+91144	1164	0.00	2012-10-12 01:00:28.722176	2012-10-12 01:00:28.722176
+91145	1165	0.00	2012-10-12 01:00:28.730395	2012-10-12 01:00:28.730395
+91146	1166	0.00	2012-10-12 01:00:28.738779	2012-10-12 01:00:28.738779
+91147	1167	0.00	2012-10-12 01:00:28.74712	2012-10-12 01:00:28.74712
+91148	1168	0.00	2012-10-12 01:00:28.755391	2012-10-12 01:00:28.755391
+91149	1169	0.00	2012-10-12 01:00:28.763774	2012-10-12 01:00:28.763774
+91150	1170	0.00	2012-10-12 01:00:28.772139	2012-10-12 01:00:28.772139
+91151	1171	0.00	2012-10-12 01:00:28.780367	2012-10-12 01:00:28.780367
+91152	1172	0.00	2012-10-12 01:00:28.788753	2012-10-12 01:00:28.788753
+91153	1173	0.00	2012-10-12 01:00:28.797129	2012-10-12 01:00:28.797129
+91154	1174	0.00	2012-10-12 01:00:28.805507	2012-10-12 01:00:28.805507
+91155	1175	0.00	2012-10-12 01:00:28.813892	2012-10-12 01:00:28.813892
+91156	1176	0.00	2012-10-12 01:00:28.822188	2012-10-12 01:00:28.822188
+91157	1177	0.00	2012-10-12 01:00:28.830471	2012-10-12 01:00:28.830471
+91158	1178	0.00	2012-10-12 01:00:28.838886	2012-10-12 01:00:28.838886
+91159	1179	0.00	2012-10-12 01:00:28.847158	2012-10-12 01:00:28.847158
+91160	1180	0.00	2012-10-12 01:00:28.855456	2012-10-12 01:00:28.855456
+91161	1181	0.00	2012-10-12 01:00:28.863875	2012-10-12 01:00:28.863875
+91162	1182	0.00	2012-10-12 01:00:28.872153	2012-10-12 01:00:28.872153
+91163	1183	0.00	2012-10-12 01:00:28.880437	2012-10-12 01:00:28.880437
+91164	1184	0.00	2012-10-12 01:00:28.888839	2012-10-12 01:00:28.888839
+91165	1185	0.00	2012-10-12 01:00:28.897122	2012-10-12 01:00:28.897122
+91166	1186	0.00	2012-10-12 01:00:28.905429	2012-10-12 01:00:28.905429
+91167	1187	0.00	2012-10-12 01:00:28.913861	2012-10-12 01:00:28.913861
+91168	1188	0.00	2012-10-12 01:00:28.922147	2012-10-12 01:00:28.922147
+91169	1189	0.00	2012-10-12 01:00:28.930514	2012-10-12 01:00:28.930514
+91170	1190	0.00	2012-10-12 01:00:28.938911	2012-10-12 01:00:28.938911
+91171	1191	0.00	2012-10-12 01:00:28.947199	2012-10-12 01:00:28.947199
+91172	1192	0.00	2012-10-12 01:00:28.955478	2012-10-12 01:00:28.955478
+91173	1193	0.00	2012-10-12 01:00:28.963859	2012-10-12 01:00:28.963859
+91174	1194	0.00	2012-10-12 01:00:28.972164	2012-10-12 01:00:28.972164
+91175	1195	0.00	2012-10-12 01:00:28.980479	2012-10-12 01:00:28.980479
+91176	1196	0.00	2012-10-12 01:00:28.98889	2012-10-12 01:00:28.98889
+91177	1197	0.00	2012-10-12 01:00:28.997163	2012-10-12 01:00:28.997163
+91178	1198	0.00	2012-10-12 01:00:29.006423	2012-10-12 01:00:29.006423
+91179	1199	0.00	2012-10-12 01:00:29.014102	2012-10-12 01:00:29.014102
+91180	1200	0.00	2012-10-12 01:00:29.02221	2012-10-12 01:00:29.02221
+91181	1201	0.00	2012-10-12 01:00:29.030433	2012-10-12 01:00:29.030433
+91182	1202	0.00	2012-10-12 01:00:29.038857	2012-10-12 01:00:29.038857
+91183	1203	0.00	2012-10-12 01:00:29.04721	2012-10-12 01:00:29.04721
+91184	1204	0.00	2012-10-12 01:00:29.082416	2012-10-12 01:00:29.082416
+91185	1205	0.00	2012-10-12 01:00:29.089241	2012-10-12 01:00:29.089241
+91186	1206	0.00	2012-10-12 01:00:29.097211	2012-10-12 01:00:29.097211
+91187	1207	0.00	2012-10-12 01:00:29.105657	2012-10-12 01:00:29.105657
+91188	1208	0.00	2012-10-12 01:00:29.113961	2012-10-12 01:00:29.113961
+91189	1209	0.00	2012-10-12 01:00:29.122213	2012-10-12 01:00:29.122213
+91190	1210	0.00	2012-10-12 01:00:29.130563	2012-10-12 01:00:29.130563
+91191	1211	0.00	2012-10-12 01:00:29.138967	2012-10-12 01:00:29.138967
+91192	1212	0.00	2012-10-12 01:00:29.147256	2012-10-12 01:00:29.147256
+91193	1213	0.00	2012-10-12 01:00:29.155541	2012-10-12 01:00:29.155541
+91194	1214	0.00	2012-10-12 01:00:29.16396	2012-10-12 01:00:29.16396
+91195	1215	0.00	2012-10-12 01:00:29.17222	2012-10-12 01:00:29.17222
+91196	1216	0.00	2012-10-12 01:00:29.180534	2012-10-12 01:00:29.180534
+91197	1217	0.00	2012-10-12 01:00:29.188957	2012-10-12 01:00:29.188957
+91198	1218	0.00	2012-10-12 01:00:29.197218	2012-10-12 01:00:29.197218
+91199	1219	0.00	2012-10-12 01:00:29.205525	2012-10-12 01:00:29.205525
+91200	1220	0.00	2012-10-12 01:00:29.213941	2012-10-12 01:00:29.213941
+91201	1221	0.00	2012-10-12 01:00:29.222183	2012-10-12 01:00:29.222183
+91202	1222	0.00	2012-10-12 01:00:29.23052	2012-10-12 01:00:29.23052
+91203	1223	0.00	2012-10-12 01:00:29.238951	2012-10-12 01:00:29.238951
+91204	1224	0.00	2012-10-12 01:00:29.247202	2012-10-12 01:00:29.247202
+91205	1225	0.00	2012-10-12 01:00:29.255492	2012-10-12 01:00:29.255492
+91206	1226	0.00	2012-10-12 01:00:29.264106	2012-10-12 01:00:29.264106
+91207	1227	0.00	2012-10-12 01:00:29.272285	2012-10-12 01:00:29.272285
+91208	1228	0.00	2012-10-12 01:00:29.280566	2012-10-12 01:00:29.280566
+91209	1229	0.00	2012-10-12 01:00:29.289058	2012-10-12 01:00:29.289058
+91210	1230	0.00	2012-10-12 01:00:29.297342	2012-10-12 01:00:29.297342
+91211	1231	0.00	2012-10-12 01:00:29.305643	2012-10-12 01:00:29.305643
+91212	1232	0.00	2012-10-12 01:00:29.314051	2012-10-12 01:00:29.314051
+91213	1233	0.00	2012-10-12 01:00:29.322256	2012-10-12 01:00:29.322256
+91214	1234	0.00	2012-10-12 01:00:29.330665	2012-10-12 01:00:29.330665
+91215	1235	0.00	2012-10-12 01:00:29.339114	2012-10-12 01:00:29.339114
+91216	1236	0.00	2012-10-12 01:00:29.347321	2012-10-12 01:00:29.347321
+91217	1237	0.00	2012-10-12 01:00:29.355732	2012-10-12 01:00:29.355732
+91218	1238	0.00	2012-10-12 01:00:29.364087	2012-10-12 01:00:29.364087
+91219	1239	0.00	2012-10-12 01:00:29.372316	2012-10-12 01:00:29.372316
+91220	1240	0.00	2012-10-12 01:00:29.380668	2012-10-12 01:00:29.380668
+91221	1241	0.00	2012-10-12 01:00:29.389122	2012-10-12 01:00:29.389122
+91222	1242	0.00	2012-10-12 01:00:29.39736	2012-10-12 01:00:29.39736
+91223	1243	0.00	2012-10-12 01:00:29.405689	2012-10-12 01:00:29.405689
+91224	1244	0.00	2012-10-12 01:00:29.414053	2012-10-12 01:00:29.414053
+91225	1245	0.00	2012-10-12 01:00:29.422323	2012-10-12 01:00:29.422323
+91226	1246	0.00	2012-10-12 01:00:29.430698	2012-10-12 01:00:29.430698
+91227	1247	0.00	2012-10-12 01:00:29.439046	2012-10-12 01:00:29.439046
+91228	1248	0.00	2012-10-12 01:00:29.447295	2012-10-12 01:00:29.447295
+91229	1249	0.00	2012-10-12 01:00:29.455583	2012-10-12 01:00:29.455583
+91230	1250	0.00	2012-10-12 01:00:29.464043	2012-10-12 01:00:29.464043
+91231	1251	0.00	2012-10-12 01:00:29.47229	2012-10-12 01:00:29.47229
+91232	1252	0.00	2012-10-12 01:00:29.480649	2012-10-12 01:00:29.480649
+91233	1253	0.00	2012-10-12 01:00:29.489048	2012-10-12 01:00:29.489048
+91234	1254	0.00	2012-10-12 01:00:29.497297	2012-10-12 01:00:29.497297
+91235	1255	0.00	2012-10-12 01:00:29.505639	2012-10-12 01:00:29.505639
+91236	1256	0.00	2012-10-12 01:00:29.514044	2012-10-12 01:00:29.514044
+91237	1257	0.00	2012-10-12 01:00:29.522294	2012-10-12 01:00:29.522294
+91238	1258	0.00	2012-10-12 01:00:29.530605	2012-10-12 01:00:29.530605
+91239	1259	0.00	2012-10-12 01:00:29.53907	2012-10-12 01:00:29.53907
+91240	1260	0.00	2012-10-12 01:00:29.547274	2012-10-12 01:00:29.547274
+91241	1261	0.00	2012-10-12 01:00:29.555594	2012-10-12 01:00:29.555594
+91242	1262	0.00	2012-10-12 01:00:29.564087	2012-10-12 01:00:29.564087
+91243	1263	0.00	2012-10-12 01:00:29.57233	2012-10-12 01:00:29.57233
+91244	1264	0.00	2012-10-12 01:00:29.580705	2012-10-12 01:00:29.580705
+91245	1265	0.00	2012-10-12 01:00:29.589218	2012-10-12 01:00:29.589218
+91246	1266	0.00	2012-10-12 01:00:29.597408	2012-10-12 01:00:29.597408
+91247	1267	0.00	2012-10-12 01:00:29.605785	2012-10-12 01:00:29.605785
+91248	1268	0.00	2012-10-12 01:00:29.61423	2012-10-12 01:00:29.61423
+91249	1269	0.00	2012-10-12 01:00:29.622579	2012-10-12 01:00:29.622579
+91250	1270	0.00	2012-10-12 01:00:29.658874	2012-10-12 01:00:29.658874
+91251	1271	0.00	2012-10-12 01:00:29.664128	2012-10-12 01:00:29.664128
+91252	1272	0.00	2012-10-12 01:00:29.672354	2012-10-12 01:00:29.672354
+91253	1273	0.00	2012-10-12 01:00:29.680686	2012-10-12 01:00:29.680686
+91254	1274	0.00	2012-10-12 01:00:29.688998	2012-10-12 01:00:29.688998
+91255	1275	0.00	2012-10-12 01:00:29.697309	2012-10-12 01:00:29.697309
+91256	1276	0.00	2012-10-12 01:00:29.705647	2012-10-12 01:00:29.705647
+91257	1277	0.00	2012-10-12 01:00:29.714068	2012-10-12 01:00:29.714068
+91258	1278	0.00	2012-10-12 01:00:29.722317	2012-10-12 01:00:29.722317
+91259	1279	0.00	2012-10-12 01:00:29.730637	2012-10-12 01:00:29.730637
+91260	1280	0.00	2012-10-12 01:00:29.739035	2012-10-12 01:00:29.739035
+91261	1281	0.00	2012-10-12 01:00:29.747304	2012-10-12 01:00:29.747304
+91262	1282	0.00	2012-10-12 01:00:29.792273	2012-10-12 01:00:29.792273
+91263	1283	0.00	2012-10-12 01:00:29.806325	2012-10-12 01:00:29.806325
+91264	1284	0.00	2012-10-12 01:00:29.814049	2012-10-12 01:00:29.814049
+91265	1285	0.00	2012-10-12 01:00:29.822285	2012-10-12 01:00:29.822285
+91266	1286	0.00	2012-10-12 01:00:29.830585	2012-10-12 01:00:29.830585
+91267	1287	0.00	2012-10-12 01:00:29.838997	2012-10-12 01:00:29.838997
+91268	1288	0.00	2012-10-12 01:00:29.847261	2012-10-12 01:00:29.847261
+91269	1289	0.00	2012-10-12 01:00:29.855567	2012-10-12 01:00:29.855567
+91270	1290	0.00	2012-10-12 01:00:29.863974	2012-10-12 01:00:29.863974
+91271	1291	0.00	2012-10-12 01:00:29.872363	2012-10-12 01:00:29.872363
+91272	1292	0.00	2012-10-12 01:00:29.880727	2012-10-12 01:00:29.880727
+91273	1293	0.00	2012-10-12 01:00:29.889036	2012-10-12 01:00:29.889036
+91274	1294	0.00	2012-10-12 01:00:29.897307	2012-10-12 01:00:29.897307
+91275	1295	0.00	2012-10-12 01:00:29.905645	2012-10-12 01:00:29.905645
+91276	1296	0.00	2012-10-12 01:00:29.914026	2012-10-12 01:00:29.914026
+91277	1297	0.00	2012-10-12 01:00:29.922312	2012-10-12 01:00:29.922312
+91278	1298	0.00	2012-10-12 01:00:29.930627	2012-10-12 01:00:29.930627
+91279	1299	0.00	2012-10-12 01:00:29.939006	2012-10-12 01:00:29.939006
+91280	1300	0.00	2012-10-12 01:00:29.947259	2012-10-12 01:00:29.947259
+91281	1301	0.00	2012-10-12 01:00:29.955529	2012-10-12 01:00:29.955529
+91282	1302	0.00	2012-10-12 01:00:29.963941	2012-10-12 01:00:29.963941
+91283	1303	0.00	2012-10-12 01:00:29.972245	2012-10-12 01:00:29.972245
+91284	1304	0.00	2012-10-12 01:00:29.980524	2012-10-12 01:00:29.980524
+91285	1305	0.00	2012-10-12 01:00:29.988956	2012-10-12 01:00:29.988956
+91286	1306	0.00	2012-10-12 01:00:29.997236	2012-10-12 01:00:29.997236
+91287	1307	0.00	2012-10-12 01:00:30.005706	2012-10-12 01:00:30.005706
+91288	1308	0.00	2012-10-12 01:00:30.014057	2012-10-12 01:00:30.014057
+91289	1309	0.00	2012-10-12 01:00:30.022297	2012-10-12 01:00:30.022297
+91290	1310	0.00	2012-10-12 01:00:30.030624	2012-10-12 01:00:30.030624
+91291	1311	0.00	2012-10-12 01:00:30.038991	2012-10-12 01:00:30.038991
+91292	1312	0.00	2012-10-12 01:00:30.047267	2012-10-12 01:00:30.047267
+91293	1313	0.00	2012-10-12 01:00:30.055541	2012-10-12 01:00:30.055541
+91294	1314	0.00	2012-10-12 01:00:30.063858	2012-10-12 01:00:30.063858
+91295	1315	0.00	2012-10-12 01:00:30.07226	2012-10-12 01:00:30.07226
+91296	1316	0.00	2012-10-12 01:00:30.080613	2012-10-12 01:00:30.080613
+91297	1317	0.00	2012-10-12 01:00:30.088993	2012-10-12 01:00:30.088993
+91298	1318	0.00	2012-10-12 01:00:30.097234	2012-10-12 01:00:30.097234
+91299	1319	0.00	2012-10-12 01:00:30.105542	2012-10-12 01:00:30.105542
+91300	1320	0.00	2012-10-12 01:00:30.113859	2012-10-12 01:00:30.113859
+91301	1321	0.00	2012-10-12 01:00:30.122199	2012-10-12 01:00:30.122199
+91302	1322	0.00	2012-10-12 01:00:30.130637	2012-10-12 01:00:30.130637
+91303	1323	0.00	2012-10-12 01:00:30.13894	2012-10-12 01:00:30.13894
+91304	1324	0.00	2012-10-12 01:00:30.147247	2012-10-12 01:00:30.147247
+91305	1325	0.00	2012-10-12 01:00:30.155503	2012-10-12 01:00:30.155503
+91306	1326	0.00	2012-10-12 01:00:30.163767	2012-10-12 01:00:30.163767
+91307	1327	0.00	2012-10-12 01:00:30.172215	2012-10-12 01:00:30.172215
+91308	1328	0.00	2012-10-12 01:00:30.180627	2012-10-12 01:00:30.180627
+91309	1329	0.00	2012-10-12 01:00:30.18893	2012-10-12 01:00:30.18893
+91310	1330	0.00	2012-10-12 01:00:30.197215	2012-10-12 01:00:30.197215
+91311	1331	0.00	2012-10-12 01:00:30.205499	2012-10-12 01:00:30.205499
+91312	1332	0.00	2012-10-12 01:00:30.213904	2012-10-12 01:00:30.213904
+91313	1333	0.00	2012-10-12 01:00:30.222188	2012-10-12 01:00:30.222188
+91314	1334	0.00	2012-10-12 01:00:30.230518	2012-10-12 01:00:30.230518
+91315	1335	0.00	2012-10-12 01:00:30.238909	2012-10-12 01:00:30.238909
+91316	1336	0.00	2012-10-12 01:00:30.247319	2012-10-12 01:00:30.247319
+91317	1337	0.00	2012-10-12 01:00:30.255633	2012-10-12 01:00:30.255633
+91318	1338	0.00	2012-10-12 01:00:30.264036	2012-10-12 01:00:30.264036
+91319	1339	0.00	2012-10-12 01:00:30.272275	2012-10-12 01:00:30.272275
+91320	1340	0.00	2012-10-12 01:00:30.280619	2012-10-12 01:00:30.280619
+91321	1341	0.00	2012-10-12 01:00:30.28897	2012-10-12 01:00:30.28897
+91322	1342	0.00	2012-10-12 01:00:30.297263	2012-10-12 01:00:30.297263
+91323	1343	0.00	2012-10-12 01:00:30.305608	2012-10-12 01:00:30.305608
+91324	1344	0.00	2012-10-12 01:00:30.313965	2012-10-12 01:00:30.313965
+91325	1345	0.00	2012-10-12 01:00:30.322276	2012-10-12 01:00:30.322276
+91326	1346	0.00	2012-10-12 01:00:30.33062	2012-10-12 01:00:30.33062
+91327	1347	0.00	2012-10-12 01:00:30.339097	2012-10-12 01:00:30.339097
+91328	1348	0.00	2012-10-12 01:00:30.375359	2012-10-12 01:00:30.375359
+91329	1349	0.00	2012-10-12 01:00:30.381049	2012-10-12 01:00:30.381049
+91330	1350	0.00	2012-10-12 01:00:30.389041	2012-10-12 01:00:30.389041
+91331	1351	0.00	2012-10-12 01:00:30.397323	2012-10-12 01:00:30.397323
+91332	1352	0.00	2012-10-12 01:00:30.405725	2012-10-12 01:00:30.405725
+91333	1353	0.00	2012-10-12 01:00:30.414099	2012-10-12 01:00:30.414099
+91334	1354	0.00	2012-10-12 01:00:30.422355	2012-10-12 01:00:30.422355
+91335	1355	0.00	2012-10-12 01:00:30.430724	2012-10-12 01:00:30.430724
+91336	1356	0.00	2012-10-12 01:00:30.439084	2012-10-12 01:00:30.439084
+91337	1357	0.00	2012-10-12 01:00:30.447333	2012-10-12 01:00:30.447333
+91338	1358	0.00	2012-10-12 01:00:30.455716	2012-10-12 01:00:30.455716
+91339	1359	0.00	2012-10-12 01:00:30.46407	2012-10-12 01:00:30.46407
+91340	1360	0.00	2012-10-12 01:00:30.472339	2012-10-12 01:00:30.472339
+91341	1361	0.00	2012-10-12 01:00:30.480614	2012-10-12 01:00:30.480614
+91342	1362	0.00	2012-10-12 01:00:30.48913	2012-10-12 01:00:30.48913
+91343	1363	0.00	2012-10-12 01:00:30.497303	2012-10-12 01:00:30.497303
+91344	1364	0.00	2012-10-12 01:00:30.505655	2012-10-12 01:00:30.505655
+91345	1365	0.00	2012-10-12 01:00:30.514041	2012-10-12 01:00:30.514041
+91346	1366	0.00	2012-10-12 01:00:30.522319	2012-10-12 01:00:30.522319
+91347	1367	0.00	2012-10-12 01:00:30.530739	2012-10-12 01:00:30.530739
+91348	1368	0.00	2012-10-12 01:00:30.539042	2012-10-12 01:00:30.539042
+91349	1369	0.00	2012-10-12 01:00:30.547294	2012-10-12 01:00:30.547294
+91350	1370	0.00	2012-10-12 01:00:30.555653	2012-10-12 01:00:30.555653
+91351	1371	0.00	2012-10-12 01:00:30.564037	2012-10-12 01:00:30.564037
+91352	1372	0.00	2012-10-12 01:00:30.572357	2012-10-12 01:00:30.572357
+91353	1373	0.00	2012-10-12 01:00:30.581212	2012-10-12 01:00:30.581212
+91354	1374	0.00	2012-10-12 01:00:30.589209	2012-10-12 01:00:30.589209
+91355	1375	0.00	2012-10-12 01:00:30.597516	2012-10-12 01:00:30.597516
+91356	1376	0.00	2012-10-12 01:00:30.60593	2012-10-12 01:00:30.60593
+91357	1377	0.00	2012-10-12 01:00:30.61428	2012-10-12 01:00:30.61428
+91358	1379	0.00	2012-10-12 01:00:30.622874	2012-10-12 01:00:30.622874
+91359	1380	0.00	2012-10-12 01:00:30.630699	2012-10-12 01:00:30.630699
+91360	1381	0.00	2012-10-12 01:00:30.639315	2012-10-12 01:00:30.639315
+91361	1382	0.00	2012-10-12 01:00:30.647813	2012-10-12 01:00:30.647813
+91362	1383	0.00	2012-10-12 01:00:30.656384	2012-10-12 01:00:30.656384
+91363	1384	0.00	2012-10-12 01:00:30.664534	2012-10-12 01:00:30.664534
+91364	1385	0.00	2012-10-12 01:00:30.672792	2012-10-12 01:00:30.672792
+91365	1386	0.00	2012-10-12 01:00:30.68125	2012-10-12 01:00:30.68125
+91366	1387	0.00	2012-10-12 01:00:30.689411	2012-10-12 01:00:30.689411
+91367	1388	0.00	2012-10-12 01:00:30.697862	2012-10-12 01:00:30.697862
+91368	1389	0.00	2012-10-12 01:00:30.706135	2012-10-12 01:00:30.706135
+91369	1390	0.00	2012-10-12 01:00:30.714418	2012-10-12 01:00:30.714418
+91370	1391	0.00	2012-10-12 01:00:30.730537	2012-10-12 01:00:30.730537
+91371	1392	0.00	2012-10-12 01:00:30.747837	2012-10-12 01:00:30.747837
+91372	1393	0.00	2012-10-12 01:00:30.788824	2012-10-12 01:00:30.788824
+91373	1394	0.00	2012-10-12 01:00:30.805812	2012-10-12 01:00:30.805812
+91374	1395	0.00	2012-10-12 01:00:30.814222	2012-10-12 01:00:30.814222
+91375	1396	0.00	2012-10-12 01:00:30.822429	2012-10-12 01:00:30.822429
+91376	1397	0.00	2012-10-12 01:00:30.830737	2012-10-12 01:00:30.830737
+91377	1398	0.00	2012-10-12 01:00:30.839143	2012-10-12 01:00:30.839143
+91378	1399	0.00	2012-10-12 01:00:30.847427	2012-10-12 01:00:30.847427
+91379	1400	0.00	2012-10-12 01:00:30.855736	2012-10-12 01:00:30.855736
+91380	1401	0.00	2012-10-12 01:00:30.864169	2012-10-12 01:00:30.864169
+91381	1402	0.00	2012-10-12 01:00:30.872406	2012-10-12 01:00:30.872406
+91382	1403	0.00	2012-10-12 01:00:30.880754	2012-10-12 01:00:30.880754
+91383	1404	0.00	2012-10-12 01:00:30.889137	2012-10-12 01:00:30.889137
+91384	1405	0.00	2012-10-12 01:00:30.897379	2012-10-12 01:00:30.897379
+91385	1406	0.00	2012-10-12 01:00:30.905781	2012-10-12 01:00:30.905781
+91386	1407	0.00	2012-10-12 01:00:30.914169	2012-10-12 01:00:30.914169
+91387	1408	0.00	2012-10-12 01:00:30.922421	2012-10-12 01:00:30.922421
+91388	1409	0.00	2012-10-12 01:00:30.930773	2012-10-12 01:00:30.930773
+91389	1410	0.00	2012-10-12 01:00:30.939134	2012-10-12 01:00:30.939134
+91390	1411	0.00	2012-10-12 01:00:30.976464	2012-10-12 01:00:30.976464
+91391	1412	0.00	2012-10-12 01:00:30.989503	2012-10-12 01:00:30.989503
+91392	1413	0.00	2012-10-12 01:00:30.997811	2012-10-12 01:00:30.997811
+91393	1414	0.00	2012-10-12 01:00:31.006162	2012-10-12 01:00:31.006162
+91394	1415	0.00	2012-10-12 01:00:31.01433	2012-10-12 01:00:31.01433
+91395	1416	0.00	2012-10-12 01:00:31.022879	2012-10-12 01:00:31.022879
+91396	1417	0.00	2012-10-12 01:00:31.03112	2012-10-12 01:00:31.03112
+91397	1418	0.00	2012-10-12 01:00:31.039329	2012-10-12 01:00:31.039329
+91398	1419	0.00	2012-10-12 01:00:31.04785	2012-10-12 01:00:31.04785
+91399	1420	0.00	2012-10-12 01:00:31.056119	2012-10-12 01:00:31.056119
+91400	1421	0.00	2012-10-12 01:00:31.064387	2012-10-12 01:00:31.064387
+91401	1422	0.00	2012-10-12 01:00:31.072863	2012-10-12 01:00:31.072863
+91402	1423	0.00	2012-10-12 01:00:31.081184	2012-10-12 01:00:31.081184
+91403	1424	0.00	2012-10-12 01:00:31.089344	2012-10-12 01:00:31.089344
+91404	1425	0.00	2012-10-12 01:00:31.097502	2012-10-12 01:00:31.097502
+91405	1426	0.00	2012-10-12 01:00:31.106201	2012-10-12 01:00:31.106201
+91406	1427	0.00	2012-10-12 01:00:31.114313	2012-10-12 01:00:31.114313
+91407	1428	0.00	2012-10-12 01:00:31.122891	2012-10-12 01:00:31.122891
+91408	1429	0.00	2012-10-12 01:00:31.131165	2012-10-12 01:00:31.131165
+91409	1430	0.00	2012-10-12 01:00:31.139331	2012-10-12 01:00:31.139331
+91410	1431	0.00	2012-10-12 01:00:31.185369	2012-10-12 01:00:31.185369
+91411	1432	0.00	2012-10-12 01:00:31.198449	2012-10-12 01:00:31.198449
+91412	1433	0.00	2012-10-12 01:00:31.206197	2012-10-12 01:00:31.206197
+91413	1434	0.00	2012-10-12 01:00:31.214389	2012-10-12 01:00:31.214389
+91414	1435	0.00	2012-10-12 01:00:31.222473	2012-10-12 01:00:31.222473
+91415	1436	0.00	2012-10-12 01:00:31.231153	2012-10-12 01:00:31.231153
+91416	1437	0.00	2012-10-12 01:00:31.23938	2012-10-12 01:00:31.23938
+91417	1438	0.00	2012-10-12 01:00:31.247922	2012-10-12 01:00:31.247922
+91418	1439	0.00	2012-10-12 01:00:31.256217	2012-10-12 01:00:31.256217
+91419	1440	0.00	2012-10-12 01:00:31.264371	2012-10-12 01:00:31.264371
+91420	1441	0.00	2012-10-12 01:00:31.27286	2012-10-12 01:00:31.27286
+91421	1442	0.00	2012-10-12 01:00:31.281373	2012-10-12 01:00:31.281373
+91422	1443	0.00	2012-10-12 01:00:31.289379	2012-10-12 01:00:31.289379
+91423	1444	0.00	2012-10-12 01:00:31.297432	2012-10-12 01:00:31.297432
+91424	1445	0.00	2012-10-12 01:00:31.306356	2012-10-12 01:00:31.306356
+91425	1446	0.00	2012-10-12 01:00:31.314365	2012-10-12 01:00:31.314365
+91426	1447	0.00	2012-10-12 01:00:31.322809	2012-10-12 01:00:31.322809
+91427	1448	0.00	2012-10-12 01:00:31.3313	2012-10-12 01:00:31.3313
+91428	1449	0.00	2012-10-12 01:00:31.339378	2012-10-12 01:00:31.339378
+91429	1450	0.00	2012-10-12 01:00:31.34785	2012-10-12 01:00:31.34785
+91430	1451	0.00	2012-10-12 01:00:31.356194	2012-10-12 01:00:31.356194
+91431	1452	0.00	2012-10-12 01:00:31.364359	2012-10-12 01:00:31.364359
+91432	1453	0.00	2012-10-12 01:00:31.372464	2012-10-12 01:00:31.372464
+91433	1454	0.00	2012-10-12 01:00:31.38074	2012-10-12 01:00:31.38074
+91434	1455	0.00	2012-10-12 01:00:31.389122	2012-10-12 01:00:31.389122
+91435	1456	0.00	2012-10-12 01:00:31.397371	2012-10-12 01:00:31.397371
+91436	1457	0.00	2012-10-12 01:00:31.405725	2012-10-12 01:00:31.405725
+91437	1458	0.00	2012-10-12 01:00:31.414119	2012-10-12 01:00:31.414119
+91438	1459	0.00	2012-10-12 01:00:31.422323	2012-10-12 01:00:31.422323
+91439	1460	0.00	2012-10-12 01:00:31.430704	2012-10-12 01:00:31.430704
+91440	1461	0.00	2012-10-12 01:00:31.439105	2012-10-12 01:00:31.439105
+91441	1462	0.00	2012-10-12 01:00:31.447323	2012-10-12 01:00:31.447323
+91442	1463	0.00	2012-10-12 01:00:31.455712	2012-10-12 01:00:31.455712
+91443	1464	0.00	2012-10-12 01:00:31.464114	2012-10-12 01:00:31.464114
+91444	1465	0.00	2012-10-12 01:00:31.472293	2012-10-12 01:00:31.472293
+91445	1466	0.00	2012-10-12 01:00:31.480668	2012-10-12 01:00:31.480668
+91446	1467	0.00	2012-10-12 01:00:31.489059	2012-10-12 01:00:31.489059
+91447	1468	0.00	2012-10-12 01:00:31.497409	2012-10-12 01:00:31.497409
+91448	1469	0.00	2012-10-12 01:00:31.506306	2012-10-12 01:00:31.506306
+91449	1470	0.00	2012-10-12 01:00:31.514316	2012-10-12 01:00:31.514316
+91450	1471	0.00	2012-10-12 01:00:31.522553	2012-10-12 01:00:31.522553
+91451	1472	0.00	2012-10-12 01:00:31.530987	2012-10-12 01:00:31.530987
+91452	1473	0.00	2012-10-12 01:00:31.539141	2012-10-12 01:00:31.539141
+91453	1474	0.00	2012-10-12 01:00:31.547351	2012-10-12 01:00:31.547351
+91454	1475	0.00	2012-10-12 01:00:31.55572	2012-10-12 01:00:31.55572
+91455	1476	0.00	2012-10-12 01:00:31.564087	2012-10-12 01:00:31.564087
+91456	1477	0.00	2012-10-12 01:00:31.572306	2012-10-12 01:00:31.572306
+91457	1478	0.00	2012-10-12 01:00:31.580757	2012-10-12 01:00:31.580757
+91458	1479	0.00	2012-10-12 01:00:31.589101	2012-10-12 01:00:31.589101
+91459	1480	0.00	2012-10-12 01:00:31.597319	2012-10-12 01:00:31.597319
+91460	1481	0.00	2012-10-12 01:00:31.605715	2012-10-12 01:00:31.605715
+91461	1482	0.00	2012-10-12 01:00:31.614083	2012-10-12 01:00:31.614083
+91462	1483	0.00	2012-10-12 01:00:31.622341	2012-10-12 01:00:31.622341
+91463	1484	0.00	2012-10-12 01:00:31.630684	2012-10-12 01:00:31.630684
+91464	1485	0.00	2012-10-12 01:00:31.63908	2012-10-12 01:00:31.63908
+91465	1486	0.00	2012-10-12 01:00:31.647338	2012-10-12 01:00:31.647338
+91466	1487	0.00	2012-10-12 01:00:31.655743	2012-10-12 01:00:31.655743
+91467	1488	0.00	2012-10-12 01:00:31.664058	2012-10-12 01:00:31.664058
+91468	1489	0.00	2012-10-12 01:00:31.672286	2012-10-12 01:00:31.672286
+91469	1490	0.00	2012-10-12 01:00:31.68062	2012-10-12 01:00:31.68062
+91470	1491	0.00	2012-10-12 01:00:31.689053	2012-10-12 01:00:31.689053
+91471	1492	0.00	2012-10-12 01:00:31.697238	2012-10-12 01:00:31.697238
+91472	1493	0.00	2012-10-12 01:00:31.734332	2012-10-12 01:00:31.734332
+91473	1494	0.00	2012-10-12 01:00:31.747796	2012-10-12 01:00:31.747796
+91474	1495	0.00	2012-10-12 01:00:31.755694	2012-10-12 01:00:31.755694
+91475	1496	0.00	2012-10-12 01:00:31.764055	2012-10-12 01:00:31.764055
+91476	1497	0.00	2012-10-12 01:00:31.772329	2012-10-12 01:00:31.772329
+91477	1498	0.00	2012-10-12 01:00:31.780941	2012-10-12 01:00:31.780941
+91478	1499	0.00	2012-10-12 01:00:31.789155	2012-10-12 01:00:31.789155
+91479	1500	0.00	2012-10-12 01:00:31.797436	2012-10-12 01:00:31.797436
+91480	1378	0.00	2012-10-12 01:00:31.805919	2012-10-12 01:00:31.805919
+91481	1078	200.00	2012-10-12 01:00:31.814203	2012-10-12 01:00:31.814203
+91482	852	41.33	2012-10-12 01:00:52.347881	2012-10-12 01:00:52.347881
+91483	883	0.00	2012-10-12 01:00:52.372084	2012-10-12 01:00:52.372084
+91484	882	0.00	2012-10-12 01:00:52.405419	2012-10-12 01:00:52.405419
+91485	881	0.00	2012-10-12 01:00:52.438459	2012-10-12 01:00:52.438459
+91486	880	0.00	2012-10-12 01:00:52.471472	2012-10-12 01:00:52.471472
+91487	879	0.00	2012-10-12 01:00:52.505354	2012-10-12 01:00:52.505354
+91488	878	0.00	2012-10-12 01:00:52.538421	2012-10-12 01:00:52.538421
+91489	877	0.00	2012-10-12 01:00:52.571828	2012-10-12 01:00:52.571828
+91490	876	0.00	2012-10-12 01:00:52.605136	2012-10-12 01:00:52.605136
+91491	875	0.00	2012-10-12 01:00:52.638537	2012-10-12 01:00:52.638537
+91492	874	0.00	2012-10-12 01:00:52.671528	2012-10-12 01:00:52.671528
+91493	873	0.00	2012-10-12 01:00:52.705169	2012-10-12 01:00:52.705169
+91494	872	0.00	2012-10-12 01:00:52.73842	2012-10-12 01:00:52.73842
+91495	871	0.00	2012-10-12 01:00:52.771704	2012-10-12 01:00:52.771704
+91496	870	0.00	2012-10-12 01:00:52.805354	2012-10-12 01:00:52.805354
+91497	869	0.00	2012-10-12 01:00:52.86971	2012-10-12 01:00:52.86971
+91498	868	0.00	2012-10-12 01:00:52.900425	2012-10-12 01:00:52.900425
+91499	867	0.00	2012-10-12 01:00:52.908117	2012-10-12 01:00:52.908117
+91500	866	0.00	2012-10-12 01:00:52.916337	2012-10-12 01:00:52.916337
+91501	865	0.00	2012-10-12 01:00:52.924853	2012-10-12 01:00:52.924853
+91502	864	0.00	2012-10-12 01:00:52.93322	2012-10-12 01:00:52.93322
+91503	863	0.00	2012-10-12 01:00:52.941405	2012-10-12 01:00:52.941405
+91504	862	0.00	2012-10-12 01:00:52.949969	2012-10-12 01:00:52.949969
+91505	861	0.00	2012-10-12 01:00:52.958221	2012-10-12 01:00:52.958221
+91506	860	0.00	2012-10-12 01:00:52.966365	2012-10-12 01:00:52.966365
+91507	859	0.00	2012-10-12 01:00:52.974899	2012-10-12 01:00:52.974899
+91508	858	0.00	2012-10-12 01:00:52.983186	2012-10-12 01:00:52.983186
+91509	857	0.00	2012-10-12 01:00:52.991426	2012-10-12 01:00:52.991426
+91510	856	0.00	2012-10-12 01:00:52.999864	2012-10-12 01:00:52.999864
+91511	855	0.00	2012-10-12 01:00:53.008191	2012-10-12 01:00:53.008191
+91512	854	0.00	2012-10-12 01:00:53.057679	2012-10-12 01:00:53.057679
+91513	853	0.00	2012-10-12 01:00:53.066769	2012-10-12 01:00:53.066769
+91514	851	0.00	2012-10-12 01:00:53.075017	2012-10-12 01:00:53.075017
+91515	850	0.00	2012-10-12 01:00:53.083169	2012-10-12 01:00:53.083169
+91516	849	0.00	2012-10-12 01:00:53.091417	2012-10-12 01:00:53.091417
+91517	848	0.00	2012-10-12 01:00:53.09988	2012-10-12 01:00:53.09988
+91518	847	0.00	2012-10-12 01:00:53.108124	2012-10-12 01:00:53.108124
+91519	846	0.00	2012-10-12 01:00:53.116314	2012-10-12 01:00:53.116314
+91520	845	0.00	2012-10-12 01:00:53.124533	2012-10-12 01:00:53.124533
+91521	844	0.00	2012-10-12 01:00:53.133231	2012-10-12 01:00:53.133231
+91522	843	0.00	2012-10-12 01:00:53.141397	2012-10-12 01:00:53.141397
+91523	842	0.00	2012-10-12 01:00:53.149897	2012-10-12 01:00:53.149897
+91524	841	0.00	2012-10-12 01:00:53.158217	2012-10-12 01:00:53.158217
+91525	840	0.00	2012-10-12 01:00:53.166389	2012-10-12 01:00:53.166389
+91526	839	0.00	2012-10-12 01:00:53.175038	2012-10-12 01:00:53.175038
+91527	838	0.00	2012-10-12 01:00:53.183212	2012-10-12 01:00:53.183212
+91528	837	0.00	2012-10-12 01:00:53.1914	2012-10-12 01:00:53.1914
+91529	836	0.00	2012-10-12 01:00:53.199867	2012-10-12 01:00:53.199867
+91530	835	0.00	2012-10-12 01:00:53.20816	2012-10-12 01:00:53.20816
+91531	834	0.00	2012-10-12 01:00:53.216471	2012-10-12 01:00:53.216471
+91532	833	0.00	2012-10-12 01:00:53.22509	2012-10-12 01:00:53.22509
+91533	832	0.00	2012-10-12 01:00:53.233295	2012-10-12 01:00:53.233295
+91534	831	0.00	2012-10-12 01:00:53.241474	2012-10-12 01:00:53.241474
+91535	830	0.00	2012-10-12 01:00:53.250072	2012-10-12 01:00:53.250072
+91536	829	0.00	2012-10-12 01:00:53.258219	2012-10-12 01:00:53.258219
+91537	828	0.00	2012-10-12 01:00:53.266402	2012-10-12 01:00:53.266402
+91538	827	0.00	2012-10-12 01:00:53.275083	2012-10-12 01:00:53.275083
+91539	826	0.00	2012-10-12 01:00:53.283222	2012-10-12 01:00:53.283222
+91540	825	0.00	2012-10-12 01:00:53.29145	2012-10-12 01:00:53.29145
+91541	824	0.00	2012-10-12 01:00:53.300016	2012-10-12 01:00:53.300016
+91542	823	0.00	2012-10-12 01:00:53.308223	2012-10-12 01:00:53.308223
+91543	822	0.00	2012-10-12 01:00:53.316373	2012-10-12 01:00:53.316373
+91544	821	0.00	2012-10-12 01:00:53.325117	2012-10-12 01:00:53.325117
+91545	820	0.00	2012-10-12 01:00:53.333245	2012-10-12 01:00:53.333245
+91546	819	0.00	2012-10-12 01:00:53.341451	2012-10-12 01:00:53.341451
+91547	818	0.00	2012-10-12 01:00:53.350074	2012-10-12 01:00:53.350074
+91548	817	0.00	2012-10-12 01:00:53.358354	2012-10-12 01:00:53.358354
+91549	816	0.00	2012-10-12 01:00:53.366414	2012-10-12 01:00:53.366414
+91550	815	0.00	2012-10-12 01:00:53.375023	2012-10-12 01:00:53.375023
+91551	814	0.00	2012-10-12 01:00:53.383369	2012-10-12 01:00:53.383369
+91552	813	0.00	2012-10-12 01:00:53.391441	2012-10-12 01:00:53.391441
+91553	812	0.00	2012-10-12 01:00:53.400002	2012-10-12 01:00:53.400002
+91554	811	0.00	2012-10-12 01:00:53.408133	2012-10-12 01:00:53.408133
+91555	810	0.00	2012-10-12 01:00:53.416413	2012-10-12 01:00:53.416413
+91556	809	0.00	2012-10-12 01:00:53.425101	2012-10-12 01:00:53.425101
+91557	808	0.00	2012-10-12 01:00:53.433258	2012-10-12 01:00:53.433258
+91558	807	0.00	2012-10-12 01:00:53.441445	2012-10-12 01:00:53.441445
+91559	806	0.00	2012-10-12 01:00:53.450098	2012-10-12 01:00:53.450098
+91560	805	0.00	2012-10-12 01:00:53.45826	2012-10-12 01:00:53.45826
+91561	804	0.00	2012-10-12 01:00:53.46644	2012-10-12 01:00:53.46644
+91562	803	0.00	2012-10-12 01:00:53.475056	2012-10-12 01:00:53.475056
+91563	802	0.00	2012-10-12 01:00:53.483245	2012-10-12 01:00:53.483245
+91564	801	0.00	2012-10-12 01:00:53.491431	2012-10-12 01:00:53.491431
+91565	800	0.00	2012-10-12 01:00:53.499809	2012-10-12 01:00:53.499809
+91566	799	0.00	2012-10-12 01:00:53.508294	2012-10-12 01:00:53.508294
+91567	798	0.00	2012-10-12 01:00:53.51642	2012-10-12 01:00:53.51642
+91568	797	0.00	2012-10-12 01:00:53.558879	2012-10-12 01:00:53.558879
+91569	796	0.00	2012-10-12 01:00:53.566807	2012-10-12 01:00:53.566807
+91570	795	0.00	2012-10-12 01:00:53.575085	2012-10-12 01:00:53.575085
+91571	794	0.00	2012-10-12 01:00:53.58334	2012-10-12 01:00:53.58334
+91572	793	0.00	2012-10-12 01:00:53.591551	2012-10-12 01:00:53.591551
+91573	792	0.00	2012-10-12 01:00:53.60016	2012-10-12 01:00:53.60016
+91574	791	0.00	2012-10-12 01:00:53.608377	2012-10-12 01:00:53.608377
+91575	790	0.00	2012-10-12 01:00:53.616738	2012-10-12 01:00:53.616738
+91576	789	0.00	2012-10-12 01:00:53.625039	2012-10-12 01:00:53.625039
+91577	788	0.00	2012-10-12 01:00:53.633373	2012-10-12 01:00:53.633373
+91578	787	0.00	2012-10-12 01:00:53.641868	2012-10-12 01:00:53.641868
+91579	786	0.00	2012-10-12 01:00:53.650079	2012-10-12 01:00:53.650079
+91580	785	0.00	2012-10-12 01:00:53.658328	2012-10-12 01:00:53.658328
+91581	784	0.00	2012-10-12 01:00:53.666708	2012-10-12 01:00:53.666708
+91582	783	0.00	2012-10-12 01:00:53.675227	2012-10-12 01:00:53.675227
+91583	782	0.00	2012-10-12 01:00:53.683334	2012-10-12 01:00:53.683334
+91584	781	0.00	2012-10-12 01:00:53.691882	2012-10-12 01:00:53.691882
+91585	780	0.00	2012-10-12 01:00:53.700118	2012-10-12 01:00:53.700118
+91586	779	0.00	2012-10-12 01:00:53.708439	2012-10-12 01:00:53.708439
+91587	778	0.00	2012-10-12 01:00:53.716888	2012-10-12 01:00:53.716888
+91588	777	0.00	2012-10-12 01:00:53.725183	2012-10-12 01:00:53.725183
+91589	776	0.00	2012-10-12 01:00:53.733434	2012-10-12 01:00:53.733434
+91590	775	0.00	2012-10-12 01:00:53.741965	2012-10-12 01:00:53.741965
+91591	774	0.00	2012-10-12 01:00:53.750149	2012-10-12 01:00:53.750149
+91592	773	0.00	2012-10-12 01:00:53.758342	2012-10-12 01:00:53.758342
+91593	772	0.00	2012-10-12 01:00:53.766479	2012-10-12 01:00:53.766479
+91594	771	0.00	2012-10-12 01:00:53.775172	2012-10-12 01:00:53.775172
+91595	770	0.00	2012-10-12 01:00:53.783256	2012-10-12 01:00:53.783256
+91596	769	0.00	2012-10-12 01:00:53.79182	2012-10-12 01:00:53.79182
+91597	768	0.00	2012-10-12 01:00:53.800189	2012-10-12 01:00:53.800189
+91598	767	0.00	2012-10-12 01:00:53.808315	2012-10-12 01:00:53.808315
+91599	766	0.00	2012-10-12 01:00:53.816537	2012-10-12 01:00:53.816537
+91600	765	0.00	2012-10-12 01:00:53.825196	2012-10-12 01:00:53.825196
+91601	884	0.00	2012-10-13 01:00:45.645206	2012-10-13 01:00:45.645206
+91602	885	0.00	2012-10-13 01:00:45.653238	2012-10-13 01:00:45.653238
+91603	886	0.00	2012-10-13 01:00:45.661214	2012-10-13 01:00:45.661214
+91604	887	0.00	2012-10-13 01:00:45.669465	2012-10-13 01:00:45.669465
+91605	888	0.00	2012-10-13 01:00:45.677766	2012-10-13 01:00:45.677766
+91606	889	0.00	2012-10-13 01:00:45.686208	2012-10-13 01:00:45.686208
+91607	890	0.00	2012-10-13 01:00:45.694495	2012-10-13 01:00:45.694495
+91608	891	0.00	2012-10-13 01:00:45.702834	2012-10-13 01:00:45.702834
+91609	892	0.00	2012-10-13 01:00:45.71115	2012-10-13 01:00:45.71115
+91610	893	0.00	2012-10-13 01:00:45.719469	2012-10-13 01:00:45.719469
+91611	894	0.00	2012-10-13 01:00:45.727823	2012-10-13 01:00:45.727823
+91612	895	0.00	2012-10-13 01:00:45.736233	2012-10-13 01:00:45.736233
+91613	896	0.00	2012-10-13 01:00:45.744518	2012-10-13 01:00:45.744518
+91614	897	0.00	2012-10-13 01:00:45.753003	2012-10-13 01:00:45.753003
+91615	898	0.00	2012-10-13 01:00:45.761255	2012-10-13 01:00:45.761255
+91616	899	0.00	2012-10-13 01:00:45.769651	2012-10-13 01:00:45.769651
+91617	900	0.00	2012-10-13 01:00:45.778006	2012-10-13 01:00:45.778006
+91618	901	0.00	2012-10-13 01:00:45.786239	2012-10-13 01:00:45.786239
+91619	902	0.00	2012-10-13 01:00:45.794812	2012-10-13 01:00:45.794812
+91620	903	0.00	2012-10-13 01:00:45.802976	2012-10-13 01:00:45.802976
+91621	904	0.00	2012-10-13 01:00:45.811275	2012-10-13 01:00:45.811275
+91622	905	0.00	2012-10-13 01:00:45.819854	2012-10-13 01:00:45.819854
+91623	906	0.00	2012-10-13 01:00:45.827996	2012-10-13 01:00:45.827996
+91624	907	0.00	2012-10-13 01:00:45.83621	2012-10-13 01:00:45.83621
+91625	908	0.00	2012-10-13 01:00:45.844442	2012-10-13 01:00:45.844442
+91626	909	0.00	2012-10-13 01:00:45.852942	2012-10-13 01:00:45.852942
+91627	910	0.00	2012-10-13 01:00:45.861204	2012-10-13 01:00:45.861204
+91628	911	0.00	2012-10-13 01:00:45.869655	2012-10-13 01:00:45.869655
+91629	912	0.00	2012-10-13 01:00:45.878143	2012-10-13 01:00:45.878143
+91630	913	0.00	2012-10-13 01:00:45.886294	2012-10-13 01:00:45.886294
+91631	914	0.00	2012-10-13 01:00:45.894661	2012-10-13 01:00:45.894661
+91632	915	0.00	2012-10-13 01:00:45.903053	2012-10-13 01:00:45.903053
+91633	916	0.00	2012-10-13 01:00:45.911297	2012-10-13 01:00:45.911297
+91634	917	0.00	2012-10-13 01:00:45.919511	2012-10-13 01:00:45.919511
+91635	918	0.00	2012-10-13 01:00:45.927946	2012-10-13 01:00:45.927946
+91636	919	0.00	2012-10-13 01:00:45.936238	2012-10-13 01:00:45.936238
+91637	920	0.00	2012-10-13 01:00:45.944773	2012-10-13 01:00:45.944773
+91638	921	0.00	2012-10-13 01:00:45.953096	2012-10-13 01:00:45.953096
+91639	922	0.00	2012-10-13 01:00:45.961299	2012-10-13 01:00:45.961299
+91640	923	0.00	2012-10-13 01:00:45.96964	2012-10-13 01:00:45.96964
+91641	924	0.00	2012-10-13 01:00:45.978169	2012-10-13 01:00:45.978169
+91642	925	0.00	2012-10-13 01:00:45.986234	2012-10-13 01:00:45.986234
+91643	926	0.00	2012-10-13 01:00:45.99465	2012-10-13 01:00:45.99465
+91644	927	0.00	2012-10-13 01:00:46.003244	2012-10-13 01:00:46.003244
+91645	928	0.00	2012-10-13 01:00:46.011253	2012-10-13 01:00:46.011253
+91646	929	0.00	2012-10-13 01:00:46.01953	2012-10-13 01:00:46.01953
+91647	930	0.00	2012-10-13 01:00:46.02808	2012-10-13 01:00:46.02808
+91648	931	0.00	2012-10-13 01:00:46.036211	2012-10-13 01:00:46.036211
+91649	932	0.00	2012-10-13 01:00:46.044526	2012-10-13 01:00:46.044526
+91650	933	0.00	2012-10-13 01:00:46.053015	2012-10-13 01:00:46.053015
+91651	934	0.00	2012-10-13 01:00:46.061253	2012-10-13 01:00:46.061253
+91652	935	0.00	2012-10-13 01:00:46.069623	2012-10-13 01:00:46.069623
+91653	936	0.00	2012-10-13 01:00:46.078008	2012-10-13 01:00:46.078008
+91654	937	0.00	2012-10-13 01:00:46.112544	2012-10-13 01:00:46.112544
+91655	938	0.00	2012-10-13 01:00:46.120133	2012-10-13 01:00:46.120133
+91656	939	0.00	2012-10-13 01:00:46.128283	2012-10-13 01:00:46.128283
+91657	940	0.00	2012-10-13 01:00:46.136301	2012-10-13 01:00:46.136301
+91658	941	0.00	2012-10-13 01:00:46.144816	2012-10-13 01:00:46.144816
+91659	942	0.00	2012-10-13 01:00:46.153159	2012-10-13 01:00:46.153159
+91660	943	0.00	2012-10-13 01:00:46.161404	2012-10-13 01:00:46.161404
+91661	944	0.00	2012-10-13 01:00:46.169898	2012-10-13 01:00:46.169898
+91662	945	0.00	2012-10-13 01:00:46.178334	2012-10-13 01:00:46.178334
+91663	946	0.00	2012-10-13 01:00:46.186389	2012-10-13 01:00:46.186389
+91664	947	0.00	2012-10-13 01:00:46.194425	2012-10-13 01:00:46.194425
+91665	948	0.00	2012-10-13 01:00:46.203363	2012-10-13 01:00:46.203363
+91666	949	0.00	2012-10-13 01:00:46.211337	2012-10-13 01:00:46.211337
+91667	950	0.00	2012-10-13 01:00:46.219765	2012-10-13 01:00:46.219765
+91668	951	0.00	2012-10-13 01:00:46.228206	2012-10-13 01:00:46.228206
+91669	952	0.00	2012-10-13 01:00:46.236401	2012-10-13 01:00:46.236401
+91670	953	0.00	2012-10-13 01:00:46.244774	2012-10-13 01:00:46.244774
+91671	954	0.00	2012-10-13 01:00:46.253336	2012-10-13 01:00:46.253336
+91672	955	0.00	2012-10-13 01:00:46.261295	2012-10-13 01:00:46.261295
+91673	956	0.00	2012-10-13 01:00:46.26985	2012-10-13 01:00:46.26985
+91674	957	0.00	2012-10-13 01:00:46.278268	2012-10-13 01:00:46.278268
+91675	958	0.00	2012-10-13 01:00:46.28634	2012-10-13 01:00:46.28634
+91676	959	0.00	2012-10-13 01:00:46.29481	2012-10-13 01:00:46.29481
+91677	960	0.00	2012-10-13 01:00:46.303109	2012-10-13 01:00:46.303109
+91678	961	0.00	2012-10-13 01:00:46.31129	2012-10-13 01:00:46.31129
+91679	962	0.00	2012-10-13 01:00:46.319848	2012-10-13 01:00:46.319848
+91680	963	0.00	2012-10-13 01:00:46.328094	2012-10-13 01:00:46.328094
+91681	964	0.00	2012-10-13 01:00:46.336323	2012-10-13 01:00:46.336323
+91682	965	0.00	2012-10-13 01:00:46.344739	2012-10-13 01:00:46.344739
+91683	966	0.00	2012-10-13 01:00:46.353094	2012-10-13 01:00:46.353094
+91684	967	0.00	2012-10-13 01:00:46.361256	2012-10-13 01:00:46.361256
+91685	968	0.00	2012-10-13 01:00:46.369809	2012-10-13 01:00:46.369809
+91686	969	0.00	2012-10-13 01:00:46.37815	2012-10-13 01:00:46.37815
+91687	970	0.00	2012-10-13 01:00:46.386313	2012-10-13 01:00:46.386313
+91688	971	0.00	2012-10-13 01:00:46.394765	2012-10-13 01:00:46.394765
+91689	972	0.00	2012-10-13 01:00:46.403195	2012-10-13 01:00:46.403195
+91690	973	0.00	2012-10-13 01:00:46.411378	2012-10-13 01:00:46.411378
+91691	974	0.00	2012-10-13 01:00:46.419506	2012-10-13 01:00:46.419506
+91692	975	0.00	2012-10-13 01:00:46.427876	2012-10-13 01:00:46.427876
+91693	976	0.00	2012-10-13 01:00:46.436392	2012-10-13 01:00:46.436392
+91694	977	0.00	2012-10-13 01:00:46.444903	2012-10-13 01:00:46.444903
+91695	978	0.00	2012-10-13 01:00:46.453374	2012-10-13 01:00:46.453374
+91696	979	0.00	2012-10-13 01:00:46.461313	2012-10-13 01:00:46.461313
+91697	1061	0.00	2012-10-13 01:00:46.469904	2012-10-13 01:00:46.469904
+91698	1062	0.00	2012-10-13 01:00:46.478355	2012-10-13 01:00:46.478355
+91699	1063	0.00	2012-10-13 01:00:46.486345	2012-10-13 01:00:46.486345
+91700	1064	0.00	2012-10-13 01:00:46.494863	2012-10-13 01:00:46.494863
+91701	1065	0.00	2012-10-13 01:00:46.50329	2012-10-13 01:00:46.50329
+91702	1066	0.00	2012-10-13 01:00:46.511495	2012-10-13 01:00:46.511495
+91703	1067	0.00	2012-10-13 01:00:46.520097	2012-10-13 01:00:46.520097
+91704	1068	0.00	2012-10-13 01:00:46.528225	2012-10-13 01:00:46.528225
+91705	1069	0.00	2012-10-13 01:00:46.574463	2012-10-13 01:00:46.574463
+91706	1070	0.00	2012-10-13 01:00:46.586775	2012-10-13 01:00:46.586775
+91707	1071	0.00	2012-10-13 01:00:46.594505	2012-10-13 01:00:46.594505
+91708	980	0.00	2012-10-13 01:00:46.602868	2012-10-13 01:00:46.602868
+91709	981	0.00	2012-10-13 01:00:46.611132	2012-10-13 01:00:46.611132
+91710	982	0.00	2012-10-13 01:00:46.619478	2012-10-13 01:00:46.619478
+91711	983	0.00	2012-10-13 01:00:46.627708	2012-10-13 01:00:46.627708
+91712	984	0.00	2012-10-13 01:00:46.636217	2012-10-13 01:00:46.636217
+91713	985	0.00	2012-10-13 01:00:46.644423	2012-10-13 01:00:46.644423
+91714	986	0.00	2012-10-13 01:00:46.652964	2012-10-13 01:00:46.652964
+91715	987	0.00	2012-10-13 01:00:46.661171	2012-10-13 01:00:46.661171
+91716	988	0.00	2012-10-13 01:00:46.669485	2012-10-13 01:00:46.669485
+91717	989	0.00	2012-10-13 01:00:46.677848	2012-10-13 01:00:46.677848
+91718	990	0.00	2012-10-13 01:00:46.686147	2012-10-13 01:00:46.686147
+91719	991	0.00	2012-10-13 01:00:46.694797	2012-10-13 01:00:46.694797
+91720	992	0.00	2012-10-13 01:00:46.703307	2012-10-13 01:00:46.703307
+91721	993	0.00	2012-10-13 01:00:46.711454	2012-10-13 01:00:46.711454
+91722	994	0.00	2012-10-13 01:00:46.719775	2012-10-13 01:00:46.719775
+91723	995	0.00	2012-10-13 01:00:46.728169	2012-10-13 01:00:46.728169
+91724	996	0.00	2012-10-13 01:00:46.736434	2012-10-13 01:00:46.736434
+91725	997	0.00	2012-10-13 01:00:46.74489	2012-10-13 01:00:46.74489
+91726	998	0.00	2012-10-13 01:00:46.753165	2012-10-13 01:00:46.753165
+91727	999	0.00	2012-10-13 01:00:46.761442	2012-10-13 01:00:46.761442
+91728	1000	0.00	2012-10-13 01:00:46.769828	2012-10-13 01:00:46.769828
+91729	1001	0.00	2012-10-13 01:00:46.778136	2012-10-13 01:00:46.778136
+91730	1002	0.00	2012-10-13 01:00:46.786392	2012-10-13 01:00:46.786392
+91731	1003	0.00	2012-10-13 01:00:46.794475	2012-10-13 01:00:46.794475
+91732	1004	0.00	2012-10-13 01:00:46.802892	2012-10-13 01:00:46.802892
+91733	1005	0.00	2012-10-13 01:00:46.811214	2012-10-13 01:00:46.811214
+91734	1006	0.00	2012-10-13 01:00:46.819481	2012-10-13 01:00:46.819481
+91735	1007	0.00	2012-10-13 01:00:46.827882	2012-10-13 01:00:46.827882
+91736	1008	0.00	2012-10-13 01:00:46.836188	2012-10-13 01:00:46.836188
+91737	1009	0.00	2012-10-13 01:00:46.844466	2012-10-13 01:00:46.844466
+91738	1010	0.00	2012-10-13 01:00:46.852871	2012-10-13 01:00:46.852871
+91739	1011	0.00	2012-10-13 01:00:46.861129	2012-10-13 01:00:46.861129
+91740	1012	0.00	2012-10-13 01:00:46.86947	2012-10-13 01:00:46.86947
+91741	1013	0.00	2012-10-13 01:00:46.877858	2012-10-13 01:00:46.877858
+91742	1014	0.00	2012-10-13 01:00:46.88613	2012-10-13 01:00:46.88613
+91743	1015	0.00	2012-10-13 01:00:46.894423	2012-10-13 01:00:46.894423
+91744	1016	0.00	2012-10-13 01:00:46.90285	2012-10-13 01:00:46.90285
+91745	1017	0.00	2012-10-13 01:00:46.911136	2012-10-13 01:00:46.911136
+91746	1018	0.00	2012-10-13 01:00:46.919409	2012-10-13 01:00:46.919409
+91747	1019	0.00	2012-10-13 01:00:46.927801	2012-10-13 01:00:46.927801
+91748	1020	0.00	2012-10-13 01:00:46.936123	2012-10-13 01:00:46.936123
+91749	1021	0.00	2012-10-13 01:00:46.944401	2012-10-13 01:00:46.944401
+91750	1022	0.00	2012-10-13 01:00:46.952777	2012-10-13 01:00:46.952777
+91751	1023	0.00	2012-10-13 01:00:46.961165	2012-10-13 01:00:46.961165
+91752	1024	0.00	2012-10-13 01:00:46.969832	2012-10-13 01:00:46.969832
+91753	1025	0.00	2012-10-13 01:00:46.978267	2012-10-13 01:00:46.978267
+91754	1026	0.00	2012-10-13 01:00:46.986487	2012-10-13 01:00:46.986487
+91755	1027	0.00	2012-10-13 01:00:46.995064	2012-10-13 01:00:46.995064
+91756	1028	0.00	2012-10-13 01:00:47.003255	2012-10-13 01:00:47.003255
+91757	1029	0.00	2012-10-13 01:00:47.011473	2012-10-13 01:00:47.011473
+91758	1030	0.00	2012-10-13 01:00:47.019795	2012-10-13 01:00:47.019795
+91759	1031	0.00	2012-10-13 01:00:47.028256	2012-10-13 01:00:47.028256
+91760	1032	0.00	2012-10-13 01:00:47.036383	2012-10-13 01:00:47.036383
+91761	1033	0.00	2012-10-13 01:00:47.045036	2012-10-13 01:00:47.045036
+91762	1034	0.00	2012-10-13 01:00:47.053219	2012-10-13 01:00:47.053219
+91763	1035	0.00	2012-10-13 01:00:47.061456	2012-10-13 01:00:47.061456
+91764	1036	0.00	2012-10-13 01:00:47.069997	2012-10-13 01:00:47.069997
+91765	1037	0.00	2012-10-13 01:00:47.07821	2012-10-13 01:00:47.07821
+91766	1038	0.00	2012-10-13 01:00:47.08685	2012-10-13 01:00:47.08685
+91767	1039	0.00	2012-10-13 01:00:47.095084	2012-10-13 01:00:47.095084
+91768	1040	0.00	2012-10-13 01:00:47.103244	2012-10-13 01:00:47.103244
+91769	1041	0.00	2012-10-13 01:00:47.111502	2012-10-13 01:00:47.111502
+91770	1042	0.00	2012-10-13 01:00:47.119829	2012-10-13 01:00:47.119829
+91771	1043	0.00	2012-10-13 01:00:47.128195	2012-10-13 01:00:47.128195
+91772	1044	0.00	2012-10-13 01:00:47.136437	2012-10-13 01:00:47.136437
+91773	1045	0.00	2012-10-13 01:00:47.144831	2012-10-13 01:00:47.144831
+91774	1046	0.00	2012-10-13 01:00:47.153129	2012-10-13 01:00:47.153129
+91775	1047	0.00	2012-10-13 01:00:47.161891	2012-10-13 01:00:47.161891
+91776	1048	0.00	2012-10-13 01:00:47.169868	2012-10-13 01:00:47.169868
+91777	1049	0.00	2012-10-13 01:00:47.178119	2012-10-13 01:00:47.178119
+91778	1050	0.00	2012-10-13 01:00:47.186389	2012-10-13 01:00:47.186389
+91779	1051	0.00	2012-10-13 01:00:47.220424	2012-10-13 01:00:47.220424
+91780	1052	0.00	2012-10-13 01:00:47.228231	2012-10-13 01:00:47.228231
+91781	1053	0.00	2012-10-13 01:00:47.236502	2012-10-13 01:00:47.236502
+91782	1054	0.00	2012-10-13 01:00:47.245107	2012-10-13 01:00:47.245107
+91783	1055	0.00	2012-10-13 01:00:47.253339	2012-10-13 01:00:47.253339
+91784	1056	0.00	2012-10-13 01:00:47.261496	2012-10-13 01:00:47.261496
+91785	1057	0.00	2012-10-13 01:00:47.269862	2012-10-13 01:00:47.269862
+91786	1058	0.00	2012-10-13 01:00:47.278278	2012-10-13 01:00:47.278278
+91787	1059	0.00	2012-10-13 01:00:47.286272	2012-10-13 01:00:47.286272
+91788	1060	0.00	2012-10-13 01:00:47.294501	2012-10-13 01:00:47.294501
+91789	1072	0.00	2012-10-13 01:00:47.302937	2012-10-13 01:00:47.302937
+91790	1073	0.00	2012-10-13 01:00:47.311197	2012-10-13 01:00:47.311197
+91791	1074	0.00	2012-10-13 01:00:47.319515	2012-10-13 01:00:47.319515
+91792	1075	0.00	2012-10-13 01:00:47.327916	2012-10-13 01:00:47.327916
+91793	1076	0.00	2012-10-13 01:00:47.33619	2012-10-13 01:00:47.33619
+91794	1077	0.00	2012-10-13 01:00:47.34449	2012-10-13 01:00:47.34449
+91795	1079	0.00	2012-10-13 01:00:47.352894	2012-10-13 01:00:47.352894
+91796	1080	0.00	2012-10-13 01:00:47.36117	2012-10-13 01:00:47.36117
+91797	1081	0.00	2012-10-13 01:00:47.369505	2012-10-13 01:00:47.369505
+91798	1082	0.00	2012-10-13 01:00:47.377911	2012-10-13 01:00:47.377911
+91799	1083	0.00	2012-10-13 01:00:47.386328	2012-10-13 01:00:47.386328
+91800	1084	0.00	2012-10-13 01:00:47.394549	2012-10-13 01:00:47.394549
+91801	1085	0.00	2012-10-13 01:00:47.402852	2012-10-13 01:00:47.402852
+91802	1086	0.00	2012-10-13 01:00:47.41124	2012-10-13 01:00:47.41124
+91803	1087	0.00	2012-10-13 01:00:47.419611	2012-10-13 01:00:47.419611
+91804	1088	0.00	2012-10-13 01:00:47.427965	2012-10-13 01:00:47.427965
+91805	1089	0.00	2012-10-13 01:00:47.43658	2012-10-13 01:00:47.43658
+91806	1090	0.00	2012-10-13 01:00:47.444727	2012-10-13 01:00:47.444727
+91807	1091	0.00	2012-10-13 01:00:47.453318	2012-10-13 01:00:47.453318
+91808	1092	0.00	2012-10-13 01:00:47.461467	2012-10-13 01:00:47.461467
+91809	1093	0.00	2012-10-13 01:00:47.469858	2012-10-13 01:00:47.469858
+91810	1094	0.00	2012-10-13 01:00:47.478203	2012-10-13 01:00:47.478203
+91811	1095	0.00	2012-10-13 01:00:47.486462	2012-10-13 01:00:47.486462
+91812	1096	0.00	2012-10-13 01:00:47.495063	2012-10-13 01:00:47.495063
+91813	1097	0.00	2012-10-13 01:00:47.503203	2012-10-13 01:00:47.503203
+91814	1098	0.00	2012-10-13 01:00:47.511897	2012-10-13 01:00:47.511897
+91815	1099	0.00	2012-10-13 01:00:47.519926	2012-10-13 01:00:47.519926
+91816	1100	0.00	2012-10-13 01:00:47.528244	2012-10-13 01:00:47.528244
+91817	1101	0.00	2012-10-13 01:00:47.536498	2012-10-13 01:00:47.536498
+91818	1102	0.00	2012-10-13 01:00:47.545064	2012-10-13 01:00:47.545064
+91819	1103	0.00	2012-10-13 01:00:47.553225	2012-10-13 01:00:47.553225
+91820	1104	0.00	2012-10-13 01:00:47.56148	2012-10-13 01:00:47.56148
+91821	1105	0.00	2012-10-13 01:00:47.569911	2012-10-13 01:00:47.569911
+91822	1106	0.00	2012-10-13 01:00:47.578196	2012-10-13 01:00:47.578196
+91823	1107	0.00	2012-10-13 01:00:47.586459	2012-10-13 01:00:47.586459
+91824	1108	0.00	2012-10-13 01:00:47.595034	2012-10-13 01:00:47.595034
+91825	1109	0.00	2012-10-13 01:00:47.603316	2012-10-13 01:00:47.603316
+91826	1110	0.00	2012-10-13 01:00:47.611435	2012-10-13 01:00:47.611435
+91827	1111	0.00	2012-10-13 01:00:47.619823	2012-10-13 01:00:47.619823
+91828	1112	0.00	2012-10-13 01:00:47.628334	2012-10-13 01:00:47.628334
+91829	1113	0.00	2012-10-13 01:00:47.636458	2012-10-13 01:00:47.636458
+91830	1114	0.00	2012-10-13 01:00:47.644882	2012-10-13 01:00:47.644882
+91831	1115	0.00	2012-10-13 01:00:47.653384	2012-10-13 01:00:47.653384
+91832	1116	0.00	2012-10-13 01:00:47.661508	2012-10-13 01:00:47.661508
+91833	1117	0.00	2012-10-13 01:00:47.670235	2012-10-13 01:00:47.670235
+91834	1118	0.00	2012-10-13 01:00:47.67835	2012-10-13 01:00:47.67835
+91835	1119	0.00	2012-10-13 01:00:47.68655	2012-10-13 01:00:47.68655
+91836	1120	0.00	2012-10-13 01:00:47.695115	2012-10-13 01:00:47.695115
+91837	1121	0.00	2012-10-13 01:00:47.703199	2012-10-13 01:00:47.703199
+91838	1122	0.00	2012-10-13 01:00:47.711484	2012-10-13 01:00:47.711484
+91839	1123	0.00	2012-10-13 01:00:47.719862	2012-10-13 01:00:47.719862
+91840	1124	0.00	2012-10-13 01:00:47.728315	2012-10-13 01:00:47.728315
+91841	1125	0.00	2012-10-13 01:00:47.736803	2012-10-13 01:00:47.736803
+91842	1126	0.00	2012-10-13 01:00:47.745098	2012-10-13 01:00:47.745098
+91843	1127	0.00	2012-10-13 01:00:47.753313	2012-10-13 01:00:47.753313
+91844	1128	0.00	2012-10-13 01:00:47.761848	2012-10-13 01:00:47.761848
+91845	1129	0.00	2012-10-13 01:00:47.770099	2012-10-13 01:00:47.770099
+91846	1130	0.00	2012-10-13 01:00:47.778331	2012-10-13 01:00:47.778331
+91847	1131	0.00	2012-10-13 01:00:47.787022	2012-10-13 01:00:47.787022
+91848	1132	0.00	2012-10-13 01:00:47.820148	2012-10-13 01:00:47.820148
+91849	1133	0.00	2012-10-13 01:00:47.828038	2012-10-13 01:00:47.828038
+91850	1134	0.00	2012-10-13 01:00:47.836288	2012-10-13 01:00:47.836288
+91851	1135	0.00	2012-10-13 01:00:47.844602	2012-10-13 01:00:47.844602
+91852	1136	0.00	2012-10-13 01:00:47.853107	2012-10-13 01:00:47.853107
+91853	1137	0.00	2012-10-13 01:00:47.904151	2012-10-13 01:00:47.904151
+91854	1138	0.00	2012-10-13 01:00:47.912152	2012-10-13 01:00:47.912152
+91855	1139	0.00	2012-10-13 01:00:47.920257	2012-10-13 01:00:47.920257
+91856	1140	0.00	2012-10-13 01:00:47.928269	2012-10-13 01:00:47.928269
+91857	1141	0.00	2012-10-13 01:00:47.936829	2012-10-13 01:00:47.936829
+91858	1142	0.00	2012-10-13 01:00:47.945011	2012-10-13 01:00:47.945011
+91859	1143	0.00	2012-10-13 01:00:47.952995	2012-10-13 01:00:47.952995
+91860	1144	0.00	2012-10-13 01:00:47.961298	2012-10-13 01:00:47.961298
+91861	1145	0.00	2012-10-13 01:00:47.969629	2012-10-13 01:00:47.969629
+91862	1146	0.00	2012-10-13 01:00:47.97802	2012-10-13 01:00:47.97802
+91863	1147	0.00	2012-10-13 01:00:47.986309	2012-10-13 01:00:47.986309
+91864	1148	0.00	2012-10-13 01:00:47.994559	2012-10-13 01:00:47.994559
+91865	1149	0.00	2012-10-13 01:00:48.003003	2012-10-13 01:00:48.003003
+91866	1150	0.00	2012-10-13 01:00:48.011269	2012-10-13 01:00:48.011269
+91867	1151	0.00	2012-10-13 01:00:48.019523	2012-10-13 01:00:48.019523
+91868	1152	0.00	2012-10-13 01:00:48.027961	2012-10-13 01:00:48.027961
+91869	1153	0.00	2012-10-13 01:00:48.036223	2012-10-13 01:00:48.036223
+91870	1154	0.00	2012-10-13 01:00:48.044547	2012-10-13 01:00:48.044547
+91871	1155	0.00	2012-10-13 01:00:48.053165	2012-10-13 01:00:48.053165
+91872	1156	0.00	2012-10-13 01:00:48.061453	2012-10-13 01:00:48.061453
+91873	1157	0.00	2012-10-13 01:00:48.069809	2012-10-13 01:00:48.069809
+91874	1158	0.00	2012-10-13 01:00:48.07818	2012-10-13 01:00:48.07818
+91875	1159	0.00	2012-10-13 01:00:48.086539	2012-10-13 01:00:48.086539
+91876	1160	0.00	2012-10-13 01:00:48.09492	2012-10-13 01:00:48.09492
+91877	1161	0.00	2012-10-13 01:00:48.103219	2012-10-13 01:00:48.103219
+91878	1162	0.00	2012-10-13 01:00:48.11166	2012-10-13 01:00:48.11166
+91879	1163	0.00	2012-10-13 01:00:48.119889	2012-10-13 01:00:48.119889
+91880	1164	0.00	2012-10-13 01:00:48.128248	2012-10-13 01:00:48.128248
+91881	1165	0.00	2012-10-13 01:00:48.136538	2012-10-13 01:00:48.136538
+91882	1166	0.00	2012-10-13 01:00:48.144827	2012-10-13 01:00:48.144827
+91883	1167	0.00	2012-10-13 01:00:48.153194	2012-10-13 01:00:48.153194
+91884	1168	0.00	2012-10-13 01:00:48.161358	2012-10-13 01:00:48.161358
+91885	1169	0.00	2012-10-13 01:00:48.169892	2012-10-13 01:00:48.169892
+91886	1170	0.00	2012-10-13 01:00:48.178137	2012-10-13 01:00:48.178137
+91887	1171	0.00	2012-10-13 01:00:48.186426	2012-10-13 01:00:48.186426
+91888	1172	0.00	2012-10-13 01:00:48.194855	2012-10-13 01:00:48.194855
+91889	1173	0.00	2012-10-13 01:00:48.203059	2012-10-13 01:00:48.203059
+91890	1174	0.00	2012-10-13 01:00:48.211216	2012-10-13 01:00:48.211216
+91891	1175	0.00	2012-10-13 01:00:48.219483	2012-10-13 01:00:48.219483
+91892	1176	0.00	2012-10-13 01:00:48.227894	2012-10-13 01:00:48.227894
+91893	1177	0.00	2012-10-13 01:00:48.236164	2012-10-13 01:00:48.236164
+91894	1178	0.00	2012-10-13 01:00:48.244482	2012-10-13 01:00:48.244482
+91895	1179	0.00	2012-10-13 01:00:48.2529	2012-10-13 01:00:48.2529
+91896	1180	0.00	2012-10-13 01:00:48.261117	2012-10-13 01:00:48.261117
+91897	1181	0.00	2012-10-13 01:00:48.269461	2012-10-13 01:00:48.269461
+91898	1182	0.00	2012-10-13 01:00:48.277876	2012-10-13 01:00:48.277876
+91899	1183	0.00	2012-10-13 01:00:48.286152	2012-10-13 01:00:48.286152
+91900	1184	0.00	2012-10-13 01:00:48.294468	2012-10-13 01:00:48.294468
+91901	1185	0.00	2012-10-13 01:00:48.302881	2012-10-13 01:00:48.302881
+91902	1186	0.00	2012-10-13 01:00:48.311138	2012-10-13 01:00:48.311138
+91903	1187	0.00	2012-10-13 01:00:48.319459	2012-10-13 01:00:48.319459
+91904	1188	0.00	2012-10-13 01:00:48.327859	2012-10-13 01:00:48.327859
+91905	1189	0.00	2012-10-13 01:00:48.336289	2012-10-13 01:00:48.336289
+91906	1190	0.00	2012-10-13 01:00:48.344625	2012-10-13 01:00:48.344625
+91907	1191	0.00	2012-10-13 01:00:48.353012	2012-10-13 01:00:48.353012
+91908	1192	0.00	2012-10-13 01:00:48.361262	2012-10-13 01:00:48.361262
+91909	1193	0.00	2012-10-13 01:00:48.36962	2012-10-13 01:00:48.36962
+91910	1194	0.00	2012-10-13 01:00:48.377977	2012-10-13 01:00:48.377977
+91911	1195	0.00	2012-10-13 01:00:48.386215	2012-10-13 01:00:48.386215
+91912	1196	0.00	2012-10-13 01:00:48.394547	2012-10-13 01:00:48.394547
+91913	1197	0.00	2012-10-13 01:00:48.402951	2012-10-13 01:00:48.402951
+91914	1198	0.00	2012-10-13 01:00:48.411216	2012-10-13 01:00:48.411216
+91915	1199	0.00	2012-10-13 01:00:48.419498	2012-10-13 01:00:48.419498
+91916	1200	0.00	2012-10-13 01:00:48.427922	2012-10-13 01:00:48.427922
+91917	1201	0.00	2012-10-13 01:00:48.436189	2012-10-13 01:00:48.436189
+91918	1202	0.00	2012-10-13 01:00:48.444517	2012-10-13 01:00:48.444517
+91919	1203	0.00	2012-10-13 01:00:48.452904	2012-10-13 01:00:48.452904
+91920	1204	0.00	2012-10-13 01:00:48.461197	2012-10-13 01:00:48.461197
+91921	1205	0.00	2012-10-13 01:00:48.469626	2012-10-13 01:00:48.469626
+91922	1206	0.00	2012-10-13 01:00:48.478016	2012-10-13 01:00:48.478016
+91923	1207	0.00	2012-10-13 01:00:48.514025	2012-10-13 01:00:48.514025
+91924	1208	0.00	2012-10-13 01:00:48.519677	2012-10-13 01:00:48.519677
+91925	1209	0.00	2012-10-13 01:00:48.52801	2012-10-13 01:00:48.52801
+91926	1210	0.00	2012-10-13 01:00:48.536335	2012-10-13 01:00:48.536335
+91927	1211	0.00	2012-10-13 01:00:48.544691	2012-10-13 01:00:48.544691
+91928	1212	0.00	2012-10-13 01:00:48.553279	2012-10-13 01:00:48.553279
+91929	1213	0.00	2012-10-13 01:00:48.561972	2012-10-13 01:00:48.561972
+91930	1214	0.00	2012-10-13 01:00:48.570042	2012-10-13 01:00:48.570042
+91931	1215	0.00	2012-10-13 01:00:48.578241	2012-10-13 01:00:48.578241
+91932	1216	0.00	2012-10-13 01:00:48.586516	2012-10-13 01:00:48.586516
+91933	1217	0.00	2012-10-13 01:00:48.595011	2012-10-13 01:00:48.595011
+91934	1218	0.00	2012-10-13 01:00:48.603209	2012-10-13 01:00:48.603209
+91935	1219	0.00	2012-10-13 01:00:48.611787	2012-10-13 01:00:48.611787
+91936	1220	0.00	2012-10-13 01:00:48.620202	2012-10-13 01:00:48.620202
+91937	1221	0.00	2012-10-13 01:00:48.628308	2012-10-13 01:00:48.628308
+91938	1222	0.00	2012-10-13 01:00:48.636825	2012-10-13 01:00:48.636825
+91939	1223	0.00	2012-10-13 01:00:48.645164	2012-10-13 01:00:48.645164
+91940	1224	0.00	2012-10-13 01:00:48.653343	2012-10-13 01:00:48.653343
+91941	1225	0.00	2012-10-13 01:00:48.661682	2012-10-13 01:00:48.661682
+91942	1226	0.00	2012-10-13 01:00:48.670348	2012-10-13 01:00:48.670348
+91943	1227	0.00	2012-10-13 01:00:48.678285	2012-10-13 01:00:48.678285
+91944	1228	0.00	2012-10-13 01:00:48.686697	2012-10-13 01:00:48.686697
+91945	1229	0.00	2012-10-13 01:00:48.695089	2012-10-13 01:00:48.695089
+91946	1230	0.00	2012-10-13 01:00:48.703312	2012-10-13 01:00:48.703312
+91947	1231	0.00	2012-10-13 01:00:48.711582	2012-10-13 01:00:48.711582
+91948	1232	0.00	2012-10-13 01:00:48.720106	2012-10-13 01:00:48.720106
+91949	1233	0.00	2012-10-13 01:00:48.728346	2012-10-13 01:00:48.728346
+91950	1234	0.00	2012-10-13 01:00:48.736696	2012-10-13 01:00:48.736696
+91951	1235	0.00	2012-10-13 01:00:48.745112	2012-10-13 01:00:48.745112
+91952	1236	0.00	2012-10-13 01:00:48.753307	2012-10-13 01:00:48.753307
+91953	1237	0.00	2012-10-13 01:00:48.761811	2012-10-13 01:00:48.761811
+91954	1238	0.00	2012-10-13 01:00:48.770309	2012-10-13 01:00:48.770309
+91955	1239	0.00	2012-10-13 01:00:48.778208	2012-10-13 01:00:48.778208
+91956	1240	0.00	2012-10-13 01:00:48.786357	2012-10-13 01:00:48.786357
+91957	1241	0.00	2012-10-13 01:00:48.794703	2012-10-13 01:00:48.794703
+91958	1242	0.00	2012-10-13 01:00:48.803027	2012-10-13 01:00:48.803027
+91959	1243	0.00	2012-10-13 01:00:48.811315	2012-10-13 01:00:48.811315
+91960	1244	0.00	2012-10-13 01:00:48.819711	2012-10-13 01:00:48.819711
+91961	1245	0.00	2012-10-13 01:00:48.827988	2012-10-13 01:00:48.827988
+91962	1246	0.00	2012-10-13 01:00:48.836302	2012-10-13 01:00:48.836302
+91963	1247	0.00	2012-10-13 01:00:48.844689	2012-10-13 01:00:48.844689
+91964	1248	0.00	2012-10-13 01:00:48.853151	2012-10-13 01:00:48.853151
+91965	1249	0.00	2012-10-13 01:00:48.861374	2012-10-13 01:00:48.861374
+91966	1250	0.00	2012-10-13 01:00:48.869737	2012-10-13 01:00:48.869737
+91967	1251	0.00	2012-10-13 01:00:48.878111	2012-10-13 01:00:48.878111
+91968	1252	0.00	2012-10-13 01:00:48.886388	2012-10-13 01:00:48.886388
+91969	1253	0.00	2012-10-13 01:00:48.89471	2012-10-13 01:00:48.89471
+91970	1254	0.00	2012-10-13 01:00:48.903097	2012-10-13 01:00:48.903097
+91971	1255	0.00	2012-10-13 01:00:48.911359	2012-10-13 01:00:48.911359
+91972	1256	0.00	2012-10-13 01:00:48.919716	2012-10-13 01:00:48.919716
+91973	1257	0.00	2012-10-13 01:00:48.928125	2012-10-13 01:00:48.928125
+91974	1258	0.00	2012-10-13 01:00:48.936392	2012-10-13 01:00:48.936392
+91975	1259	0.00	2012-10-13 01:00:48.944693	2012-10-13 01:00:48.944693
+91976	1260	0.00	2012-10-13 01:00:48.95337	2012-10-13 01:00:48.95337
+91977	1261	0.00	2012-10-13 01:00:48.96202	2012-10-13 01:00:48.96202
+91978	1262	0.00	2012-10-13 01:00:48.970317	2012-10-13 01:00:48.970317
+91979	1263	0.00	2012-10-13 01:00:48.978359	2012-10-13 01:00:48.978359
+91980	1264	0.00	2012-10-13 01:00:48.987063	2012-10-13 01:00:48.987063
+91981	1265	0.00	2012-10-13 01:00:48.995336	2012-10-13 01:00:48.995336
+91982	1266	0.00	2012-10-13 01:00:49.003802	2012-10-13 01:00:49.003802
+91983	1267	0.00	2012-10-13 01:00:49.011694	2012-10-13 01:00:49.011694
+91984	1268	0.00	2012-10-13 01:00:49.019853	2012-10-13 01:00:49.019853
+91985	1269	0.00	2012-10-13 01:00:49.028382	2012-10-13 01:00:49.028382
+91986	1270	0.00	2012-10-13 01:00:49.036539	2012-10-13 01:00:49.036539
+91987	1271	0.00	2012-10-13 01:00:49.044856	2012-10-13 01:00:49.044856
+91988	1272	0.00	2012-10-13 01:00:49.080969	2012-10-13 01:00:49.080969
+91989	1273	0.00	2012-10-13 01:00:49.086529	2012-10-13 01:00:49.086529
+91990	1274	0.00	2012-10-13 01:00:49.094435	2012-10-13 01:00:49.094435
+91991	1275	0.00	2012-10-13 01:00:49.10332	2012-10-13 01:00:49.10332
+91992	1276	0.00	2012-10-13 01:00:49.111772	2012-10-13 01:00:49.111772
+91993	1277	0.00	2012-10-13 01:00:49.12011	2012-10-13 01:00:49.12011
+91994	1278	0.00	2012-10-13 01:00:49.128328	2012-10-13 01:00:49.128328
+91995	1279	0.00	2012-10-13 01:00:49.1369	2012-10-13 01:00:49.1369
+91996	1280	0.00	2012-10-13 01:00:49.145096	2012-10-13 01:00:49.145096
+91997	1281	0.00	2012-10-13 01:00:49.153284	2012-10-13 01:00:49.153284
+91998	1282	0.00	2012-10-13 01:00:49.161759	2012-10-13 01:00:49.161759
+91999	1283	0.00	2012-10-13 01:00:49.17033	2012-10-13 01:00:49.17033
+92000	1284	0.00	2012-10-13 01:00:49.178251	2012-10-13 01:00:49.178251
+92001	1285	0.00	2012-10-13 01:00:49.226852	2012-10-13 01:00:49.226852
+92002	1286	0.00	2012-10-13 01:00:49.236839	2012-10-13 01:00:49.236839
+92003	1287	0.00	2012-10-13 01:00:49.245023	2012-10-13 01:00:49.245023
+92004	1288	0.00	2012-10-13 01:00:49.253264	2012-10-13 01:00:49.253264
+92005	1289	0.00	2012-10-13 01:00:49.261415	2012-10-13 01:00:49.261415
+92006	1290	0.00	2012-10-13 01:00:49.26979	2012-10-13 01:00:49.26979
+92007	1291	0.00	2012-10-13 01:00:49.278389	2012-10-13 01:00:49.278389
+92008	1292	0.00	2012-10-13 01:00:49.286917	2012-10-13 01:00:49.286917
+92009	1293	0.00	2012-10-13 01:00:49.295119	2012-10-13 01:00:49.295119
+92010	1294	0.00	2012-10-13 01:00:49.303321	2012-10-13 01:00:49.303321
+92011	1295	0.00	2012-10-13 01:00:49.311531	2012-10-13 01:00:49.311531
+92012	1296	0.00	2012-10-13 01:00:49.320094	2012-10-13 01:00:49.320094
+92013	1297	0.00	2012-10-13 01:00:49.328258	2012-10-13 01:00:49.328258
+92014	1298	0.00	2012-10-13 01:00:49.336667	2012-10-13 01:00:49.336667
+92015	1299	0.00	2012-10-13 01:00:49.345048	2012-10-13 01:00:49.345048
+92016	1300	0.00	2012-10-13 01:00:49.353373	2012-10-13 01:00:49.353373
+92017	1301	0.00	2012-10-13 01:00:49.361868	2012-10-13 01:00:49.361868
+92018	1302	0.00	2012-10-13 01:00:49.370353	2012-10-13 01:00:49.370353
+92019	1303	0.00	2012-10-13 01:00:49.378306	2012-10-13 01:00:49.378306
+92020	1304	0.00	2012-10-13 01:00:49.386822	2012-10-13 01:00:49.386822
+92021	1305	0.00	2012-10-13 01:00:49.394954	2012-10-13 01:00:49.394954
+92022	1306	0.00	2012-10-13 01:00:49.40388	2012-10-13 01:00:49.40388
+92023	1307	0.00	2012-10-13 01:00:49.411396	2012-10-13 01:00:49.411396
+92024	1308	0.00	2012-10-13 01:00:49.420054	2012-10-13 01:00:49.420054
+92025	1309	0.00	2012-10-13 01:00:49.428168	2012-10-13 01:00:49.428168
+92026	1310	0.00	2012-10-13 01:00:49.436901	2012-10-13 01:00:49.436901
+92027	1311	0.00	2012-10-13 01:00:49.444547	2012-10-13 01:00:49.444547
+92028	1312	0.00	2012-10-13 01:00:49.453208	2012-10-13 01:00:49.453208
+92029	1313	0.00	2012-10-13 01:00:49.461152	2012-10-13 01:00:49.461152
+92030	1314	0.00	2012-10-13 01:00:49.469473	2012-10-13 01:00:49.469473
+92031	1315	0.00	2012-10-13 01:00:49.477951	2012-10-13 01:00:49.477951
+92032	1316	0.00	2012-10-13 01:00:49.486164	2012-10-13 01:00:49.486164
+92033	1317	0.00	2012-10-13 01:00:49.494452	2012-10-13 01:00:49.494452
+92034	1318	0.00	2012-10-13 01:00:49.50314	2012-10-13 01:00:49.50314
+92035	1319	0.00	2012-10-13 01:00:49.511452	2012-10-13 01:00:49.511452
+92036	1320	0.00	2012-10-13 01:00:49.51983	2012-10-13 01:00:49.51983
+92037	1321	0.00	2012-10-13 01:00:49.528097	2012-10-13 01:00:49.528097
+92038	1322	0.00	2012-10-13 01:00:49.536295	2012-10-13 01:00:49.536295
+92039	1323	0.00	2012-10-13 01:00:49.544614	2012-10-13 01:00:49.544614
+92040	1324	0.00	2012-10-13 01:00:49.553073	2012-10-13 01:00:49.553073
+92041	1325	0.00	2012-10-13 01:00:49.56132	2012-10-13 01:00:49.56132
+92042	1326	0.00	2012-10-13 01:00:49.569614	2012-10-13 01:00:49.569614
+92043	1327	0.00	2012-10-13 01:00:49.578072	2012-10-13 01:00:49.578072
+92044	1328	0.00	2012-10-13 01:00:49.586297	2012-10-13 01:00:49.586297
+92045	1329	0.00	2012-10-13 01:00:49.594749	2012-10-13 01:00:49.594749
+92046	1330	0.00	2012-10-13 01:00:49.603188	2012-10-13 01:00:49.603188
+92047	1331	0.00	2012-10-13 01:00:49.611317	2012-10-13 01:00:49.611317
+92048	1332	0.00	2012-10-13 01:00:49.619716	2012-10-13 01:00:49.619716
+92049	1333	0.00	2012-10-13 01:00:49.62817	2012-10-13 01:00:49.62817
+92050	1334	0.00	2012-10-13 01:00:49.636308	2012-10-13 01:00:49.636308
+92051	1335	0.00	2012-10-13 01:00:49.644725	2012-10-13 01:00:49.644725
+92052	1336	0.00	2012-10-13 01:00:49.653104	2012-10-13 01:00:49.653104
+92053	1337	0.00	2012-10-13 01:00:49.661282	2012-10-13 01:00:49.661282
+92054	1338	0.00	2012-10-13 01:00:49.669898	2012-10-13 01:00:49.669898
+92055	1339	0.00	2012-10-13 01:00:49.678145	2012-10-13 01:00:49.678145
+92056	1340	0.00	2012-10-13 01:00:49.686384	2012-10-13 01:00:49.686384
+92057	1341	0.00	2012-10-13 01:00:49.694761	2012-10-13 01:00:49.694761
+92058	1342	0.00	2012-10-13 01:00:49.703158	2012-10-13 01:00:49.703158
+92059	1343	0.00	2012-10-13 01:00:49.711417	2012-10-13 01:00:49.711417
+92060	1344	0.00	2012-10-13 01:00:49.719783	2012-10-13 01:00:49.719783
+92061	1345	0.00	2012-10-13 01:00:49.728124	2012-10-13 01:00:49.728124
+92062	1346	0.00	2012-10-13 01:00:49.736372	2012-10-13 01:00:49.736372
+92063	1347	0.00	2012-10-13 01:00:49.744742	2012-10-13 01:00:49.744742
+92064	1348	0.00	2012-10-13 01:00:49.753115	2012-10-13 01:00:49.753115
+92065	1349	0.00	2012-10-13 01:00:49.761362	2012-10-13 01:00:49.761362
+92066	1350	0.00	2012-10-13 01:00:49.769723	2012-10-13 01:00:49.769723
+92067	1351	0.00	2012-10-13 01:00:49.803523	2012-10-13 01:00:49.803523
+92068	1352	0.00	2012-10-13 01:00:49.811372	2012-10-13 01:00:49.811372
+92069	1353	0.00	2012-10-13 01:00:49.819765	2012-10-13 01:00:49.819765
+92070	1354	0.00	2012-10-13 01:00:49.828141	2012-10-13 01:00:49.828141
+92071	1355	0.00	2012-10-13 01:00:49.836375	2012-10-13 01:00:49.836375
+92072	1356	0.00	2012-10-13 01:00:49.844754	2012-10-13 01:00:49.844754
+92073	1357	0.00	2012-10-13 01:00:49.853134	2012-10-13 01:00:49.853134
+92074	1358	0.00	2012-10-13 01:00:49.861796	2012-10-13 01:00:49.861796
+92075	1359	0.00	2012-10-13 01:00:49.869753	2012-10-13 01:00:49.869753
+92076	1360	0.00	2012-10-13 01:00:49.878132	2012-10-13 01:00:49.878132
+92077	1361	0.00	2012-10-13 01:00:49.886411	2012-10-13 01:00:49.886411
+92078	1362	0.00	2012-10-13 01:00:49.894789	2012-10-13 01:00:49.894789
+92079	1363	0.00	2012-10-13 01:00:49.903129	2012-10-13 01:00:49.903129
+92080	1364	0.00	2012-10-13 01:00:49.911462	2012-10-13 01:00:49.911462
+92081	1365	0.00	2012-10-13 01:00:49.91976	2012-10-13 01:00:49.91976
+92082	1366	0.00	2012-10-13 01:00:49.928066	2012-10-13 01:00:49.928066
+92083	1367	0.00	2012-10-13 01:00:49.936331	2012-10-13 01:00:49.936331
+92084	1368	0.00	2012-10-13 01:00:49.944926	2012-10-13 01:00:49.944926
+92085	1369	0.00	2012-10-13 01:00:49.953234	2012-10-13 01:00:49.953234
+92086	1370	0.00	2012-10-13 01:00:49.961484	2012-10-13 01:00:49.961484
+92087	1371	0.00	2012-10-13 01:00:49.96978	2012-10-13 01:00:49.96978
+92088	1372	0.00	2012-10-13 01:00:49.978138	2012-10-13 01:00:49.978138
+92089	1373	0.00	2012-10-13 01:00:49.986435	2012-10-13 01:00:49.986435
+92090	1374	0.00	2012-10-13 01:00:49.994819	2012-10-13 01:00:49.994819
+92091	1375	0.00	2012-10-13 01:00:50.003112	2012-10-13 01:00:50.003112
+92092	1376	0.00	2012-10-13 01:00:50.011427	2012-10-13 01:00:50.011427
+92093	1377	0.00	2012-10-13 01:00:50.019818	2012-10-13 01:00:50.019818
+92094	1379	0.00	2012-10-13 01:00:50.028158	2012-10-13 01:00:50.028158
+92095	1380	0.00	2012-10-13 01:00:50.036427	2012-10-13 01:00:50.036427
+92096	1381	0.00	2012-10-13 01:00:50.04478	2012-10-13 01:00:50.04478
+92097	1382	0.00	2012-10-13 01:00:50.05315	2012-10-13 01:00:50.05315
+92098	1383	0.00	2012-10-13 01:00:50.061387	2012-10-13 01:00:50.061387
+92099	1384	0.00	2012-10-13 01:00:50.069943	2012-10-13 01:00:50.069943
+92100	1385	0.00	2012-10-13 01:00:50.078226	2012-10-13 01:00:50.078226
+92101	1386	0.00	2012-10-13 01:00:50.086556	2012-10-13 01:00:50.086556
+92102	1387	0.00	2012-10-13 01:00:50.094968	2012-10-13 01:00:50.094968
+92103	1388	0.00	2012-10-13 01:00:50.10327	2012-10-13 01:00:50.10327
+92104	1389	0.00	2012-10-13 01:00:50.111503	2012-10-13 01:00:50.111503
+92105	1390	0.00	2012-10-13 01:00:50.119945	2012-10-13 01:00:50.119945
+92106	1391	0.00	2012-10-13 01:00:50.128243	2012-10-13 01:00:50.128243
+92107	1392	0.00	2012-10-13 01:00:50.136504	2012-10-13 01:00:50.136504
+92108	1393	0.00	2012-10-13 01:00:50.144827	2012-10-13 01:00:50.144827
+92109	1394	0.00	2012-10-13 01:00:50.153178	2012-10-13 01:00:50.153178
+92110	1395	0.00	2012-10-13 01:00:50.161504	2012-10-13 01:00:50.161504
+92111	1396	0.00	2012-10-13 01:00:50.16988	2012-10-13 01:00:50.16988
+92112	1397	0.00	2012-10-13 01:00:50.17822	2012-10-13 01:00:50.17822
+92113	1398	0.00	2012-10-13 01:00:50.186502	2012-10-13 01:00:50.186502
+92114	1399	0.00	2012-10-13 01:00:50.194948	2012-10-13 01:00:50.194948
+92115	1400	0.00	2012-10-13 01:00:50.203167	2012-10-13 01:00:50.203167
+92116	1401	0.00	2012-10-13 01:00:50.211545	2012-10-13 01:00:50.211545
+92117	1402	0.00	2012-10-13 01:00:50.22043	2012-10-13 01:00:50.22043
+92118	1403	0.00	2012-10-13 01:00:50.22827	2012-10-13 01:00:50.22827
+92119	1404	0.00	2012-10-13 01:00:50.236493	2012-10-13 01:00:50.236493
+92120	1405	0.00	2012-10-13 01:00:50.244862	2012-10-13 01:00:50.244862
+92121	1406	0.00	2012-10-13 01:00:50.253196	2012-10-13 01:00:50.253196
+92122	1407	0.00	2012-10-13 01:00:50.261468	2012-10-13 01:00:50.261468
+92123	1408	0.00	2012-10-13 01:00:50.269889	2012-10-13 01:00:50.269889
+92124	1409	0.00	2012-10-13 01:00:50.278474	2012-10-13 01:00:50.278474
+92125	1410	0.00	2012-10-13 01:00:50.286925	2012-10-13 01:00:50.286925
+92126	1411	0.00	2012-10-13 01:00:50.295251	2012-10-13 01:00:50.295251
+92127	1412	0.00	2012-10-13 01:00:50.303466	2012-10-13 01:00:50.303466
+92128	1413	0.00	2012-10-13 01:00:50.312227	2012-10-13 01:00:50.312227
+92129	1414	0.00	2012-10-13 01:00:50.353578	2012-10-13 01:00:50.353578
+92130	1415	0.00	2012-10-13 01:00:50.361487	2012-10-13 01:00:50.361487
+92131	1416	0.00	2012-10-13 01:00:50.369827	2012-10-13 01:00:50.369827
+92132	1417	0.00	2012-10-13 01:00:50.378199	2012-10-13 01:00:50.378199
+92133	1418	0.00	2012-10-13 01:00:50.386444	2012-10-13 01:00:50.386444
+92134	1419	0.00	2012-10-13 01:00:50.394799	2012-10-13 01:00:50.394799
+92135	1420	0.00	2012-10-13 01:00:50.403134	2012-10-13 01:00:50.403134
+92136	1421	0.00	2012-10-13 01:00:50.411439	2012-10-13 01:00:50.411439
+92137	1422	0.00	2012-10-13 01:00:50.419789	2012-10-13 01:00:50.419789
+92138	1423	0.00	2012-10-13 01:00:50.428167	2012-10-13 01:00:50.428167
+92139	1424	0.00	2012-10-13 01:00:50.436552	2012-10-13 01:00:50.436552
+92140	1425	0.00	2012-10-13 01:00:50.444874	2012-10-13 01:00:50.444874
+92141	1426	0.00	2012-10-13 01:00:50.453545	2012-10-13 01:00:50.453545
+92142	1427	0.00	2012-10-13 01:00:50.46201	2012-10-13 01:00:50.46201
+92143	1428	0.00	2012-10-13 01:00:50.470243	2012-10-13 01:00:50.470243
+92144	1429	0.00	2012-10-13 01:00:50.478424	2012-10-13 01:00:50.478424
+92145	1430	0.00	2012-10-13 01:00:50.486867	2012-10-13 01:00:50.486867
+92146	1431	0.00	2012-10-13 01:00:50.49535	2012-10-13 01:00:50.49535
+92147	1432	0.00	2012-10-13 01:00:50.503487	2012-10-13 01:00:50.503487
+92148	1433	0.00	2012-10-13 01:00:50.549301	2012-10-13 01:00:50.549301
+92149	1434	0.00	2012-10-13 01:00:50.562263	2012-10-13 01:00:50.562263
+92150	1435	0.00	2012-10-13 01:00:50.569881	2012-10-13 01:00:50.569881
+92151	1436	0.00	2012-10-13 01:00:50.578155	2012-10-13 01:00:50.578155
+92152	1437	0.00	2012-10-13 01:00:50.586428	2012-10-13 01:00:50.586428
+92153	1438	0.00	2012-10-13 01:00:50.594794	2012-10-13 01:00:50.594794
+92154	1439	0.00	2012-10-13 01:00:50.603107	2012-10-13 01:00:50.603107
+92155	1440	0.00	2012-10-13 01:00:50.611423	2012-10-13 01:00:50.611423
+92156	1441	0.00	2012-10-13 01:00:50.619783	2012-10-13 01:00:50.619783
+92157	1442	0.00	2012-10-13 01:00:50.628171	2012-10-13 01:00:50.628171
+92158	1443	0.00	2012-10-13 01:00:50.648083	2012-10-13 01:00:50.648083
+92159	1444	0.00	2012-10-13 01:00:50.66465	2012-10-13 01:00:50.66465
+92160	1445	0.00	2012-10-13 01:00:50.706409	2012-10-13 01:00:50.706409
+92161	1446	0.00	2012-10-13 01:00:50.739359	2012-10-13 01:00:50.739359
+92162	1447	0.00	2012-10-13 01:00:50.781348	2012-10-13 01:00:50.781348
+92163	1448	0.00	2012-10-13 01:00:50.814325	2012-10-13 01:00:50.814325
+92164	1449	0.00	2012-10-13 01:00:50.855439	2012-10-13 01:00:50.855439
+92165	1450	0.00	2012-10-13 01:00:50.897062	2012-10-13 01:00:50.897062
+92166	1451	0.00	2012-10-13 01:00:50.930901	2012-10-13 01:00:50.930901
+92167	1452	0.00	2012-10-13 01:00:50.972295	2012-10-13 01:00:50.972295
+92168	1453	0.00	2012-10-13 01:00:51.005918	2012-10-13 01:00:51.005918
+92169	1454	0.00	2012-10-13 01:00:51.047507	2012-10-13 01:00:51.047507
+92170	1455	0.00	2012-10-13 01:00:51.089265	2012-10-13 01:00:51.089265
+92171	1456	0.00	2012-10-13 01:00:51.122539	2012-10-13 01:00:51.122539
+92172	1457	0.00	2012-10-13 01:00:51.164317	2012-10-13 01:00:51.164317
+92173	1458	0.00	2012-10-13 01:00:51.205889	2012-10-13 01:00:51.205889
+92174	1459	0.00	2012-10-13 01:00:51.247509	2012-10-13 01:00:51.247509
+92175	1460	0.00	2012-10-13 01:00:51.289387	2012-10-13 01:00:51.289387
+92176	1461	0.00	2012-10-13 01:00:51.330857	2012-10-13 01:00:51.330857
+92177	1462	0.00	2012-10-13 01:00:51.372203	2012-10-13 01:00:51.372203
+92178	1463	0.00	2012-10-13 01:00:51.413839	2012-10-13 01:00:51.413839
+92179	1464	0.00	2012-10-13 01:00:51.455409	2012-10-13 01:00:51.455409
+92180	1465	0.00	2012-10-13 01:00:51.497146	2012-10-13 01:00:51.497146
+92181	1466	0.00	2012-10-13 01:00:51.538733	2012-10-13 01:00:51.538733
+92182	1467	0.00	2012-10-13 01:00:51.572109	2012-10-13 01:00:51.572109
+92183	1468	0.00	2012-10-13 01:00:51.613689	2012-10-13 01:00:51.613689
+92184	1469	0.00	2012-10-13 01:00:51.647085	2012-10-13 01:00:51.647085
+92185	1470	0.00	2012-10-13 01:00:51.688703	2012-10-13 01:00:51.688703
+92186	1471	0.00	2012-10-13 01:00:51.730282	2012-10-13 01:00:51.730282
+92187	1472	0.00	2012-10-13 01:00:51.763609	2012-10-13 01:00:51.763609
+92188	1473	0.00	2012-10-13 01:00:51.805276	2012-10-13 01:00:51.805276
+92189	1474	0.00	2012-10-13 01:00:51.83855	2012-10-13 01:00:51.83855
+92190	1475	0.00	2012-10-13 01:00:51.871983	2012-10-13 01:00:51.871983
+92191	1476	0.00	2012-10-13 01:00:51.913517	2012-10-13 01:00:51.913517
+92192	1477	0.00	2012-10-13 01:00:51.94692	2012-10-13 01:00:51.94692
+92193	1478	0.00	2012-10-13 01:00:51.988485	2012-10-13 01:00:51.988485
+92194	1479	0.00	2012-10-13 01:00:52.03018	2012-10-13 01:00:52.03018
+92195	1480	0.00	2012-10-13 01:00:52.071866	2012-10-13 01:00:52.071866
+92196	1481	0.00	2012-10-13 01:00:52.11343	2012-10-13 01:00:52.11343
+92197	1482	0.00	2012-10-13 01:00:52.146789	2012-10-13 01:00:52.146789
+92198	1483	0.00	2012-10-13 01:00:52.188426	2012-10-13 01:00:52.188426
+92199	1484	0.00	2012-10-13 01:00:52.230133	2012-10-13 01:00:52.230133
+92200	1485	0.00	2012-10-13 01:00:52.271761	2012-10-13 01:00:52.271761
+92201	1486	0.00	2012-10-13 01:00:52.313411	2012-10-13 01:00:52.313411
+92202	1487	0.00	2012-10-13 01:00:52.356195	2012-10-13 01:00:52.356195
+92203	1488	0.00	2012-10-13 01:00:52.397353	2012-10-13 01:00:52.397353
+92204	1489	0.00	2012-10-13 01:00:52.438781	2012-10-13 01:00:52.438781
+92205	1490	0.00	2012-10-13 01:00:52.480274	2012-10-13 01:00:52.480274
+92206	1491	0.00	2012-10-13 01:00:52.52235	2012-10-13 01:00:52.52235
+92207	1492	0.00	2012-10-13 01:00:52.563512	2012-10-13 01:00:52.563512
+92208	1493	0.00	2012-10-13 01:00:52.605064	2012-10-13 01:00:52.605064
+92209	1494	0.00	2012-10-13 01:00:52.638222	2012-10-13 01:00:52.638222
+92210	1495	0.00	2012-10-13 01:00:52.708762	2012-10-13 01:00:52.708762
+92211	1496	0.00	2012-10-13 01:00:52.744534	2012-10-13 01:00:52.744534
+92212	1497	0.00	2012-10-13 01:00:52.752425	2012-10-13 01:00:52.752425
+92213	1498	0.00	2012-10-13 01:00:52.760811	2012-10-13 01:00:52.760811
+92214	1499	0.00	2012-10-13 01:00:52.769102	2012-10-13 01:00:52.769102
+92215	1500	0.00	2012-10-13 01:00:52.777432	2012-10-13 01:00:52.777432
+92216	1378	0.00	2012-10-13 01:00:52.785939	2012-10-13 01:00:52.785939
+92217	1078	0.00	2012-10-13 01:00:52.794192	2012-10-13 01:00:52.794192
+92218	852	41.33	2012-10-13 01:01:12.437474	2012-10-13 01:01:12.437474
+92219	883	0.00	2012-10-13 01:01:12.445147	2012-10-13 01:01:12.445147
+92220	882	0.00	2012-10-13 01:01:12.453348	2012-10-13 01:01:12.453348
+92221	881	0.00	2012-10-13 01:01:12.461795	2012-10-13 01:01:12.461795
+92222	880	0.00	2012-10-13 01:01:12.470242	2012-10-13 01:01:12.470242
+92223	879	0.00	2012-10-13 01:01:12.478427	2012-10-13 01:01:12.478427
+92224	878	0.00	2012-10-13 01:01:12.486849	2012-10-13 01:01:12.486849
+92225	877	0.00	2012-10-13 01:01:12.495332	2012-10-13 01:01:12.495332
+92226	876	0.00	2012-10-13 01:01:12.503432	2012-10-13 01:01:12.503432
+92227	875	0.00	2012-10-13 01:01:12.511878	2012-10-13 01:01:12.511878
+92228	874	0.00	2012-10-13 01:01:12.520383	2012-10-13 01:01:12.520383
+92229	873	0.00	2012-10-13 01:01:12.528477	2012-10-13 01:01:12.528477
+92230	872	0.00	2012-10-13 01:01:12.536855	2012-10-13 01:01:12.536855
+92231	871	0.00	2012-10-13 01:01:12.544989	2012-10-13 01:01:12.544989
+92232	870	0.00	2012-10-13 01:01:12.553507	2012-10-13 01:01:12.553507
+92233	869	0.00	2012-10-13 01:01:12.562559	2012-10-13 01:01:12.562559
+92234	868	0.00	2012-10-13 01:01:12.604112	2012-10-13 01:01:12.604112
+92235	867	0.00	2012-10-13 01:01:12.612101	2012-10-13 01:01:12.612101
+92236	866	0.00	2012-10-13 01:01:12.620262	2012-10-13 01:01:12.620262
+92237	865	0.00	2012-10-13 01:01:12.628492	2012-10-13 01:01:12.628492
+92238	864	0.00	2012-10-13 01:01:12.636798	2012-10-13 01:01:12.636798
+92239	863	0.00	2012-10-13 01:01:12.645316	2012-10-13 01:01:12.645316
+92240	862	0.00	2012-10-13 01:01:12.653488	2012-10-13 01:01:12.653488
+92241	861	0.00	2012-10-13 01:01:12.661927	2012-10-13 01:01:12.661927
+92242	860	0.00	2012-10-13 01:01:12.67034	2012-10-13 01:01:12.67034
+92243	859	0.00	2012-10-13 01:01:12.67829	2012-10-13 01:01:12.67829
+92244	858	0.00	2012-10-13 01:01:12.687042	2012-10-13 01:01:12.687042
+92245	857	0.00	2012-10-13 01:01:12.695336	2012-10-13 01:01:12.695336
+92246	856	0.00	2012-10-13 01:01:12.703515	2012-10-13 01:01:12.703515
+92247	855	0.00	2012-10-13 01:01:12.712119	2012-10-13 01:01:12.712119
+92248	854	0.00	2012-10-13 01:01:12.720352	2012-10-13 01:01:12.720352
+92249	853	0.00	2012-10-13 01:01:12.728475	2012-10-13 01:01:12.728475
+92250	851	0.00	2012-10-13 01:01:12.779894	2012-10-13 01:01:12.779894
+92251	850	0.00	2012-10-13 01:01:12.787194	2012-10-13 01:01:12.787194
+92252	849	0.00	2012-10-13 01:01:12.795371	2012-10-13 01:01:12.795371
+92253	848	0.00	2012-10-13 01:01:12.803448	2012-10-13 01:01:12.803448
+92254	847	0.00	2012-10-13 01:01:12.812102	2012-10-13 01:01:12.812102
+92255	846	0.00	2012-10-13 01:01:12.820212	2012-10-13 01:01:12.820212
+92256	845	0.00	2012-10-13 01:01:12.828464	2012-10-13 01:01:12.828464
+92257	844	0.00	2012-10-13 01:01:12.836878	2012-10-13 01:01:12.836878
+92258	843	0.00	2012-10-13 01:01:12.845328	2012-10-13 01:01:12.845328
+92259	842	0.00	2012-10-13 01:01:12.853487	2012-10-13 01:01:12.853487
+92260	841	0.00	2012-10-13 01:01:12.862146	2012-10-13 01:01:12.862146
+92261	840	0.00	2012-10-13 01:01:12.870278	2012-10-13 01:01:12.870278
+92262	839	0.00	2012-10-13 01:01:12.878502	2012-10-13 01:01:12.878502
+92263	838	0.00	2012-10-13 01:01:12.88702	2012-10-13 01:01:12.88702
+92264	837	0.00	2012-10-13 01:01:12.895289	2012-10-13 01:01:12.895289
+92265	836	0.00	2012-10-13 01:01:12.903469	2012-10-13 01:01:12.903469
+92266	835	0.00	2012-10-13 01:01:12.912104	2012-10-13 01:01:12.912104
+92267	834	0.00	2012-10-13 01:01:12.920334	2012-10-13 01:01:12.920334
+92268	833	0.00	2012-10-13 01:01:12.928849	2012-10-13 01:01:12.928849
+92269	832	0.00	2012-10-13 01:01:12.936879	2012-10-13 01:01:12.936879
+92270	831	0.00	2012-10-13 01:01:12.945328	2012-10-13 01:01:12.945328
+92271	830	0.00	2012-10-13 01:01:12.953546	2012-10-13 01:01:12.953546
+92272	829	0.00	2012-10-13 01:01:12.961877	2012-10-13 01:01:12.961877
+92273	828	0.00	2012-10-13 01:01:12.970307	2012-10-13 01:01:12.970307
+92274	827	0.00	2012-10-13 01:01:12.978547	2012-10-13 01:01:12.978547
+92275	826	0.00	2012-10-13 01:01:12.987115	2012-10-13 01:01:12.987115
+92276	825	0.00	2012-10-13 01:01:12.995285	2012-10-13 01:01:12.995285
+92277	824	0.00	2012-10-13 01:01:13.003471	2012-10-13 01:01:13.003471
+92278	823	0.00	2012-10-13 01:01:13.012118	2012-10-13 01:01:13.012118
+92279	822	0.00	2012-10-13 01:01:13.020293	2012-10-13 01:01:13.020293
+92280	821	0.00	2012-10-13 01:01:13.02882	2012-10-13 01:01:13.02882
+92281	820	0.00	2012-10-13 01:01:13.037077	2012-10-13 01:01:13.037077
+92282	819	0.00	2012-10-13 01:01:13.045381	2012-10-13 01:01:13.045381
+92283	818	0.00	2012-10-13 01:01:13.053663	2012-10-13 01:01:13.053663
+92284	817	0.00	2012-10-13 01:01:13.062058	2012-10-13 01:01:13.062058
+92285	816	0.00	2012-10-13 01:01:13.07037	2012-10-13 01:01:13.07037
+92286	815	0.00	2012-10-13 01:01:13.078874	2012-10-13 01:01:13.078874
+92287	814	0.00	2012-10-13 01:01:13.087069	2012-10-13 01:01:13.087069
+92288	813	0.00	2012-10-13 01:01:13.095344	2012-10-13 01:01:13.095344
+92289	812	0.00	2012-10-13 01:01:13.103709	2012-10-13 01:01:13.103709
+92290	811	0.00	2012-10-13 01:01:13.11217	2012-10-13 01:01:13.11217
+92291	810	0.00	2012-10-13 01:01:13.120351	2012-10-13 01:01:13.120351
+92292	809	0.00	2012-10-13 01:01:13.128687	2012-10-13 01:01:13.128687
+92293	808	0.00	2012-10-13 01:01:13.137115	2012-10-13 01:01:13.137115
+92294	807	0.00	2012-10-13 01:01:13.145306	2012-10-13 01:01:13.145306
+92295	806	0.00	2012-10-13 01:01:13.153547	2012-10-13 01:01:13.153547
+92296	805	0.00	2012-10-13 01:01:13.162257	2012-10-13 01:01:13.162257
+92297	804	0.00	2012-10-13 01:01:13.170383	2012-10-13 01:01:13.170383
+92298	803	0.00	2012-10-13 01:01:13.178412	2012-10-13 01:01:13.178412
+92299	802	0.00	2012-10-13 01:01:13.187041	2012-10-13 01:01:13.187041
+92300	801	0.00	2012-10-13 01:01:13.195282	2012-10-13 01:01:13.195282
+92301	800	0.00	2012-10-13 01:01:13.203798	2012-10-13 01:01:13.203798
+92302	799	0.00	2012-10-13 01:01:13.212168	2012-10-13 01:01:13.212168
+92303	798	0.00	2012-10-13 01:01:13.220359	2012-10-13 01:01:13.220359
+92304	797	0.00	2012-10-13 01:01:13.228649	2012-10-13 01:01:13.228649
+92305	796	0.00	2012-10-13 01:01:13.268015	2012-10-13 01:01:13.268015
+92306	795	0.00	2012-10-13 01:01:13.279202	2012-10-13 01:01:13.279202
+92307	794	0.00	2012-10-13 01:01:13.287149	2012-10-13 01:01:13.287149
+92308	793	0.00	2012-10-13 01:01:13.295437	2012-10-13 01:01:13.295437
+92309	792	0.00	2012-10-13 01:01:13.303674	2012-10-13 01:01:13.303674
+92310	791	0.00	2012-10-13 01:01:13.312116	2012-10-13 01:01:13.312116
+92311	790	0.00	2012-10-13 01:01:13.320296	2012-10-13 01:01:13.320296
+92312	789	0.00	2012-10-13 01:01:13.328806	2012-10-13 01:01:13.328806
+92313	788	0.00	2012-10-13 01:01:13.337142	2012-10-13 01:01:13.337142
+92314	787	0.00	2012-10-13 01:01:13.345377	2012-10-13 01:01:13.345377
+92315	786	0.00	2012-10-13 01:01:13.354044	2012-10-13 01:01:13.354044
+92316	785	0.00	2012-10-13 01:01:13.362306	2012-10-13 01:01:13.362306
+92317	784	0.00	2012-10-13 01:01:13.370427	2012-10-13 01:01:13.370427
+92318	783	0.00	2012-10-13 01:01:13.379069	2012-10-13 01:01:13.379069
+92319	782	0.00	2012-10-13 01:01:13.387209	2012-10-13 01:01:13.387209
+92320	781	0.00	2012-10-13 01:01:13.395478	2012-10-13 01:01:13.395478
+92321	780	0.00	2012-10-13 01:01:13.40398	2012-10-13 01:01:13.40398
+92322	779	0.00	2012-10-13 01:01:13.412236	2012-10-13 01:01:13.412236
+92323	778	0.00	2012-10-13 01:01:13.420382	2012-10-13 01:01:13.420382
+92324	777	0.00	2012-10-13 01:01:13.429031	2012-10-13 01:01:13.429031
+92325	776	0.00	2012-10-13 01:01:13.437214	2012-10-13 01:01:13.437214
+92326	775	0.00	2012-10-13 01:01:13.445464	2012-10-13 01:01:13.445464
+92327	774	0.00	2012-10-13 01:01:13.454109	2012-10-13 01:01:13.454109
+92328	773	0.00	2012-10-13 01:01:13.462291	2012-10-13 01:01:13.462291
+92329	772	0.00	2012-10-13 01:01:13.470389	2012-10-13 01:01:13.470389
+92330	771	0.00	2012-10-13 01:01:13.479123	2012-10-13 01:01:13.479123
+92331	770	0.00	2012-10-13 01:01:13.487212	2012-10-13 01:01:13.487212
+92332	769	0.00	2012-10-13 01:01:13.495504	2012-10-13 01:01:13.495504
+92333	768	0.00	2012-10-13 01:01:13.504008	2012-10-13 01:01:13.504008
+92334	767	0.00	2012-10-13 01:01:13.512295	2012-10-13 01:01:13.512295
+92335	766	0.00	2012-10-13 01:01:13.520416	2012-10-13 01:01:13.520416
+92336	765	0.00	2012-10-13 01:01:13.529067	2012-10-13 01:01:13.529067
+92337	884	0.00	2012-10-14 01:00:35.278527	2012-10-14 01:00:35.278527
+92338	885	0.00	2012-10-14 01:00:35.286331	2012-10-14 01:00:35.286331
+92339	886	0.00	2012-10-14 01:00:35.294395	2012-10-14 01:00:35.294395
+92340	887	0.00	2012-10-14 01:00:35.302892	2012-10-14 01:00:35.302892
+92341	888	0.00	2012-10-14 01:00:35.311319	2012-10-14 01:00:35.311319
+92342	889	0.00	2012-10-14 01:00:35.319342	2012-10-14 01:00:35.319342
+92343	890	0.00	2012-10-14 01:00:35.327838	2012-10-14 01:00:35.327838
+92344	891	0.00	2012-10-14 01:00:35.336168	2012-10-14 01:00:35.336168
+92345	892	0.00	2012-10-14 01:00:35.344339	2012-10-14 01:00:35.344339
+92346	893	0.00	2012-10-14 01:00:35.352428	2012-10-14 01:00:35.352428
+92347	894	0.00	2012-10-14 01:00:35.361145	2012-10-14 01:00:35.361145
+92348	895	0.00	2012-10-14 01:00:35.369393	2012-10-14 01:00:35.369393
+92349	896	0.00	2012-10-14 01:00:35.377394	2012-10-14 01:00:35.377394
+92350	897	0.00	2012-10-14 01:00:35.386188	2012-10-14 01:00:35.386188
+92351	898	0.00	2012-10-14 01:00:35.3943	2012-10-14 01:00:35.3943
+92352	899	0.00	2012-10-14 01:00:35.402774	2012-10-14 01:00:35.402774
+92353	900	0.00	2012-10-14 01:00:35.41122	2012-10-14 01:00:35.41122
+92354	901	0.00	2012-10-14 01:00:35.419372	2012-10-14 01:00:35.419372
+92355	902	0.00	2012-10-14 01:00:35.42774	2012-10-14 01:00:35.42774
+92356	903	0.00	2012-10-14 01:00:35.436184	2012-10-14 01:00:35.436184
+92357	904	0.00	2012-10-14 01:00:35.444362	2012-10-14 01:00:35.444362
+92358	905	0.00	2012-10-14 01:00:35.452644	2012-10-14 01:00:35.452644
+92359	906	0.00	2012-10-14 01:00:35.461219	2012-10-14 01:00:35.461219
+92360	907	0.00	2012-10-14 01:00:35.469376	2012-10-14 01:00:35.469376
+92361	908	0.00	2012-10-14 01:00:35.477652	2012-10-14 01:00:35.477652
+92362	909	0.00	2012-10-14 01:00:35.486202	2012-10-14 01:00:35.486202
+92363	910	0.00	2012-10-14 01:00:35.49436	2012-10-14 01:00:35.49436
+92364	911	0.00	2012-10-14 01:00:35.50245	2012-10-14 01:00:35.50245
+92365	912	0.00	2012-10-14 01:00:35.511122	2012-10-14 01:00:35.511122
+92366	913	0.00	2012-10-14 01:00:35.519356	2012-10-14 01:00:35.519356
+92367	914	0.00	2012-10-14 01:00:35.527515	2012-10-14 01:00:35.527515
+92368	915	0.00	2012-10-14 01:00:35.53616	2012-10-14 01:00:35.53616
+92369	916	0.00	2012-10-14 01:00:35.544333	2012-10-14 01:00:35.544333
+92370	917	0.00	2012-10-14 01:00:35.552514	2012-10-14 01:00:35.552514
+92371	918	0.00	2012-10-14 01:00:35.561156	2012-10-14 01:00:35.561156
+92372	919	0.00	2012-10-14 01:00:35.569349	2012-10-14 01:00:35.569349
+92373	920	0.00	2012-10-14 01:00:35.577848	2012-10-14 01:00:35.577848
+92374	921	0.00	2012-10-14 01:00:35.586111	2012-10-14 01:00:35.586111
+92375	922	0.00	2012-10-14 01:00:35.594427	2012-10-14 01:00:35.594427
+92376	923	0.00	2012-10-14 01:00:35.602774	2012-10-14 01:00:35.602774
+92377	924	0.00	2012-10-14 01:00:35.611238	2012-10-14 01:00:35.611238
+92378	925	0.00	2012-10-14 01:00:35.6194	2012-10-14 01:00:35.6194
+92379	926	0.00	2012-10-14 01:00:35.627985	2012-10-14 01:00:35.627985
+92380	927	0.00	2012-10-14 01:00:35.636355	2012-10-14 01:00:35.636355
+92381	928	0.00	2012-10-14 01:00:35.64439	2012-10-14 01:00:35.64439
+92382	929	0.00	2012-10-14 01:00:35.653033	2012-10-14 01:00:35.653033
+92383	930	0.00	2012-10-14 01:00:35.661181	2012-10-14 01:00:35.661181
+92384	931	0.00	2012-10-14 01:00:35.669382	2012-10-14 01:00:35.669382
+92385	932	0.00	2012-10-14 01:00:35.677721	2012-10-14 01:00:35.677721
+92386	933	0.00	2012-10-14 01:00:35.686162	2012-10-14 01:00:35.686162
+92387	934	0.00	2012-10-14 01:00:35.69438	2012-10-14 01:00:35.69438
+92388	935	0.00	2012-10-14 01:00:35.702755	2012-10-14 01:00:35.702755
+92389	936	0.00	2012-10-14 01:00:35.711313	2012-10-14 01:00:35.711313
+92390	937	0.00	2012-10-14 01:00:35.74553	2012-10-14 01:00:35.74553
+92391	938	0.00	2012-10-14 01:00:35.753093	2012-10-14 01:00:35.753093
+92392	939	0.00	2012-10-14 01:00:35.761205	2012-10-14 01:00:35.761205
+92393	940	0.00	2012-10-14 01:00:35.769311	2012-10-14 01:00:35.769311
+92394	941	0.00	2012-10-14 01:00:35.777909	2012-10-14 01:00:35.777909
+92395	942	0.00	2012-10-14 01:00:35.786206	2012-10-14 01:00:35.786206
+92396	943	0.00	2012-10-14 01:00:35.794691	2012-10-14 01:00:35.794691
+92397	944	0.00	2012-10-14 01:00:35.802911	2012-10-14 01:00:35.802911
+92398	945	0.00	2012-10-14 01:00:35.811268	2012-10-14 01:00:35.811268
+92399	946	0.00	2012-10-14 01:00:35.81946	2012-10-14 01:00:35.81946
+92400	947	0.00	2012-10-14 01:00:35.827888	2012-10-14 01:00:35.827888
+92401	948	0.00	2012-10-14 01:00:35.836287	2012-10-14 01:00:35.836287
+92402	949	0.00	2012-10-14 01:00:35.844501	2012-10-14 01:00:35.844501
+92403	950	0.00	2012-10-14 01:00:35.853072	2012-10-14 01:00:35.853072
+92404	951	0.00	2012-10-14 01:00:35.861289	2012-10-14 01:00:35.861289
+92405	952	0.00	2012-10-14 01:00:35.869448	2012-10-14 01:00:35.869448
+92406	953	0.00	2012-10-14 01:00:35.877813	2012-10-14 01:00:35.877813
+92407	954	0.00	2012-10-14 01:00:35.886122	2012-10-14 01:00:35.886122
+92408	955	0.00	2012-10-14 01:00:35.894428	2012-10-14 01:00:35.894428
+92409	956	0.00	2012-10-14 01:00:35.90305	2012-10-14 01:00:35.90305
+92410	957	0.00	2012-10-14 01:00:35.911251	2012-10-14 01:00:35.911251
+92411	958	0.00	2012-10-14 01:00:35.919494	2012-10-14 01:00:35.919494
+92412	959	0.00	2012-10-14 01:00:35.927778	2012-10-14 01:00:35.927778
+92413	960	0.00	2012-10-14 01:00:35.93622	2012-10-14 01:00:35.93622
+92414	961	0.00	2012-10-14 01:00:35.944489	2012-10-14 01:00:35.944489
+92415	962	0.00	2012-10-14 01:00:35.953074	2012-10-14 01:00:35.953074
+92416	963	0.00	2012-10-14 01:00:35.961227	2012-10-14 01:00:35.961227
+92417	964	0.00	2012-10-14 01:00:35.969266	2012-10-14 01:00:35.969266
+92418	965	0.00	2012-10-14 01:00:35.97754	2012-10-14 01:00:35.97754
+92419	966	0.00	2012-10-14 01:00:35.98614	2012-10-14 01:00:35.98614
+92420	967	0.00	2012-10-14 01:00:35.99492	2012-10-14 01:00:35.99492
+92421	968	0.00	2012-10-14 01:00:36.002905	2012-10-14 01:00:36.002905
+92422	969	0.00	2012-10-14 01:00:36.011151	2012-10-14 01:00:36.011151
+92423	970	0.00	2012-10-14 01:00:36.019507	2012-10-14 01:00:36.019507
+92424	971	0.00	2012-10-14 01:00:36.027886	2012-10-14 01:00:36.027886
+92425	972	0.00	2012-10-14 01:00:36.036286	2012-10-14 01:00:36.036286
+92426	973	0.00	2012-10-14 01:00:36.044347	2012-10-14 01:00:36.044347
+92427	974	0.00	2012-10-14 01:00:36.053106	2012-10-14 01:00:36.053106
+92428	975	0.00	2012-10-14 01:00:36.061166	2012-10-14 01:00:36.061166
+92429	976	0.00	2012-10-14 01:00:36.069453	2012-10-14 01:00:36.069453
+92430	977	0.00	2012-10-14 01:00:36.077801	2012-10-14 01:00:36.077801
+92431	978	0.00	2012-10-14 01:00:36.086261	2012-10-14 01:00:36.086261
+92432	979	0.00	2012-10-14 01:00:36.094397	2012-10-14 01:00:36.094397
+92433	1061	0.00	2012-10-14 01:00:36.103295	2012-10-14 01:00:36.103295
+92434	1062	0.00	2012-10-14 01:00:36.111246	2012-10-14 01:00:36.111246
+92435	1063	0.00	2012-10-14 01:00:36.11973	2012-10-14 01:00:36.11973
+92436	1064	0.00	2012-10-14 01:00:36.128033	2012-10-14 01:00:36.128033
+92437	1065	0.00	2012-10-14 01:00:36.136278	2012-10-14 01:00:36.136278
+92438	1066	0.00	2012-10-14 01:00:36.144796	2012-10-14 01:00:36.144796
+92439	1067	0.00	2012-10-14 01:00:36.153046	2012-10-14 01:00:36.153046
+92440	1068	0.00	2012-10-14 01:00:36.161222	2012-10-14 01:00:36.161222
+92441	1069	0.00	2012-10-14 01:00:36.207218	2012-10-14 01:00:36.207218
+92442	1070	0.00	2012-10-14 01:00:36.220278	2012-10-14 01:00:36.220278
+92443	1071	0.00	2012-10-14 01:00:36.227919	2012-10-14 01:00:36.227919
+92444	980	0.00	2012-10-14 01:00:36.236357	2012-10-14 01:00:36.236357
+92445	981	0.00	2012-10-14 01:00:36.244777	2012-10-14 01:00:36.244777
+92446	982	0.00	2012-10-14 01:00:36.253216	2012-10-14 01:00:36.253216
+92447	983	0.00	2012-10-14 01:00:36.261277	2012-10-14 01:00:36.261277
+92448	984	0.00	2012-10-14 01:00:36.26996	2012-10-14 01:00:36.26996
+92449	985	0.00	2012-10-14 01:00:36.278093	2012-10-14 01:00:36.278093
+92450	986	0.00	2012-10-14 01:00:36.286265	2012-10-14 01:00:36.286265
+92451	987	0.00	2012-10-14 01:00:36.294878	2012-10-14 01:00:36.294878
+92452	988	0.00	2012-10-14 01:00:36.303016	2012-10-14 01:00:36.303016
+92453	989	0.00	2012-10-14 01:00:36.31122	2012-10-14 01:00:36.31122
+92454	990	0.00	2012-10-14 01:00:36.319507	2012-10-14 01:00:36.319507
+92455	991	0.00	2012-10-14 01:00:36.327933	2012-10-14 01:00:36.327933
+92456	992	0.00	2012-10-14 01:00:36.336272	2012-10-14 01:00:36.336272
+92457	993	0.00	2012-10-14 01:00:36.344669	2012-10-14 01:00:36.344669
+92458	994	0.00	2012-10-14 01:00:36.352548	2012-10-14 01:00:36.352548
+92459	995	0.00	2012-10-14 01:00:36.360987	2012-10-14 01:00:36.360987
+92460	996	0.00	2012-10-14 01:00:36.369263	2012-10-14 01:00:36.369263
+92461	997	0.00	2012-10-14 01:00:36.377542	2012-10-14 01:00:36.377542
+92462	998	0.00	2012-10-14 01:00:36.385956	2012-10-14 01:00:36.385956
+92463	999	0.00	2012-10-14 01:00:36.394229	2012-10-14 01:00:36.394229
+92464	1000	0.00	2012-10-14 01:00:36.402515	2012-10-14 01:00:36.402515
+92465	1001	0.00	2012-10-14 01:00:36.411082	2012-10-14 01:00:36.411082
+92466	1002	0.00	2012-10-14 01:00:36.419275	2012-10-14 01:00:36.419275
+92467	1003	0.00	2012-10-14 01:00:36.427619	2012-10-14 01:00:36.427619
+92468	1004	0.00	2012-10-14 01:00:36.436015	2012-10-14 01:00:36.436015
+92469	1005	0.00	2012-10-14 01:00:36.444272	2012-10-14 01:00:36.444272
+92470	1006	0.00	2012-10-14 01:00:36.452553	2012-10-14 01:00:36.452553
+92471	1007	0.00	2012-10-14 01:00:36.461061	2012-10-14 01:00:36.461061
+92472	1008	0.00	2012-10-14 01:00:36.469251	2012-10-14 01:00:36.469251
+92473	1009	0.00	2012-10-14 01:00:36.477621	2012-10-14 01:00:36.477621
+92474	1010	0.00	2012-10-14 01:00:36.485978	2012-10-14 01:00:36.485978
+92475	1011	0.00	2012-10-14 01:00:36.49424	2012-10-14 01:00:36.49424
+92476	1012	0.00	2012-10-14 01:00:36.502538	2012-10-14 01:00:36.502538
+92477	1013	0.00	2012-10-14 01:00:36.51079	2012-10-14 01:00:36.51079
+92478	1014	0.00	2012-10-14 01:00:36.519235	2012-10-14 01:00:36.519235
+92479	1015	0.00	2012-10-14 01:00:36.527512	2012-10-14 01:00:36.527512
+92480	1016	0.00	2012-10-14 01:00:36.535944	2012-10-14 01:00:36.535944
+92481	1017	0.00	2012-10-14 01:00:36.544234	2012-10-14 01:00:36.544234
+92482	1018	0.00	2012-10-14 01:00:36.5525	2012-10-14 01:00:36.5525
+92483	1019	0.00	2012-10-14 01:00:36.560847	2012-10-14 01:00:36.560847
+92484	1020	0.00	2012-10-14 01:00:36.5692	2012-10-14 01:00:36.5692
+92485	1021	0.00	2012-10-14 01:00:36.577492	2012-10-14 01:00:36.577492
+92486	1022	0.00	2012-10-14 01:00:36.585898	2012-10-14 01:00:36.585898
+92487	1023	0.00	2012-10-14 01:00:36.5942	2012-10-14 01:00:36.5942
+92488	1024	0.00	2012-10-14 01:00:36.602495	2012-10-14 01:00:36.602495
+92489	1025	0.00	2012-10-14 01:00:36.610875	2012-10-14 01:00:36.610875
+92490	1026	0.00	2012-10-14 01:00:36.619137	2012-10-14 01:00:36.619137
+92491	1027	0.00	2012-10-14 01:00:36.627625	2012-10-14 01:00:36.627625
+92492	1028	0.00	2012-10-14 01:00:36.636032	2012-10-14 01:00:36.636032
+92493	1029	0.00	2012-10-14 01:00:36.644258	2012-10-14 01:00:36.644258
+92494	1030	0.00	2012-10-14 01:00:36.652608	2012-10-14 01:00:36.652608
+92495	1031	0.00	2012-10-14 01:00:36.661037	2012-10-14 01:00:36.661037
+92496	1032	0.00	2012-10-14 01:00:36.66927	2012-10-14 01:00:36.66927
+92497	1033	0.00	2012-10-14 01:00:36.677617	2012-10-14 01:00:36.677617
+92498	1034	0.00	2012-10-14 01:00:36.686016	2012-10-14 01:00:36.686016
+92499	1035	0.00	2012-10-14 01:00:36.694265	2012-10-14 01:00:36.694265
+92500	1036	0.00	2012-10-14 01:00:36.702623	2012-10-14 01:00:36.702623
+92501	1037	0.00	2012-10-14 01:00:36.710933	2012-10-14 01:00:36.710933
+92502	1038	0.00	2012-10-14 01:00:36.719892	2012-10-14 01:00:36.719892
+92503	1039	0.00	2012-10-14 01:00:36.728209	2012-10-14 01:00:36.728209
+92504	1040	0.00	2012-10-14 01:00:36.736224	2012-10-14 01:00:36.736224
+92505	1041	0.00	2012-10-14 01:00:36.744784	2012-10-14 01:00:36.744784
+92506	1042	0.00	2012-10-14 01:00:36.753109	2012-10-14 01:00:36.753109
+92507	1043	0.00	2012-10-14 01:00:36.76127	2012-10-14 01:00:36.76127
+92508	1044	0.00	2012-10-14 01:00:36.769514	2012-10-14 01:00:36.769514
+92509	1045	0.00	2012-10-14 01:00:36.778267	2012-10-14 01:00:36.778267
+92510	1046	0.00	2012-10-14 01:00:36.786208	2012-10-14 01:00:36.786208
+92511	1047	0.00	2012-10-14 01:00:36.794508	2012-10-14 01:00:36.794508
+92512	1048	0.00	2012-10-14 01:00:36.803039	2012-10-14 01:00:36.803039
+92513	1049	0.00	2012-10-14 01:00:36.811243	2012-10-14 01:00:36.811243
+92514	1050	0.00	2012-10-14 01:00:36.8195	2012-10-14 01:00:36.8195
+92515	1051	0.00	2012-10-14 01:00:36.85344	2012-10-14 01:00:36.85344
+92516	1052	0.00	2012-10-14 01:00:36.861298	2012-10-14 01:00:36.861298
+92517	1053	0.00	2012-10-14 01:00:36.869529	2012-10-14 01:00:36.869529
+92518	1054	0.00	2012-10-14 01:00:36.878105	2012-10-14 01:00:36.878105
+92519	1055	0.00	2012-10-14 01:00:36.886261	2012-10-14 01:00:36.886261
+92520	1056	0.00	2012-10-14 01:00:36.89478	2012-10-14 01:00:36.89478
+92521	1057	0.00	2012-10-14 01:00:36.903017	2012-10-14 01:00:36.903017
+92522	1058	0.00	2012-10-14 01:00:36.911267	2012-10-14 01:00:36.911267
+92523	1059	0.00	2012-10-14 01:00:36.919539	2012-10-14 01:00:36.919539
+92524	1060	0.00	2012-10-14 01:00:36.928054	2012-10-14 01:00:36.928054
+92525	1072	0.00	2012-10-14 01:00:36.936252	2012-10-14 01:00:36.936252
+92526	1073	0.00	2012-10-14 01:00:36.944504	2012-10-14 01:00:36.944504
+92527	1074	0.00	2012-10-14 01:00:36.953263	2012-10-14 01:00:36.953263
+92528	1075	0.00	2012-10-14 01:00:36.961242	2012-10-14 01:00:36.961242
+92529	1076	0.00	2012-10-14 01:00:36.96987	2012-10-14 01:00:36.96987
+92530	1077	0.00	2012-10-14 01:00:36.978036	2012-10-14 01:00:36.978036
+92531	1079	0.00	2012-10-14 01:00:36.986235	2012-10-14 01:00:36.986235
+92532	1080	0.00	2012-10-14 01:00:36.994691	2012-10-14 01:00:36.994691
+92533	1081	0.00	2012-10-14 01:00:37.003317	2012-10-14 01:00:37.003317
+92534	1082	0.00	2012-10-14 01:00:37.011273	2012-10-14 01:00:37.011273
+92535	1083	0.00	2012-10-14 01:00:37.019903	2012-10-14 01:00:37.019903
+92536	1084	0.00	2012-10-14 01:00:37.028111	2012-10-14 01:00:37.028111
+92537	1085	0.00	2012-10-14 01:00:37.036318	2012-10-14 01:00:37.036318
+92538	1086	0.00	2012-10-14 01:00:37.044701	2012-10-14 01:00:37.044701
+92539	1087	0.00	2012-10-14 01:00:37.053335	2012-10-14 01:00:37.053335
+92540	1088	0.00	2012-10-14 01:00:37.061284	2012-10-14 01:00:37.061284
+92541	1089	0.00	2012-10-14 01:00:37.069871	2012-10-14 01:00:37.069871
+92542	1090	0.00	2012-10-14 01:00:37.078104	2012-10-14 01:00:37.078104
+92543	1091	0.00	2012-10-14 01:00:37.086285	2012-10-14 01:00:37.086285
+92544	1092	0.00	2012-10-14 01:00:37.094774	2012-10-14 01:00:37.094774
+92545	1093	0.00	2012-10-14 01:00:37.103248	2012-10-14 01:00:37.103248
+92546	1094	0.00	2012-10-14 01:00:37.111298	2012-10-14 01:00:37.111298
+92547	1095	0.00	2012-10-14 01:00:37.119514	2012-10-14 01:00:37.119514
+92548	1096	0.00	2012-10-14 01:00:37.128191	2012-10-14 01:00:37.128191
+92549	1097	0.00	2012-10-14 01:00:37.136372	2012-10-14 01:00:37.136372
+92550	1098	0.00	2012-10-14 01:00:37.144482	2012-10-14 01:00:37.144482
+92551	1099	0.00	2012-10-14 01:00:37.153155	2012-10-14 01:00:37.153155
+92552	1100	0.00	2012-10-14 01:00:37.16132	2012-10-14 01:00:37.16132
+92553	1101	0.00	2012-10-14 01:00:37.169856	2012-10-14 01:00:37.169856
+92554	1102	0.00	2012-10-14 01:00:37.178104	2012-10-14 01:00:37.178104
+92555	1103	0.00	2012-10-14 01:00:37.186342	2012-10-14 01:00:37.186342
+92556	1104	0.00	2012-10-14 01:00:37.194684	2012-10-14 01:00:37.194684
+92557	1105	0.00	2012-10-14 01:00:37.203356	2012-10-14 01:00:37.203356
+92558	1106	0.00	2012-10-14 01:00:37.211294	2012-10-14 01:00:37.211294
+92559	1107	0.00	2012-10-14 01:00:37.219768	2012-10-14 01:00:37.219768
+92560	1108	0.00	2012-10-14 01:00:37.228333	2012-10-14 01:00:37.228333
+92561	1109	0.00	2012-10-14 01:00:37.236358	2012-10-14 01:00:37.236358
+92562	1110	0.00	2012-10-14 01:00:37.244685	2012-10-14 01:00:37.244685
+92563	1111	0.00	2012-10-14 01:00:37.253389	2012-10-14 01:00:37.253389
+92564	1112	0.00	2012-10-14 01:00:37.261313	2012-10-14 01:00:37.261313
+92565	1113	0.00	2012-10-14 01:00:37.269801	2012-10-14 01:00:37.269801
+92566	1114	0.00	2012-10-14 01:00:37.278118	2012-10-14 01:00:37.278118
+92567	1115	0.00	2012-10-14 01:00:37.286315	2012-10-14 01:00:37.286315
+92568	1116	0.00	2012-10-14 01:00:37.294922	2012-10-14 01:00:37.294922
+92569	1117	0.00	2012-10-14 01:00:37.303335	2012-10-14 01:00:37.303335
+92570	1118	0.00	2012-10-14 01:00:37.311348	2012-10-14 01:00:37.311348
+92571	1119	0.00	2012-10-14 01:00:37.319909	2012-10-14 01:00:37.319909
+92572	1120	0.00	2012-10-14 01:00:37.328235	2012-10-14 01:00:37.328235
+92573	1121	0.00	2012-10-14 01:00:37.336413	2012-10-14 01:00:37.336413
+92574	1122	0.00	2012-10-14 01:00:37.34493	2012-10-14 01:00:37.34493
+92575	1123	0.00	2012-10-14 01:00:37.353406	2012-10-14 01:00:37.353406
+92576	1124	0.00	2012-10-14 01:00:37.361352	2012-10-14 01:00:37.361352
+92577	1125	0.00	2012-10-14 01:00:37.369905	2012-10-14 01:00:37.369905
+92578	1126	0.00	2012-10-14 01:00:37.378231	2012-10-14 01:00:37.378231
+92579	1127	0.00	2012-10-14 01:00:37.386359	2012-10-14 01:00:37.386359
+92580	1128	0.00	2012-10-14 01:00:37.394858	2012-10-14 01:00:37.394858
+92581	1129	0.00	2012-10-14 01:00:37.403285	2012-10-14 01:00:37.403285
+92582	1130	0.00	2012-10-14 01:00:37.41138	2012-10-14 01:00:37.41138
+92583	1131	0.00	2012-10-14 01:00:37.420311	2012-10-14 01:00:37.420311
+92584	1132	0.00	2012-10-14 01:00:37.45349	2012-10-14 01:00:37.45349
+92585	1133	0.00	2012-10-14 01:00:37.461349	2012-10-14 01:00:37.461349
+92586	1134	0.00	2012-10-14 01:00:37.469824	2012-10-14 01:00:37.469824
+92587	1135	0.00	2012-10-14 01:00:37.478078	2012-10-14 01:00:37.478078
+92588	1136	0.00	2012-10-14 01:00:37.486371	2012-10-14 01:00:37.486371
+92589	1137	0.00	2012-10-14 01:00:37.533241	2012-10-14 01:00:37.533241
+92590	1138	0.00	2012-10-14 01:00:37.545063	2012-10-14 01:00:37.545063
+92591	1139	0.00	2012-10-14 01:00:37.55307	2012-10-14 01:00:37.55307
+92592	1140	0.00	2012-10-14 01:00:37.561321	2012-10-14 01:00:37.561321
+92593	1141	0.00	2012-10-14 01:00:37.569801	2012-10-14 01:00:37.569801
+92594	1142	0.00	2012-10-14 01:00:37.578138	2012-10-14 01:00:37.578138
+92595	1143	0.00	2012-10-14 01:00:37.58633	2012-10-14 01:00:37.58633
+92596	1144	0.00	2012-10-14 01:00:37.594807	2012-10-14 01:00:37.594807
+92597	1145	0.00	2012-10-14 01:00:37.603122	2012-10-14 01:00:37.603122
+92598	1146	0.00	2012-10-14 01:00:37.611264	2012-10-14 01:00:37.611264
+92599	1147	0.00	2012-10-14 01:00:37.61985	2012-10-14 01:00:37.61985
+92600	1148	0.00	2012-10-14 01:00:37.628244	2012-10-14 01:00:37.628244
+92601	1149	0.00	2012-10-14 01:00:37.636359	2012-10-14 01:00:37.636359
+92602	1150	0.00	2012-10-14 01:00:37.64444	2012-10-14 01:00:37.64444
+92603	1151	0.00	2012-10-14 01:00:37.653147	2012-10-14 01:00:37.653147
+92604	1152	0.00	2012-10-14 01:00:37.661335	2012-10-14 01:00:37.661335
+92605	1153	0.00	2012-10-14 01:00:37.669427	2012-10-14 01:00:37.669427
+92606	1154	0.00	2012-10-14 01:00:37.678357	2012-10-14 01:00:37.678357
+92607	1155	0.00	2012-10-14 01:00:37.686328	2012-10-14 01:00:37.686328
+92608	1156	0.00	2012-10-14 01:00:37.694403	2012-10-14 01:00:37.694403
+92609	1157	0.00	2012-10-14 01:00:37.703322	2012-10-14 01:00:37.703322
+92610	1158	0.00	2012-10-14 01:00:37.711303	2012-10-14 01:00:37.711303
+92611	1159	0.00	2012-10-14 01:00:37.71986	2012-10-14 01:00:37.71986
+92612	1160	0.00	2012-10-14 01:00:37.728351	2012-10-14 01:00:37.728351
+92613	1161	0.00	2012-10-14 01:00:37.736298	2012-10-14 01:00:37.736298
+92614	1162	0.00	2012-10-14 01:00:37.744828	2012-10-14 01:00:37.744828
+92615	1163	0.00	2012-10-14 01:00:37.753246	2012-10-14 01:00:37.753246
+92616	1164	0.00	2012-10-14 01:00:37.7613	2012-10-14 01:00:37.7613
+92617	1165	0.00	2012-10-14 01:00:37.769818	2012-10-14 01:00:37.769818
+92618	1166	0.00	2012-10-14 01:00:37.77813	2012-10-14 01:00:37.77813
+92619	1167	0.00	2012-10-14 01:00:37.786312	2012-10-14 01:00:37.786312
+92620	1168	0.00	2012-10-14 01:00:37.794378	2012-10-14 01:00:37.794378
+92621	1169	0.00	2012-10-14 01:00:37.803112	2012-10-14 01:00:37.803112
+92622	1170	0.00	2012-10-14 01:00:37.811361	2012-10-14 01:00:37.811361
+92623	1171	0.00	2012-10-14 01:00:37.819415	2012-10-14 01:00:37.819415
+92624	1172	0.00	2012-10-14 01:00:37.828356	2012-10-14 01:00:37.828356
+92625	1173	0.00	2012-10-14 01:00:37.836313	2012-10-14 01:00:37.836313
+92626	1174	0.00	2012-10-14 01:00:37.844842	2012-10-14 01:00:37.844842
+92627	1175	0.00	2012-10-14 01:00:37.85332	2012-10-14 01:00:37.85332
+92628	1176	0.00	2012-10-14 01:00:37.861302	2012-10-14 01:00:37.861302
+92629	1177	0.00	2012-10-14 01:00:37.869849	2012-10-14 01:00:37.869849
+92630	1178	0.00	2012-10-14 01:00:37.878119	2012-10-14 01:00:37.878119
+92631	1179	0.00	2012-10-14 01:00:37.886452	2012-10-14 01:00:37.886452
+92632	1180	0.00	2012-10-14 01:00:37.895038	2012-10-14 01:00:37.895038
+92633	1181	0.00	2012-10-14 01:00:37.903228	2012-10-14 01:00:37.903228
+92634	1182	0.00	2012-10-14 01:00:37.911437	2012-10-14 01:00:37.911437
+92635	1183	0.00	2012-10-14 01:00:37.919742	2012-10-14 01:00:37.919742
+92636	1184	0.00	2012-10-14 01:00:37.928206	2012-10-14 01:00:37.928206
+92637	1185	0.00	2012-10-14 01:00:37.936385	2012-10-14 01:00:37.936385
+92638	1186	0.00	2012-10-14 01:00:37.944667	2012-10-14 01:00:37.944667
+92639	1187	0.00	2012-10-14 01:00:37.953202	2012-10-14 01:00:37.953202
+92640	1188	0.00	2012-10-14 01:00:37.961376	2012-10-14 01:00:37.961376
+92641	1189	0.00	2012-10-14 01:00:37.969655	2012-10-14 01:00:37.969655
+92642	1190	0.00	2012-10-14 01:00:37.978185	2012-10-14 01:00:37.978185
+92643	1191	0.00	2012-10-14 01:00:37.986377	2012-10-14 01:00:37.986377
+92644	1192	0.00	2012-10-14 01:00:37.994883	2012-10-14 01:00:37.994883
+92645	1193	0.00	2012-10-14 01:00:38.003356	2012-10-14 01:00:38.003356
+92646	1194	0.00	2012-10-14 01:00:38.011338	2012-10-14 01:00:38.011338
+92647	1195	0.00	2012-10-14 01:00:38.019854	2012-10-14 01:00:38.019854
+92648	1196	0.00	2012-10-14 01:00:38.028158	2012-10-14 01:00:38.028158
+92649	1197	0.00	2012-10-14 01:00:38.03635	2012-10-14 01:00:38.03635
+92650	1198	0.00	2012-10-14 01:00:38.044409	2012-10-14 01:00:38.044409
+92651	1199	0.00	2012-10-14 01:00:38.053142	2012-10-14 01:00:38.053142
+92652	1200	0.00	2012-10-14 01:00:38.061315	2012-10-14 01:00:38.061315
+92653	1201	0.00	2012-10-14 01:00:38.069394	2012-10-14 01:00:38.069394
+92654	1202	0.00	2012-10-14 01:00:38.078111	2012-10-14 01:00:38.078111
+92655	1203	0.00	2012-10-14 01:00:38.086312	2012-10-14 01:00:38.086312
+92656	1204	0.00	2012-10-14 01:00:38.094376	2012-10-14 01:00:38.094376
+92657	1205	0.00	2012-10-14 01:00:38.103112	2012-10-14 01:00:38.103112
+92658	1206	0.00	2012-10-14 01:00:38.111291	2012-10-14 01:00:38.111291
+92659	1207	0.00	2012-10-14 01:00:38.14731	2012-10-14 01:00:38.14731
+92660	1208	0.00	2012-10-14 01:00:38.153305	2012-10-14 01:00:38.153305
+92661	1209	0.00	2012-10-14 01:00:38.161424	2012-10-14 01:00:38.161424
+92662	1210	0.00	2012-10-14 01:00:38.170037	2012-10-14 01:00:38.170037
+92663	1211	0.00	2012-10-14 01:00:38.178216	2012-10-14 01:00:38.178216
+92664	1212	0.00	2012-10-14 01:00:38.18641	2012-10-14 01:00:38.18641
+92665	1213	0.00	2012-10-14 01:00:38.194985	2012-10-14 01:00:38.194985
+92666	1214	0.00	2012-10-14 01:00:38.203207	2012-10-14 01:00:38.203207
+92667	1215	0.00	2012-10-14 01:00:38.21148	2012-10-14 01:00:38.21148
+92668	1216	0.00	2012-10-14 01:00:38.219922	2012-10-14 01:00:38.219922
+92669	1217	0.00	2012-10-14 01:00:38.22824	2012-10-14 01:00:38.22824
+92670	1218	0.00	2012-10-14 01:00:38.236327	2012-10-14 01:00:38.236327
+92671	1219	0.00	2012-10-14 01:00:38.244698	2012-10-14 01:00:38.244698
+92672	1220	0.00	2012-10-14 01:00:38.252968	2012-10-14 01:00:38.252968
+92673	1221	0.00	2012-10-14 01:00:38.261211	2012-10-14 01:00:38.261211
+92674	1222	0.00	2012-10-14 01:00:38.269517	2012-10-14 01:00:38.269517
+92675	1223	0.00	2012-10-14 01:00:38.277937	2012-10-14 01:00:38.277937
+92676	1224	0.00	2012-10-14 01:00:38.286214	2012-10-14 01:00:38.286214
+92677	1225	0.00	2012-10-14 01:00:38.294486	2012-10-14 01:00:38.294486
+92678	1226	0.00	2012-10-14 01:00:38.302902	2012-10-14 01:00:38.302902
+92679	1227	0.00	2012-10-14 01:00:38.311198	2012-10-14 01:00:38.311198
+92680	1228	0.00	2012-10-14 01:00:38.319495	2012-10-14 01:00:38.319495
+92681	1229	0.00	2012-10-14 01:00:38.327918	2012-10-14 01:00:38.327918
+92682	1230	0.00	2012-10-14 01:00:38.33619	2012-10-14 01:00:38.33619
+92683	1231	0.00	2012-10-14 01:00:38.34448	2012-10-14 01:00:38.34448
+92684	1232	0.00	2012-10-14 01:00:38.352895	2012-10-14 01:00:38.352895
+92685	1233	0.00	2012-10-14 01:00:38.361204	2012-10-14 01:00:38.361204
+92686	1234	0.00	2012-10-14 01:00:38.369488	2012-10-14 01:00:38.369488
+92687	1235	0.00	2012-10-14 01:00:38.377913	2012-10-14 01:00:38.377913
+92688	1236	0.00	2012-10-14 01:00:38.386167	2012-10-14 01:00:38.386167
+92689	1237	0.00	2012-10-14 01:00:38.394513	2012-10-14 01:00:38.394513
+92690	1238	0.00	2012-10-14 01:00:38.402884	2012-10-14 01:00:38.402884
+92691	1239	0.00	2012-10-14 01:00:38.411121	2012-10-14 01:00:38.411121
+92692	1240	0.00	2012-10-14 01:00:38.419469	2012-10-14 01:00:38.419469
+92693	1241	0.00	2012-10-14 01:00:38.427835	2012-10-14 01:00:38.427835
+92694	1242	0.00	2012-10-14 01:00:38.436164	2012-10-14 01:00:38.436164
+92695	1243	0.00	2012-10-14 01:00:38.444452	2012-10-14 01:00:38.444452
+92696	1244	0.00	2012-10-14 01:00:38.452853	2012-10-14 01:00:38.452853
+92697	1245	0.00	2012-10-14 01:00:38.461126	2012-10-14 01:00:38.461126
+92698	1246	0.00	2012-10-14 01:00:38.469445	2012-10-14 01:00:38.469445
+92699	1247	0.00	2012-10-14 01:00:38.477816	2012-10-14 01:00:38.477816
+92700	1248	0.00	2012-10-14 01:00:38.486136	2012-10-14 01:00:38.486136
+92701	1249	0.00	2012-10-14 01:00:38.494599	2012-10-14 01:00:38.494599
+92702	1250	0.00	2012-10-14 01:00:38.503362	2012-10-14 01:00:38.503362
+92703	1251	0.00	2012-10-14 01:00:38.511521	2012-10-14 01:00:38.511521
+92704	1252	0.00	2012-10-14 01:00:38.520157	2012-10-14 01:00:38.520157
+92705	1253	0.00	2012-10-14 01:00:38.528198	2012-10-14 01:00:38.528198
+92706	1254	0.00	2012-10-14 01:00:38.536466	2012-10-14 01:00:38.536466
+92707	1255	0.00	2012-10-14 01:00:38.544899	2012-10-14 01:00:38.544899
+92708	1256	0.00	2012-10-14 01:00:38.553245	2012-10-14 01:00:38.553245
+92709	1257	0.00	2012-10-14 01:00:38.561478	2012-10-14 01:00:38.561478
+92710	1258	0.00	2012-10-14 01:00:38.569926	2012-10-14 01:00:38.569926
+92711	1259	0.00	2012-10-14 01:00:38.578242	2012-10-14 01:00:38.578242
+92712	1260	0.00	2012-10-14 01:00:38.595282	2012-10-14 01:00:38.595282
+92713	1261	0.00	2012-10-14 01:00:38.603209	2012-10-14 01:00:38.603209
+92714	1262	0.00	2012-10-14 01:00:38.6115	2012-10-14 01:00:38.6115
+92715	1263	0.00	2012-10-14 01:00:38.619855	2012-10-14 01:00:38.619855
+92716	1264	0.00	2012-10-14 01:00:38.628246	2012-10-14 01:00:38.628246
+92717	1265	0.00	2012-10-14 01:00:38.636691	2012-10-14 01:00:38.636691
+92718	1266	0.00	2012-10-14 01:00:38.644939	2012-10-14 01:00:38.644939
+92719	1267	0.00	2012-10-14 01:00:38.653243	2012-10-14 01:00:38.653243
+92720	1268	0.00	2012-10-14 01:00:38.661535	2012-10-14 01:00:38.661535
+92721	1269	0.00	2012-10-14 01:00:38.670186	2012-10-14 01:00:38.670186
+92722	1270	0.00	2012-10-14 01:00:38.67824	2012-10-14 01:00:38.67824
+92723	1271	0.00	2012-10-14 01:00:38.686556	2012-10-14 01:00:38.686556
+92724	1272	0.00	2012-10-14 01:00:38.722872	2012-10-14 01:00:38.722872
+92725	1273	0.00	2012-10-14 01:00:38.736501	2012-10-14 01:00:38.736501
+92726	1274	0.00	2012-10-14 01:00:38.744653	2012-10-14 01:00:38.744653
+92727	1275	0.00	2012-10-14 01:00:38.752935	2012-10-14 01:00:38.752935
+92728	1276	0.00	2012-10-14 01:00:38.761507	2012-10-14 01:00:38.761507
+92729	1277	0.00	2012-10-14 01:00:38.770012	2012-10-14 01:00:38.770012
+92730	1278	0.00	2012-10-14 01:00:38.778251	2012-10-14 01:00:38.778251
+92731	1279	0.00	2012-10-14 01:00:38.78643	2012-10-14 01:00:38.78643
+92732	1280	0.00	2012-10-14 01:00:38.794826	2012-10-14 01:00:38.794826
+92733	1281	0.00	2012-10-14 01:00:38.803234	2012-10-14 01:00:38.803234
+92734	1282	0.00	2012-10-14 01:00:38.81152	2012-10-14 01:00:38.81152
+92735	1283	0.00	2012-10-14 01:00:38.819855	2012-10-14 01:00:38.819855
+92736	1284	0.00	2012-10-14 01:00:38.828208	2012-10-14 01:00:38.828208
+92737	1285	0.00	2012-10-14 01:00:38.871396	2012-10-14 01:00:38.871396
+92738	1286	0.00	2012-10-14 01:00:38.878143	2012-10-14 01:00:38.878143
+92739	1287	0.00	2012-10-14 01:00:38.886422	2012-10-14 01:00:38.886422
+92740	1288	0.00	2012-10-14 01:00:38.894555	2012-10-14 01:00:38.894555
+92741	1289	0.00	2012-10-14 01:00:38.903192	2012-10-14 01:00:38.903192
+92742	1290	0.00	2012-10-14 01:00:38.911483	2012-10-14 01:00:38.911483
+92743	1291	0.00	2012-10-14 01:00:38.919869	2012-10-14 01:00:38.919869
+92744	1292	0.00	2012-10-14 01:00:38.928268	2012-10-14 01:00:38.928268
+92745	1293	0.00	2012-10-14 01:00:38.936518	2012-10-14 01:00:38.936518
+92746	1294	0.00	2012-10-14 01:00:38.945007	2012-10-14 01:00:38.945007
+92747	1295	0.00	2012-10-14 01:00:38.953265	2012-10-14 01:00:38.953265
+92748	1296	0.00	2012-10-14 01:00:38.961584	2012-10-14 01:00:38.961584
+92749	1297	0.00	2012-10-14 01:00:38.970003	2012-10-14 01:00:38.970003
+92750	1298	0.00	2012-10-14 01:00:38.978223	2012-10-14 01:00:38.978223
+92751	1299	0.00	2012-10-14 01:00:38.986524	2012-10-14 01:00:38.986524
+92752	1300	0.00	2012-10-14 01:00:38.994927	2012-10-14 01:00:38.994927
+92753	1301	0.00	2012-10-14 01:00:39.003643	2012-10-14 01:00:39.003643
+92754	1302	0.00	2012-10-14 01:00:39.011642	2012-10-14 01:00:39.011642
+92755	1303	0.00	2012-10-14 01:00:39.020041	2012-10-14 01:00:39.020041
+92756	1304	0.00	2012-10-14 01:00:39.028366	2012-10-14 01:00:39.028366
+92757	1305	0.00	2012-10-14 01:00:39.03664	2012-10-14 01:00:39.03664
+92758	1306	0.00	2012-10-14 01:00:39.045137	2012-10-14 01:00:39.045137
+92759	1307	0.00	2012-10-14 01:00:39.053341	2012-10-14 01:00:39.053341
+92760	1308	0.00	2012-10-14 01:00:39.061342	2012-10-14 01:00:39.061342
+92761	1309	0.00	2012-10-14 01:00:39.070052	2012-10-14 01:00:39.070052
+92762	1310	0.00	2012-10-14 01:00:39.078257	2012-10-14 01:00:39.078257
+92763	1311	0.00	2012-10-14 01:00:39.086515	2012-10-14 01:00:39.086515
+92764	1312	0.00	2012-10-14 01:00:39.094856	2012-10-14 01:00:39.094856
+92765	1313	0.00	2012-10-14 01:00:39.103144	2012-10-14 01:00:39.103144
+92766	1314	0.00	2012-10-14 01:00:39.111404	2012-10-14 01:00:39.111404
+92767	1315	0.00	2012-10-14 01:00:39.119809	2012-10-14 01:00:39.119809
+92768	1316	0.00	2012-10-14 01:00:39.128261	2012-10-14 01:00:39.128261
+92769	1317	0.00	2012-10-14 01:00:39.136412	2012-10-14 01:00:39.136412
+92770	1318	0.00	2012-10-14 01:00:39.144858	2012-10-14 01:00:39.144858
+92771	1319	0.00	2012-10-14 01:00:39.153225	2012-10-14 01:00:39.153225
+92772	1320	0.00	2012-10-14 01:00:39.161437	2012-10-14 01:00:39.161437
+92773	1321	0.00	2012-10-14 01:00:39.169822	2012-10-14 01:00:39.169822
+92774	1322	0.00	2012-10-14 01:00:39.178218	2012-10-14 01:00:39.178218
+92775	1323	0.00	2012-10-14 01:00:39.186445	2012-10-14 01:00:39.186445
+92776	1324	0.00	2012-10-14 01:00:39.194853	2012-10-14 01:00:39.194853
+92777	1325	0.00	2012-10-14 01:00:39.203221	2012-10-14 01:00:39.203221
+92778	1326	0.00	2012-10-14 01:00:39.211384	2012-10-14 01:00:39.211384
+92779	1327	0.00	2012-10-14 01:00:39.221249	2012-10-14 01:00:39.221249
+92780	1328	0.00	2012-10-14 01:00:39.23805	2012-10-14 01:00:39.23805
+92781	1329	0.00	2012-10-14 01:00:39.254481	2012-10-14 01:00:39.254481
+92782	1330	0.00	2012-10-14 01:00:39.271352	2012-10-14 01:00:39.271352
+92783	1331	0.00	2012-10-14 01:00:39.288	2012-10-14 01:00:39.288
+92784	1332	0.00	2012-10-14 01:00:39.304486	2012-10-14 01:00:39.304486
+92785	1333	0.00	2012-10-14 01:00:39.321363	2012-10-14 01:00:39.321363
+92786	1334	0.00	2012-10-14 01:00:39.337832	2012-10-14 01:00:39.337832
+92787	1335	0.00	2012-10-14 01:00:39.354412	2012-10-14 01:00:39.354412
+92788	1336	0.00	2012-10-14 01:00:39.371271	2012-10-14 01:00:39.371271
+92789	1337	0.00	2012-10-14 01:00:39.379481	2012-10-14 01:00:39.379481
+92790	1338	0.00	2012-10-14 01:00:39.387844	2012-10-14 01:00:39.387844
+92791	1339	0.00	2012-10-14 01:00:39.396242	2012-10-14 01:00:39.396242
+92792	1340	0.00	2012-10-14 01:00:39.404497	2012-10-14 01:00:39.404497
+92793	1341	0.00	2012-10-14 01:00:39.41284	2012-10-14 01:00:39.41284
+92794	1342	0.00	2012-10-14 01:00:39.42091	2012-10-14 01:00:39.42091
+92795	1343	0.00	2012-10-14 01:00:39.429162	2012-10-14 01:00:39.429162
+92796	1344	0.00	2012-10-14 01:00:39.437472	2012-10-14 01:00:39.437472
+92797	1345	0.00	2012-10-14 01:00:39.445883	2012-10-14 01:00:39.445883
+92798	1346	0.00	2012-10-14 01:00:39.454166	2012-10-14 01:00:39.454166
+92799	1347	0.00	2012-10-14 01:00:39.462456	2012-10-14 01:00:39.462456
+92800	1348	0.00	2012-10-14 01:00:39.470849	2012-10-14 01:00:39.470849
+92801	1349	0.00	2012-10-14 01:00:39.479123	2012-10-14 01:00:39.479123
+92802	1350	0.00	2012-10-14 01:00:39.487419	2012-10-14 01:00:39.487419
+92803	1351	0.00	2012-10-14 01:00:39.521302	2012-10-14 01:00:39.521302
+92804	1352	0.00	2012-10-14 01:00:39.529154	2012-10-14 01:00:39.529154
+92805	1353	0.00	2012-10-14 01:00:39.537444	2012-10-14 01:00:39.537444
+92806	1354	0.00	2012-10-14 01:00:39.545853	2012-10-14 01:00:39.545853
+92807	1355	0.00	2012-10-14 01:00:39.554147	2012-10-14 01:00:39.554147
+92808	1356	0.00	2012-10-14 01:00:39.562458	2012-10-14 01:00:39.562458
+92809	1357	0.00	2012-10-14 01:00:39.570907	2012-10-14 01:00:39.570907
+92810	1358	0.00	2012-10-14 01:00:39.579198	2012-10-14 01:00:39.579198
+92811	1359	0.00	2012-10-14 01:00:39.587432	2012-10-14 01:00:39.587432
+92812	1360	0.00	2012-10-14 01:00:39.595862	2012-10-14 01:00:39.595862
+92813	1361	0.00	2012-10-14 01:00:39.604306	2012-10-14 01:00:39.604306
+92814	1362	0.00	2012-10-14 01:00:39.612554	2012-10-14 01:00:39.612554
+92815	1363	0.00	2012-10-14 01:00:39.620962	2012-10-14 01:00:39.620962
+92816	1364	0.00	2012-10-14 01:00:39.629332	2012-10-14 01:00:39.629332
+92817	1365	0.00	2012-10-14 01:00:39.63754	2012-10-14 01:00:39.63754
+92818	1366	0.00	2012-10-14 01:00:39.645945	2012-10-14 01:00:39.645945
+92819	1367	0.00	2012-10-14 01:00:39.654242	2012-10-14 01:00:39.654242
+92820	1368	0.00	2012-10-14 01:00:39.662529	2012-10-14 01:00:39.662529
+92821	1369	0.00	2012-10-14 01:00:39.670963	2012-10-14 01:00:39.670963
+92822	1370	0.00	2012-10-14 01:00:39.679237	2012-10-14 01:00:39.679237
+92823	1371	0.00	2012-10-14 01:00:39.687614	2012-10-14 01:00:39.687614
+92824	1372	0.00	2012-10-14 01:00:39.695949	2012-10-14 01:00:39.695949
+92825	1373	0.00	2012-10-14 01:00:39.704226	2012-10-14 01:00:39.704226
+92826	1374	0.00	2012-10-14 01:00:39.712561	2012-10-14 01:00:39.712561
+92827	1375	0.00	2012-10-14 01:00:39.720943	2012-10-14 01:00:39.720943
+92828	1376	0.00	2012-10-14 01:00:39.729206	2012-10-14 01:00:39.729206
+92829	1377	0.00	2012-10-14 01:00:39.737516	2012-10-14 01:00:39.737516
+92830	1379	0.00	2012-10-14 01:00:39.745925	2012-10-14 01:00:39.745925
+92831	1380	0.00	2012-10-14 01:00:39.75425	2012-10-14 01:00:39.75425
+92832	1381	0.00	2012-10-14 01:00:39.762518	2012-10-14 01:00:39.762518
+92833	1382	0.00	2012-10-14 01:00:39.770899	2012-10-14 01:00:39.770899
+92834	1383	0.00	2012-10-14 01:00:39.779208	2012-10-14 01:00:39.779208
+92835	1384	0.00	2012-10-14 01:00:39.787575	2012-10-14 01:00:39.787575
+92836	1385	0.00	2012-10-14 01:00:39.796042	2012-10-14 01:00:39.796042
+92837	1386	0.00	2012-10-14 01:00:39.804301	2012-10-14 01:00:39.804301
+92838	1387	0.00	2012-10-14 01:00:39.812615	2012-10-14 01:00:39.812615
+92839	1388	0.00	2012-10-14 01:00:39.82105	2012-10-14 01:00:39.82105
+92840	1389	0.00	2012-10-14 01:00:39.829329	2012-10-14 01:00:39.829329
+92841	1390	0.00	2012-10-14 01:00:39.837585	2012-10-14 01:00:39.837585
+92842	1391	0.00	2012-10-14 01:00:39.846028	2012-10-14 01:00:39.846028
+92843	1392	0.00	2012-10-14 01:00:39.854217	2012-10-14 01:00:39.854217
+92844	1393	0.00	2012-10-14 01:00:39.86253	2012-10-14 01:00:39.86253
+92845	1394	0.00	2012-10-14 01:00:39.870951	2012-10-14 01:00:39.870951
+92846	1395	0.00	2012-10-14 01:00:39.879205	2012-10-14 01:00:39.879205
+92847	1396	0.00	2012-10-14 01:00:39.887683	2012-10-14 01:00:39.887683
+92848	1397	0.00	2012-10-14 01:00:39.896002	2012-10-14 01:00:39.896002
+92849	1398	0.00	2012-10-14 01:00:39.904296	2012-10-14 01:00:39.904296
+92850	1399	0.00	2012-10-14 01:00:39.912584	2012-10-14 01:00:39.912584
+92851	1400	0.00	2012-10-14 01:00:39.921015	2012-10-14 01:00:39.921015
+92852	1401	0.00	2012-10-14 01:00:39.929258	2012-10-14 01:00:39.929258
+92853	1402	0.00	2012-10-14 01:00:39.937559	2012-10-14 01:00:39.937559
+92854	1403	0.00	2012-10-14 01:00:39.945948	2012-10-14 01:00:39.945948
+92855	1404	0.00	2012-10-14 01:00:39.954243	2012-10-14 01:00:39.954243
+92856	1405	0.00	2012-10-14 01:00:39.962554	2012-10-14 01:00:39.962554
+92857	1406	0.00	2012-10-14 01:00:39.971057	2012-10-14 01:00:39.971057
+92858	1407	0.00	2012-10-14 01:00:39.979415	2012-10-14 01:00:39.979415
+92859	1408	0.00	2012-10-14 01:00:39.987754	2012-10-14 01:00:39.987754
+92860	1409	0.00	2012-10-14 01:00:39.996087	2012-10-14 01:00:39.996087
+92861	1410	0.00	2012-10-14 01:00:40.004409	2012-10-14 01:00:40.004409
+92862	1411	0.00	2012-10-14 01:00:40.012722	2012-10-14 01:00:40.012722
+92863	1412	0.00	2012-10-14 01:00:40.021097	2012-10-14 01:00:40.021097
+92864	1413	0.00	2012-10-14 01:00:40.029636	2012-10-14 01:00:40.029636
+92865	1414	0.00	2012-10-14 01:00:40.071356	2012-10-14 01:00:40.071356
+92866	1415	0.00	2012-10-14 01:00:40.079281	2012-10-14 01:00:40.079281
+92867	1416	0.00	2012-10-14 01:00:40.087732	2012-10-14 01:00:40.087732
+92868	1417	0.00	2012-10-14 01:00:40.09608	2012-10-14 01:00:40.09608
+92869	1418	0.00	2012-10-14 01:00:40.104299	2012-10-14 01:00:40.104299
+92870	1419	0.00	2012-10-14 01:00:40.112689	2012-10-14 01:00:40.112689
+92871	1420	0.00	2012-10-14 01:00:40.121009	2012-10-14 01:00:40.121009
+92872	1421	0.00	2012-10-14 01:00:40.129334	2012-10-14 01:00:40.129334
+92873	1422	0.00	2012-10-14 01:00:40.137692	2012-10-14 01:00:40.137692
+92874	1423	0.00	2012-10-14 01:00:40.146004	2012-10-14 01:00:40.146004
+92875	1424	0.00	2012-10-14 01:00:40.1543	2012-10-14 01:00:40.1543
+92876	1425	0.00	2012-10-14 01:00:40.162642	2012-10-14 01:00:40.162642
+92877	1426	0.00	2012-10-14 01:00:40.171096	2012-10-14 01:00:40.171096
+92878	1427	0.00	2012-10-14 01:00:40.179331	2012-10-14 01:00:40.179331
+92879	1428	0.00	2012-10-14 01:00:40.187727	2012-10-14 01:00:40.187727
+92880	1429	0.00	2012-10-14 01:00:40.19598	2012-10-14 01:00:40.19598
+92881	1430	0.00	2012-10-14 01:00:40.204394	2012-10-14 01:00:40.204394
+92882	1431	0.00	2012-10-14 01:00:40.21258	2012-10-14 01:00:40.21258
+92883	1432	0.00	2012-10-14 01:00:40.220999	2012-10-14 01:00:40.220999
+92884	1433	0.00	2012-10-14 01:00:40.266577	2012-10-14 01:00:40.266577
+92885	1434	0.00	2012-10-14 01:00:40.29297	2012-10-14 01:00:40.29297
+92886	1435	0.00	2012-10-14 01:00:40.309412	2012-10-14 01:00:40.309412
+92887	1436	0.00	2012-10-14 01:00:40.342854	2012-10-14 01:00:40.342854
+92888	1437	0.00	2012-10-14 01:00:40.376333	2012-10-14 01:00:40.376333
+92889	1438	0.00	2012-10-14 01:00:40.409315	2012-10-14 01:00:40.409315
+92890	1439	0.00	2012-10-14 01:00:40.442676	2012-10-14 01:00:40.442676
+92891	1440	0.00	2012-10-14 01:00:40.476059	2012-10-14 01:00:40.476059
+92892	1441	0.00	2012-10-14 01:00:40.509264	2012-10-14 01:00:40.509264
+92893	1442	0.00	2012-10-14 01:00:40.542541	2012-10-14 01:00:40.542541
+92894	1443	0.00	2012-10-14 01:00:40.576202	2012-10-14 01:00:40.576202
+92895	1444	0.00	2012-10-14 01:00:40.609228	2012-10-14 01:00:40.609228
+92896	1445	0.00	2012-10-14 01:00:40.642504	2012-10-14 01:00:40.642504
+92897	1446	0.00	2012-10-14 01:00:40.676057	2012-10-14 01:00:40.676057
+92898	1447	0.00	2012-10-14 01:00:40.709349	2012-10-14 01:00:40.709349
+92899	1448	0.00	2012-10-14 01:00:40.742284	2012-10-14 01:00:40.742284
+92900	1449	0.00	2012-10-14 01:00:40.775534	2012-10-14 01:00:40.775534
+92901	1450	0.00	2012-10-14 01:00:40.808936	2012-10-14 01:00:40.808936
+92902	1451	0.00	2012-10-14 01:00:40.842342	2012-10-14 01:00:40.842342
+92903	1452	0.00	2012-10-14 01:00:40.875447	2012-10-14 01:00:40.875447
+92904	1453	0.00	2012-10-14 01:00:40.908791	2012-10-14 01:00:40.908791
+92905	1454	0.00	2012-10-14 01:00:40.94209	2012-10-14 01:00:40.94209
+92906	1455	0.00	2012-10-14 01:00:40.975391	2012-10-14 01:00:40.975391
+92907	1456	0.00	2012-10-14 01:00:41.008755	2012-10-14 01:00:41.008755
+92908	1457	0.00	2012-10-14 01:00:41.050383	2012-10-14 01:00:41.050383
+92909	1458	0.00	2012-10-14 01:00:41.083714	2012-10-14 01:00:41.083714
+92910	1459	0.00	2012-10-14 01:00:41.117104	2012-10-14 01:00:41.117104
+92911	1460	0.00	2012-10-14 01:00:41.150309	2012-10-14 01:00:41.150309
+92912	1461	0.00	2012-10-14 01:00:41.183681	2012-10-14 01:00:41.183681
+92913	1462	0.00	2012-10-14 01:00:41.217062	2012-10-14 01:00:41.217062
+92914	1463	0.00	2012-10-14 01:00:41.250301	2012-10-14 01:00:41.250301
+92915	1464	0.00	2012-10-14 01:00:41.283678	2012-10-14 01:00:41.283678
+92916	1465	0.00	2012-10-14 01:00:41.316993	2012-10-14 01:00:41.316993
+92917	1466	0.00	2012-10-14 01:00:41.350239	2012-10-14 01:00:41.350239
+92918	1467	0.00	2012-10-14 01:00:41.383539	2012-10-14 01:00:41.383539
+92919	1468	0.00	2012-10-14 01:00:41.416777	2012-10-14 01:00:41.416777
+92920	1469	0.00	2012-10-14 01:00:41.450213	2012-10-14 01:00:41.450213
+92921	1470	0.00	2012-10-14 01:00:41.483518	2012-10-14 01:00:41.483518
+92922	1471	0.00	2012-10-14 01:00:41.516907	2012-10-14 01:00:41.516907
+92923	1472	0.00	2012-10-14 01:00:41.550163	2012-10-14 01:00:41.550163
+92924	1473	0.00	2012-10-14 01:00:41.583447	2012-10-14 01:00:41.583447
+92925	1474	0.00	2012-10-14 01:00:41.616857	2012-10-14 01:00:41.616857
+92926	1475	0.00	2012-10-14 01:00:41.650121	2012-10-14 01:00:41.650121
+92927	1476	0.00	2012-10-14 01:00:41.683444	2012-10-14 01:00:41.683444
+92928	1477	0.00	2012-10-14 01:00:41.71678	2012-10-14 01:00:41.71678
+92929	1478	0.00	2012-10-14 01:00:41.750129	2012-10-14 01:00:41.750129
+92930	1479	0.00	2012-10-14 01:00:41.783373	2012-10-14 01:00:41.783373
+92931	1480	0.00	2012-10-14 01:00:41.816943	2012-10-14 01:00:41.816943
+92932	1481	0.00	2012-10-14 01:00:41.850106	2012-10-14 01:00:41.850106
+92933	1482	0.00	2012-10-14 01:00:41.883335	2012-10-14 01:00:41.883335
+92934	1483	0.00	2012-10-14 01:00:41.916711	2012-10-14 01:00:41.916711
+92935	1484	0.00	2012-10-14 01:00:41.950068	2012-10-14 01:00:41.950068
+92936	1485	0.00	2012-10-14 01:00:41.983295	2012-10-14 01:00:41.983295
+92937	1486	0.00	2012-10-14 01:00:42.016689	2012-10-14 01:00:42.016689
+92938	1487	0.00	2012-10-14 01:00:42.050055	2012-10-14 01:00:42.050055
+92939	1488	0.00	2012-10-14 01:00:42.08331	2012-10-14 01:00:42.08331
+92940	1489	0.00	2012-10-14 01:00:42.116584	2012-10-14 01:00:42.116584
+92941	1490	0.00	2012-10-14 01:00:42.150005	2012-10-14 01:00:42.150005
+92942	1491	0.00	2012-10-14 01:00:42.183238	2012-10-14 01:00:42.183238
+92943	1492	0.00	2012-10-14 01:00:42.216548	2012-10-14 01:00:42.216548
+92944	1493	0.00	2012-10-14 01:00:42.249922	2012-10-14 01:00:42.249922
+92945	1494	0.00	2012-10-14 01:00:42.283223	2012-10-14 01:00:42.283223
+92946	1495	0.00	2012-10-14 01:00:42.345132	2012-10-14 01:00:42.345132
+92947	1496	0.00	2012-10-14 01:00:42.367253	2012-10-14 01:00:42.367253
+92948	1497	0.00	2012-10-14 01:00:42.399794	2012-10-14 01:00:42.399794
+92949	1498	0.00	2012-10-14 01:00:42.433187	2012-10-14 01:00:42.433187
+92950	1499	0.00	2012-10-14 01:00:42.46639	2012-10-14 01:00:42.46639
+92951	1500	0.00	2012-10-14 01:00:42.499753	2012-10-14 01:00:42.499753
+92952	1378	0.00	2012-10-14 01:00:42.533181	2012-10-14 01:00:42.533181
+92953	1078	0.00	2012-10-14 01:00:42.566396	2012-10-14 01:00:42.566396
+92954	852	41.33	2012-10-14 01:01:12.792138	2012-10-14 01:01:12.792138
+92955	883	0.00	2012-10-14 01:01:12.800061	2012-10-14 01:01:12.800061
+92956	882	0.00	2012-10-14 01:01:12.80833	2012-10-14 01:01:12.80833
+92957	881	0.00	2012-10-14 01:01:12.816423	2012-10-14 01:01:12.816423
+92958	880	0.00	2012-10-14 01:01:12.824867	2012-10-14 01:01:12.824867
+92959	879	0.00	2012-10-14 01:01:12.833251	2012-10-14 01:01:12.833251
+92960	878	0.00	2012-10-14 01:01:12.841387	2012-10-14 01:01:12.841387
+92961	877	0.00	2012-10-14 01:01:12.849892	2012-10-14 01:01:12.849892
+92962	876	0.00	2012-10-14 01:01:12.858371	2012-10-14 01:01:12.858371
+92963	875	0.00	2012-10-14 01:01:12.866458	2012-10-14 01:01:12.866458
+92964	874	0.00	2012-10-14 01:01:12.875067	2012-10-14 01:01:12.875067
+92965	873	0.00	2012-10-14 01:01:12.883336	2012-10-14 01:01:12.883336
+92966	872	0.00	2012-10-14 01:01:12.8915	2012-10-14 01:01:12.8915
+92967	871	0.00	2012-10-14 01:01:12.900109	2012-10-14 01:01:12.900109
+92968	870	0.00	2012-10-14 01:01:12.908349	2012-10-14 01:01:12.908349
+92969	869	0.00	2012-10-14 01:01:12.917331	2012-10-14 01:01:12.917331
+92970	868	0.00	2012-10-14 01:01:12.958773	2012-10-14 01:01:12.958773
+92971	867	0.00	2012-10-14 01:01:12.966541	2012-10-14 01:01:12.966541
+92972	866	0.00	2012-10-14 01:01:12.974835	2012-10-14 01:01:12.974835
+92973	865	0.00	2012-10-14 01:01:12.983309	2012-10-14 01:01:12.983309
+92974	864	0.00	2012-10-14 01:01:12.991767	2012-10-14 01:01:12.991767
+92975	863	0.00	2012-10-14 01:01:13.00016	2012-10-14 01:01:13.00016
+92976	862	0.00	2012-10-14 01:01:13.00835	2012-10-14 01:01:13.00835
+92977	861	0.00	2012-10-14 01:01:13.016517	2012-10-14 01:01:13.016517
+92978	860	0.00	2012-10-14 01:01:13.02504	2012-10-14 01:01:13.02504
+92979	859	0.00	2012-10-14 01:01:13.033413	2012-10-14 01:01:13.033413
+92980	858	0.00	2012-10-14 01:01:13.041803	2012-10-14 01:01:13.041803
+92981	857	0.00	2012-10-14 01:01:13.050064	2012-10-14 01:01:13.050064
+92982	856	0.00	2012-10-14 01:01:13.058417	2012-10-14 01:01:13.058417
+92983	855	0.00	2012-10-14 01:01:13.066805	2012-10-14 01:01:13.066805
+92984	854	0.00	2012-10-14 01:01:13.07499	2012-10-14 01:01:13.07499
+92985	853	0.00	2012-10-14 01:01:13.083409	2012-10-14 01:01:13.083409
+92986	851	0.00	2012-10-14 01:01:13.132732	2012-10-14 01:01:13.132732
+92987	850	0.00	2012-10-14 01:01:13.142527	2012-10-14 01:01:13.142527
+92988	849	0.00	2012-10-14 01:01:13.15023	2012-10-14 01:01:13.15023
+92989	848	0.00	2012-10-14 01:01:13.158335	2012-10-14 01:01:13.158335
+92990	847	0.00	2012-10-14 01:01:13.166532	2012-10-14 01:01:13.166532
+92991	846	0.00	2012-10-14 01:01:13.175122	2012-10-14 01:01:13.175122
+92992	845	0.00	2012-10-14 01:01:13.1833	2012-10-14 01:01:13.1833
+92993	844	0.00	2012-10-14 01:01:13.191492	2012-10-14 01:01:13.191492
+92994	843	0.00	2012-10-14 01:01:13.200064	2012-10-14 01:01:13.200064
+92995	842	0.00	2012-10-14 01:01:13.208304	2012-10-14 01:01:13.208304
+92996	841	0.00	2012-10-14 01:01:13.216512	2012-10-14 01:01:13.216512
+92997	840	0.00	2012-10-14 01:01:13.225058	2012-10-14 01:01:13.225058
+92998	839	0.00	2012-10-14 01:01:13.233318	2012-10-14 01:01:13.233318
+92999	838	0.00	2012-10-14 01:01:13.24151	2012-10-14 01:01:13.24151
+93000	837	0.00	2012-10-14 01:01:13.250057	2012-10-14 01:01:13.250057
+93001	836	0.00	2012-10-14 01:01:13.258305	2012-10-14 01:01:13.258305
+93002	835	0.00	2012-10-14 01:01:13.266482	2012-10-14 01:01:13.266482
+93003	834	0.00	2012-10-14 01:01:13.275068	2012-10-14 01:01:13.275068
+93004	833	0.00	2012-10-14 01:01:13.283376	2012-10-14 01:01:13.283376
+93005	832	0.00	2012-10-14 01:01:13.291809	2012-10-14 01:01:13.291809
+93006	831	0.00	2012-10-14 01:01:13.299961	2012-10-14 01:01:13.299961
+93007	830	0.00	2012-10-14 01:01:13.308381	2012-10-14 01:01:13.308381
+93008	829	0.00	2012-10-14 01:01:13.316662	2012-10-14 01:01:13.316662
+93009	828	0.00	2012-10-14 01:01:13.325063	2012-10-14 01:01:13.325063
+93010	827	0.00	2012-10-14 01:01:13.333273	2012-10-14 01:01:13.333273
+93011	826	0.00	2012-10-14 01:01:13.341652	2012-10-14 01:01:13.341652
+93012	825	0.00	2012-10-14 01:01:13.350057	2012-10-14 01:01:13.350057
+93013	824	0.00	2012-10-14 01:01:13.358267	2012-10-14 01:01:13.358267
+93014	823	0.00	2012-10-14 01:01:13.366823	2012-10-14 01:01:13.366823
+93015	822	0.00	2012-10-14 01:01:13.375059	2012-10-14 01:01:13.375059
+93016	821	0.00	2012-10-14 01:01:13.383244	2012-10-14 01:01:13.383244
+93017	820	0.00	2012-10-14 01:01:13.391807	2012-10-14 01:01:13.391807
+93018	819	0.00	2012-10-14 01:01:13.400135	2012-10-14 01:01:13.400135
+93019	818	0.00	2012-10-14 01:01:13.408336	2012-10-14 01:01:13.408336
+93020	817	0.00	2012-10-14 01:01:13.416952	2012-10-14 01:01:13.416952
+93021	816	0.00	2012-10-14 01:01:13.425081	2012-10-14 01:01:13.425081
+93022	815	0.00	2012-10-14 01:01:13.433283	2012-10-14 01:01:13.433283
+93023	814	0.00	2012-10-14 01:01:13.441666	2012-10-14 01:01:13.441666
+93024	813	0.00	2012-10-14 01:01:13.450091	2012-10-14 01:01:13.450091
+93025	812	0.00	2012-10-14 01:01:13.458316	2012-10-14 01:01:13.458316
+93026	811	0.00	2012-10-14 01:01:13.467	2012-10-14 01:01:13.467
+93027	810	0.00	2012-10-14 01:01:13.475169	2012-10-14 01:01:13.475169
+93028	809	0.00	2012-10-14 01:01:13.4834	2012-10-14 01:01:13.4834
+93029	808	0.00	2012-10-14 01:01:13.491858	2012-10-14 01:01:13.491858
+93030	807	0.00	2012-10-14 01:01:13.500178	2012-10-14 01:01:13.500178
+93031	806	0.00	2012-10-14 01:01:13.508409	2012-10-14 01:01:13.508409
+93032	805	0.00	2012-10-14 01:01:13.516761	2012-10-14 01:01:13.516761
+93033	804	0.00	2012-10-14 01:01:13.525348	2012-10-14 01:01:13.525348
+93034	803	0.00	2012-10-14 01:01:13.533358	2012-10-14 01:01:13.533358
+93035	802	0.00	2012-10-14 01:01:13.541952	2012-10-14 01:01:13.541952
+93036	801	0.00	2012-10-14 01:01:13.550148	2012-10-14 01:01:13.550148
+93037	800	0.00	2012-10-14 01:01:13.558387	2012-10-14 01:01:13.558387
+93038	799	0.00	2012-10-14 01:01:13.566827	2012-10-14 01:01:13.566827
+93039	798	0.00	2012-10-14 01:01:13.57524	2012-10-14 01:01:13.57524
+93040	797	0.00	2012-10-14 01:01:13.583388	2012-10-14 01:01:13.583388
+93041	796	0.00	2012-10-14 01:01:13.591997	2012-10-14 01:01:13.591997
+93042	795	0.00	2012-10-14 01:01:13.634227	2012-10-14 01:01:13.634227
+93043	794	0.00	2012-10-14 01:01:13.642098	2012-10-14 01:01:13.642098
+93044	793	0.00	2012-10-14 01:01:13.650212	2012-10-14 01:01:13.650212
+93045	792	0.00	2012-10-14 01:01:13.658457	2012-10-14 01:01:13.658457
+93046	791	0.00	2012-10-14 01:01:13.667027	2012-10-14 01:01:13.667027
+93047	790	0.00	2012-10-14 01:01:13.675275	2012-10-14 01:01:13.675275
+93048	789	0.00	2012-10-14 01:01:13.683426	2012-10-14 01:01:13.683426
+93049	788	0.00	2012-10-14 01:01:13.692021	2012-10-14 01:01:13.692021
+93050	787	0.00	2012-10-14 01:01:13.700205	2012-10-14 01:01:13.700205
+93051	786	0.00	2012-10-14 01:01:13.708477	2012-10-14 01:01:13.708477
+93052	785	0.00	2012-10-14 01:01:13.717191	2012-10-14 01:01:13.717191
+93053	784	0.00	2012-10-14 01:01:13.725303	2012-10-14 01:01:13.725303
+93054	783	0.00	2012-10-14 01:01:13.733414	2012-10-14 01:01:13.733414
+93055	782	0.00	2012-10-14 01:01:13.742093	2012-10-14 01:01:13.742093
+93056	781	0.00	2012-10-14 01:01:13.750244	2012-10-14 01:01:13.750244
+93057	780	0.00	2012-10-14 01:01:13.758505	2012-10-14 01:01:13.758505
+93058	779	0.00	2012-10-14 01:01:13.767163	2012-10-14 01:01:13.767163
+93059	778	0.00	2012-10-14 01:01:13.775293	2012-10-14 01:01:13.775293
+93060	777	0.00	2012-10-14 01:01:13.783454	2012-10-14 01:01:13.783454
+93061	776	0.00	2012-10-14 01:01:13.79209	2012-10-14 01:01:13.79209
+93062	775	0.00	2012-10-14 01:01:13.800341	2012-10-14 01:01:13.800341
+93063	774	0.00	2012-10-14 01:01:13.808535	2012-10-14 01:01:13.808535
+93064	773	0.00	2012-10-14 01:01:13.8171	2012-10-14 01:01:13.8171
+93065	772	0.00	2012-10-14 01:01:13.82542	2012-10-14 01:01:13.82542
+93066	771	0.00	2012-10-14 01:01:13.83355	2012-10-14 01:01:13.83355
+93067	770	0.00	2012-10-14 01:01:13.842246	2012-10-14 01:01:13.842246
+93068	769	0.00	2012-10-14 01:01:13.850335	2012-10-14 01:01:13.850335
+93069	768	0.00	2012-10-14 01:01:13.858723	2012-10-14 01:01:13.858723
+93070	767	0.00	2012-10-14 01:01:13.867104	2012-10-14 01:01:13.867104
+93071	766	0.00	2012-10-14 01:01:13.875405	2012-10-14 01:01:13.875405
+93072	765	0.00	2012-10-14 01:01:13.883533	2012-10-14 01:01:13.883533
+93073	884	0.00	2012-10-15 01:00:25.735392	2012-10-15 01:00:25.735392
+93074	885	0.00	2012-10-15 01:00:25.743289	2012-10-15 01:00:25.743289
+93075	886	0.00	2012-10-15 01:00:25.751255	2012-10-15 01:00:25.751255
+93076	887	0.00	2012-10-15 01:00:25.759857	2012-10-15 01:00:25.759857
+93077	888	0.00	2012-10-15 01:00:25.767949	2012-10-15 01:00:25.767949
+93078	889	0.00	2012-10-15 01:00:25.776208	2012-10-15 01:00:25.776208
+93079	890	0.00	2012-10-15 01:00:25.784335	2012-10-15 01:00:25.784335
+93080	891	0.00	2012-10-15 01:00:25.79263	2012-10-15 01:00:25.79263
+93081	892	0.00	2012-10-15 01:00:25.801224	2012-10-15 01:00:25.801224
+93082	893	0.00	2012-10-15 01:00:25.809851	2012-10-15 01:00:25.809851
+93083	894	0.00	2012-10-15 01:00:25.817831	2012-10-15 01:00:25.817831
+93084	895	0.00	2012-10-15 01:00:25.82632	2012-10-15 01:00:25.82632
+93085	896	0.00	2012-10-15 01:00:25.834564	2012-10-15 01:00:25.834564
+93086	897	0.00	2012-10-15 01:00:25.842996	2012-10-15 01:00:25.842996
+93087	898	0.00	2012-10-15 01:00:25.851263	2012-10-15 01:00:25.851263
+93088	899	0.00	2012-10-15 01:00:25.859636	2012-10-15 01:00:25.859636
+93089	900	0.00	2012-10-15 01:00:25.868002	2012-10-15 01:00:25.868002
+93090	901	0.00	2012-10-15 01:00:25.876224	2012-10-15 01:00:25.876224
+93091	902	0.00	2012-10-15 01:00:25.884502	2012-10-15 01:00:25.884502
+93092	903	0.00	2012-10-15 01:00:25.893024	2012-10-15 01:00:25.893024
+93093	904	0.00	2012-10-15 01:00:25.901236	2012-10-15 01:00:25.901236
+93094	905	0.00	2012-10-15 01:00:25.909665	2012-10-15 01:00:25.909665
+93095	906	0.00	2012-10-15 01:00:25.918145	2012-10-15 01:00:25.918145
+93096	907	0.00	2012-10-15 01:00:25.926229	2012-10-15 01:00:25.926229
+93097	908	0.00	2012-10-15 01:00:25.934805	2012-10-15 01:00:25.934805
+93098	909	0.00	2012-10-15 01:00:25.943187	2012-10-15 01:00:25.943187
+93099	910	0.00	2012-10-15 01:00:25.951187	2012-10-15 01:00:25.951187
+93100	911	0.00	2012-10-15 01:00:25.959373	2012-10-15 01:00:25.959373
+93101	912	0.00	2012-10-15 01:00:25.967854	2012-10-15 01:00:25.967854
+93102	913	0.00	2012-10-15 01:00:25.976205	2012-10-15 01:00:25.976205
+93103	914	0.00	2012-10-15 01:00:25.984517	2012-10-15 01:00:25.984517
+93104	915	0.00	2012-10-15 01:00:25.992834	2012-10-15 01:00:25.992834
+93105	916	0.00	2012-10-15 01:00:26.001355	2012-10-15 01:00:26.001355
+93106	917	0.00	2012-10-15 01:00:26.009757	2012-10-15 01:00:26.009757
+93107	918	0.00	2012-10-15 01:00:26.018043	2012-10-15 01:00:26.018043
+93108	919	0.00	2012-10-15 01:00:26.026276	2012-10-15 01:00:26.026276
+93109	920	0.00	2012-10-15 01:00:26.034778	2012-10-15 01:00:26.034778
+93110	921	0.00	2012-10-15 01:00:26.043045	2012-10-15 01:00:26.043045
+93111	922	0.00	2012-10-15 01:00:26.051303	2012-10-15 01:00:26.051303
+93112	923	0.00	2012-10-15 01:00:26.059446	2012-10-15 01:00:26.059446
+93113	924	0.00	2012-10-15 01:00:26.068129	2012-10-15 01:00:26.068129
+93114	925	0.00	2012-10-15 01:00:26.076331	2012-10-15 01:00:26.076331
+93115	926	0.00	2012-10-15 01:00:26.084455	2012-10-15 01:00:26.084455
+93116	927	0.00	2012-10-15 01:00:26.093272	2012-10-15 01:00:26.093272
+93117	928	0.00	2012-10-15 01:00:26.101344	2012-10-15 01:00:26.101344
+93118	929	0.00	2012-10-15 01:00:26.109774	2012-10-15 01:00:26.109774
+93119	930	0.00	2012-10-15 01:00:26.118284	2012-10-15 01:00:26.118284
+93120	931	0.00	2012-10-15 01:00:26.126297	2012-10-15 01:00:26.126297
+93121	932	0.00	2012-10-15 01:00:26.134764	2012-10-15 01:00:26.134764
+93122	933	0.00	2012-10-15 01:00:26.143077	2012-10-15 01:00:26.143077
+93123	934	0.00	2012-10-15 01:00:26.151329	2012-10-15 01:00:26.151329
+93124	935	0.00	2012-10-15 01:00:26.159656	2012-10-15 01:00:26.159656
+93125	936	0.00	2012-10-15 01:00:26.168001	2012-10-15 01:00:26.168001
+93126	937	0.00	2012-10-15 01:00:26.20255	2012-10-15 01:00:26.20255
+93127	938	0.00	2012-10-15 01:00:26.210158	2012-10-15 01:00:26.210158
+93128	939	0.00	2012-10-15 01:00:26.2181	2012-10-15 01:00:26.2181
+93129	940	0.00	2012-10-15 01:00:26.2263	2012-10-15 01:00:26.2263
+93130	941	0.00	2012-10-15 01:00:26.234811	2012-10-15 01:00:26.234811
+93131	942	0.00	2012-10-15 01:00:26.243196	2012-10-15 01:00:26.243196
+93132	943	0.00	2012-10-15 01:00:26.251277	2012-10-15 01:00:26.251277
+93133	944	0.00	2012-10-15 01:00:26.259775	2012-10-15 01:00:26.259775
+93134	945	0.00	2012-10-15 01:00:26.268034	2012-10-15 01:00:26.268034
+93135	946	0.00	2012-10-15 01:00:26.27639	2012-10-15 01:00:26.27639
+93136	947	0.00	2012-10-15 01:00:26.284416	2012-10-15 01:00:26.284416
+93137	948	0.00	2012-10-15 01:00:26.29324	2012-10-15 01:00:26.29324
+93138	949	0.00	2012-10-15 01:00:26.301309	2012-10-15 01:00:26.301309
+93139	950	0.00	2012-10-15 01:00:26.30949	2012-10-15 01:00:26.30949
+93140	951	0.00	2012-10-15 01:00:26.318032	2012-10-15 01:00:26.318032
+93141	952	0.00	2012-10-15 01:00:26.326365	2012-10-15 01:00:26.326365
+93142	953	0.00	2012-10-15 01:00:26.334424	2012-10-15 01:00:26.334424
+93143	954	0.00	2012-10-15 01:00:26.343269	2012-10-15 01:00:26.343269
+93144	955	0.00	2012-10-15 01:00:26.351291	2012-10-15 01:00:26.351291
+93145	956	0.00	2012-10-15 01:00:26.35981	2012-10-15 01:00:26.35981
+93146	957	0.00	2012-10-15 01:00:26.368318	2012-10-15 01:00:26.368318
+93147	958	0.00	2012-10-15 01:00:26.376338	2012-10-15 01:00:26.376338
+93148	959	0.00	2012-10-15 01:00:26.384429	2012-10-15 01:00:26.384429
+93149	960	0.00	2012-10-15 01:00:26.393064	2012-10-15 01:00:26.393064
+93150	961	0.00	2012-10-15 01:00:26.401277	2012-10-15 01:00:26.401277
+93151	962	0.00	2012-10-15 01:00:26.409791	2012-10-15 01:00:26.409791
+93152	963	0.00	2012-10-15 01:00:26.418087	2012-10-15 01:00:26.418087
+93153	964	0.00	2012-10-15 01:00:26.426304	2012-10-15 01:00:26.426304
+93154	965	0.00	2012-10-15 01:00:26.434711	2012-10-15 01:00:26.434711
+93155	966	0.00	2012-10-15 01:00:26.443105	2012-10-15 01:00:26.443105
+93156	967	0.00	2012-10-15 01:00:26.45127	2012-10-15 01:00:26.45127
+93157	968	0.00	2012-10-15 01:00:26.459795	2012-10-15 01:00:26.459795
+93158	969	0.00	2012-10-15 01:00:26.468065	2012-10-15 01:00:26.468065
+93159	970	0.00	2012-10-15 01:00:26.476429	2012-10-15 01:00:26.476429
+93160	971	0.00	2012-10-15 01:00:26.484807	2012-10-15 01:00:26.484807
+93161	972	0.00	2012-10-15 01:00:26.493324	2012-10-15 01:00:26.493324
+93162	973	0.00	2012-10-15 01:00:26.501381	2012-10-15 01:00:26.501381
+93163	974	0.00	2012-10-15 01:00:26.509756	2012-10-15 01:00:26.509756
+93164	975	0.00	2012-10-15 01:00:26.518256	2012-10-15 01:00:26.518256
+93165	976	0.00	2012-10-15 01:00:26.526352	2012-10-15 01:00:26.526352
+93166	977	0.00	2012-10-15 01:00:26.534776	2012-10-15 01:00:26.534776
+93167	978	0.00	2012-10-15 01:00:26.543314	2012-10-15 01:00:26.543314
+93168	979	0.00	2012-10-15 01:00:26.551306	2012-10-15 01:00:26.551306
+93169	1061	0.00	2012-10-15 01:00:26.559826	2012-10-15 01:00:26.559826
+93170	1062	0.00	2012-10-15 01:00:26.568259	2012-10-15 01:00:26.568259
+93171	1063	0.00	2012-10-15 01:00:26.576476	2012-10-15 01:00:26.576476
+93172	1064	0.00	2012-10-15 01:00:26.584869	2012-10-15 01:00:26.584869
+93173	1065	0.00	2012-10-15 01:00:26.593244	2012-10-15 01:00:26.593244
+93174	1066	0.00	2012-10-15 01:00:26.613181	2012-10-15 01:00:26.613181
+93175	1067	0.00	2012-10-15 01:00:26.630278	2012-10-15 01:00:26.630278
+93176	1068	0.00	2012-10-15 01:00:26.671857	2012-10-15 01:00:26.671857
+93177	1069	0.00	2012-10-15 01:00:26.750711	2012-10-15 01:00:26.750711
+93178	1070	0.00	2012-10-15 01:00:26.780513	2012-10-15 01:00:26.780513
+93179	1071	0.00	2012-10-15 01:00:26.821554	2012-10-15 01:00:26.821554
+93180	980	0.00	2012-10-15 01:00:26.863392	2012-10-15 01:00:26.863392
+93181	981	0.00	2012-10-15 01:00:26.905033	2012-10-15 01:00:26.905033
+93182	982	0.00	2012-10-15 01:00:26.946413	2012-10-15 01:00:26.946413
+93183	983	0.00	2012-10-15 01:00:26.988212	2012-10-15 01:00:26.988212
+93184	984	0.00	2012-10-15 01:00:27.029858	2012-10-15 01:00:27.029858
+93185	985	0.00	2012-10-15 01:00:27.071392	2012-10-15 01:00:27.071392
+93186	986	0.00	2012-10-15 01:00:27.113379	2012-10-15 01:00:27.113379
+93187	987	0.00	2012-10-15 01:00:27.154818	2012-10-15 01:00:27.154818
+93188	988	0.00	2012-10-15 01:00:27.196325	2012-10-15 01:00:27.196325
+93189	989	0.00	2012-10-15 01:00:27.237847	2012-10-15 01:00:27.237847
+93190	990	0.00	2012-10-15 01:00:27.279743	2012-10-15 01:00:27.279743
+93191	991	0.00	2012-10-15 01:00:27.321266	2012-10-15 01:00:27.321266
+93192	992	0.00	2012-10-15 01:00:27.3632	2012-10-15 01:00:27.3632
+93193	993	0.00	2012-10-15 01:00:27.404742	2012-10-15 01:00:27.404742
+93194	994	0.00	2012-10-15 01:00:27.446285	2012-10-15 01:00:27.446285
+93195	995	0.00	2012-10-15 01:00:27.487842	2012-10-15 01:00:27.487842
+93196	996	0.00	2012-10-15 01:00:27.529481	2012-10-15 01:00:27.529481
+93197	997	0.00	2012-10-15 01:00:27.571234	2012-10-15 01:00:27.571234
+93198	998	0.00	2012-10-15 01:00:27.61298	2012-10-15 01:00:27.61298
+93199	999	0.00	2012-10-15 01:00:27.654516	2012-10-15 01:00:27.654516
+93200	1000	0.00	2012-10-15 01:00:27.696359	2012-10-15 01:00:27.696359
+93201	1001	0.00	2012-10-15 01:00:27.738025	2012-10-15 01:00:27.738025
+93202	1002	0.00	2012-10-15 01:00:27.779332	2012-10-15 01:00:27.779332
+93203	1003	0.00	2012-10-15 01:00:27.821268	2012-10-15 01:00:27.821268
+93204	1004	0.00	2012-10-15 01:00:27.862816	2012-10-15 01:00:27.862816
+93205	1005	0.00	2012-10-15 01:00:27.904326	2012-10-15 01:00:27.904326
+93206	1006	0.00	2012-10-15 01:00:27.946082	2012-10-15 01:00:27.946082
+93207	1007	0.00	2012-10-15 01:00:27.987739	2012-10-15 01:00:27.987739
+93208	1008	0.00	2012-10-15 01:00:28.029234	2012-10-15 01:00:28.029234
+93209	1009	0.00	2012-10-15 01:00:28.070996	2012-10-15 01:00:28.070996
+93210	1010	0.00	2012-10-15 01:00:28.112857	2012-10-15 01:00:28.112857
+93211	1011	0.00	2012-10-15 01:00:28.154213	2012-10-15 01:00:28.154213
+93212	1012	0.00	2012-10-15 01:00:28.196151	2012-10-15 01:00:28.196151
+93213	1013	0.00	2012-10-15 01:00:28.237753	2012-10-15 01:00:28.237753
+93214	1014	0.00	2012-10-15 01:00:28.279259	2012-10-15 01:00:28.279259
+93215	1015	0.00	2012-10-15 01:00:28.3208	2012-10-15 01:00:28.3208
+93216	1016	0.00	2012-10-15 01:00:28.362454	2012-10-15 01:00:28.362454
+93217	1017	0.00	2012-10-15 01:00:28.40423	2012-10-15 01:00:28.40423
+93218	1018	0.00	2012-10-15 01:00:28.445942	2012-10-15 01:00:28.445942
+93219	1019	0.00	2012-10-15 01:00:28.487466	2012-10-15 01:00:28.487466
+93220	1020	0.00	2012-10-15 01:00:28.529365	2012-10-15 01:00:28.529365
+93221	1021	0.00	2012-10-15 01:00:28.570814	2012-10-15 01:00:28.570814
+93222	1022	0.00	2012-10-15 01:00:28.612326	2012-10-15 01:00:28.612326
+93223	1023	0.00	2012-10-15 01:00:28.654262	2012-10-15 01:00:28.654262
+93224	1024	0.00	2012-10-15 01:00:28.695721	2012-10-15 01:00:28.695721
+93225	1025	0.00	2012-10-15 01:00:28.737317	2012-10-15 01:00:28.737317
+93226	1026	0.00	2012-10-15 01:00:28.779262	2012-10-15 01:00:28.779262
+93227	1027	0.00	2012-10-15 01:00:28.82077	2012-10-15 01:00:28.82077
+93228	1028	0.00	2012-10-15 01:00:28.862407	2012-10-15 01:00:28.862407
+93229	1029	0.00	2012-10-15 01:00:28.904008	2012-10-15 01:00:28.904008
+93230	1030	0.00	2012-10-15 01:00:28.945858	2012-10-15 01:00:28.945858
+93231	1031	0.00	2012-10-15 01:00:28.987212	2012-10-15 01:00:28.987212
+93232	1032	0.00	2012-10-15 01:00:29.029524	2012-10-15 01:00:29.029524
+93233	1033	0.00	2012-10-15 01:00:29.070642	2012-10-15 01:00:29.070642
+93234	1034	0.00	2012-10-15 01:00:29.11227	2012-10-15 01:00:29.11227
+93235	1035	0.00	2012-10-15 01:00:29.154055	2012-10-15 01:00:29.154055
+93236	1036	0.00	2012-10-15 01:00:29.195483	2012-10-15 01:00:29.195483
+93237	1037	0.00	2012-10-15 01:00:29.23734	2012-10-15 01:00:29.23734
+93238	1038	0.00	2012-10-15 01:00:29.278942	2012-10-15 01:00:29.278942
+93239	1039	0.00	2012-10-15 01:00:29.320441	2012-10-15 01:00:29.320441
+93240	1040	0.00	2012-10-15 01:00:29.362375	2012-10-15 01:00:29.362375
+93241	1041	0.00	2012-10-15 01:00:29.403807	2012-10-15 01:00:29.403807
+93242	1042	0.00	2012-10-15 01:00:29.445305	2012-10-15 01:00:29.445305
+93243	1043	0.00	2012-10-15 01:00:29.487242	2012-10-15 01:00:29.487242
+93244	1044	0.00	2012-10-15 01:00:29.528745	2012-10-15 01:00:29.528745
+93245	1045	0.00	2012-10-15 01:00:29.570297	2012-10-15 01:00:29.570297
+93246	1046	0.00	2012-10-15 01:00:29.612215	2012-10-15 01:00:29.612215
+93247	1047	0.00	2012-10-15 01:00:29.653635	2012-10-15 01:00:29.653635
+93248	1048	0.00	2012-10-15 01:00:29.695251	2012-10-15 01:00:29.695251
+93249	1049	0.00	2012-10-15 01:00:29.736975	2012-10-15 01:00:29.736975
+93250	1050	0.00	2012-10-15 01:00:29.778845	2012-10-15 01:00:29.778845
+93251	1051	0.00	2012-10-15 01:00:29.84259	2012-10-15 01:00:29.84259
+93252	1052	0.00	2012-10-15 01:00:29.850508	2012-10-15 01:00:29.850508
+93253	1053	0.00	2012-10-15 01:00:29.858873	2012-10-15 01:00:29.858873
+93254	1054	0.00	2012-10-15 01:00:29.86724	2012-10-15 01:00:29.86724
+93255	1055	0.00	2012-10-15 01:00:29.875482	2012-10-15 01:00:29.875482
+93256	1056	0.00	2012-10-15 01:00:29.884002	2012-10-15 01:00:29.884002
+93257	1057	0.00	2012-10-15 01:00:29.892188	2012-10-15 01:00:29.892188
+93258	1058	0.00	2012-10-15 01:00:29.900416	2012-10-15 01:00:29.900416
+93259	1059	0.00	2012-10-15 01:00:29.908782	2012-10-15 01:00:29.908782
+93260	1060	0.00	2012-10-15 01:00:29.917205	2012-10-15 01:00:29.917205
+93261	1072	0.00	2012-10-15 01:00:29.925477	2012-10-15 01:00:29.925477
+93262	1073	0.00	2012-10-15 01:00:29.933852	2012-10-15 01:00:29.933852
+93263	1074	0.00	2012-10-15 01:00:29.942193	2012-10-15 01:00:29.942193
+93264	1075	0.00	2012-10-15 01:00:29.950384	2012-10-15 01:00:29.950384
+93265	1076	0.00	2012-10-15 01:00:29.958874	2012-10-15 01:00:29.958874
+93266	1077	0.00	2012-10-15 01:00:29.967211	2012-10-15 01:00:29.967211
+93267	1079	0.00	2012-10-15 01:00:29.975418	2012-10-15 01:00:29.975418
+93268	1080	0.00	2012-10-15 01:00:29.983838	2012-10-15 01:00:29.983838
+93269	1081	0.00	2012-10-15 01:00:29.992224	2012-10-15 01:00:29.992224
+93270	1082	0.00	2012-10-15 01:00:30.000379	2012-10-15 01:00:30.000379
+93271	1083	0.00	2012-10-15 01:00:30.009089	2012-10-15 01:00:30.009089
+93272	1084	0.00	2012-10-15 01:00:30.017246	2012-10-15 01:00:30.017246
+93273	1085	0.00	2012-10-15 01:00:30.025429	2012-10-15 01:00:30.025429
+93274	1086	0.00	2012-10-15 01:00:30.0338	2012-10-15 01:00:30.0338
+93275	1087	0.00	2012-10-15 01:00:30.042263	2012-10-15 01:00:30.042263
+93276	1088	0.00	2012-10-15 01:00:30.050541	2012-10-15 01:00:30.050541
+93277	1089	0.00	2012-10-15 01:00:30.058986	2012-10-15 01:00:30.058986
+93278	1090	0.00	2012-10-15 01:00:30.067203	2012-10-15 01:00:30.067203
+93279	1091	0.00	2012-10-15 01:00:30.075561	2012-10-15 01:00:30.075561
+93280	1092	0.00	2012-10-15 01:00:30.083867	2012-10-15 01:00:30.083867
+93281	1093	0.00	2012-10-15 01:00:30.092231	2012-10-15 01:00:30.092231
+93282	1094	0.00	2012-10-15 01:00:30.100304	2012-10-15 01:00:30.100304
+93283	1095	0.00	2012-10-15 01:00:30.108482	2012-10-15 01:00:30.108482
+93284	1096	0.00	2012-10-15 01:00:30.117215	2012-10-15 01:00:30.117215
+93285	1097	0.00	2012-10-15 01:00:30.125439	2012-10-15 01:00:30.125439
+93286	1098	0.00	2012-10-15 01:00:30.133954	2012-10-15 01:00:30.133954
+93287	1099	0.00	2012-10-15 01:00:30.142151	2012-10-15 01:00:30.142151
+93288	1100	0.00	2012-10-15 01:00:30.150416	2012-10-15 01:00:30.150416
+93289	1101	0.00	2012-10-15 01:00:30.158866	2012-10-15 01:00:30.158866
+93290	1102	0.00	2012-10-15 01:00:30.167259	2012-10-15 01:00:30.167259
+93291	1103	0.00	2012-10-15 01:00:30.175648	2012-10-15 01:00:30.175648
+93292	1104	0.00	2012-10-15 01:00:30.184018	2012-10-15 01:00:30.184018
+93293	1105	0.00	2012-10-15 01:00:30.192254	2012-10-15 01:00:30.192254
+93294	1106	0.00	2012-10-15 01:00:30.200475	2012-10-15 01:00:30.200475
+93295	1107	0.00	2012-10-15 01:00:30.209047	2012-10-15 01:00:30.209047
+93296	1108	0.00	2012-10-15 01:00:30.217296	2012-10-15 01:00:30.217296
+93297	1109	0.00	2012-10-15 01:00:30.225534	2012-10-15 01:00:30.225534
+93298	1110	0.00	2012-10-15 01:00:30.233838	2012-10-15 01:00:30.233838
+93299	1111	0.00	2012-10-15 01:00:30.242244	2012-10-15 01:00:30.242244
+93300	1112	0.00	2012-10-15 01:00:30.250479	2012-10-15 01:00:30.250479
+93301	1113	0.00	2012-10-15 01:00:30.258812	2012-10-15 01:00:30.258812
+93302	1114	0.00	2012-10-15 01:00:30.267132	2012-10-15 01:00:30.267132
+93303	1115	0.00	2012-10-15 01:00:30.275516	2012-10-15 01:00:30.275516
+93304	1116	0.00	2012-10-15 01:00:30.28365	2012-10-15 01:00:30.28365
+93305	1117	0.00	2012-10-15 01:00:30.292297	2012-10-15 01:00:30.292297
+93306	1118	0.00	2012-10-15 01:00:30.300435	2012-10-15 01:00:30.300435
+93307	1119	0.00	2012-10-15 01:00:30.309294	2012-10-15 01:00:30.309294
+93308	1120	0.00	2012-10-15 01:00:30.317261	2012-10-15 01:00:30.317261
+93309	1121	0.00	2012-10-15 01:00:30.325849	2012-10-15 01:00:30.325849
+93310	1122	0.00	2012-10-15 01:00:30.334021	2012-10-15 01:00:30.334021
+93311	1123	0.00	2012-10-15 01:00:30.342302	2012-10-15 01:00:30.342302
+93312	1124	0.00	2012-10-15 01:00:30.350443	2012-10-15 01:00:30.350443
+93313	1125	0.00	2012-10-15 01:00:30.359042	2012-10-15 01:00:30.359042
+93314	1126	0.00	2012-10-15 01:00:30.367314	2012-10-15 01:00:30.367314
+93315	1127	0.00	2012-10-15 01:00:30.375476	2012-10-15 01:00:30.375476
+93316	1128	0.00	2012-10-15 01:00:30.384058	2012-10-15 01:00:30.384058
+93317	1129	0.00	2012-10-15 01:00:30.392269	2012-10-15 01:00:30.392269
+93318	1130	0.00	2012-10-15 01:00:30.400481	2012-10-15 01:00:30.400481
+93319	1131	0.00	2012-10-15 01:00:30.409193	2012-10-15 01:00:30.409193
+93320	1132	0.00	2012-10-15 01:00:30.442743	2012-10-15 01:00:30.442743
+93321	1133	0.00	2012-10-15 01:00:30.450479	2012-10-15 01:00:30.450479
+93322	1134	0.00	2012-10-15 01:00:30.458826	2012-10-15 01:00:30.458826
+93323	1135	0.00	2012-10-15 01:00:30.467163	2012-10-15 01:00:30.467163
+93324	1136	0.00	2012-10-15 01:00:30.475727	2012-10-15 01:00:30.475727
+93325	1137	0.00	2012-10-15 01:00:30.522507	2012-10-15 01:00:30.522507
+93326	1138	0.00	2012-10-15 01:00:30.534262	2012-10-15 01:00:30.534262
+93327	1139	0.00	2012-10-15 01:00:30.542214	2012-10-15 01:00:30.542214
+93328	1140	0.00	2012-10-15 01:00:30.550491	2012-10-15 01:00:30.550491
+93329	1141	0.00	2012-10-15 01:00:30.559184	2012-10-15 01:00:30.559184
+93330	1142	0.00	2012-10-15 01:00:30.567121	2012-10-15 01:00:30.567121
+93331	1143	0.00	2012-10-15 01:00:30.575492	2012-10-15 01:00:30.575492
+93332	1144	0.00	2012-10-15 01:00:30.583843	2012-10-15 01:00:30.583843
+93333	1145	0.00	2012-10-15 01:00:30.592212	2012-10-15 01:00:30.592212
+93334	1146	0.00	2012-10-15 01:00:30.60051	2012-10-15 01:00:30.60051
+93335	1147	0.00	2012-10-15 01:00:30.60868	2012-10-15 01:00:30.60868
+93336	1148	0.00	2012-10-15 01:00:30.617209	2012-10-15 01:00:30.617209
+93337	1149	0.00	2012-10-15 01:00:30.625467	2012-10-15 01:00:30.625467
+93338	1150	0.00	2012-10-15 01:00:30.633808	2012-10-15 01:00:30.633808
+93339	1151	0.00	2012-10-15 01:00:30.642273	2012-10-15 01:00:30.642273
+93340	1152	0.00	2012-10-15 01:00:30.650471	2012-10-15 01:00:30.650471
+93341	1153	0.00	2012-10-15 01:00:30.659035	2012-10-15 01:00:30.659035
+93342	1154	0.00	2012-10-15 01:00:30.667254	2012-10-15 01:00:30.667254
+93343	1155	0.00	2012-10-15 01:00:30.675525	2012-10-15 01:00:30.675525
+93344	1156	0.00	2012-10-15 01:00:30.683962	2012-10-15 01:00:30.683962
+93345	1157	0.00	2012-10-15 01:00:30.692228	2012-10-15 01:00:30.692228
+93346	1158	0.00	2012-10-15 01:00:30.700432	2012-10-15 01:00:30.700432
+93347	1159	0.00	2012-10-15 01:00:30.709047	2012-10-15 01:00:30.709047
+93348	1160	0.00	2012-10-15 01:00:30.717229	2012-10-15 01:00:30.717229
+93349	1161	0.00	2012-10-15 01:00:30.725506	2012-10-15 01:00:30.725506
+93350	1162	0.00	2012-10-15 01:00:30.733857	2012-10-15 01:00:30.733857
+93351	1163	0.00	2012-10-15 01:00:30.742193	2012-10-15 01:00:30.742193
+93352	1164	0.00	2012-10-15 01:00:30.750433	2012-10-15 01:00:30.750433
+93353	1165	0.00	2012-10-15 01:00:30.75882	2012-10-15 01:00:30.75882
+93354	1166	0.00	2012-10-15 01:00:30.767272	2012-10-15 01:00:30.767272
+93355	1167	0.00	2012-10-15 01:00:30.775427	2012-10-15 01:00:30.775427
+93356	1168	0.00	2012-10-15 01:00:30.783626	2012-10-15 01:00:30.783626
+93357	1169	0.00	2012-10-15 01:00:30.792256	2012-10-15 01:00:30.792256
+93358	1170	0.00	2012-10-15 01:00:30.800491	2012-10-15 01:00:30.800491
+93359	1171	0.00	2012-10-15 01:00:30.809004	2012-10-15 01:00:30.809004
+93360	1172	0.00	2012-10-15 01:00:30.817244	2012-10-15 01:00:30.817244
+93361	1173	0.00	2012-10-15 01:00:30.825533	2012-10-15 01:00:30.825533
+93362	1174	0.00	2012-10-15 01:00:30.833764	2012-10-15 01:00:30.833764
+93363	1175	0.00	2012-10-15 01:00:30.842242	2012-10-15 01:00:30.842242
+93364	1176	0.00	2012-10-15 01:00:30.850377	2012-10-15 01:00:30.850377
+93365	1177	0.00	2012-10-15 01:00:30.858955	2012-10-15 01:00:30.858955
+93366	1178	0.00	2012-10-15 01:00:30.867205	2012-10-15 01:00:30.867205
+93367	1179	0.00	2012-10-15 01:00:30.875495	2012-10-15 01:00:30.875495
+93368	1180	0.00	2012-10-15 01:00:30.883996	2012-10-15 01:00:30.883996
+93369	1181	0.00	2012-10-15 01:00:30.892207	2012-10-15 01:00:30.892207
+93370	1182	0.00	2012-10-15 01:00:30.900526	2012-10-15 01:00:30.900526
+93371	1183	0.00	2012-10-15 01:00:30.90889	2012-10-15 01:00:30.90889
+93372	1184	0.00	2012-10-15 01:00:30.917216	2012-10-15 01:00:30.917216
+93373	1185	0.00	2012-10-15 01:00:30.925452	2012-10-15 01:00:30.925452
+93374	1186	0.00	2012-10-15 01:00:30.933892	2012-10-15 01:00:30.933892
+93375	1187	0.00	2012-10-15 01:00:30.942162	2012-10-15 01:00:30.942162
+93376	1188	0.00	2012-10-15 01:00:30.950426	2012-10-15 01:00:30.950426
+93377	1189	0.00	2012-10-15 01:00:30.958825	2012-10-15 01:00:30.958825
+93378	1190	0.00	2012-10-15 01:00:30.967234	2012-10-15 01:00:30.967234
+93379	1191	0.00	2012-10-15 01:00:30.975518	2012-10-15 01:00:30.975518
+93380	1192	0.00	2012-10-15 01:00:30.983996	2012-10-15 01:00:30.983996
+93381	1193	0.00	2012-10-15 01:00:30.992241	2012-10-15 01:00:30.992241
+93382	1194	0.00	2012-10-15 01:00:31.000927	2012-10-15 01:00:31.000927
+93383	1195	0.00	2012-10-15 01:00:31.008967	2012-10-15 01:00:31.008967
+93384	1196	0.00	2012-10-15 01:00:31.017203	2012-10-15 01:00:31.017203
+93385	1197	0.00	2012-10-15 01:00:31.02551	2012-10-15 01:00:31.02551
+93386	1198	0.00	2012-10-15 01:00:31.033995	2012-10-15 01:00:31.033995
+93387	1199	0.00	2012-10-15 01:00:31.042208	2012-10-15 01:00:31.042208
+93388	1200	0.00	2012-10-15 01:00:31.050494	2012-10-15 01:00:31.050494
+93389	1201	0.00	2012-10-15 01:00:31.058846	2012-10-15 01:00:31.058846
+93390	1202	0.00	2012-10-15 01:00:31.067188	2012-10-15 01:00:31.067188
+93391	1203	0.00	2012-10-15 01:00:31.075479	2012-10-15 01:00:31.075479
+93392	1204	0.00	2012-10-15 01:00:31.083826	2012-10-15 01:00:31.083826
+93393	1205	0.00	2012-10-15 01:00:31.092155	2012-10-15 01:00:31.092155
+93394	1206	0.00	2012-10-15 01:00:31.100352	2012-10-15 01:00:31.100352
+93395	1207	0.00	2012-10-15 01:00:31.13652	2012-10-15 01:00:31.13652
+93396	1208	0.00	2012-10-15 01:00:31.142191	2012-10-15 01:00:31.142191
+93397	1209	0.00	2012-10-15 01:00:31.150512	2012-10-15 01:00:31.150512
+93398	1210	0.00	2012-10-15 01:00:31.158891	2012-10-15 01:00:31.158891
+93399	1211	0.00	2012-10-15 01:00:31.167224	2012-10-15 01:00:31.167224
+93400	1212	0.00	2012-10-15 01:00:31.175541	2012-10-15 01:00:31.175541
+93401	1213	0.00	2012-10-15 01:00:31.184182	2012-10-15 01:00:31.184182
+93402	1214	0.00	2012-10-15 01:00:31.192151	2012-10-15 01:00:31.192151
+93403	1215	0.00	2012-10-15 01:00:31.200458	2012-10-15 01:00:31.200458
+93404	1216	0.00	2012-10-15 01:00:31.208839	2012-10-15 01:00:31.208839
+93405	1217	0.00	2012-10-15 01:00:31.217177	2012-10-15 01:00:31.217177
+93406	1218	0.00	2012-10-15 01:00:31.225282	2012-10-15 01:00:31.225282
+93407	1219	0.00	2012-10-15 01:00:31.234152	2012-10-15 01:00:31.234152
+93408	1220	0.00	2012-10-15 01:00:31.242302	2012-10-15 01:00:31.242302
+93409	1221	0.00	2012-10-15 01:00:31.250571	2012-10-15 01:00:31.250571
+93410	1222	0.00	2012-10-15 01:00:31.259019	2012-10-15 01:00:31.259019
+93411	1223	0.00	2012-10-15 01:00:31.267289	2012-10-15 01:00:31.267289
+93412	1224	0.00	2012-10-15 01:00:31.275798	2012-10-15 01:00:31.275798
+93413	1225	0.00	2012-10-15 01:00:31.28426	2012-10-15 01:00:31.28426
+93414	1226	0.00	2012-10-15 01:00:31.292274	2012-10-15 01:00:31.292274
+93415	1227	0.00	2012-10-15 01:00:31.300558	2012-10-15 01:00:31.300558
+93416	1228	0.00	2012-10-15 01:00:31.309288	2012-10-15 01:00:31.309288
+93417	1229	0.00	2012-10-15 01:00:31.317308	2012-10-15 01:00:31.317308
+93418	1230	0.00	2012-10-15 01:00:31.325816	2012-10-15 01:00:31.325816
+93419	1231	0.00	2012-10-15 01:00:31.334333	2012-10-15 01:00:31.334333
+93420	1232	0.00	2012-10-15 01:00:31.342297	2012-10-15 01:00:31.342297
+93421	1233	0.00	2012-10-15 01:00:31.350851	2012-10-15 01:00:31.350851
+93422	1234	0.00	2012-10-15 01:00:31.35909	2012-10-15 01:00:31.35909
+93423	1235	0.00	2012-10-15 01:00:31.367309	2012-10-15 01:00:31.367309
+93424	1236	0.00	2012-10-15 01:00:31.375842	2012-10-15 01:00:31.375842
+93425	1237	0.00	2012-10-15 01:00:31.384151	2012-10-15 01:00:31.384151
+93426	1238	0.00	2012-10-15 01:00:31.392271	2012-10-15 01:00:31.392271
+93427	1239	0.00	2012-10-15 01:00:31.400572	2012-10-15 01:00:31.400572
+93428	1240	0.00	2012-10-15 01:00:31.409068	2012-10-15 01:00:31.409068
+93429	1241	0.00	2012-10-15 01:00:31.417277	2012-10-15 01:00:31.417277
+93430	1242	0.00	2012-10-15 01:00:31.425696	2012-10-15 01:00:31.425696
+93431	1243	0.00	2012-10-15 01:00:31.434232	2012-10-15 01:00:31.434232
+93432	1244	0.00	2012-10-15 01:00:31.442291	2012-10-15 01:00:31.442291
+93433	1245	0.00	2012-10-15 01:00:31.450631	2012-10-15 01:00:31.450631
+93434	1246	0.00	2012-10-15 01:00:31.459037	2012-10-15 01:00:31.459037
+93435	1247	0.00	2012-10-15 01:00:31.467284	2012-10-15 01:00:31.467284
+93436	1248	0.00	2012-10-15 01:00:31.475662	2012-10-15 01:00:31.475662
+93437	1249	0.00	2012-10-15 01:00:31.484223	2012-10-15 01:00:31.484223
+93438	1250	0.00	2012-10-15 01:00:31.49229	2012-10-15 01:00:31.49229
+93439	1251	0.00	2012-10-15 01:00:31.500703	2012-10-15 01:00:31.500703
+93440	1252	0.00	2012-10-15 01:00:31.508774	2012-10-15 01:00:31.508774
+93441	1253	0.00	2012-10-15 01:00:31.517086	2012-10-15 01:00:31.517086
+93442	1254	0.00	2012-10-15 01:00:31.525319	2012-10-15 01:00:31.525319
+93443	1255	0.00	2012-10-15 01:00:31.533626	2012-10-15 01:00:31.533626
+93444	1256	0.00	2012-10-15 01:00:31.542217	2012-10-15 01:00:31.542217
+93445	1257	0.00	2012-10-15 01:00:31.550361	2012-10-15 01:00:31.550361
+93446	1258	0.00	2012-10-15 01:00:31.558831	2012-10-15 01:00:31.558831
+93447	1259	0.00	2012-10-15 01:00:31.56714	2012-10-15 01:00:31.56714
+93448	1260	0.00	2012-10-15 01:00:31.575368	2012-10-15 01:00:31.575368
+93449	1261	0.00	2012-10-15 01:00:31.583742	2012-10-15 01:00:31.583742
+93450	1262	0.00	2012-10-15 01:00:31.592147	2012-10-15 01:00:31.592147
+93451	1263	0.00	2012-10-15 01:00:31.600367	2012-10-15 01:00:31.600367
+93452	1264	0.00	2012-10-15 01:00:31.618537	2012-10-15 01:00:31.618537
+93453	1265	0.00	2012-10-15 01:00:31.635237	2012-10-15 01:00:31.635237
+93454	1266	0.00	2012-10-15 01:00:31.668423	2012-10-15 01:00:31.668423
+93455	1267	0.00	2012-10-15 01:00:31.701813	2012-10-15 01:00:31.701813
+93456	1268	0.00	2012-10-15 01:00:31.735346	2012-10-15 01:00:31.735346
+93457	1269	0.00	2012-10-15 01:00:31.768993	2012-10-15 01:00:31.768993
+93458	1270	0.00	2012-10-15 01:00:31.801916	2012-10-15 01:00:31.801916
+93459	1271	0.00	2012-10-15 01:00:31.835433	2012-10-15 01:00:31.835433
+93460	1272	0.00	2012-10-15 01:00:31.89671	2012-10-15 01:00:31.89671
+93461	1273	0.00	2012-10-15 01:00:31.934312	2012-10-15 01:00:31.934312
+93462	1274	0.00	2012-10-15 01:00:31.942299	2012-10-15 01:00:31.942299
+93463	1275	0.00	2012-10-15 01:00:31.950391	2012-10-15 01:00:31.950391
+93464	1276	0.00	2012-10-15 01:00:31.958974	2012-10-15 01:00:31.958974
+93465	1277	0.00	2012-10-15 01:00:31.967022	2012-10-15 01:00:31.967022
+93466	1278	0.00	2012-10-15 01:00:31.975289	2012-10-15 01:00:31.975289
+93467	1279	0.00	2012-10-15 01:00:31.983612	2012-10-15 01:00:31.983612
+93468	1280	0.00	2012-10-15 01:00:31.992004	2012-10-15 01:00:31.992004
+93469	1281	0.00	2012-10-15 01:00:32.000299	2012-10-15 01:00:32.000299
+93470	1282	0.00	2012-10-15 01:00:32.008672	2012-10-15 01:00:32.008672
+93471	1283	0.00	2012-10-15 01:00:32.017061	2012-10-15 01:00:32.017061
+93472	1284	0.00	2012-10-15 01:00:32.025292	2012-10-15 01:00:32.025292
+93473	1285	0.00	2012-10-15 01:00:32.068849	2012-10-15 01:00:32.068849
+93474	1286	0.00	2012-10-15 01:00:32.075358	2012-10-15 01:00:32.075358
+93475	1287	0.00	2012-10-15 01:00:32.083642	2012-10-15 01:00:32.083642
+93476	1288	0.00	2012-10-15 01:00:32.092013	2012-10-15 01:00:32.092013
+93477	1289	0.00	2012-10-15 01:00:32.10026	2012-10-15 01:00:32.10026
+93478	1290	0.00	2012-10-15 01:00:32.108556	2012-10-15 01:00:32.108556
+93479	1291	0.00	2012-10-15 01:00:32.11711	2012-10-15 01:00:32.11711
+93480	1292	0.00	2012-10-15 01:00:32.125313	2012-10-15 01:00:32.125313
+93481	1293	0.00	2012-10-15 01:00:32.133683	2012-10-15 01:00:32.133683
+93482	1294	0.00	2012-10-15 01:00:32.142459	2012-10-15 01:00:32.142459
+93483	1295	0.00	2012-10-15 01:00:32.150871	2012-10-15 01:00:32.150871
+93484	1296	0.00	2012-10-15 01:00:32.159041	2012-10-15 01:00:32.159041
+93485	1297	0.00	2012-10-15 01:00:32.167251	2012-10-15 01:00:32.167251
+93486	1298	0.00	2012-10-15 01:00:32.17583	2012-10-15 01:00:32.17583
+93487	1299	0.00	2012-10-15 01:00:32.184112	2012-10-15 01:00:32.184112
+93488	1300	0.00	2012-10-15 01:00:32.192305	2012-10-15 01:00:32.192305
+93489	1301	0.00	2012-10-15 01:00:32.200768	2012-10-15 01:00:32.200768
+93490	1302	0.00	2012-10-15 01:00:32.209028	2012-10-15 01:00:32.209028
+93491	1303	0.00	2012-10-15 01:00:32.217248	2012-10-15 01:00:32.217248
+93492	1304	0.00	2012-10-15 01:00:32.225532	2012-10-15 01:00:32.225532
+93493	1305	0.00	2012-10-15 01:00:32.234033	2012-10-15 01:00:32.234033
+93494	1306	0.00	2012-10-15 01:00:32.242283	2012-10-15 01:00:32.242283
+93495	1307	0.00	2012-10-15 01:00:32.250736	2012-10-15 01:00:32.250736
+93496	1308	0.00	2012-10-15 01:00:32.259046	2012-10-15 01:00:32.259046
+93497	1309	0.00	2012-10-15 01:00:32.267206	2012-10-15 01:00:32.267206
+93498	1310	0.00	2012-10-15 01:00:32.275535	2012-10-15 01:00:32.275535
+93499	1311	0.00	2012-10-15 01:00:32.283979	2012-10-15 01:00:32.283979
+93500	1312	0.00	2012-10-15 01:00:32.292074	2012-10-15 01:00:32.292074
+93501	1313	0.00	2012-10-15 01:00:32.300018	2012-10-15 01:00:32.300018
+93502	1314	0.00	2012-10-15 01:00:32.308644	2012-10-15 01:00:32.308644
+93503	1315	0.00	2012-10-15 01:00:32.316991	2012-10-15 01:00:32.316991
+93504	1316	0.00	2012-10-15 01:00:32.325261	2012-10-15 01:00:32.325261
+93505	1317	0.00	2012-10-15 01:00:32.333569	2012-10-15 01:00:32.333569
+93506	1318	0.00	2012-10-15 01:00:32.342	2012-10-15 01:00:32.342
+93507	1319	0.00	2012-10-15 01:00:32.35028	2012-10-15 01:00:32.35028
+93508	1320	0.00	2012-10-15 01:00:32.358613	2012-10-15 01:00:32.358613
+93509	1321	0.00	2012-10-15 01:00:32.36698	2012-10-15 01:00:32.36698
+93510	1322	0.00	2012-10-15 01:00:32.375236	2012-10-15 01:00:32.375236
+93511	1323	0.00	2012-10-15 01:00:32.383545	2012-10-15 01:00:32.383545
+93512	1324	0.00	2012-10-15 01:00:32.392007	2012-10-15 01:00:32.392007
+93513	1325	0.00	2012-10-15 01:00:32.400267	2012-10-15 01:00:32.400267
+93514	1326	0.00	2012-10-15 01:00:32.408512	2012-10-15 01:00:32.408512
+93515	1327	0.00	2012-10-15 01:00:32.416927	2012-10-15 01:00:32.416927
+93516	1328	0.00	2012-10-15 01:00:32.42534	2012-10-15 01:00:32.42534
+93517	1329	0.00	2012-10-15 01:00:32.433693	2012-10-15 01:00:32.433693
+93518	1330	0.00	2012-10-15 01:00:32.442084	2012-10-15 01:00:32.442084
+93519	1331	0.00	2012-10-15 01:00:32.450357	2012-10-15 01:00:32.450357
+93520	1332	0.00	2012-10-15 01:00:32.458664	2012-10-15 01:00:32.458664
+93521	1333	0.00	2012-10-15 01:00:32.467076	2012-10-15 01:00:32.467076
+93522	1334	0.00	2012-10-15 01:00:32.475306	2012-10-15 01:00:32.475306
+93523	1335	0.00	2012-10-15 01:00:32.483742	2012-10-15 01:00:32.483742
+93524	1336	0.00	2012-10-15 01:00:32.492154	2012-10-15 01:00:32.492154
+93525	1337	0.00	2012-10-15 01:00:32.500364	2012-10-15 01:00:32.500364
+93526	1338	0.00	2012-10-15 01:00:32.50874	2012-10-15 01:00:32.50874
+93527	1339	0.00	2012-10-15 01:00:32.517105	2012-10-15 01:00:32.517105
+93528	1340	0.00	2012-10-15 01:00:32.525345	2012-10-15 01:00:32.525345
+93529	1341	0.00	2012-10-15 01:00:32.533726	2012-10-15 01:00:32.533726
+93530	1342	0.00	2012-10-15 01:00:32.542095	2012-10-15 01:00:32.542095
+93531	1343	0.00	2012-10-15 01:00:32.550346	2012-10-15 01:00:32.550346
+93532	1344	0.00	2012-10-15 01:00:32.558717	2012-10-15 01:00:32.558717
+93533	1345	0.00	2012-10-15 01:00:32.567115	2012-10-15 01:00:32.567115
+93534	1346	0.00	2012-10-15 01:00:32.575307	2012-10-15 01:00:32.575307
+93535	1347	0.00	2012-10-15 01:00:32.583718	2012-10-15 01:00:32.583718
+93536	1348	0.00	2012-10-15 01:00:32.592085	2012-10-15 01:00:32.592085
+93537	1349	0.00	2012-10-15 01:00:32.600297	2012-10-15 01:00:32.600297
+93538	1350	0.00	2012-10-15 01:00:32.608703	2012-10-15 01:00:32.608703
+93539	1351	0.00	2012-10-15 01:00:32.642868	2012-10-15 01:00:32.642868
+93540	1352	0.00	2012-10-15 01:00:32.650831	2012-10-15 01:00:32.650831
+93541	1353	0.00	2012-10-15 01:00:32.659115	2012-10-15 01:00:32.659115
+93542	1354	0.00	2012-10-15 01:00:32.667292	2012-10-15 01:00:32.667292
+93543	1355	0.00	2012-10-15 01:00:32.675806	2012-10-15 01:00:32.675806
+93544	1356	0.00	2012-10-15 01:00:32.684309	2012-10-15 01:00:32.684309
+93545	1357	0.00	2012-10-15 01:00:32.692348	2012-10-15 01:00:32.692348
+93546	1358	0.00	2012-10-15 01:00:32.700852	2012-10-15 01:00:32.700852
+93547	1359	0.00	2012-10-15 01:00:32.709123	2012-10-15 01:00:32.709123
+93548	1360	0.00	2012-10-15 01:00:32.7177	2012-10-15 01:00:32.7177
+93549	1361	0.00	2012-10-15 01:00:32.72606	2012-10-15 01:00:32.72606
+93550	1362	0.00	2012-10-15 01:00:32.734402	2012-10-15 01:00:32.734402
+93551	1363	0.00	2012-10-15 01:00:32.742362	2012-10-15 01:00:32.742362
+93552	1364	0.00	2012-10-15 01:00:32.751208	2012-10-15 01:00:32.751208
+93553	1365	0.00	2012-10-15 01:00:32.75895	2012-10-15 01:00:32.75895
+93554	1366	0.00	2012-10-15 01:00:32.767193	2012-10-15 01:00:32.767193
+93555	1367	0.00	2012-10-15 01:00:32.775459	2012-10-15 01:00:32.775459
+93556	1368	0.00	2012-10-15 01:00:32.783748	2012-10-15 01:00:32.783748
+93557	1369	0.00	2012-10-15 01:00:32.792263	2012-10-15 01:00:32.792263
+93558	1370	0.00	2012-10-15 01:00:32.800469	2012-10-15 01:00:32.800469
+93559	1371	0.00	2012-10-15 01:00:32.808914	2012-10-15 01:00:32.808914
+93560	1372	0.00	2012-10-15 01:00:32.81723	2012-10-15 01:00:32.81723
+93561	1373	0.00	2012-10-15 01:00:32.825456	2012-10-15 01:00:32.825456
+93562	1374	0.00	2012-10-15 01:00:32.833902	2012-10-15 01:00:32.833902
+93563	1375	0.00	2012-10-15 01:00:32.842155	2012-10-15 01:00:32.842155
+93564	1376	0.00	2012-10-15 01:00:32.850478	2012-10-15 01:00:32.850478
+93565	1377	0.00	2012-10-15 01:00:32.858875	2012-10-15 01:00:32.858875
+93566	1379	0.00	2012-10-15 01:00:32.867165	2012-10-15 01:00:32.867165
+93567	1380	0.00	2012-10-15 01:00:32.875502	2012-10-15 01:00:32.875502
+93568	1381	0.00	2012-10-15 01:00:32.883865	2012-10-15 01:00:32.883865
+93569	1382	0.00	2012-10-15 01:00:32.892146	2012-10-15 01:00:32.892146
+93570	1383	0.00	2012-10-15 01:00:32.901061	2012-10-15 01:00:32.901061
+93571	1384	0.00	2012-10-15 01:00:32.909413	2012-10-15 01:00:32.909413
+93572	1385	0.00	2012-10-15 01:00:32.917421	2012-10-15 01:00:32.917421
+93573	1386	0.00	2012-10-15 01:00:32.926051	2012-10-15 01:00:32.926051
+93574	1387	0.00	2012-10-15 01:00:32.934192	2012-10-15 01:00:32.934192
+93575	1388	0.00	2012-10-15 01:00:32.942478	2012-10-15 01:00:32.942478
+93576	1389	0.00	2012-10-15 01:00:32.950931	2012-10-15 01:00:32.950931
+93577	1390	0.00	2012-10-15 01:00:32.959225	2012-10-15 01:00:32.959225
+93578	1391	0.00	2012-10-15 01:00:32.967513	2012-10-15 01:00:32.967513
+93579	1392	0.00	2012-10-15 01:00:32.975925	2012-10-15 01:00:32.975925
+93580	1393	0.00	2012-10-15 01:00:32.984408	2012-10-15 01:00:32.984408
+93581	1394	0.00	2012-10-15 01:00:32.992484	2012-10-15 01:00:32.992484
+93582	1395	0.00	2012-10-15 01:00:33.000875	2012-10-15 01:00:33.000875
+93583	1396	0.00	2012-10-15 01:00:33.009171	2012-10-15 01:00:33.009171
+93584	1397	0.00	2012-10-15 01:00:33.017443	2012-10-15 01:00:33.017443
+93585	1398	0.00	2012-10-15 01:00:33.025899	2012-10-15 01:00:33.025899
+93586	1399	0.00	2012-10-15 01:00:33.034312	2012-10-15 01:00:33.034312
+93587	1400	0.00	2012-10-15 01:00:33.042729	2012-10-15 01:00:33.042729
+93588	1401	0.00	2012-10-15 01:00:33.050691	2012-10-15 01:00:33.050691
+93589	1402	0.00	2012-10-15 01:00:33.058914	2012-10-15 01:00:33.058914
+93590	1403	0.00	2012-10-15 01:00:33.067257	2012-10-15 01:00:33.067257
+93591	1404	0.00	2012-10-15 01:00:33.075471	2012-10-15 01:00:33.075471
+93592	1405	0.00	2012-10-15 01:00:33.083746	2012-10-15 01:00:33.083746
+93593	1406	0.00	2012-10-15 01:00:33.092244	2012-10-15 01:00:33.092244
+93594	1407	0.00	2012-10-15 01:00:33.100494	2012-10-15 01:00:33.100494
+93595	1408	0.00	2012-10-15 01:00:33.108884	2012-10-15 01:00:33.108884
+93596	1409	0.00	2012-10-15 01:00:33.11717	2012-10-15 01:00:33.11717
+93597	1410	0.00	2012-10-15 01:00:33.125488	2012-10-15 01:00:33.125488
+93598	1411	0.00	2012-10-15 01:00:33.133839	2012-10-15 01:00:33.133839
+93599	1412	0.00	2012-10-15 01:00:33.142195	2012-10-15 01:00:33.142195
+93600	1413	0.00	2012-10-15 01:00:33.150788	2012-10-15 01:00:33.150788
+93601	1414	0.00	2012-10-15 01:00:33.19273	2012-10-15 01:00:33.19273
+93602	1415	0.00	2012-10-15 01:00:33.200538	2012-10-15 01:00:33.200538
+93603	1416	0.00	2012-10-15 01:00:33.208932	2012-10-15 01:00:33.208932
+93604	1417	0.00	2012-10-15 01:00:33.217213	2012-10-15 01:00:33.217213
+93605	1418	0.00	2012-10-15 01:00:33.225479	2012-10-15 01:00:33.225479
+93606	1419	0.00	2012-10-15 01:00:33.233911	2012-10-15 01:00:33.233911
+93607	1420	0.00	2012-10-15 01:00:33.24216	2012-10-15 01:00:33.24216
+93608	1421	0.00	2012-10-15 01:00:33.250469	2012-10-15 01:00:33.250469
+93609	1422	0.00	2012-10-15 01:00:33.258726	2012-10-15 01:00:33.258726
+93610	1423	0.00	2012-10-15 01:00:33.267155	2012-10-15 01:00:33.267155
+93611	1424	0.00	2012-10-15 01:00:33.275473	2012-10-15 01:00:33.275473
+93612	1425	0.00	2012-10-15 01:00:33.283824	2012-10-15 01:00:33.283824
+93613	1426	0.00	2012-10-15 01:00:33.292162	2012-10-15 01:00:33.292162
+93614	1427	0.00	2012-10-15 01:00:33.300483	2012-10-15 01:00:33.300483
+93615	1428	0.00	2012-10-15 01:00:33.308866	2012-10-15 01:00:33.308866
+93616	1429	0.00	2012-10-15 01:00:33.317276	2012-10-15 01:00:33.317276
+93617	1430	0.00	2012-10-15 01:00:33.325496	2012-10-15 01:00:33.325496
+93618	1431	0.00	2012-10-15 01:00:33.333924	2012-10-15 01:00:33.333924
+93619	1432	0.00	2012-10-15 01:00:33.342166	2012-10-15 01:00:33.342166
+93620	1433	0.00	2012-10-15 01:00:33.388011	2012-10-15 01:00:33.388011
+93621	1434	0.00	2012-10-15 01:00:33.401497	2012-10-15 01:00:33.401497
+93622	1435	0.00	2012-10-15 01:00:33.409293	2012-10-15 01:00:33.409293
+93623	1436	0.00	2012-10-15 01:00:33.417422	2012-10-15 01:00:33.417422
+93624	1437	0.00	2012-10-15 01:00:33.426028	2012-10-15 01:00:33.426028
+93625	1438	0.00	2012-10-15 01:00:33.434228	2012-10-15 01:00:33.434228
+93626	1439	0.00	2012-10-15 01:00:33.442488	2012-10-15 01:00:33.442488
+93627	1440	0.00	2012-10-15 01:00:33.450805	2012-10-15 01:00:33.450805
+93628	1441	0.00	2012-10-15 01:00:33.459208	2012-10-15 01:00:33.459208
+93629	1442	0.00	2012-10-15 01:00:33.467379	2012-10-15 01:00:33.467379
+93630	1443	0.00	2012-10-15 01:00:33.475797	2012-10-15 01:00:33.475797
+93631	1444	0.00	2012-10-15 01:00:33.48419	2012-10-15 01:00:33.48419
+93632	1445	0.00	2012-10-15 01:00:33.492212	2012-10-15 01:00:33.492212
+93633	1446	0.00	2012-10-15 01:00:33.500529	2012-10-15 01:00:33.500529
+93634	1447	0.00	2012-10-15 01:00:33.509367	2012-10-15 01:00:33.509367
+93635	1448	0.00	2012-10-15 01:00:33.517181	2012-10-15 01:00:33.517181
+93636	1449	0.00	2012-10-15 01:00:33.525897	2012-10-15 01:00:33.525897
+93637	1450	0.00	2012-10-15 01:00:33.534347	2012-10-15 01:00:33.534347
+93638	1451	0.00	2012-10-15 01:00:33.542457	2012-10-15 01:00:33.542457
+93639	1452	0.00	2012-10-15 01:00:33.550872	2012-10-15 01:00:33.550872
+93640	1453	0.00	2012-10-15 01:00:33.559206	2012-10-15 01:00:33.559206
+93641	1454	0.00	2012-10-15 01:00:33.567402	2012-10-15 01:00:33.567402
+93642	1455	0.00	2012-10-15 01:00:33.575673	2012-10-15 01:00:33.575673
+93643	1456	0.00	2012-10-15 01:00:33.584218	2012-10-15 01:00:33.584218
+93644	1457	0.00	2012-10-15 01:00:33.592222	2012-10-15 01:00:33.592222
+93645	1458	0.00	2012-10-15 01:00:33.60044	2012-10-15 01:00:33.60044
+93646	1459	0.00	2012-10-15 01:00:33.608802	2012-10-15 01:00:33.608802
+93647	1460	0.00	2012-10-15 01:00:33.617122	2012-10-15 01:00:33.617122
+93648	1461	0.00	2012-10-15 01:00:33.625426	2012-10-15 01:00:33.625426
+93649	1462	0.00	2012-10-15 01:00:33.633972	2012-10-15 01:00:33.633972
+93650	1463	0.00	2012-10-15 01:00:33.642253	2012-10-15 01:00:33.642253
+93651	1464	0.00	2012-10-15 01:00:33.650501	2012-10-15 01:00:33.650501
+93652	1465	0.00	2012-10-15 01:00:33.658904	2012-10-15 01:00:33.658904
+93653	1466	0.00	2012-10-15 01:00:33.667202	2012-10-15 01:00:33.667202
+93654	1467	0.00	2012-10-15 01:00:33.675527	2012-10-15 01:00:33.675527
+93655	1468	0.00	2012-10-15 01:00:33.683926	2012-10-15 01:00:33.683926
+93656	1469	0.00	2012-10-15 01:00:33.692196	2012-10-15 01:00:33.692196
+93657	1470	0.00	2012-10-15 01:00:33.700495	2012-10-15 01:00:33.700495
+93658	1471	0.00	2012-10-15 01:00:33.708913	2012-10-15 01:00:33.708913
+93659	1472	0.00	2012-10-15 01:00:33.717183	2012-10-15 01:00:33.717183
+93660	1473	0.00	2012-10-15 01:00:33.725471	2012-10-15 01:00:33.725471
+93661	1474	0.00	2012-10-15 01:00:33.733895	2012-10-15 01:00:33.733895
+93662	1475	0.00	2012-10-15 01:00:33.742156	2012-10-15 01:00:33.742156
+93663	1476	0.00	2012-10-15 01:00:33.750472	2012-10-15 01:00:33.750472
+93664	1477	0.00	2012-10-15 01:00:33.758887	2012-10-15 01:00:33.758887
+93665	1478	0.00	2012-10-15 01:00:33.76715	2012-10-15 01:00:33.76715
+93666	1479	0.00	2012-10-15 01:00:33.775455	2012-10-15 01:00:33.775455
+93667	1480	0.00	2012-10-15 01:00:33.783865	2012-10-15 01:00:33.783865
+93668	1481	0.00	2012-10-15 01:00:33.792159	2012-10-15 01:00:33.792159
+93669	1482	0.00	2012-10-15 01:00:33.801001	2012-10-15 01:00:33.801001
+93670	1483	0.00	2012-10-15 01:00:33.809238	2012-10-15 01:00:33.809238
+93671	1484	0.00	2012-10-15 01:00:33.817381	2012-10-15 01:00:33.817381
+93672	1485	0.00	2012-10-15 01:00:33.825965	2012-10-15 01:00:33.825965
+93673	1486	0.00	2012-10-15 01:00:33.8343	2012-10-15 01:00:33.8343
+93674	1487	0.00	2012-10-15 01:00:33.842423	2012-10-15 01:00:33.842423
+93675	1488	0.00	2012-10-15 01:00:33.850894	2012-10-15 01:00:33.850894
+93676	1489	0.00	2012-10-15 01:00:33.859164	2012-10-15 01:00:33.859164
+93677	1490	0.00	2012-10-15 01:00:33.86737	2012-10-15 01:00:33.86737
+93678	1491	0.00	2012-10-15 01:00:33.875511	2012-10-15 01:00:33.875511
+93679	1492	0.00	2012-10-15 01:00:33.884177	2012-10-15 01:00:33.884177
+93680	1493	0.00	2012-10-15 01:00:33.892444	2012-10-15 01:00:33.892444
+93681	1494	0.00	2012-10-15 01:00:33.900833	2012-10-15 01:00:33.900833
+93682	1495	0.00	2012-10-15 01:00:33.937967	2012-10-15 01:00:33.937967
+93683	1496	0.00	2012-10-15 01:00:33.950725	2012-10-15 01:00:33.950725
+93684	1497	0.00	2012-10-15 01:00:33.958554	2012-10-15 01:00:33.958554
+93685	1498	0.00	2012-10-15 01:00:33.967264	2012-10-15 01:00:33.967264
+93686	1499	0.00	2012-10-15 01:00:33.975511	2012-10-15 01:00:33.975511
+93687	1500	0.00	2012-10-15 01:00:33.983788	2012-10-15 01:00:33.983788
+93688	1378	0.00	2012-10-15 01:00:33.992333	2012-10-15 01:00:33.992333
+93689	1078	0.00	2012-10-15 01:00:34.000639	2012-10-15 01:00:34.000639
+93690	852	41.33	2012-10-15 01:00:54.876365	2012-10-15 01:00:54.876365
+93691	883	0.00	2012-10-15 01:00:54.88414	2012-10-15 01:00:54.88414
+93692	882	0.00	2012-10-15 01:00:54.892265	2012-10-15 01:00:54.892265
+93693	881	0.00	2012-10-15 01:00:54.900408	2012-10-15 01:00:54.900408
+93694	880	0.00	2012-10-15 01:00:54.909056	2012-10-15 01:00:54.909056
+93695	879	0.00	2012-10-15 01:00:54.917272	2012-10-15 01:00:54.917272
+93696	878	0.00	2012-10-15 01:00:54.925713	2012-10-15 01:00:54.925713
+93697	877	0.00	2012-10-15 01:00:54.934051	2012-10-15 01:00:54.934051
+93698	876	0.00	2012-10-15 01:00:54.942318	2012-10-15 01:00:54.942318
+93699	875	0.00	2012-10-15 01:00:54.950797	2012-10-15 01:00:54.950797
+93700	874	0.00	2012-10-15 01:00:54.959009	2012-10-15 01:00:54.959009
+93701	873	0.00	2012-10-15 01:00:54.967294	2012-10-15 01:00:54.967294
+93702	872	0.00	2012-10-15 01:00:54.975696	2012-10-15 01:00:54.975696
+93703	871	0.00	2012-10-15 01:00:54.98407	2012-10-15 01:00:54.98407
+93704	870	0.00	2012-10-15 01:00:54.992488	2012-10-15 01:00:54.992488
+93705	869	0.00	2012-10-15 01:00:55.001449	2012-10-15 01:00:55.001449
+93706	868	0.00	2012-10-15 01:00:55.04283	2012-10-15 01:00:55.04283
+93707	867	0.00	2012-10-15 01:00:55.050869	2012-10-15 01:00:55.050869
+93708	866	0.00	2012-10-15 01:00:55.059074	2012-10-15 01:00:55.059074
+93709	865	0.00	2012-10-15 01:00:55.067303	2012-10-15 01:00:55.067303
+93710	864	0.00	2012-10-15 01:00:55.076032	2012-10-15 01:00:55.076032
+93711	863	0.00	2012-10-15 01:00:55.084196	2012-10-15 01:00:55.084196
+93712	862	0.00	2012-10-15 01:00:55.09238	2012-10-15 01:00:55.09238
+93713	861	0.00	2012-10-15 01:00:55.100877	2012-10-15 01:00:55.100877
+93714	860	0.00	2012-10-15 01:00:55.109319	2012-10-15 01:00:55.109319
+93715	859	0.00	2012-10-15 01:00:55.117402	2012-10-15 01:00:55.117402
+93716	858	0.00	2012-10-15 01:00:55.125979	2012-10-15 01:00:55.125979
+93717	857	0.00	2012-10-15 01:00:55.134263	2012-10-15 01:00:55.134263
+93718	856	0.00	2012-10-15 01:00:55.142456	2012-10-15 01:00:55.142456
+93719	855	0.00	2012-10-15 01:00:55.150986	2012-10-15 01:00:55.150986
+93720	854	0.00	2012-10-15 01:00:55.159236	2012-10-15 01:00:55.159236
+93721	853	0.00	2012-10-15 01:00:55.167442	2012-10-15 01:00:55.167442
+93722	851	0.00	2012-10-15 01:00:55.176052	2012-10-15 01:00:55.176052
+93723	850	0.00	2012-10-15 01:00:55.184164	2012-10-15 01:00:55.184164
+93724	849	0.00	2012-10-15 01:00:55.192428	2012-10-15 01:00:55.192428
+93725	848	0.00	2012-10-15 01:00:55.200846	2012-10-15 01:00:55.200846
+93726	847	0.00	2012-10-15 01:00:55.209151	2012-10-15 01:00:55.209151
+93727	846	0.00	2012-10-15 01:00:55.21738	2012-10-15 01:00:55.21738
+93728	845	0.00	2012-10-15 01:00:55.225806	2012-10-15 01:00:55.225806
+93729	844	0.00	2012-10-15 01:00:55.234254	2012-10-15 01:00:55.234254
+93730	843	0.00	2012-10-15 01:00:55.242362	2012-10-15 01:00:55.242362
+93731	842	0.00	2012-10-15 01:00:55.25085	2012-10-15 01:00:55.25085
+93732	841	0.00	2012-10-15 01:00:55.259114	2012-10-15 01:00:55.259114
+93733	840	0.00	2012-10-15 01:00:55.267369	2012-10-15 01:00:55.267369
+93734	839	0.00	2012-10-15 01:00:55.275582	2012-10-15 01:00:55.275582
+93735	838	0.00	2012-10-15 01:00:55.28429	2012-10-15 01:00:55.28429
+93736	837	0.00	2012-10-15 01:00:55.292481	2012-10-15 01:00:55.292481
+93737	836	0.00	2012-10-15 01:00:55.301048	2012-10-15 01:00:55.301048
+93738	835	0.00	2012-10-15 01:00:55.309323	2012-10-15 01:00:55.309323
+93739	834	0.00	2012-10-15 01:00:55.317437	2012-10-15 01:00:55.317437
+93740	833	0.00	2012-10-15 01:00:55.326429	2012-10-15 01:00:55.326429
+93741	832	0.00	2012-10-15 01:00:55.335413	2012-10-15 01:00:55.335413
+93742	831	0.00	2012-10-15 01:00:55.342471	2012-10-15 01:00:55.342471
+93743	830	0.00	2012-10-15 01:00:55.351079	2012-10-15 01:00:55.351079
+93744	829	0.00	2012-10-15 01:00:55.359144	2012-10-15 01:00:55.359144
+93745	828	0.00	2012-10-15 01:00:55.367473	2012-10-15 01:00:55.367473
+93746	827	0.00	2012-10-15 01:00:55.376049	2012-10-15 01:00:55.376049
+93747	826	0.00	2012-10-15 01:00:55.384242	2012-10-15 01:00:55.384242
+93748	825	0.00	2012-10-15 01:00:55.392438	2012-10-15 01:00:55.392438
+93749	824	0.00	2012-10-15 01:00:55.400956	2012-10-15 01:00:55.400956
+93750	823	0.00	2012-10-15 01:00:55.4093	2012-10-15 01:00:55.4093
+93751	822	0.00	2012-10-15 01:00:55.41756	2012-10-15 01:00:55.41756
+93752	821	0.00	2012-10-15 01:00:55.426069	2012-10-15 01:00:55.426069
+93753	820	0.00	2012-10-15 01:00:55.434386	2012-10-15 01:00:55.434386
+93754	819	0.00	2012-10-15 01:00:55.442497	2012-10-15 01:00:55.442497
+93755	818	0.00	2012-10-15 01:00:55.4511	2012-10-15 01:00:55.4511
+93756	817	0.00	2012-10-15 01:00:55.458977	2012-10-15 01:00:55.458977
+93757	816	0.00	2012-10-15 01:00:55.467283	2012-10-15 01:00:55.467283
+93758	815	0.00	2012-10-15 01:00:55.475529	2012-10-15 01:00:55.475529
+93759	814	0.00	2012-10-15 01:00:55.484503	2012-10-15 01:00:55.484503
+93760	813	0.00	2012-10-15 01:00:55.523678	2012-10-15 01:00:55.523678
+93761	812	0.00	2012-10-15 01:00:55.534342	2012-10-15 01:00:55.534342
+93762	811	0.00	2012-10-15 01:00:55.542497	2012-10-15 01:00:55.542497
+93763	810	0.00	2012-10-15 01:00:55.551137	2012-10-15 01:00:55.551137
+93764	809	0.00	2012-10-15 01:00:55.559334	2012-10-15 01:00:55.559334
+93765	808	0.00	2012-10-15 01:00:55.56751	2012-10-15 01:00:55.56751
+93766	807	0.00	2012-10-15 01:00:55.576022	2012-10-15 01:00:55.576022
+93767	806	0.00	2012-10-15 01:00:55.584346	2012-10-15 01:00:55.584346
+93768	805	0.00	2012-10-15 01:00:55.592469	2012-10-15 01:00:55.592469
+93769	804	0.00	2012-10-15 01:00:55.600976	2012-10-15 01:00:55.600976
+93770	803	0.00	2012-10-15 01:00:55.609346	2012-10-15 01:00:55.609346
+93771	802	0.00	2012-10-15 01:00:55.617493	2012-10-15 01:00:55.617493
+93772	801	0.00	2012-10-15 01:00:55.626138	2012-10-15 01:00:55.626138
+93773	800	0.00	2012-10-15 01:00:55.63437	2012-10-15 01:00:55.63437
+93774	799	0.00	2012-10-15 01:00:55.642839	2012-10-15 01:00:55.642839
+93775	798	0.00	2012-10-15 01:00:55.651132	2012-10-15 01:00:55.651132
+93776	797	0.00	2012-10-15 01:00:55.659341	2012-10-15 01:00:55.659341
+93777	796	0.00	2012-10-15 01:00:55.667778	2012-10-15 01:00:55.667778
+93778	795	0.00	2012-10-15 01:00:55.676025	2012-10-15 01:00:55.676025
+93779	794	0.00	2012-10-15 01:00:55.684321	2012-10-15 01:00:55.684321
+93780	793	0.00	2012-10-15 01:00:55.692704	2012-10-15 01:00:55.692704
+93781	792	0.00	2012-10-15 01:00:55.701206	2012-10-15 01:00:55.701206
+93782	791	0.00	2012-10-15 01:00:55.70939	2012-10-15 01:00:55.70939
+93783	790	0.00	2012-10-15 01:00:55.717777	2012-10-15 01:00:55.717777
+93784	789	0.00	2012-10-15 01:00:55.726063	2012-10-15 01:00:55.726063
+93785	788	0.00	2012-10-15 01:00:55.734278	2012-10-15 01:00:55.734278
+93786	787	0.00	2012-10-15 01:00:55.742823	2012-10-15 01:00:55.742823
+93787	786	0.00	2012-10-15 01:00:55.751045	2012-10-15 01:00:55.751045
+93788	785	0.00	2012-10-15 01:00:55.75933	2012-10-15 01:00:55.75933
+93789	784	0.00	2012-10-15 01:00:55.767824	2012-10-15 01:00:55.767824
+93790	783	0.00	2012-10-15 01:00:55.77603	2012-10-15 01:00:55.77603
+93791	782	0.00	2012-10-15 01:00:55.784381	2012-10-15 01:00:55.784381
+93792	781	0.00	2012-10-15 01:00:55.792822	2012-10-15 01:00:55.792822
+93793	780	0.00	2012-10-15 01:00:55.801075	2012-10-15 01:00:55.801075
+93794	779	0.00	2012-10-15 01:00:55.809379	2012-10-15 01:00:55.809379
+93795	778	0.00	2012-10-15 01:00:55.81805	2012-10-15 01:00:55.81805
+93796	777	0.00	2012-10-15 01:00:55.826153	2012-10-15 01:00:55.826153
+93797	776	0.00	2012-10-15 01:00:55.834319	2012-10-15 01:00:55.834319
+93798	775	0.00	2012-10-15 01:00:55.84277	2012-10-15 01:00:55.84277
+93799	774	0.00	2012-10-15 01:00:55.851268	2012-10-15 01:00:55.851268
+93800	773	0.00	2012-10-15 01:00:55.859366	2012-10-15 01:00:55.859366
+93801	772	0.00	2012-10-15 01:00:55.867802	2012-10-15 01:00:55.867802
+93802	771	0.00	2012-10-15 01:00:55.876124	2012-10-15 01:00:55.876124
+93803	770	0.00	2012-10-15 01:00:55.884363	2012-10-15 01:00:55.884363
+93804	769	0.00	2012-10-15 01:00:55.892781	2012-10-15 01:00:55.892781
+93805	768	0.00	2012-10-15 01:00:55.901119	2012-10-15 01:00:55.901119
+93806	767	0.00	2012-10-15 01:00:55.90939	2012-10-15 01:00:55.90939
+93807	766	0.00	2012-10-15 01:00:55.918003	2012-10-15 01:00:55.918003
+93808	765	0.00	2012-10-15 01:00:55.926321	2012-10-15 01:00:55.926321
+93809	884	0.00	2012-10-16 01:00:25.477753	2012-10-16 01:00:25.477753
+93810	885	0.00	2012-10-16 01:00:25.48551	2012-10-16 01:00:25.48551
+93811	886	0.00	2012-10-16 01:00:25.49378	2012-10-16 01:00:25.49378
+93812	887	0.00	2012-10-16 01:00:25.502088	2012-10-16 01:00:25.502088
+93813	888	0.00	2012-10-16 01:00:25.510204	2012-10-16 01:00:25.510204
+93814	889	0.00	2012-10-16 01:00:25.518498	2012-10-16 01:00:25.518498
+93815	890	0.00	2012-10-16 01:00:25.526847	2012-10-16 01:00:25.526847
+93816	891	0.00	2012-10-16 01:00:25.53519	2012-10-16 01:00:25.53519
+93817	892	0.00	2012-10-16 01:00:25.543402	2012-10-16 01:00:25.543402
+93818	893	0.00	2012-10-16 01:00:25.55184	2012-10-16 01:00:25.55184
+93819	894	0.00	2012-10-16 01:00:25.56015	2012-10-16 01:00:25.56015
+93820	895	0.00	2012-10-16 01:00:25.568769	2012-10-16 01:00:25.568769
+93821	896	0.00	2012-10-16 01:00:25.577013	2012-10-16 01:00:25.577013
+93822	897	0.00	2012-10-16 01:00:25.585238	2012-10-16 01:00:25.585238
+93823	898	0.00	2012-10-16 01:00:25.59371	2012-10-16 01:00:25.59371
+93824	899	0.00	2012-10-16 01:00:25.602021	2012-10-16 01:00:25.602021
+93825	900	0.00	2012-10-16 01:00:25.610232	2012-10-16 01:00:25.610232
+93826	901	0.00	2012-10-16 01:00:25.618808	2012-10-16 01:00:25.618808
+93827	902	0.00	2012-10-16 01:00:25.62697	2012-10-16 01:00:25.62697
+93828	903	0.00	2012-10-16 01:00:25.635228	2012-10-16 01:00:25.635228
+93829	904	0.00	2012-10-16 01:00:25.643647	2012-10-16 01:00:25.643647
+93830	905	0.00	2012-10-16 01:00:25.651948	2012-10-16 01:00:25.651948
+93831	906	0.00	2012-10-16 01:00:25.660209	2012-10-16 01:00:25.660209
+93832	907	0.00	2012-10-16 01:00:25.668739	2012-10-16 01:00:25.668739
+93833	908	0.00	2012-10-16 01:00:25.67694	2012-10-16 01:00:25.67694
+93834	909	0.00	2012-10-16 01:00:25.68519	2012-10-16 01:00:25.68519
+93835	910	0.00	2012-10-16 01:00:25.693433	2012-10-16 01:00:25.693433
+93836	911	0.00	2012-10-16 01:00:25.70189	2012-10-16 01:00:25.70189
+93837	912	0.00	2012-10-16 01:00:25.710156	2012-10-16 01:00:25.710156
+93838	913	0.00	2012-10-16 01:00:25.718444	2012-10-16 01:00:25.718444
+93839	914	0.00	2012-10-16 01:00:25.726838	2012-10-16 01:00:25.726838
+93840	915	0.00	2012-10-16 01:00:25.73516	2012-10-16 01:00:25.73516
+93841	916	0.00	2012-10-16 01:00:25.743461	2012-10-16 01:00:25.743461
+93842	917	0.00	2012-10-16 01:00:25.752036	2012-10-16 01:00:25.752036
+93843	918	0.00	2012-10-16 01:00:25.760229	2012-10-16 01:00:25.760229
+93844	919	0.00	2012-10-16 01:00:25.768736	2012-10-16 01:00:25.768736
+93845	920	0.00	2012-10-16 01:00:25.777043	2012-10-16 01:00:25.777043
+93846	921	0.00	2012-10-16 01:00:25.785282	2012-10-16 01:00:25.785282
+93847	922	0.00	2012-10-16 01:00:25.793643	2012-10-16 01:00:25.793643
+93848	923	0.00	2012-10-16 01:00:25.802228	2012-10-16 01:00:25.802228
+93849	924	0.00	2012-10-16 01:00:25.810271	2012-10-16 01:00:25.810271
+93850	925	0.00	2012-10-16 01:00:25.818706	2012-10-16 01:00:25.818706
+93851	926	0.00	2012-10-16 01:00:25.827107	2012-10-16 01:00:25.827107
+93852	927	0.00	2012-10-16 01:00:25.835064	2012-10-16 01:00:25.835064
+93853	928	0.00	2012-10-16 01:00:25.843369	2012-10-16 01:00:25.843369
+93854	929	0.00	2012-10-16 01:00:25.851795	2012-10-16 01:00:25.851795
+93855	930	0.00	2012-10-16 01:00:25.860112	2012-10-16 01:00:25.860112
+93856	931	0.00	2012-10-16 01:00:25.868341	2012-10-16 01:00:25.868341
+93857	932	0.00	2012-10-16 01:00:25.876719	2012-10-16 01:00:25.876719
+93858	933	0.00	2012-10-16 01:00:25.884991	2012-10-16 01:00:25.884991
+93859	934	0.00	2012-10-16 01:00:25.893378	2012-10-16 01:00:25.893378
+93860	935	0.00	2012-10-16 01:00:25.901718	2012-10-16 01:00:25.901718
+93861	936	0.00	2012-10-16 01:00:25.910106	2012-10-16 01:00:25.910106
+93862	937	0.00	2012-10-16 01:00:25.944564	2012-10-16 01:00:25.944564
+93863	938	0.00	2012-10-16 01:00:25.952062	2012-10-16 01:00:25.952062
+93864	939	0.00	2012-10-16 01:00:25.960112	2012-10-16 01:00:25.960112
+93865	940	0.00	2012-10-16 01:00:25.968331	2012-10-16 01:00:25.968331
+93866	941	0.00	2012-10-16 01:00:25.976751	2012-10-16 01:00:25.976751
+93867	942	0.00	2012-10-16 01:00:25.985109	2012-10-16 01:00:25.985109
+93868	943	0.00	2012-10-16 01:00:25.993443	2012-10-16 01:00:25.993443
+93869	944	0.00	2012-10-16 01:00:26.001781	2012-10-16 01:00:26.001781
+93870	945	0.00	2012-10-16 01:00:26.010117	2012-10-16 01:00:26.010117
+93871	946	0.00	2012-10-16 01:00:26.01839	2012-10-16 01:00:26.01839
+93872	947	0.00	2012-10-16 01:00:26.026767	2012-10-16 01:00:26.026767
+93873	948	0.00	2012-10-16 01:00:26.035129	2012-10-16 01:00:26.035129
+93874	949	0.00	2012-10-16 01:00:26.043429	2012-10-16 01:00:26.043429
+93875	950	0.00	2012-10-16 01:00:26.051741	2012-10-16 01:00:26.051741
+93876	951	0.00	2012-10-16 01:00:26.060095	2012-10-16 01:00:26.060095
+93877	952	0.00	2012-10-16 01:00:26.068479	2012-10-16 01:00:26.068479
+93878	953	0.00	2012-10-16 01:00:26.076918	2012-10-16 01:00:26.076918
+93879	954	0.00	2012-10-16 01:00:26.085327	2012-10-16 01:00:26.085327
+93880	955	0.00	2012-10-16 01:00:26.093785	2012-10-16 01:00:26.093785
+93881	956	0.00	2012-10-16 01:00:26.102375	2012-10-16 01:00:26.102375
+93882	957	0.00	2012-10-16 01:00:26.110273	2012-10-16 01:00:26.110273
+93883	958	0.00	2012-10-16 01:00:26.118848	2012-10-16 01:00:26.118848
+93884	959	0.00	2012-10-16 01:00:26.127138	2012-10-16 01:00:26.127138
+93885	960	0.00	2012-10-16 01:00:26.135298	2012-10-16 01:00:26.135298
+93886	961	0.00	2012-10-16 01:00:26.143842	2012-10-16 01:00:26.143842
+93887	962	0.00	2012-10-16 01:00:26.152084	2012-10-16 01:00:26.152084
+93888	963	0.00	2012-10-16 01:00:26.160271	2012-10-16 01:00:26.160271
+93889	964	0.00	2012-10-16 01:00:26.168788	2012-10-16 01:00:26.168788
+93890	965	0.00	2012-10-16 01:00:26.177124	2012-10-16 01:00:26.177124
+93891	966	0.00	2012-10-16 01:00:26.185318	2012-10-16 01:00:26.185318
+93892	967	0.00	2012-10-16 01:00:26.193846	2012-10-16 01:00:26.193846
+93893	968	0.00	2012-10-16 01:00:26.202112	2012-10-16 01:00:26.202112
+93894	969	0.00	2012-10-16 01:00:26.210283	2012-10-16 01:00:26.210283
+93895	970	0.00	2012-10-16 01:00:26.218471	2012-10-16 01:00:26.218471
+93896	971	0.00	2012-10-16 01:00:26.22737	2012-10-16 01:00:26.22737
+93897	972	0.00	2012-10-16 01:00:26.235359	2012-10-16 01:00:26.235359
+93898	973	0.00	2012-10-16 01:00:26.243382	2012-10-16 01:00:26.243382
+93899	974	0.00	2012-10-16 01:00:26.251799	2012-10-16 01:00:26.251799
+93900	975	0.00	2012-10-16 01:00:26.260113	2012-10-16 01:00:26.260113
+93901	976	0.00	2012-10-16 01:00:26.268407	2012-10-16 01:00:26.268407
+93902	977	0.00	2012-10-16 01:00:26.276787	2012-10-16 01:00:26.276787
+93903	978	0.00	2012-10-16 01:00:26.28516	2012-10-16 01:00:26.28516
+93904	979	0.00	2012-10-16 01:00:26.29339	2012-10-16 01:00:26.29339
+93905	1061	0.00	2012-10-16 01:00:26.30179	2012-10-16 01:00:26.30179
+93906	1062	0.00	2012-10-16 01:00:26.31019	2012-10-16 01:00:26.31019
+93907	1063	0.00	2012-10-16 01:00:26.318466	2012-10-16 01:00:26.318466
+93908	1064	0.00	2012-10-16 01:00:26.326877	2012-10-16 01:00:26.326877
+93909	1065	0.00	2012-10-16 01:00:26.335139	2012-10-16 01:00:26.335139
+93910	1066	0.00	2012-10-16 01:00:26.343479	2012-10-16 01:00:26.343479
+93911	1067	0.00	2012-10-16 01:00:26.351857	2012-10-16 01:00:26.351857
+93912	1068	0.00	2012-10-16 01:00:26.360189	2012-10-16 01:00:26.360189
+93913	1069	0.00	2012-10-16 01:00:26.406238	2012-10-16 01:00:26.406238
+93914	1070	0.00	2012-10-16 01:00:26.419532	2012-10-16 01:00:26.419532
+93915	1071	0.00	2012-10-16 01:00:26.427291	2012-10-16 01:00:26.427291
+93916	980	0.00	2012-10-16 01:00:26.435538	2012-10-16 01:00:26.435538
+93917	981	0.00	2012-10-16 01:00:26.444058	2012-10-16 01:00:26.444058
+93918	982	0.00	2012-10-16 01:00:26.452234	2012-10-16 01:00:26.452234
+93919	983	0.00	2012-10-16 01:00:26.460336	2012-10-16 01:00:26.460336
+93920	984	0.00	2012-10-16 01:00:26.46906	2012-10-16 01:00:26.46906
+93921	985	0.00	2012-10-16 01:00:26.477249	2012-10-16 01:00:26.477249
+93922	986	0.00	2012-10-16 01:00:26.485542	2012-10-16 01:00:26.485542
+93923	987	0.00	2012-10-16 01:00:26.493862	2012-10-16 01:00:26.493862
+93924	988	0.00	2012-10-16 01:00:26.502217	2012-10-16 01:00:26.502217
+93925	989	0.00	2012-10-16 01:00:26.51038	2012-10-16 01:00:26.51038
+93926	990	0.00	2012-10-16 01:00:26.518924	2012-10-16 01:00:26.518924
+93927	991	0.00	2012-10-16 01:00:26.527171	2012-10-16 01:00:26.527171
+93928	992	0.00	2012-10-16 01:00:26.535355	2012-10-16 01:00:26.535355
+93929	993	0.00	2012-10-16 01:00:26.54389	2012-10-16 01:00:26.54389
+93930	994	0.00	2012-10-16 01:00:26.552157	2012-10-16 01:00:26.552157
+93931	995	0.00	2012-10-16 01:00:26.560361	2012-10-16 01:00:26.560361
+93932	996	0.00	2012-10-16 01:00:26.568858	2012-10-16 01:00:26.568858
+93933	997	0.00	2012-10-16 01:00:26.577353	2012-10-16 01:00:26.577353
+93934	998	0.00	2012-10-16 01:00:26.585371	2012-10-16 01:00:26.585371
+93935	999	0.00	2012-10-16 01:00:26.609054	2012-10-16 01:00:26.609054
+93936	1000	0.00	2012-10-16 01:00:26.626076	2012-10-16 01:00:26.626076
+93937	1001	0.00	2012-10-16 01:00:26.66741	2012-10-16 01:00:26.66741
+93938	1002	0.00	2012-10-16 01:00:26.707451	2012-10-16 01:00:26.707451
+93939	1003	0.00	2012-10-16 01:00:26.726839	2012-10-16 01:00:26.726839
+93940	1004	0.00	2012-10-16 01:00:26.735195	2012-10-16 01:00:26.735195
+93941	1005	0.00	2012-10-16 01:00:26.743483	2012-10-16 01:00:26.743483
+93942	1006	0.00	2012-10-16 01:00:26.751868	2012-10-16 01:00:26.751868
+93943	1007	0.00	2012-10-16 01:00:26.76011	2012-10-16 01:00:26.76011
+93944	1008	0.00	2012-10-16 01:00:26.768407	2012-10-16 01:00:26.768407
+93945	1009	0.00	2012-10-16 01:00:26.77678	2012-10-16 01:00:26.77678
+93946	1010	0.00	2012-10-16 01:00:26.785127	2012-10-16 01:00:26.785127
+93947	1011	0.00	2012-10-16 01:00:26.793395	2012-10-16 01:00:26.793395
+93948	1012	0.00	2012-10-16 01:00:26.801775	2012-10-16 01:00:26.801775
+93949	1013	0.00	2012-10-16 01:00:26.810148	2012-10-16 01:00:26.810148
+93950	1014	0.00	2012-10-16 01:00:26.81839	2012-10-16 01:00:26.81839
+93951	1015	0.00	2012-10-16 01:00:26.826768	2012-10-16 01:00:26.826768
+93952	1016	0.00	2012-10-16 01:00:26.835179	2012-10-16 01:00:26.835179
+93953	1017	0.00	2012-10-16 01:00:26.843452	2012-10-16 01:00:26.843452
+93954	1018	0.00	2012-10-16 01:00:26.851862	2012-10-16 01:00:26.851862
+93955	1019	0.00	2012-10-16 01:00:26.860145	2012-10-16 01:00:26.860145
+93956	1020	0.00	2012-10-16 01:00:26.868439	2012-10-16 01:00:26.868439
+93957	1021	0.00	2012-10-16 01:00:26.876841	2012-10-16 01:00:26.876841
+93958	1022	0.00	2012-10-16 01:00:26.88513	2012-10-16 01:00:26.88513
+93959	1023	0.00	2012-10-16 01:00:26.89343	2012-10-16 01:00:26.89343
+93960	1024	0.00	2012-10-16 01:00:26.901806	2012-10-16 01:00:26.901806
+93961	1025	0.00	2012-10-16 01:00:26.910112	2012-10-16 01:00:26.910112
+93962	1026	0.00	2012-10-16 01:00:26.918422	2012-10-16 01:00:26.918422
+93963	1027	0.00	2012-10-16 01:00:26.926858	2012-10-16 01:00:26.926858
+93964	1028	0.00	2012-10-16 01:00:26.935218	2012-10-16 01:00:26.935218
+93965	1029	0.00	2012-10-16 01:00:26.943502	2012-10-16 01:00:26.943502
+93966	1030	0.00	2012-10-16 01:00:26.951901	2012-10-16 01:00:26.951901
+93967	1031	0.00	2012-10-16 01:00:26.960171	2012-10-16 01:00:26.960171
+93968	1032	0.00	2012-10-16 01:00:26.968466	2012-10-16 01:00:26.968466
+93969	1033	0.00	2012-10-16 01:00:26.976862	2012-10-16 01:00:26.976862
+93970	1034	0.00	2012-10-16 01:00:26.985161	2012-10-16 01:00:26.985161
+93971	1035	0.00	2012-10-16 01:00:26.993457	2012-10-16 01:00:26.993457
+93972	1036	0.00	2012-10-16 01:00:27.001862	2012-10-16 01:00:27.001862
+93973	1037	0.00	2012-10-16 01:00:27.010147	2012-10-16 01:00:27.010147
+93974	1038	0.00	2012-10-16 01:00:27.018446	2012-10-16 01:00:27.018446
+93975	1039	0.00	2012-10-16 01:00:27.026871	2012-10-16 01:00:27.026871
+93976	1040	0.00	2012-10-16 01:00:27.035133	2012-10-16 01:00:27.035133
+93977	1041	0.00	2012-10-16 01:00:27.043433	2012-10-16 01:00:27.043433
+93978	1042	0.00	2012-10-16 01:00:27.05182	2012-10-16 01:00:27.05182
+93979	1043	0.00	2012-10-16 01:00:27.060125	2012-10-16 01:00:27.060125
+93980	1044	0.00	2012-10-16 01:00:27.06843	2012-10-16 01:00:27.06843
+93981	1045	0.00	2012-10-16 01:00:27.076793	2012-10-16 01:00:27.076793
+93982	1046	0.00	2012-10-16 01:00:27.085106	2012-10-16 01:00:27.085106
+93983	1047	0.00	2012-10-16 01:00:27.093411	2012-10-16 01:00:27.093411
+93984	1048	0.00	2012-10-16 01:00:27.10178	2012-10-16 01:00:27.10178
+93985	1049	0.00	2012-10-16 01:00:27.110088	2012-10-16 01:00:27.110088
+93986	1050	0.00	2012-10-16 01:00:27.118398	2012-10-16 01:00:27.118398
+93987	1051	0.00	2012-10-16 01:00:27.152328	2012-10-16 01:00:27.152328
+93988	1052	0.00	2012-10-16 01:00:27.160203	2012-10-16 01:00:27.160203
+93989	1053	0.00	2012-10-16 01:00:27.168442	2012-10-16 01:00:27.168442
+93990	1054	0.00	2012-10-16 01:00:27.176852	2012-10-16 01:00:27.176852
+93991	1055	0.00	2012-10-16 01:00:27.185265	2012-10-16 01:00:27.185265
+93992	1056	0.00	2012-10-16 01:00:27.193612	2012-10-16 01:00:27.193612
+93993	1057	0.00	2012-10-16 01:00:27.201963	2012-10-16 01:00:27.201963
+93994	1058	0.00	2012-10-16 01:00:27.210266	2012-10-16 01:00:27.210266
+93995	1059	0.00	2012-10-16 01:00:27.218543	2012-10-16 01:00:27.218543
+93996	1060	0.00	2012-10-16 01:00:27.226926	2012-10-16 01:00:27.226926
+93997	1072	0.00	2012-10-16 01:00:27.235231	2012-10-16 01:00:27.235231
+93998	1073	0.00	2012-10-16 01:00:27.243544	2012-10-16 01:00:27.243544
+93999	1074	0.00	2012-10-16 01:00:27.251953	2012-10-16 01:00:27.251953
+94000	1075	0.00	2012-10-16 01:00:27.260226	2012-10-16 01:00:27.260226
+94001	1076	0.00	2012-10-16 01:00:27.268516	2012-10-16 01:00:27.268516
+94002	1077	0.00	2012-10-16 01:00:27.276935	2012-10-16 01:00:27.276935
+94003	1079	0.00	2012-10-16 01:00:27.285216	2012-10-16 01:00:27.285216
+94004	1080	0.00	2012-10-16 01:00:27.293504	2012-10-16 01:00:27.293504
+94005	1081	0.00	2012-10-16 01:00:27.301933	2012-10-16 01:00:27.301933
+94006	1082	0.00	2012-10-16 01:00:27.310206	2012-10-16 01:00:27.310206
+94007	1083	0.00	2012-10-16 01:00:27.318511	2012-10-16 01:00:27.318511
+94008	1084	0.00	2012-10-16 01:00:27.326902	2012-10-16 01:00:27.326902
+94009	1085	0.00	2012-10-16 01:00:27.335209	2012-10-16 01:00:27.335209
+94010	1086	0.00	2012-10-16 01:00:27.343514	2012-10-16 01:00:27.343514
+94011	1087	0.00	2012-10-16 01:00:27.351918	2012-10-16 01:00:27.351918
+94012	1088	0.00	2012-10-16 01:00:27.36019	2012-10-16 01:00:27.36019
+94013	1089	0.00	2012-10-16 01:00:27.368465	2012-10-16 01:00:27.368465
+94014	1090	0.00	2012-10-16 01:00:27.376941	2012-10-16 01:00:27.376941
+94015	1091	0.00	2012-10-16 01:00:27.38517	2012-10-16 01:00:27.38517
+94016	1092	0.00	2012-10-16 01:00:27.393463	2012-10-16 01:00:27.393463
+94017	1093	0.00	2012-10-16 01:00:27.401926	2012-10-16 01:00:27.401926
+94018	1094	0.00	2012-10-16 01:00:27.410192	2012-10-16 01:00:27.410192
+94019	1095	0.00	2012-10-16 01:00:27.418484	2012-10-16 01:00:27.418484
+94020	1096	0.00	2012-10-16 01:00:27.426984	2012-10-16 01:00:27.426984
+94021	1097	0.00	2012-10-16 01:00:27.435227	2012-10-16 01:00:27.435227
+94022	1098	0.00	2012-10-16 01:00:27.443526	2012-10-16 01:00:27.443526
+94023	1099	0.00	2012-10-16 01:00:27.451952	2012-10-16 01:00:27.451952
+94024	1100	0.00	2012-10-16 01:00:27.460207	2012-10-16 01:00:27.460207
+94025	1101	0.00	2012-10-16 01:00:27.468743	2012-10-16 01:00:27.468743
+94026	1102	0.00	2012-10-16 01:00:27.477062	2012-10-16 01:00:27.477062
+94027	1103	0.00	2012-10-16 01:00:27.485344	2012-10-16 01:00:27.485344
+94028	1104	0.00	2012-10-16 01:00:27.493642	2012-10-16 01:00:27.493642
+94029	1105	0.00	2012-10-16 01:00:27.502057	2012-10-16 01:00:27.502057
+94030	1106	0.00	2012-10-16 01:00:27.510314	2012-10-16 01:00:27.510314
+94031	1107	0.00	2012-10-16 01:00:27.518754	2012-10-16 01:00:27.518754
+94032	1108	0.00	2012-10-16 01:00:27.527066	2012-10-16 01:00:27.527066
+94033	1109	0.00	2012-10-16 01:00:27.53528	2012-10-16 01:00:27.53528
+94034	1110	0.00	2012-10-16 01:00:27.543591	2012-10-16 01:00:27.543591
+94035	1111	0.00	2012-10-16 01:00:27.552055	2012-10-16 01:00:27.552055
+94036	1112	0.00	2012-10-16 01:00:27.56035	2012-10-16 01:00:27.56035
+94037	1113	0.00	2012-10-16 01:00:27.568615	2012-10-16 01:00:27.568615
+94038	1114	0.00	2012-10-16 01:00:27.577034	2012-10-16 01:00:27.577034
+94039	1115	0.00	2012-10-16 01:00:27.58528	2012-10-16 01:00:27.58528
+94040	1116	0.00	2012-10-16 01:00:27.59366	2012-10-16 01:00:27.59366
+94041	1117	0.00	2012-10-16 01:00:27.602049	2012-10-16 01:00:27.602049
+94042	1118	0.00	2012-10-16 01:00:27.610258	2012-10-16 01:00:27.610258
+94043	1119	0.00	2012-10-16 01:00:27.618723	2012-10-16 01:00:27.618723
+94044	1120	0.00	2012-10-16 01:00:27.627033	2012-10-16 01:00:27.627033
+94045	1121	0.00	2012-10-16 01:00:27.635312	2012-10-16 01:00:27.635312
+94046	1122	0.00	2012-10-16 01:00:27.64364	2012-10-16 01:00:27.64364
+94047	1123	0.00	2012-10-16 01:00:27.652148	2012-10-16 01:00:27.652148
+94048	1124	0.00	2012-10-16 01:00:27.660349	2012-10-16 01:00:27.660349
+94049	1125	0.00	2012-10-16 01:00:27.668635	2012-10-16 01:00:27.668635
+94050	1126	0.00	2012-10-16 01:00:27.677027	2012-10-16 01:00:27.677027
+94051	1127	0.00	2012-10-16 01:00:27.685294	2012-10-16 01:00:27.685294
+94052	1128	0.00	2012-10-16 01:00:27.69365	2012-10-16 01:00:27.69365
+94053	1129	0.00	2012-10-16 01:00:27.702046	2012-10-16 01:00:27.702046
+94054	1130	0.00	2012-10-16 01:00:27.710323	2012-10-16 01:00:27.710323
+94055	1131	0.00	2012-10-16 01:00:27.719068	2012-10-16 01:00:27.719068
+94056	1132	0.00	2012-10-16 01:00:27.752469	2012-10-16 01:00:27.752469
+94057	1133	0.00	2012-10-16 01:00:27.760313	2012-10-16 01:00:27.760313
+94058	1134	0.00	2012-10-16 01:00:27.768693	2012-10-16 01:00:27.768693
+94059	1135	0.00	2012-10-16 01:00:27.777021	2012-10-16 01:00:27.777021
+94060	1136	0.00	2012-10-16 01:00:27.785224	2012-10-16 01:00:27.785224
+94061	1137	0.00	2012-10-16 01:00:27.832113	2012-10-16 01:00:27.832113
+94062	1138	0.00	2012-10-16 01:00:27.843947	2012-10-16 01:00:27.843947
+94063	1139	0.00	2012-10-16 01:00:27.852017	2012-10-16 01:00:27.852017
+94064	1140	0.00	2012-10-16 01:00:27.860298	2012-10-16 01:00:27.860298
+94065	1141	0.00	2012-10-16 01:00:27.868558	2012-10-16 01:00:27.868558
+94066	1142	0.00	2012-10-16 01:00:27.876986	2012-10-16 01:00:27.876986
+94067	1143	0.00	2012-10-16 01:00:27.885265	2012-10-16 01:00:27.885265
+94068	1144	0.00	2012-10-16 01:00:27.893531	2012-10-16 01:00:27.893531
+94069	1145	0.00	2012-10-16 01:00:27.901961	2012-10-16 01:00:27.901961
+94070	1146	0.00	2012-10-16 01:00:27.910302	2012-10-16 01:00:27.910302
+94071	1147	0.00	2012-10-16 01:00:27.918637	2012-10-16 01:00:27.918637
+94072	1148	0.00	2012-10-16 01:00:27.927044	2012-10-16 01:00:27.927044
+94073	1149	0.00	2012-10-16 01:00:27.935281	2012-10-16 01:00:27.935281
+94074	1150	0.00	2012-10-16 01:00:27.943551	2012-10-16 01:00:27.943551
+94075	1151	0.00	2012-10-16 01:00:27.951961	2012-10-16 01:00:27.951961
+94076	1152	0.00	2012-10-16 01:00:27.960228	2012-10-16 01:00:27.960228
+94077	1153	0.00	2012-10-16 01:00:27.968528	2012-10-16 01:00:27.968528
+94078	1154	0.00	2012-10-16 01:00:27.976993	2012-10-16 01:00:27.976993
+94079	1155	0.00	2012-10-16 01:00:27.985246	2012-10-16 01:00:27.985246
+94080	1156	0.00	2012-10-16 01:00:27.993533	2012-10-16 01:00:27.993533
+94081	1157	0.00	2012-10-16 01:00:28.001955	2012-10-16 01:00:28.001955
+94082	1158	0.00	2012-10-16 01:00:28.010233	2012-10-16 01:00:28.010233
+94083	1159	0.00	2012-10-16 01:00:28.018645	2012-10-16 01:00:28.018645
+94084	1160	0.00	2012-10-16 01:00:28.0271	2012-10-16 01:00:28.0271
+94085	1161	0.00	2012-10-16 01:00:28.035306	2012-10-16 01:00:28.035306
+94086	1162	0.00	2012-10-16 01:00:28.043703	2012-10-16 01:00:28.043703
+94087	1163	0.00	2012-10-16 01:00:28.052063	2012-10-16 01:00:28.052063
+94088	1164	0.00	2012-10-16 01:00:28.060326	2012-10-16 01:00:28.060326
+94089	1165	0.00	2012-10-16 01:00:28.068674	2012-10-16 01:00:28.068674
+94090	1166	0.00	2012-10-16 01:00:28.077034	2012-10-16 01:00:28.077034
+94091	1167	0.00	2012-10-16 01:00:28.085313	2012-10-16 01:00:28.085313
+94092	1168	0.00	2012-10-16 01:00:28.093621	2012-10-16 01:00:28.093621
+94093	1169	0.00	2012-10-16 01:00:28.101977	2012-10-16 01:00:28.101977
+94094	1170	0.00	2012-10-16 01:00:28.110276	2012-10-16 01:00:28.110276
+94095	1171	0.00	2012-10-16 01:00:28.118625	2012-10-16 01:00:28.118625
+94096	1172	0.00	2012-10-16 01:00:28.127002	2012-10-16 01:00:28.127002
+94097	1173	0.00	2012-10-16 01:00:28.135276	2012-10-16 01:00:28.135276
+94098	1174	0.00	2012-10-16 01:00:28.143616	2012-10-16 01:00:28.143616
+94099	1175	0.00	2012-10-16 01:00:28.151934	2012-10-16 01:00:28.151934
+94100	1176	0.00	2012-10-16 01:00:28.160275	2012-10-16 01:00:28.160275
+94101	1177	0.00	2012-10-16 01:00:28.168543	2012-10-16 01:00:28.168543
+94102	1178	0.00	2012-10-16 01:00:28.177007	2012-10-16 01:00:28.177007
+94103	1179	0.00	2012-10-16 01:00:28.185252	2012-10-16 01:00:28.185252
+94104	1180	0.00	2012-10-16 01:00:28.193519	2012-10-16 01:00:28.193519
+94105	1181	0.00	2012-10-16 01:00:28.201981	2012-10-16 01:00:28.201981
+94106	1182	0.00	2012-10-16 01:00:28.210229	2012-10-16 01:00:28.210229
+94107	1183	0.00	2012-10-16 01:00:28.218505	2012-10-16 01:00:28.218505
+94108	1184	0.00	2012-10-16 01:00:28.226933	2012-10-16 01:00:28.226933
+94109	1185	0.00	2012-10-16 01:00:28.235212	2012-10-16 01:00:28.235212
+94110	1186	0.00	2012-10-16 01:00:28.243488	2012-10-16 01:00:28.243488
+94111	1187	0.00	2012-10-16 01:00:28.252114	2012-10-16 01:00:28.252114
+94112	1188	0.00	2012-10-16 01:00:28.260269	2012-10-16 01:00:28.260269
+94113	1189	0.00	2012-10-16 01:00:28.268627	2012-10-16 01:00:28.268627
+94114	1190	0.00	2012-10-16 01:00:28.276973	2012-10-16 01:00:28.276973
+94115	1191	0.00	2012-10-16 01:00:28.285289	2012-10-16 01:00:28.285289
+94116	1192	0.00	2012-10-16 01:00:28.293616	2012-10-16 01:00:28.293616
+94117	1193	0.00	2012-10-16 01:00:28.301992	2012-10-16 01:00:28.301992
+94118	1194	0.00	2012-10-16 01:00:28.310258	2012-10-16 01:00:28.310258
+94119	1195	0.00	2012-10-16 01:00:28.318611	2012-10-16 01:00:28.318611
+94120	1196	0.00	2012-10-16 01:00:28.326986	2012-10-16 01:00:28.326986
+94121	1197	0.00	2012-10-16 01:00:28.335355	2012-10-16 01:00:28.335355
+94122	1198	0.00	2012-10-16 01:00:28.343635	2012-10-16 01:00:28.343635
+94123	1199	0.00	2012-10-16 01:00:28.352069	2012-10-16 01:00:28.352069
+94124	1200	0.00	2012-10-16 01:00:28.360301	2012-10-16 01:00:28.360301
+94125	1201	0.00	2012-10-16 01:00:28.368735	2012-10-16 01:00:28.368735
+94126	1202	0.00	2012-10-16 01:00:28.377065	2012-10-16 01:00:28.377065
+94127	1203	0.00	2012-10-16 01:00:28.385274	2012-10-16 01:00:28.385274
+94128	1204	0.00	2012-10-16 01:00:28.393607	2012-10-16 01:00:28.393607
+94129	1205	0.00	2012-10-16 01:00:28.402027	2012-10-16 01:00:28.402027
+94130	1206	0.00	2012-10-16 01:00:28.410295	2012-10-16 01:00:28.410295
+94131	1207	0.00	2012-10-16 01:00:28.446369	2012-10-16 01:00:28.446369
+94132	1208	0.00	2012-10-16 01:00:28.452061	2012-10-16 01:00:28.452061
+94133	1209	0.00	2012-10-16 01:00:28.460339	2012-10-16 01:00:28.460339
+94134	1210	0.00	2012-10-16 01:00:28.468693	2012-10-16 01:00:28.468693
+94135	1211	0.00	2012-10-16 01:00:28.477096	2012-10-16 01:00:28.477096
+94136	1212	0.00	2012-10-16 01:00:28.485311	2012-10-16 01:00:28.485311
+94137	1213	0.00	2012-10-16 01:00:28.493703	2012-10-16 01:00:28.493703
+94138	1214	0.00	2012-10-16 01:00:28.502062	2012-10-16 01:00:28.502062
+94139	1215	0.00	2012-10-16 01:00:28.510298	2012-10-16 01:00:28.510298
+94140	1216	0.00	2012-10-16 01:00:28.518633	2012-10-16 01:00:28.518633
+94141	1217	0.00	2012-10-16 01:00:28.527073	2012-10-16 01:00:28.527073
+94142	1218	0.00	2012-10-16 01:00:28.535289	2012-10-16 01:00:28.535289
+94143	1219	0.00	2012-10-16 01:00:28.543783	2012-10-16 01:00:28.543783
+94144	1220	0.00	2012-10-16 01:00:28.552157	2012-10-16 01:00:28.552157
+94145	1221	0.00	2012-10-16 01:00:28.560355	2012-10-16 01:00:28.560355
+94146	1222	0.00	2012-10-16 01:00:28.568757	2012-10-16 01:00:28.568757
+94147	1223	0.00	2012-10-16 01:00:28.577146	2012-10-16 01:00:28.577146
+94148	1224	0.00	2012-10-16 01:00:28.585384	2012-10-16 01:00:28.585384
+94149	1225	0.00	2012-10-16 01:00:28.59375	2012-10-16 01:00:28.59375
+94150	1226	0.00	2012-10-16 01:00:28.60209	2012-10-16 01:00:28.60209
+94151	1227	0.00	2012-10-16 01:00:28.61033	2012-10-16 01:00:28.61033
+94152	1228	0.00	2012-10-16 01:00:28.618731	2012-10-16 01:00:28.618731
+94153	1229	0.00	2012-10-16 01:00:28.627128	2012-10-16 01:00:28.627128
+94154	1230	0.00	2012-10-16 01:00:28.63534	2012-10-16 01:00:28.63534
+94155	1231	0.00	2012-10-16 01:00:28.64375	2012-10-16 01:00:28.64375
+94156	1232	0.00	2012-10-16 01:00:28.652132	2012-10-16 01:00:28.652132
+94157	1233	0.00	2012-10-16 01:00:28.660483	2012-10-16 01:00:28.660483
+94158	1234	0.00	2012-10-16 01:00:28.668802	2012-10-16 01:00:28.668802
+94159	1235	0.00	2012-10-16 01:00:28.677166	2012-10-16 01:00:28.677166
+94160	1236	0.00	2012-10-16 01:00:28.685409	2012-10-16 01:00:28.685409
+94161	1237	0.00	2012-10-16 01:00:28.693818	2012-10-16 01:00:28.693818
+94162	1238	0.00	2012-10-16 01:00:28.702108	2012-10-16 01:00:28.702108
+94163	1239	0.00	2012-10-16 01:00:28.710422	2012-10-16 01:00:28.710422
+94164	1240	0.00	2012-10-16 01:00:28.718794	2012-10-16 01:00:28.718794
+94165	1241	0.00	2012-10-16 01:00:28.727095	2012-10-16 01:00:28.727095
+94166	1242	0.00	2012-10-16 01:00:28.7354	2012-10-16 01:00:28.7354
+94167	1243	0.00	2012-10-16 01:00:28.743776	2012-10-16 01:00:28.743776
+94168	1244	0.00	2012-10-16 01:00:28.752168	2012-10-16 01:00:28.752168
+94169	1245	0.00	2012-10-16 01:00:28.760409	2012-10-16 01:00:28.760409
+94170	1246	0.00	2012-10-16 01:00:28.768769	2012-10-16 01:00:28.768769
+94171	1247	0.00	2012-10-16 01:00:28.777136	2012-10-16 01:00:28.777136
+94172	1248	0.00	2012-10-16 01:00:28.78536	2012-10-16 01:00:28.78536
+94173	1249	0.00	2012-10-16 01:00:28.793757	2012-10-16 01:00:28.793757
+94174	1250	0.00	2012-10-16 01:00:28.802178	2012-10-16 01:00:28.802178
+94175	1251	0.00	2012-10-16 01:00:28.810354	2012-10-16 01:00:28.810354
+94176	1252	0.00	2012-10-16 01:00:28.818778	2012-10-16 01:00:28.818778
+94177	1253	0.00	2012-10-16 01:00:28.827128	2012-10-16 01:00:28.827128
+94178	1254	0.00	2012-10-16 01:00:28.835352	2012-10-16 01:00:28.835352
+94179	1255	0.00	2012-10-16 01:00:28.843676	2012-10-16 01:00:28.843676
+94180	1256	0.00	2012-10-16 01:00:28.853456	2012-10-16 01:00:28.853456
+94181	1257	0.00	2012-10-16 01:00:28.870192	2012-10-16 01:00:28.870192
+94182	1258	0.00	2012-10-16 01:00:28.886868	2012-10-16 01:00:28.886868
+94183	1259	0.00	2012-10-16 01:00:28.903417	2012-10-16 01:00:28.903417
+94184	1260	0.00	2012-10-16 01:00:28.920199	2012-10-16 01:00:28.920199
+94185	1261	0.00	2012-10-16 01:00:28.936764	2012-10-16 01:00:28.936764
+94186	1262	0.00	2012-10-16 01:00:28.953415	2012-10-16 01:00:28.953415
+94187	1263	0.00	2012-10-16 01:00:28.97017	2012-10-16 01:00:28.97017
+94188	1264	0.00	2012-10-16 01:00:28.986808	2012-10-16 01:00:28.986808
+94189	1265	0.00	2012-10-16 01:00:29.004311	2012-10-16 01:00:29.004311
+94190	1266	0.00	2012-10-16 01:00:29.020476	2012-10-16 01:00:29.020476
+94191	1267	0.00	2012-10-16 01:00:29.036837	2012-10-16 01:00:29.036837
+94192	1268	0.00	2012-10-16 01:00:29.053425	2012-10-16 01:00:29.053425
+94193	1269	0.00	2012-10-16 01:00:29.070156	2012-10-16 01:00:29.070156
+94194	1270	0.00	2012-10-16 01:00:29.086782	2012-10-16 01:00:29.086782
+94195	1271	0.00	2012-10-16 01:00:29.103526	2012-10-16 01:00:29.103526
+94196	1272	0.00	2012-10-16 01:00:29.139651	2012-10-16 01:00:29.139651
+94197	1273	0.00	2012-10-16 01:00:29.145369	2012-10-16 01:00:29.145369
+94198	1274	0.00	2012-10-16 01:00:29.153412	2012-10-16 01:00:29.153412
+94199	1275	0.00	2012-10-16 01:00:29.161741	2012-10-16 01:00:29.161741
+94200	1276	0.00	2012-10-16 01:00:29.170139	2012-10-16 01:00:29.170139
+94201	1277	0.00	2012-10-16 01:00:29.178366	2012-10-16 01:00:29.178366
+94202	1278	0.00	2012-10-16 01:00:29.186744	2012-10-16 01:00:29.186744
+94203	1279	0.00	2012-10-16 01:00:29.195117	2012-10-16 01:00:29.195117
+94204	1280	0.00	2012-10-16 01:00:29.203337	2012-10-16 01:00:29.203337
+94205	1281	0.00	2012-10-16 01:00:29.211734	2012-10-16 01:00:29.211734
+94206	1282	0.00	2012-10-16 01:00:29.220099	2012-10-16 01:00:29.220099
+94207	1283	0.00	2012-10-16 01:00:29.22838	2012-10-16 01:00:29.22838
+94208	1284	0.00	2012-10-16 01:00:29.236703	2012-10-16 01:00:29.236703
+94209	1285	0.00	2012-10-16 01:00:29.279614	2012-10-16 01:00:29.279614
+94210	1286	0.00	2012-10-16 01:00:29.286773	2012-10-16 01:00:29.286773
+94211	1287	0.00	2012-10-16 01:00:29.295133	2012-10-16 01:00:29.295133
+94212	1288	0.00	2012-10-16 01:00:29.30333	2012-10-16 01:00:29.30333
+94213	1289	0.00	2012-10-16 01:00:29.3117	2012-10-16 01:00:29.3117
+94214	1290	0.00	2012-10-16 01:00:29.320018	2012-10-16 01:00:29.320018
+94215	1291	0.00	2012-10-16 01:00:29.32843	2012-10-16 01:00:29.32843
+94216	1292	0.00	2012-10-16 01:00:29.33675	2012-10-16 01:00:29.33675
+94217	1293	0.00	2012-10-16 01:00:29.34514	2012-10-16 01:00:29.34514
+94218	1294	0.00	2012-10-16 01:00:29.353395	2012-10-16 01:00:29.353395
+94219	1295	0.00	2012-10-16 01:00:29.361736	2012-10-16 01:00:29.361736
+94220	1296	0.00	2012-10-16 01:00:29.370112	2012-10-16 01:00:29.370112
+94221	1297	0.00	2012-10-16 01:00:29.378401	2012-10-16 01:00:29.378401
+94222	1298	0.00	2012-10-16 01:00:29.386705	2012-10-16 01:00:29.386705
+94223	1299	0.00	2012-10-16 01:00:29.395095	2012-10-16 01:00:29.395095
+94224	1300	0.00	2012-10-16 01:00:29.40333	2012-10-16 01:00:29.40333
+94225	1301	0.00	2012-10-16 01:00:29.411737	2012-10-16 01:00:29.411737
+94226	1302	0.00	2012-10-16 01:00:29.420215	2012-10-16 01:00:29.420215
+94227	1303	0.00	2012-10-16 01:00:29.428394	2012-10-16 01:00:29.428394
+94228	1304	0.00	2012-10-16 01:00:29.436939	2012-10-16 01:00:29.436939
+94229	1305	0.00	2012-10-16 01:00:29.445113	2012-10-16 01:00:29.445113
+94230	1306	0.00	2012-10-16 01:00:29.453452	2012-10-16 01:00:29.453452
+94231	1307	0.00	2012-10-16 01:00:29.46182	2012-10-16 01:00:29.46182
+94232	1308	0.00	2012-10-16 01:00:29.470169	2012-10-16 01:00:29.470169
+94233	1309	0.00	2012-10-16 01:00:29.478451	2012-10-16 01:00:29.478451
+94234	1310	0.00	2012-10-16 01:00:29.486839	2012-10-16 01:00:29.486839
+94235	1311	0.00	2012-10-16 01:00:29.495133	2012-10-16 01:00:29.495133
+94236	1312	0.00	2012-10-16 01:00:29.503425	2012-10-16 01:00:29.503425
+94237	1313	0.00	2012-10-16 01:00:29.51181	2012-10-16 01:00:29.51181
+94238	1314	0.00	2012-10-16 01:00:29.520114	2012-10-16 01:00:29.520114
+94239	1315	0.00	2012-10-16 01:00:29.528417	2012-10-16 01:00:29.528417
+94240	1316	0.00	2012-10-16 01:00:29.53678	2012-10-16 01:00:29.53678
+94241	1317	0.00	2012-10-16 01:00:29.545169	2012-10-16 01:00:29.545169
+94242	1318	0.00	2012-10-16 01:00:29.553412	2012-10-16 01:00:29.553412
+94243	1319	0.00	2012-10-16 01:00:29.56177	2012-10-16 01:00:29.56177
+94244	1320	0.00	2012-10-16 01:00:29.570147	2012-10-16 01:00:29.570147
+94245	1321	0.00	2012-10-16 01:00:29.578397	2012-10-16 01:00:29.578397
+94246	1322	0.00	2012-10-16 01:00:29.586773	2012-10-16 01:00:29.586773
+94247	1323	0.00	2012-10-16 01:00:29.595141	2012-10-16 01:00:29.595141
+94248	1324	0.00	2012-10-16 01:00:29.603385	2012-10-16 01:00:29.603385
+94249	1325	0.00	2012-10-16 01:00:29.611763	2012-10-16 01:00:29.611763
+94250	1326	0.00	2012-10-16 01:00:29.620132	2012-10-16 01:00:29.620132
+94251	1327	0.00	2012-10-16 01:00:29.628366	2012-10-16 01:00:29.628366
+94252	1328	0.00	2012-10-16 01:00:29.636747	2012-10-16 01:00:29.636747
+94253	1329	0.00	2012-10-16 01:00:29.645126	2012-10-16 01:00:29.645126
+94254	1330	0.00	2012-10-16 01:00:29.653347	2012-10-16 01:00:29.653347
+94255	1331	0.00	2012-10-16 01:00:29.661737	2012-10-16 01:00:29.661737
+94256	1332	0.00	2012-10-16 01:00:29.670105	2012-10-16 01:00:29.670105
+94257	1333	0.00	2012-10-16 01:00:29.678343	2012-10-16 01:00:29.678343
+94258	1334	0.00	2012-10-16 01:00:29.686847	2012-10-16 01:00:29.686847
+94259	1335	0.00	2012-10-16 01:00:29.695128	2012-10-16 01:00:29.695128
+94260	1336	0.00	2012-10-16 01:00:29.70341	2012-10-16 01:00:29.70341
+94261	1337	0.00	2012-10-16 01:00:29.711775	2012-10-16 01:00:29.711775
+94262	1338	0.00	2012-10-16 01:00:29.720179	2012-10-16 01:00:29.720179
+94263	1339	0.00	2012-10-16 01:00:29.728396	2012-10-16 01:00:29.728396
+94264	1340	0.00	2012-10-16 01:00:29.736772	2012-10-16 01:00:29.736772
+94265	1341	0.00	2012-10-16 01:00:29.745146	2012-10-16 01:00:29.745146
+94266	1342	0.00	2012-10-16 01:00:29.753387	2012-10-16 01:00:29.753387
+94267	1343	0.00	2012-10-16 01:00:29.761757	2012-10-16 01:00:29.761757
+94268	1344	0.00	2012-10-16 01:00:29.770134	2012-10-16 01:00:29.770134
+94269	1345	0.00	2012-10-16 01:00:29.778383	2012-10-16 01:00:29.778383
+94270	1346	0.00	2012-10-16 01:00:29.786747	2012-10-16 01:00:29.786747
+94271	1347	0.00	2012-10-16 01:00:29.795139	2012-10-16 01:00:29.795139
+94272	1348	0.00	2012-10-16 01:00:29.803362	2012-10-16 01:00:29.803362
+94273	1349	0.00	2012-10-16 01:00:29.811741	2012-10-16 01:00:29.811741
+94274	1350	0.00	2012-10-16 01:00:29.820116	2012-10-16 01:00:29.820116
+94275	1351	0.00	2012-10-16 01:00:29.853892	2012-10-16 01:00:29.853892
+94276	1352	0.00	2012-10-16 01:00:29.861759	2012-10-16 01:00:29.861759
+94277	1353	0.00	2012-10-16 01:00:29.870126	2012-10-16 01:00:29.870126
+94278	1354	0.00	2012-10-16 01:00:29.878386	2012-10-16 01:00:29.878386
+94279	1355	0.00	2012-10-16 01:00:29.886781	2012-10-16 01:00:29.886781
+94280	1356	0.00	2012-10-16 01:00:29.895114	2012-10-16 01:00:29.895114
+94281	1357	0.00	2012-10-16 01:00:29.903367	2012-10-16 01:00:29.903367
+94282	1358	0.00	2012-10-16 01:00:29.911993	2012-10-16 01:00:29.911993
+94283	1359	0.00	2012-10-16 01:00:29.920186	2012-10-16 01:00:29.920186
+94284	1360	0.00	2012-10-16 01:00:29.928472	2012-10-16 01:00:29.928472
+94285	1361	0.00	2012-10-16 01:00:29.936918	2012-10-16 01:00:29.936918
+94286	1362	0.00	2012-10-16 01:00:29.945165	2012-10-16 01:00:29.945165
+94287	1363	0.00	2012-10-16 01:00:29.953469	2012-10-16 01:00:29.953469
+94288	1364	0.00	2012-10-16 01:00:29.961908	2012-10-16 01:00:29.961908
+94289	1365	0.00	2012-10-16 01:00:29.970196	2012-10-16 01:00:29.970196
+94290	1366	0.00	2012-10-16 01:00:29.978458	2012-10-16 01:00:29.978458
+94291	1367	0.00	2012-10-16 01:00:29.986879	2012-10-16 01:00:29.986879
+94292	1368	0.00	2012-10-16 01:00:29.995134	2012-10-16 01:00:29.995134
+94293	1369	0.00	2012-10-16 01:00:30.003489	2012-10-16 01:00:30.003489
+94294	1370	0.00	2012-10-16 01:00:30.0119	2012-10-16 01:00:30.0119
+94295	1371	0.00	2012-10-16 01:00:30.020147	2012-10-16 01:00:30.020147
+94296	1372	0.00	2012-10-16 01:00:30.028442	2012-10-16 01:00:30.028442
+94297	1373	0.00	2012-10-16 01:00:30.036815	2012-10-16 01:00:30.036815
+94298	1374	0.00	2012-10-16 01:00:30.045171	2012-10-16 01:00:30.045171
+94299	1375	0.00	2012-10-16 01:00:30.053438	2012-10-16 01:00:30.053438
+94300	1376	0.00	2012-10-16 01:00:30.06185	2012-10-16 01:00:30.06185
+94301	1377	0.00	2012-10-16 01:00:30.070244	2012-10-16 01:00:30.070244
+94302	1379	0.00	2012-10-16 01:00:30.078495	2012-10-16 01:00:30.078495
+94303	1380	0.00	2012-10-16 01:00:30.086807	2012-10-16 01:00:30.086807
+94304	1381	0.00	2012-10-16 01:00:30.095229	2012-10-16 01:00:30.095229
+94305	1382	0.00	2012-10-16 01:00:30.103527	2012-10-16 01:00:30.103527
+94306	1383	0.00	2012-10-16 01:00:30.111895	2012-10-16 01:00:30.111895
+94307	1384	0.00	2012-10-16 01:00:30.120206	2012-10-16 01:00:30.120206
+94308	1385	0.00	2012-10-16 01:00:30.128505	2012-10-16 01:00:30.128505
+94309	1386	0.00	2012-10-16 01:00:30.136952	2012-10-16 01:00:30.136952
+94310	1387	0.00	2012-10-16 01:00:30.145159	2012-10-16 01:00:30.145159
+94311	1388	0.00	2012-10-16 01:00:30.153791	2012-10-16 01:00:30.153791
+94312	1389	0.00	2012-10-16 01:00:30.162068	2012-10-16 01:00:30.162068
+94313	1390	0.00	2012-10-16 01:00:30.170341	2012-10-16 01:00:30.170341
+94314	1391	0.00	2012-10-16 01:00:30.17866	2012-10-16 01:00:30.17866
+94315	1392	0.00	2012-10-16 01:00:30.187014	2012-10-16 01:00:30.187014
+94316	1393	0.00	2012-10-16 01:00:30.195271	2012-10-16 01:00:30.195271
+94317	1394	0.00	2012-10-16 01:00:30.203595	2012-10-16 01:00:30.203595
+94318	1395	0.00	2012-10-16 01:00:30.212018	2012-10-16 01:00:30.212018
+94319	1396	0.00	2012-10-16 01:00:30.220316	2012-10-16 01:00:30.220316
+94320	1397	0.00	2012-10-16 01:00:30.228686	2012-10-16 01:00:30.228686
+94321	1398	0.00	2012-10-16 01:00:30.237055	2012-10-16 01:00:30.237055
+94322	1399	0.00	2012-10-16 01:00:30.245312	2012-10-16 01:00:30.245312
+94323	1400	0.00	2012-10-16 01:00:30.253582	2012-10-16 01:00:30.253582
+94324	1401	0.00	2012-10-16 01:00:30.262044	2012-10-16 01:00:30.262044
+94325	1402	0.00	2012-10-16 01:00:30.27029	2012-10-16 01:00:30.27029
+94326	1403	0.00	2012-10-16 01:00:30.278556	2012-10-16 01:00:30.278556
+94327	1404	0.00	2012-10-16 01:00:30.287002	2012-10-16 01:00:30.287002
+94328	1405	0.00	2012-10-16 01:00:30.295279	2012-10-16 01:00:30.295279
+94329	1406	0.00	2012-10-16 01:00:30.303659	2012-10-16 01:00:30.303659
+94330	1407	0.00	2012-10-16 01:00:30.312021	2012-10-16 01:00:30.312021
+94331	1408	0.00	2012-10-16 01:00:30.320303	2012-10-16 01:00:30.320303
+94332	1409	0.00	2012-10-16 01:00:30.328627	2012-10-16 01:00:30.328627
+94333	1410	0.00	2012-10-16 01:00:30.337069	2012-10-16 01:00:30.337069
+94334	1411	0.00	2012-10-16 01:00:30.34527	2012-10-16 01:00:30.34527
+94335	1412	0.00	2012-10-16 01:00:30.353646	2012-10-16 01:00:30.353646
+94336	1413	0.00	2012-10-16 01:00:30.362344	2012-10-16 01:00:30.362344
+94337	1414	0.00	2012-10-16 01:00:30.404083	2012-10-16 01:00:30.404083
+94338	1415	0.00	2012-10-16 01:00:30.411974	2012-10-16 01:00:30.411974
+94339	1416	0.00	2012-10-16 01:00:30.420189	2012-10-16 01:00:30.420189
+94340	1417	0.00	2012-10-16 01:00:30.428536	2012-10-16 01:00:30.428536
+94341	1418	0.00	2012-10-16 01:00:30.437013	2012-10-16 01:00:30.437013
+94342	1419	0.00	2012-10-16 01:00:30.445193	2012-10-16 01:00:30.445193
+94343	1420	0.00	2012-10-16 01:00:30.453601	2012-10-16 01:00:30.453601
+94344	1421	0.00	2012-10-16 01:00:30.461967	2012-10-16 01:00:30.461967
+94345	1422	0.00	2012-10-16 01:00:30.470231	2012-10-16 01:00:30.470231
+94346	1423	0.00	2012-10-16 01:00:30.478551	2012-10-16 01:00:30.478551
+94347	1424	0.00	2012-10-16 01:00:30.48705	2012-10-16 01:00:30.48705
+94348	1425	0.00	2012-10-16 01:00:30.495277	2012-10-16 01:00:30.495277
+94349	1426	0.00	2012-10-16 01:00:30.503648	2012-10-16 01:00:30.503648
+94350	1427	0.00	2012-10-16 01:00:30.512059	2012-10-16 01:00:30.512059
+94351	1428	0.00	2012-10-16 01:00:30.520286	2012-10-16 01:00:30.520286
+94352	1429	0.00	2012-10-16 01:00:30.528898	2012-10-16 01:00:30.528898
+94353	1430	0.00	2012-10-16 01:00:30.537012	2012-10-16 01:00:30.537012
+94354	1431	0.00	2012-10-16 01:00:30.545276	2012-10-16 01:00:30.545276
+94355	1432	0.00	2012-10-16 01:00:30.553547	2012-10-16 01:00:30.553547
+94356	1433	0.00	2012-10-16 01:00:30.5992	2012-10-16 01:00:30.5992
+94357	1434	0.00	2012-10-16 01:00:30.612652	2012-10-16 01:00:30.612652
+94358	1435	0.00	2012-10-16 01:00:30.620291	2012-10-16 01:00:30.620291
+94359	1436	0.00	2012-10-16 01:00:30.628573	2012-10-16 01:00:30.628573
+94360	1437	0.00	2012-10-16 01:00:30.636977	2012-10-16 01:00:30.636977
+94361	1438	0.00	2012-10-16 01:00:30.645195	2012-10-16 01:00:30.645195
+94362	1439	0.00	2012-10-16 01:00:30.653541	2012-10-16 01:00:30.653541
+94363	1440	0.00	2012-10-16 01:00:30.661969	2012-10-16 01:00:30.661969
+94364	1441	0.00	2012-10-16 01:00:30.670216	2012-10-16 01:00:30.670216
+94365	1442	0.00	2012-10-16 01:00:30.678523	2012-10-16 01:00:30.678523
+94366	1443	0.00	2012-10-16 01:00:30.686954	2012-10-16 01:00:30.686954
+94367	1444	0.00	2012-10-16 01:00:30.695201	2012-10-16 01:00:30.695201
+94368	1445	0.00	2012-10-16 01:00:30.703508	2012-10-16 01:00:30.703508
+94369	1446	0.00	2012-10-16 01:00:30.711908	2012-10-16 01:00:30.711908
+94370	1447	0.00	2012-10-16 01:00:30.720183	2012-10-16 01:00:30.720183
+94371	1448	0.00	2012-10-16 01:00:30.728538	2012-10-16 01:00:30.728538
+94372	1449	0.00	2012-10-16 01:00:30.736897	2012-10-16 01:00:30.736897
+94373	1450	0.00	2012-10-16 01:00:30.745164	2012-10-16 01:00:30.745164
+94374	1451	0.00	2012-10-16 01:00:30.753633	2012-10-16 01:00:30.753633
+94375	1452	0.00	2012-10-16 01:00:30.762001	2012-10-16 01:00:30.762001
+94376	1453	0.00	2012-10-16 01:00:30.770243	2012-10-16 01:00:30.770243
+94377	1454	0.00	2012-10-16 01:00:30.778731	2012-10-16 01:00:30.778731
+94378	1455	0.00	2012-10-16 01:00:30.787074	2012-10-16 01:00:30.787074
+94379	1456	0.00	2012-10-16 01:00:30.795328	2012-10-16 01:00:30.795328
+94380	1457	0.00	2012-10-16 01:00:30.803665	2012-10-16 01:00:30.803665
+94381	1458	0.00	2012-10-16 01:00:30.812068	2012-10-16 01:00:30.812068
+94382	1459	0.00	2012-10-16 01:00:30.820307	2012-10-16 01:00:30.820307
+94383	1460	0.00	2012-10-16 01:00:30.828647	2012-10-16 01:00:30.828647
+94384	1461	0.00	2012-10-16 01:00:30.836995	2012-10-16 01:00:30.836995
+94385	1462	0.00	2012-10-16 01:00:30.84526	2012-10-16 01:00:30.84526
+94386	1463	0.00	2012-10-16 01:00:30.865667	2012-10-16 01:00:30.865667
+94387	1464	0.00	2012-10-16 01:00:30.906508	2012-10-16 01:00:30.906508
+94388	1465	0.00	2012-10-16 01:00:30.948087	2012-10-16 01:00:30.948087
+94389	1466	0.00	2012-10-16 01:00:30.989633	2012-10-16 01:00:30.989633
+94390	1467	0.00	2012-10-16 01:00:31.023033	2012-10-16 01:00:31.023033
+94391	1468	0.00	2012-10-16 01:00:31.06455	2012-10-16 01:00:31.06455
+94392	1469	0.00	2012-10-16 01:00:31.106437	2012-10-16 01:00:31.106437
+94393	1470	0.00	2012-10-16 01:00:31.147929	2012-10-16 01:00:31.147929
+94394	1471	0.00	2012-10-16 01:00:31.18949	2012-10-16 01:00:31.18949
+94395	1472	0.00	2012-10-16 01:00:31.231205	2012-10-16 01:00:31.231205
+94396	1473	0.00	2012-10-16 01:00:31.272844	2012-10-16 01:00:31.272844
+94397	1474	0.00	2012-10-16 01:00:31.314448	2012-10-16 01:00:31.314448
+94398	1475	0.00	2012-10-16 01:00:31.35621	2012-10-16 01:00:31.35621
+94399	1476	0.00	2012-10-16 01:00:31.397786	2012-10-16 01:00:31.397786
+94400	1477	0.00	2012-10-16 01:00:31.439398	2012-10-16 01:00:31.439398
+94401	1478	0.00	2012-10-16 01:00:31.481122	2012-10-16 01:00:31.481122
+94402	1479	0.00	2012-10-16 01:00:31.52272	2012-10-16 01:00:31.52272
+94403	1480	0.00	2012-10-16 01:00:31.564351	2012-10-16 01:00:31.564351
+94404	1481	0.00	2012-10-16 01:00:31.606084	2012-10-16 01:00:31.606084
+94405	1482	0.00	2012-10-16 01:00:31.649226	2012-10-16 01:00:31.649226
+94406	1483	0.00	2012-10-16 01:00:31.665467	2012-10-16 01:00:31.665467
+94407	1484	0.00	2012-10-16 01:00:31.70718	2012-10-16 01:00:31.70718
+94408	1485	0.00	2012-10-16 01:00:31.74886	2012-10-16 01:00:31.74886
+94409	1486	0.00	2012-10-16 01:00:31.790431	2012-10-16 01:00:31.790431
+94410	1487	0.00	2012-10-16 01:00:31.832201	2012-10-16 01:00:31.832201
+94411	1488	0.00	2012-10-16 01:00:31.873776	2012-10-16 01:00:31.873776
+94412	1489	0.00	2012-10-16 01:00:31.915381	2012-10-16 01:00:31.915381
+94413	1490	0.00	2012-10-16 01:00:31.957009	2012-10-16 01:00:31.957009
+94414	1491	0.00	2012-10-16 01:00:31.998742	2012-10-16 01:00:31.998742
+94415	1492	0.00	2012-10-16 01:00:32.040338	2012-10-16 01:00:32.040338
+94416	1493	0.00	2012-10-16 01:00:32.082063	2012-10-16 01:00:32.082063
+94417	1494	0.00	2012-10-16 01:00:32.123685	2012-10-16 01:00:32.123685
+94418	1495	0.00	2012-10-16 01:00:32.193994	2012-10-16 01:00:32.193994
+94419	1496	0.00	2012-10-16 01:00:32.214545	2012-10-16 01:00:32.214545
+94420	1497	0.00	2012-10-16 01:00:32.256033	2012-10-16 01:00:32.256033
+94421	1498	0.00	2012-10-16 01:00:32.297405	2012-10-16 01:00:32.297405
+94422	1499	0.00	2012-10-16 01:00:32.339137	2012-10-16 01:00:32.339137
+94423	1500	0.00	2012-10-16 01:00:32.380753	2012-10-16 01:00:32.380753
+94424	1378	0.00	2012-10-16 01:00:32.422498	2012-10-16 01:00:32.422498
+94425	1078	0.00	2012-10-16 01:00:32.464179	2012-10-16 01:00:32.464179
+94426	852	41.33	2012-10-16 01:00:52.470853	2012-10-16 01:00:52.470853
+94427	883	0.00	2012-10-16 01:00:52.47846	2012-10-16 01:00:52.47846
+94428	882	0.00	2012-10-16 01:00:52.486717	2012-10-16 01:00:52.486717
+94429	881	0.00	2012-10-16 01:00:52.495092	2012-10-16 01:00:52.495092
+94430	880	0.00	2012-10-16 01:00:52.503358	2012-10-16 01:00:52.503358
+94431	879	0.00	2012-10-16 01:00:52.511718	2012-10-16 01:00:52.511718
+94432	878	0.00	2012-10-16 01:00:52.520087	2012-10-16 01:00:52.520087
+94433	877	0.00	2012-10-16 01:00:52.528382	2012-10-16 01:00:52.528382
+94434	876	0.00	2012-10-16 01:00:52.536739	2012-10-16 01:00:52.536739
+94435	875	0.00	2012-10-16 01:00:52.545134	2012-10-16 01:00:52.545134
+94436	874	0.00	2012-10-16 01:00:52.553338	2012-10-16 01:00:52.553338
+94437	873	0.00	2012-10-16 01:00:52.561758	2012-10-16 01:00:52.561758
+94438	872	0.00	2012-10-16 01:00:52.570056	2012-10-16 01:00:52.570056
+94439	871	0.00	2012-10-16 01:00:52.578404	2012-10-16 01:00:52.578404
+94440	870	0.00	2012-10-16 01:00:52.586871	2012-10-16 01:00:52.586871
+94441	869	0.00	2012-10-16 01:00:52.595546	2012-10-16 01:00:52.595546
+94442	868	0.00	2012-10-16 01:00:52.637444	2012-10-16 01:00:52.637444
+94443	867	0.00	2012-10-16 01:00:52.645087	2012-10-16 01:00:52.645087
+94444	866	0.00	2012-10-16 01:00:52.653354	2012-10-16 01:00:52.653354
+94445	865	0.00	2012-10-16 01:00:52.661737	2012-10-16 01:00:52.661737
+94446	864	0.00	2012-10-16 01:00:52.670184	2012-10-16 01:00:52.670184
+94447	863	0.00	2012-10-16 01:00:52.678453	2012-10-16 01:00:52.678453
+94448	862	0.00	2012-10-16 01:00:52.686721	2012-10-16 01:00:52.686721
+94449	861	0.00	2012-10-16 01:00:52.695144	2012-10-16 01:00:52.695144
+94450	860	0.00	2012-10-16 01:00:52.703425	2012-10-16 01:00:52.703425
+94451	859	0.00	2012-10-16 01:00:52.711808	2012-10-16 01:00:52.711808
+94452	858	0.00	2012-10-16 01:00:52.720129	2012-10-16 01:00:52.720129
+94453	857	0.00	2012-10-16 01:00:52.728439	2012-10-16 01:00:52.728439
+94454	856	0.00	2012-10-16 01:00:52.736813	2012-10-16 01:00:52.736813
+94455	855	0.00	2012-10-16 01:00:52.745194	2012-10-16 01:00:52.745194
+94456	854	0.00	2012-10-16 01:00:52.753462	2012-10-16 01:00:52.753462
+94457	853	0.00	2012-10-16 01:00:52.761892	2012-10-16 01:00:52.761892
+94458	851	0.00	2012-10-16 01:00:52.81154	2012-10-16 01:00:52.81154
+94459	850	0.00	2012-10-16 01:00:52.820888	2012-10-16 01:00:52.820888
+94460	849	0.00	2012-10-16 01:00:52.828528	2012-10-16 01:00:52.828528
+94461	848	0.00	2012-10-16 01:00:52.836875	2012-10-16 01:00:52.836875
+94462	847	0.00	2012-10-16 01:00:52.845217	2012-10-16 01:00:52.845217
+94463	846	0.00	2012-10-16 01:00:52.853462	2012-10-16 01:00:52.853462
+94464	845	0.00	2012-10-16 01:00:52.861716	2012-10-16 01:00:52.861716
+94465	844	0.00	2012-10-16 01:00:52.870194	2012-10-16 01:00:52.870194
+94466	843	0.00	2012-10-16 01:00:52.878379	2012-10-16 01:00:52.878379
+94467	842	0.00	2012-10-16 01:00:52.886784	2012-10-16 01:00:52.886784
+94468	841	0.00	2012-10-16 01:00:52.895161	2012-10-16 01:00:52.895161
+94469	840	0.00	2012-10-16 01:00:52.903395	2012-10-16 01:00:52.903395
+94470	839	0.00	2012-10-16 01:00:52.911791	2012-10-16 01:00:52.911791
+94471	838	0.00	2012-10-16 01:00:52.920236	2012-10-16 01:00:52.920236
+94472	837	0.00	2012-10-16 01:00:52.929096	2012-10-16 01:00:52.929096
+94473	836	0.00	2012-10-16 01:00:52.937287	2012-10-16 01:00:52.937287
+94474	835	0.00	2012-10-16 01:00:52.945441	2012-10-16 01:00:52.945441
+94475	834	0.00	2012-10-16 01:00:52.954053	2012-10-16 01:00:52.954053
+94476	833	0.00	2012-10-16 01:00:52.962214	2012-10-16 01:00:52.962214
+94477	832	0.00	2012-10-16 01:00:52.970369	2012-10-16 01:00:52.970369
+94478	831	0.00	2012-10-16 01:00:52.978927	2012-10-16 01:00:52.978927
+94479	830	0.00	2012-10-16 01:00:52.987208	2012-10-16 01:00:52.987208
+94480	829	0.00	2012-10-16 01:00:52.995411	2012-10-16 01:00:52.995411
+94481	828	0.00	2012-10-16 01:00:53.003878	2012-10-16 01:00:53.003878
+94482	827	0.00	2012-10-16 01:00:53.012207	2012-10-16 01:00:53.012207
+94483	826	0.00	2012-10-16 01:00:53.020366	2012-10-16 01:00:53.020366
+94484	825	0.00	2012-10-16 01:00:53.028901	2012-10-16 01:00:53.028901
+94485	824	0.00	2012-10-16 01:00:53.037263	2012-10-16 01:00:53.037263
+94486	823	0.00	2012-10-16 01:00:53.04549	2012-10-16 01:00:53.04549
+94487	822	0.00	2012-10-16 01:00:53.054089	2012-10-16 01:00:53.054089
+94488	821	0.00	2012-10-16 01:00:53.062364	2012-10-16 01:00:53.062364
+94489	820	0.00	2012-10-16 01:00:53.070436	2012-10-16 01:00:53.070436
+94490	819	0.00	2012-10-16 01:00:53.079026	2012-10-16 01:00:53.079026
+94491	818	0.00	2012-10-16 01:00:53.087322	2012-10-16 01:00:53.087322
+94492	817	0.00	2012-10-16 01:00:53.095437	2012-10-16 01:00:53.095437
+94493	816	0.00	2012-10-16 01:00:53.104023	2012-10-16 01:00:53.104023
+94494	815	0.00	2012-10-16 01:00:53.112094	2012-10-16 01:00:53.112094
+94495	814	0.00	2012-10-16 01:00:53.120395	2012-10-16 01:00:53.120395
+94496	813	0.00	2012-10-16 01:00:53.129003	2012-10-16 01:00:53.129003
+94497	812	0.00	2012-10-16 01:00:53.137191	2012-10-16 01:00:53.137191
+94498	811	0.00	2012-10-16 01:00:53.145415	2012-10-16 01:00:53.145415
+94499	810	0.00	2012-10-16 01:00:53.154041	2012-10-16 01:00:53.154041
+94500	809	0.00	2012-10-16 01:00:53.162266	2012-10-16 01:00:53.162266
+94501	808	0.00	2012-10-16 01:00:53.170452	2012-10-16 01:00:53.170452
+94502	807	0.00	2012-10-16 01:00:53.17909	2012-10-16 01:00:53.17909
+94503	806	0.00	2012-10-16 01:00:53.187272	2012-10-16 01:00:53.187272
+94504	805	0.00	2012-10-16 01:00:53.195432	2012-10-16 01:00:53.195432
+94505	804	0.00	2012-10-16 01:00:53.204008	2012-10-16 01:00:53.204008
+94506	803	0.00	2012-10-16 01:00:53.21236	2012-10-16 01:00:53.21236
+94507	802	0.00	2012-10-16 01:00:53.220411	2012-10-16 01:00:53.220411
+94508	801	0.00	2012-10-16 01:00:53.229028	2012-10-16 01:00:53.229028
+94509	800	0.00	2012-10-16 01:00:53.237269	2012-10-16 01:00:53.237269
+94510	799	0.00	2012-10-16 01:00:53.245451	2012-10-16 01:00:53.245451
+94511	798	0.00	2012-10-16 01:00:53.253957	2012-10-16 01:00:53.253957
+94512	797	0.00	2012-10-16 01:00:53.262282	2012-10-16 01:00:53.262282
+94513	796	0.00	2012-10-16 01:00:53.270483	2012-10-16 01:00:53.270483
+94514	795	0.00	2012-10-16 01:00:53.312627	2012-10-16 01:00:53.312627
+94515	794	0.00	2012-10-16 01:00:53.320473	2012-10-16 01:00:53.320473
+94516	793	0.00	2012-10-16 01:00:53.328932	2012-10-16 01:00:53.328932
+94517	792	0.00	2012-10-16 01:00:53.33754	2012-10-16 01:00:53.33754
+94518	791	0.00	2012-10-16 01:00:53.345799	2012-10-16 01:00:53.345799
+94519	790	0.00	2012-10-16 01:00:53.35408	2012-10-16 01:00:53.35408
+94520	789	0.00	2012-10-16 01:00:53.362336	2012-10-16 01:00:53.362336
+94521	788	0.00	2012-10-16 01:00:53.370814	2012-10-16 01:00:53.370814
+94522	787	0.00	2012-10-16 01:00:53.379117	2012-10-16 01:00:53.379117
+94523	786	0.00	2012-10-16 01:00:53.387358	2012-10-16 01:00:53.387358
+94524	785	0.00	2012-10-16 01:00:53.395885	2012-10-16 01:00:53.395885
+94525	784	0.00	2012-10-16 01:00:53.404051	2012-10-16 01:00:53.404051
+94526	783	0.00	2012-10-16 01:00:53.412317	2012-10-16 01:00:53.412317
+94527	782	0.00	2012-10-16 01:00:53.420513	2012-10-16 01:00:53.420513
+94528	781	0.00	2012-10-16 01:00:53.429101	2012-10-16 01:00:53.429101
+94529	780	0.00	2012-10-16 01:00:53.437464	2012-10-16 01:00:53.437464
+94530	779	0.00	2012-10-16 01:00:53.445504	2012-10-16 01:00:53.445504
+94531	778	0.00	2012-10-16 01:00:53.454234	2012-10-16 01:00:53.454234
+94532	777	0.00	2012-10-16 01:00:53.46236	2012-10-16 01:00:53.46236
+94533	776	0.00	2012-10-16 01:00:53.470441	2012-10-16 01:00:53.470441
+94534	775	0.00	2012-10-16 01:00:53.479109	2012-10-16 01:00:53.479109
+94535	774	0.00	2012-10-16 01:00:53.487392	2012-10-16 01:00:53.487392
+94536	773	0.00	2012-10-16 01:00:53.495844	2012-10-16 01:00:53.495844
+94537	772	0.00	2012-10-16 01:00:53.504211	2012-10-16 01:00:53.504211
+94538	771	0.00	2012-10-16 01:00:53.512426	2012-10-16 01:00:53.512426
+94539	770	0.00	2012-10-16 01:00:53.521042	2012-10-16 01:00:53.521042
+94540	769	0.00	2012-10-16 01:00:53.52913	2012-10-16 01:00:53.52913
+94541	768	0.00	2012-10-16 01:00:53.537352	2012-10-16 01:00:53.537352
+94542	767	0.00	2012-10-16 01:00:53.545518	2012-10-16 01:00:53.545518
+94543	766	0.00	2012-10-16 01:00:53.554188	2012-10-16 01:00:53.554188
+94544	765	0.00	2012-10-16 01:00:53.562393	2012-10-16 01:00:53.562393
+\.
+
+
+--
+-- Data for Name: abonent_tarifs; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY abonent_tarifs (id, name, tarif, monthly, user_id, created_at, updated_at) FROM stdin;
+8	Начальный	5.00	f	6	2012-09-30 17:43:59.015203	2012-09-30 17:43:59.015203
+9	Стартовый	300.00	f	6	2012-10-09 14:38:05.457102	2012-10-09 14:38:05.457102
+10	ВВБ	200.00	t	7	2012-10-09 14:49:47.616188	2012-10-09 14:49:47.616188
+\.
+
+
+--
+-- Data for Name: abonents; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY abonents (id, corporation_id, phone, delay, status, abonent_tarif_id, name, suspend, start_date, created_at, updated_at) FROM stdin;
+765	10	9280490630	0	t	\N	\N	t	\N	2012-09-30 17:43:21.36377	2012-09-30 17:43:21.36377
+766	10	9280490637	0	t	\N	\N	t	\N	2012-09-30 17:43:21.3783	2012-09-30 17:43:21.3783
+767	10	9280490718	0	t	\N	\N	t	\N	2012-09-30 17:43:21.38104	2012-09-30 17:43:21.38104
+768	10	9280490856	0	t	\N	\N	t	\N	2012-09-30 17:43:21.383912	2012-09-30 17:43:21.383912
+769	10	9280490940	0	t	\N	\N	t	\N	2012-09-30 17:43:21.38676	2012-09-30 17:43:21.38676
+770	10	9280490963	0	t	\N	\N	t	\N	2012-09-30 17:43:21.389473	2012-09-30 17:43:21.389473
+771	10	9280490994	0	t	\N	\N	t	\N	2012-09-30 17:43:21.39199	2012-09-30 17:43:21.39199
+772	10	9280491022	0	t	\N	\N	t	\N	2012-09-30 17:43:21.394801	2012-09-30 17:43:21.394801
+773	10	9280491033	0	t	\N	\N	t	\N	2012-09-30 17:43:21.397481	2012-09-30 17:43:21.397481
+774	10	9280491065	0	t	\N	\N	t	\N	2012-09-30 17:43:21.399959	2012-09-30 17:43:21.399959
+775	10	9280491077	0	t	\N	\N	t	\N	2012-09-30 17:43:21.40248	2012-09-30 17:43:21.40248
+776	10	9280491082	0	t	\N	\N	t	\N	2012-09-30 17:43:21.404983	2012-09-30 17:43:21.404983
+777	10	9280491149	0	t	\N	\N	t	\N	2012-09-30 17:43:21.407628	2012-09-30 17:43:21.407628
+778	10	9280491202	0	t	\N	\N	t	\N	2012-09-30 17:43:21.41026	2012-09-30 17:43:21.41026
+779	10	9280491361	0	t	\N	\N	t	\N	2012-09-30 17:43:21.412607	2012-09-30 17:43:21.412607
+780	10	9280491428	0	t	\N	\N	t	\N	2012-09-30 17:43:21.415126	2012-09-30 17:43:21.415126
+781	10	9280491451	0	t	\N	\N	t	\N	2012-09-30 17:43:21.417589	2012-09-30 17:43:21.417589
+782	10	9280491459	0	t	\N	\N	t	\N	2012-09-30 17:43:21.420097	2012-09-30 17:43:21.420097
+783	10	9280491475	0	t	\N	\N	t	\N	2012-09-30 17:43:21.422788	2012-09-30 17:43:21.422788
+784	10	9280491513	0	t	\N	\N	t	\N	2012-09-30 17:43:21.425448	2012-09-30 17:43:21.425448
+785	10	9280491516	0	t	\N	\N	t	\N	2012-09-30 17:43:21.427967	2012-09-30 17:43:21.427967
+786	10	9280491532	0	t	\N	\N	t	\N	2012-09-30 17:43:21.430588	2012-09-30 17:43:21.430588
+787	10	9280491547	0	t	\N	\N	t	\N	2012-09-30 17:43:21.433116	2012-09-30 17:43:21.433116
+788	10	9280491611	0	t	\N	\N	t	\N	2012-09-30 17:43:21.435782	2012-09-30 17:43:21.435782
+789	10	9280491670	0	t	\N	\N	t	\N	2012-09-30 17:43:21.438482	2012-09-30 17:43:21.438482
+790	10	9280491693	0	t	\N	\N	t	\N	2012-09-30 17:43:21.441019	2012-09-30 17:43:21.441019
+791	10	9280491703	0	t	\N	\N	t	\N	2012-09-30 17:43:21.443683	2012-09-30 17:43:21.443683
+792	10	9280491711	0	t	\N	\N	t	\N	2012-09-30 17:43:21.446334	2012-09-30 17:43:21.446334
+793	10	9280491761	0	t	\N	\N	t	\N	2012-09-30 17:43:21.448871	2012-09-30 17:43:21.448871
+794	10	9280491765	0	t	\N	\N	t	\N	2012-09-30 17:43:21.45141	2012-09-30 17:43:21.45141
+795	10	9280491783	0	t	\N	\N	t	\N	2012-09-30 17:43:21.453949	2012-09-30 17:43:21.453949
+796	10	9280491836	0	t	\N	\N	t	\N	2012-09-30 17:43:21.456461	2012-09-30 17:43:21.456461
+797	10	9280491860	0	t	\N	\N	t	\N	2012-09-30 17:43:21.458964	2012-09-30 17:43:21.458964
+798	10	9280491887	0	t	\N	\N	t	\N	2012-09-30 17:43:21.461465	2012-09-30 17:43:21.461465
+799	10	9280491889	0	t	\N	\N	t	\N	2012-09-30 17:43:21.463999	2012-09-30 17:43:21.463999
+800	10	9280491947	0	t	\N	\N	t	\N	2012-09-30 17:43:21.466638	2012-09-30 17:43:21.466638
+801	10	9280491948	0	t	\N	\N	t	\N	2012-09-30 17:43:21.469242	2012-09-30 17:43:21.469242
+802	10	9280491970	0	t	\N	\N	t	\N	2012-09-30 17:43:21.471725	2012-09-30 17:43:21.471725
+803	10	9280491980	0	t	\N	\N	t	\N	2012-09-30 17:43:21.47439	2012-09-30 17:43:21.47439
+804	10	9280492024	0	t	\N	\N	t	\N	2012-09-30 17:43:21.476903	2012-09-30 17:43:21.476903
+805	10	9280497483	0	t	\N	\N	t	\N	2012-09-30 17:43:21.479435	2012-09-30 17:43:21.479435
+806	10	9280497515	0	t	\N	\N	t	\N	2012-09-30 17:43:21.48196	2012-09-30 17:43:21.48196
+807	10	9280497540	0	t	\N	\N	t	\N	2012-09-30 17:43:21.484616	2012-09-30 17:43:21.484616
+808	10	9280497588	0	t	\N	\N	t	\N	2012-09-30 17:43:21.48712	2012-09-30 17:43:21.48712
+809	10	9280497601	0	t	\N	\N	t	\N	2012-09-30 17:43:21.489609	2012-09-30 17:43:21.489609
+810	10	9280497609	0	t	\N	\N	t	\N	2012-09-30 17:43:21.492107	2012-09-30 17:43:21.492107
+811	10	9280497623	0	t	\N	\N	t	\N	2012-09-30 17:43:21.494786	2012-09-30 17:43:21.494786
+812	10	9280497641	0	t	\N	\N	t	\N	2012-09-30 17:43:21.49744	2012-09-30 17:43:21.49744
+813	10	9280497649	0	t	\N	\N	t	\N	2012-09-30 17:43:21.49995	2012-09-30 17:43:21.49995
+814	10	9285010245	0	t	\N	\N	t	\N	2012-09-30 17:43:21.50246	2012-09-30 17:43:21.50246
+815	10	9285010247	0	t	\N	\N	t	\N	2012-09-30 17:43:21.504985	2012-09-30 17:43:21.504985
+816	10	9285010352	0	t	\N	\N	t	\N	2012-09-30 17:43:21.507573	2012-09-30 17:43:21.507573
+817	10	9285010376	0	t	\N	\N	t	\N	2012-09-30 17:43:21.510085	2012-09-30 17:43:21.510085
+818	10	9285010395	0	t	\N	\N	t	\N	2012-09-30 17:43:21.512788	2012-09-30 17:43:21.512788
+819	10	9285010465	0	t	\N	\N	t	\N	2012-09-30 17:43:21.51548	2012-09-30 17:43:21.51548
+820	10	9285010623	0	t	\N	\N	t	\N	2012-09-30 17:43:21.51799	2012-09-30 17:43:21.51799
+821	10	9285010697	0	t	\N	\N	t	\N	2012-09-30 17:43:21.520805	2012-09-30 17:43:21.520805
+822	10	9285010732	0	t	\N	\N	t	\N	2012-09-30 17:43:21.523582	2012-09-30 17:43:21.523582
+823	10	9285010934	0	t	\N	\N	t	\N	2012-09-30 17:43:21.526108	2012-09-30 17:43:21.526108
+824	10	9285011574	0	t	\N	\N	t	\N	2012-09-30 17:43:21.528788	2012-09-30 17:43:21.528788
+825	10	9285011634	0	t	\N	\N	t	\N	2012-09-30 17:43:21.531548	2012-09-30 17:43:21.531548
+826	10	9285011640	0	t	\N	\N	t	\N	2012-09-30 17:43:21.534083	2012-09-30 17:43:21.534083
+827	10	9285011702	0	t	\N	\N	t	\N	2012-09-30 17:43:21.536739	2012-09-30 17:43:21.536739
+828	10	9285011761	0	t	\N	\N	t	\N	2012-09-30 17:43:21.539384	2012-09-30 17:43:21.539384
+829	10	9285011767	0	t	\N	\N	t	\N	2012-09-30 17:43:21.541899	2012-09-30 17:43:21.541899
+830	10	9285011784	0	t	\N	\N	t	\N	2012-09-30 17:43:21.544768	2012-09-30 17:43:21.544768
+831	10	9285011840	0	t	\N	\N	t	\N	2012-09-30 17:43:21.54747	2012-09-30 17:43:21.54747
+832	10	9285011898	0	t	\N	\N	t	\N	2012-09-30 17:43:21.54998	2012-09-30 17:43:21.54998
+833	10	9285011955	0	t	\N	\N	t	\N	2012-09-30 17:43:21.552608	2012-09-30 17:43:21.552608
+834	10	9285011981	0	t	\N	\N	t	\N	2012-09-30 17:43:21.555082	2012-09-30 17:43:21.555082
+835	10	9285012094	0	t	\N	\N	t	\N	2012-09-30 17:43:21.557725	2012-09-30 17:43:21.557725
+836	10	9285012165	0	t	\N	\N	t	\N	2012-09-30 17:43:21.560409	2012-09-30 17:43:21.560409
+837	10	9285012304	0	t	\N	\N	t	\N	2012-09-30 17:43:21.562964	2012-09-30 17:43:21.562964
+838	10	9285012317	0	t	\N	\N	t	\N	2012-09-30 17:43:21.565655	2012-09-30 17:43:21.565655
+839	10	9285012352	0	t	\N	\N	t	\N	2012-09-30 17:43:21.568284	2012-09-30 17:43:21.568284
+840	10	9285012431	0	t	\N	\N	t	\N	2012-09-30 17:43:21.570791	2012-09-30 17:43:21.570791
+841	10	9285012524	0	t	\N	\N	t	\N	2012-09-30 17:43:21.573646	2012-09-30 17:43:21.573646
+842	10	9285012695	0	t	\N	\N	t	\N	2012-09-30 17:43:21.576286	2012-09-30 17:43:21.576286
+843	10	9285012756	0	t	\N	\N	t	\N	2012-09-30 17:43:21.578791	2012-09-30 17:43:21.578791
+844	10	9285012842	0	t	\N	\N	t	\N	2012-09-30 17:43:21.581304	2012-09-30 17:43:21.581304
+845	10	9285012854	0	t	\N	\N	t	\N	2012-09-30 17:43:21.583807	2012-09-30 17:43:21.583807
+846	10	9285012980	0	t	\N	\N	t	\N	2012-09-30 17:43:21.586323	2012-09-30 17:43:21.586323
+847	10	9285013045	0	t	\N	\N	t	\N	2012-09-30 17:43:21.58886	2012-09-30 17:43:21.58886
+848	10	9285013061	0	t	\N	\N	t	\N	2012-09-30 17:43:21.591374	2012-09-30 17:43:21.591374
+849	10	9285013107	0	t	\N	\N	t	\N	2012-09-30 17:43:21.59391	2012-09-30 17:43:21.59391
+850	10	9285013551	0	t	\N	\N	t	\N	2012-09-30 17:43:21.596427	2012-09-30 17:43:21.596427
+851	10	9285013554	0	t	\N	\N	t	\N	2012-09-30 17:43:21.598937	2012-09-30 17:43:21.598937
+884	12	9280460054	0	t	\N	\N	t	\N	2012-10-09 14:46:19.280105	2012-10-09 14:46:19.280105
+853	10	9285013563	0	t	\N	\N	t	\N	2012-09-30 17:43:21.603966	2012-09-30 17:43:21.603966
+854	10	9285013564	0	t	\N	\N	t	\N	2012-09-30 17:43:21.606481	2012-09-30 17:43:21.606481
+855	10	9285013567	0	t	\N	\N	t	\N	2012-09-30 17:43:21.609017	2012-09-30 17:43:21.609017
+856	10	9285013570	0	t	\N	\N	t	\N	2012-09-30 17:43:21.611666	2012-09-30 17:43:21.611666
+857	10	9285013572	0	t	\N	\N	t	\N	2012-09-30 17:43:21.614319	2012-09-30 17:43:21.614319
+858	10	9285013574	0	t	\N	\N	t	\N	2012-09-30 17:43:21.641546	2012-09-30 17:43:21.641546
+859	10	9285013576	0	t	\N	\N	t	\N	2012-09-30 17:43:21.644846	2012-09-30 17:43:21.644846
+860	10	9285013587	0	t	\N	\N	t	\N	2012-09-30 17:43:21.647427	2012-09-30 17:43:21.647427
+861	10	9285013589	0	t	\N	\N	t	\N	2012-09-30 17:43:21.650031	2012-09-30 17:43:21.650031
+862	10	9285013591	0	t	\N	\N	t	\N	2012-09-30 17:43:21.652732	2012-09-30 17:43:21.652732
+863	10	9285013593	0	t	\N	\N	t	\N	2012-09-30 17:43:21.655427	2012-09-30 17:43:21.655427
+864	10	9285013597	0	t	\N	\N	t	\N	2012-09-30 17:43:21.658007	2012-09-30 17:43:21.658007
+865	10	9285013605	0	t	\N	\N	t	\N	2012-09-30 17:43:21.660738	2012-09-30 17:43:21.660738
+866	10	9285013607	0	t	\N	\N	t	\N	2012-09-30 17:43:21.663448	2012-09-30 17:43:21.663448
+867	10	9285013608	0	t	\N	\N	t	\N	2012-09-30 17:43:21.666017	2012-09-30 17:43:21.666017
+868	10	9285013609	0	t	\N	\N	t	\N	2012-09-30 17:43:21.668718	2012-09-30 17:43:21.668718
+869	10	9285013617	0	t	\N	\N	t	\N	2012-09-30 17:43:21.671442	2012-09-30 17:43:21.671442
+870	10	9285013620	0	t	\N	\N	t	\N	2012-09-30 17:43:21.674042	2012-09-30 17:43:21.674042
+871	10	9285013632	0	t	\N	\N	t	\N	2012-09-30 17:43:21.676628	2012-09-30 17:43:21.676628
+872	10	9285013638	0	t	\N	\N	t	\N	2012-09-30 17:43:21.679376	2012-09-30 17:43:21.679376
+873	10	9285013640	0	t	\N	\N	t	\N	2012-09-30 17:43:21.682005	2012-09-30 17:43:21.682005
+874	10	9285013642	0	t	\N	\N	t	\N	2012-09-30 17:43:21.684715	2012-09-30 17:43:21.684715
+875	10	9285013646	0	t	\N	\N	t	\N	2012-09-30 17:43:21.687453	2012-09-30 17:43:21.687453
+876	10	9285013650	0	t	\N	\N	t	\N	2012-09-30 17:43:21.690054	2012-09-30 17:43:21.690054
+877	10	9285013651	0	t	\N	\N	t	\N	2012-09-30 17:43:21.692776	2012-09-30 17:43:21.692776
+878	10	9285013659	0	t	\N	\N	t	\N	2012-09-30 17:43:21.695648	2012-09-30 17:43:21.695648
+879	10	9285013673	0	t	\N	\N	t	\N	2012-09-30 17:43:21.698339	2012-09-30 17:43:21.698339
+880	10	9285013677	0	t	\N	\N	t	\N	2012-09-30 17:43:21.700963	2012-09-30 17:43:21.700963
+881	10	9285013691	0	t	\N	\N	t	\N	2012-09-30 17:43:21.703667	2012-09-30 17:43:21.703667
+882	10	9285013692	0	t	\N	\N	t	\N	2012-09-30 17:43:21.706361	2012-09-30 17:43:21.706361
+883	10	9285013750	0	t	\N	\N	t	\N	2012-09-30 17:43:21.708933	2012-09-30 17:43:21.708933
+885	12	9280460061	0	t	\N	\N	t	\N	2012-10-09 14:46:19.295	2012-10-09 14:46:19.295
+886	12	9280460069	0	t	\N	\N	t	\N	2012-10-09 14:46:19.297456	2012-10-09 14:46:19.297456
+887	12	9280460445	0	t	\N	\N	t	\N	2012-10-09 14:46:19.299812	2012-10-09 14:46:19.299812
+888	12	9280460507	0	t	\N	\N	t	\N	2012-10-09 14:46:19.302143	2012-10-09 14:46:19.302143
+889	12	9280460622	0	t	\N	\N	t	\N	2012-10-09 14:46:19.304478	2012-10-09 14:46:19.304478
+890	12	9280460677	0	t	\N	\N	t	\N	2012-10-09 14:46:19.30681	2012-10-09 14:46:19.30681
+891	12	9280460705	0	t	\N	\N	t	\N	2012-10-09 14:46:19.309134	2012-10-09 14:46:19.309134
+892	12	9280461116	0	t	\N	\N	t	\N	2012-10-09 14:46:19.311526	2012-10-09 14:46:19.311526
+893	12	9280461135	0	t	\N	\N	t	\N	2012-10-09 14:46:19.31386	2012-10-09 14:46:19.31386
+894	12	9280461163	0	t	\N	\N	t	\N	2012-10-09 14:46:19.316187	2012-10-09 14:46:19.316187
+895	12	9280461164	0	t	\N	\N	t	\N	2012-10-09 14:46:19.318503	2012-10-09 14:46:19.318503
+896	12	9280461176	0	t	\N	\N	t	\N	2012-10-09 14:46:19.320818	2012-10-09 14:46:19.320818
+897	12	9280461191	0	t	\N	\N	t	\N	2012-10-09 14:46:19.323131	2012-10-09 14:46:19.323131
+898	12	9280461195	0	t	\N	\N	t	\N	2012-10-09 14:46:19.325479	2012-10-09 14:46:19.325479
+899	12	9280461242	0	t	\N	\N	t	\N	2012-10-09 14:46:19.327851	2012-10-09 14:46:19.327851
+900	12	9280461251	0	t	\N	\N	t	\N	2012-10-09 14:46:19.330211	2012-10-09 14:46:19.330211
+901	12	9280461266	0	t	\N	\N	t	\N	2012-10-09 14:46:19.332539	2012-10-09 14:46:19.332539
+902	12	9280461353	0	t	\N	\N	t	\N	2012-10-09 14:46:19.334849	2012-10-09 14:46:19.334849
+903	12	9280461361	0	t	\N	\N	t	\N	2012-10-09 14:46:19.337159	2012-10-09 14:46:19.337159
+904	12	9280461666	0	t	\N	\N	t	\N	2012-10-09 14:46:19.339478	2012-10-09 14:46:19.339478
+905	12	9280461914	0	t	\N	\N	t	\N	2012-10-09 14:46:19.341786	2012-10-09 14:46:19.341786
+906	12	9280468609	0	t	\N	\N	t	\N	2012-10-09 14:46:19.344111	2012-10-09 14:46:19.344111
+907	12	9280468634	0	t	\N	\N	t	\N	2012-10-09 14:46:19.346429	2012-10-09 14:46:19.346429
+908	12	9280469712	0	t	\N	\N	t	\N	2012-10-09 14:46:19.348738	2012-10-09 14:46:19.348738
+909	12	9280469722	0	t	\N	\N	t	\N	2012-10-09 14:46:19.351035	2012-10-09 14:46:19.351035
+910	12	9280470202	0	t	\N	\N	t	\N	2012-10-09 14:46:19.353347	2012-10-09 14:46:19.353347
+911	12	9280470303	0	t	\N	\N	t	\N	2012-10-09 14:46:19.355656	2012-10-09 14:46:19.355656
+912	12	9280471196	0	t	\N	\N	t	\N	2012-10-09 14:46:19.357951	2012-10-09 14:46:19.357951
+913	12	9280480134	0	t	\N	\N	t	\N	2012-10-09 14:46:19.360263	2012-10-09 14:46:19.360263
+914	12	9280480135	0	t	\N	\N	t	\N	2012-10-09 14:46:19.362658	2012-10-09 14:46:19.362658
+915	12	9280480555	0	t	\N	\N	t	\N	2012-10-09 14:46:19.365099	2012-10-09 14:46:19.365099
+916	12	9280481042	0	t	\N	\N	t	\N	2012-10-09 14:46:19.367496	2012-10-09 14:46:19.367496
+917	12	9280481235	0	t	\N	\N	t	\N	2012-10-09 14:46:19.369932	2012-10-09 14:46:19.369932
+918	12	9280481323	0	t	\N	\N	t	\N	2012-10-09 14:46:19.372388	2012-10-09 14:46:19.372388
+919	12	9280481385	0	t	\N	\N	t	\N	2012-10-09 14:46:19.37482	2012-10-09 14:46:19.37482
+920	12	9280481433	0	t	\N	\N	t	\N	2012-10-09 14:46:19.377258	2012-10-09 14:46:19.377258
+921	12	9280481531	0	t	\N	\N	t	\N	2012-10-09 14:46:19.379691	2012-10-09 14:46:19.379691
+922	12	9280481561	0	t	\N	\N	t	\N	2012-10-09 14:46:19.382152	2012-10-09 14:46:19.382152
+923	12	9280482365	0	t	\N	\N	t	\N	2012-10-09 14:46:19.38456	2012-10-09 14:46:19.38456
+924	12	9280482519	0	t	\N	\N	t	\N	2012-10-09 14:46:19.386948	2012-10-09 14:46:19.386948
+925	12	9280482531	0	t	\N	\N	t	\N	2012-10-09 14:46:19.389348	2012-10-09 14:46:19.389348
+926	12	9280482540	0	t	\N	\N	t	\N	2012-10-09 14:46:19.391805	2012-10-09 14:46:19.391805
+927	12	9280482564	0	t	\N	\N	t	\N	2012-10-09 14:46:19.394238	2012-10-09 14:46:19.394238
+928	12	9280482590	0	t	\N	\N	t	\N	2012-10-09 14:46:19.396639	2012-10-09 14:46:19.396639
+929	12	9280482600	0	t	\N	\N	t	\N	2012-10-09 14:46:19.399051	2012-10-09 14:46:19.399051
+930	12	9280482627	0	t	\N	\N	t	\N	2012-10-09 14:46:19.401446	2012-10-09 14:46:19.401446
+931	12	9280482640	0	t	\N	\N	t	\N	2012-10-09 14:46:19.40386	2012-10-09 14:46:19.40386
+932	12	9280482664	0	t	\N	\N	t	\N	2012-10-09 14:46:19.406292	2012-10-09 14:46:19.406292
+933	12	9280482685	0	t	\N	\N	t	\N	2012-10-09 14:46:19.408712	2012-10-09 14:46:19.408712
+934	12	9280482689	0	t	\N	\N	t	\N	2012-10-09 14:46:19.411123	2012-10-09 14:46:19.411123
+935	12	9280482705	0	t	\N	\N	t	\N	2012-10-09 14:46:19.413526	2012-10-09 14:46:19.413526
+936	12	9280482706	0	t	\N	\N	t	\N	2012-10-09 14:46:19.415936	2012-10-09 14:46:19.415936
+937	12	9280482709	0	t	\N	\N	t	\N	2012-10-09 14:46:19.418393	2012-10-09 14:46:19.418393
+938	12	9280482714	0	t	\N	\N	t	\N	2012-10-09 14:46:19.420814	2012-10-09 14:46:19.420814
+939	12	9280482715	0	t	\N	\N	t	\N	2012-10-09 14:46:19.42328	2012-10-09 14:46:19.42328
+940	12	9280482718	0	t	\N	\N	t	\N	2012-10-09 14:46:19.425701	2012-10-09 14:46:19.425701
+941	12	9280482721	0	t	\N	\N	t	\N	2012-10-09 14:46:19.428118	2012-10-09 14:46:19.428118
+942	12	9280482723	0	t	\N	\N	t	\N	2012-10-09 14:46:19.430504	2012-10-09 14:46:19.430504
+943	12	9280482742	0	t	\N	\N	t	\N	2012-10-09 14:46:19.432928	2012-10-09 14:46:19.432928
+944	12	9280482744	0	t	\N	\N	t	\N	2012-10-09 14:46:19.435351	2012-10-09 14:46:19.435351
+945	12	9280482755	0	t	\N	\N	t	\N	2012-10-09 14:46:19.437776	2012-10-09 14:46:19.437776
+946	12	9280483683	0	t	\N	\N	t	\N	2012-10-09 14:46:19.440204	2012-10-09 14:46:19.440204
+947	12	9280483778	0	t	\N	\N	t	\N	2012-10-09 14:46:19.442603	2012-10-09 14:46:19.442603
+948	12	9280483780	0	t	\N	\N	t	\N	2012-10-09 14:46:19.444983	2012-10-09 14:46:19.444983
+949	12	9280483781	0	t	\N	\N	t	\N	2012-10-09 14:46:19.447377	2012-10-09 14:46:19.447377
+950	12	9280484452	0	t	\N	\N	t	\N	2012-10-09 14:46:19.449797	2012-10-09 14:46:19.449797
+951	12	9280488110	0	t	\N	\N	t	\N	2012-10-09 14:46:19.452231	2012-10-09 14:46:19.452231
+952	12	9280488660	0	t	\N	\N	t	\N	2012-10-09 14:46:19.454628	2012-10-09 14:46:19.454628
+953	12	9280491340	0	t	\N	\N	t	\N	2012-10-09 14:46:19.45701	2012-10-09 14:46:19.45701
+954	12	9280500152	0	t	\N	\N	t	\N	2012-10-09 14:46:19.45942	2012-10-09 14:46:19.45942
+955	12	9280502509	0	t	\N	\N	t	\N	2012-10-09 14:46:19.461857	2012-10-09 14:46:19.461857
+956	12	9280503311	0	t	\N	\N	t	\N	2012-10-09 14:46:19.464253	2012-10-09 14:46:19.464253
+957	12	9280507385	0	t	\N	\N	t	\N	2012-10-09 14:46:19.466672	2012-10-09 14:46:19.466672
+958	12	9280508899	0	t	\N	\N	t	\N	2012-10-09 14:46:19.469087	2012-10-09 14:46:19.469087
+959	12	9280509074	0	t	\N	\N	t	\N	2012-10-09 14:46:19.471487	2012-10-09 14:46:19.471487
+960	12	9280516722	0	t	\N	\N	t	\N	2012-10-09 14:46:19.473904	2012-10-09 14:46:19.473904
+961	12	9280518811	0	t	\N	\N	t	\N	2012-10-09 14:46:19.476334	2012-10-09 14:46:19.476334
+962	12	9280522005	0	t	\N	\N	t	\N	2012-10-09 14:46:19.478761	2012-10-09 14:46:19.478761
+963	12	9280522267	0	t	\N	\N	t	\N	2012-10-09 14:46:19.481193	2012-10-09 14:46:19.481193
+964	12	9280522465	0	t	\N	\N	t	\N	2012-10-09 14:46:19.483596	2012-10-09 14:46:19.483596
+965	12	9280525716	0	t	\N	\N	t	\N	2012-10-09 14:46:19.485975	2012-10-09 14:46:19.485975
+966	12	9280527465	0	t	\N	\N	t	\N	2012-10-09 14:46:19.488407	2012-10-09 14:46:19.488407
+967	12	9280531900	0	t	\N	\N	t	\N	2012-10-09 14:46:19.490835	2012-10-09 14:46:19.490835
+968	12	9280541555	0	t	\N	\N	t	\N	2012-10-09 14:46:19.4933	2012-10-09 14:46:19.4933
+969	12	9280543333	0	t	\N	\N	t	\N	2012-10-09 14:46:19.495743	2012-10-09 14:46:19.495743
+970	12	9280543360	0	t	\N	\N	t	\N	2012-10-09 14:46:19.498184	2012-10-09 14:46:19.498184
+971	12	9280543868	0	t	\N	\N	t	\N	2012-10-09 14:46:19.500607	2012-10-09 14:46:19.500607
+972	12	9280544076	0	t	\N	\N	t	\N	2012-10-09 14:46:19.503018	2012-10-09 14:46:19.503018
+973	12	9280544088	0	t	\N	\N	t	\N	2012-10-09 14:46:19.505436	2012-10-09 14:46:19.505436
+974	12	9280544108	0	t	\N	\N	t	\N	2012-10-09 14:46:19.507853	2012-10-09 14:46:19.507853
+975	12	9280544146	0	t	\N	\N	t	\N	2012-10-09 14:46:19.510299	2012-10-09 14:46:19.510299
+976	12	9280547417	0	t	\N	\N	t	\N	2012-10-09 14:46:19.512738	2012-10-09 14:46:19.512738
+977	12	9280550205	0	t	\N	\N	t	\N	2012-10-09 14:46:19.54	2012-10-09 14:46:19.54
+978	12	9280550280	0	t	\N	\N	t	\N	2012-10-09 14:46:19.542471	2012-10-09 14:46:19.542471
+979	12	9280550530	0	t	\N	\N	t	\N	2012-10-09 14:46:19.544971	2012-10-09 14:46:19.544971
+1061	12	9285055863	0	t	\N	\N	t	\N	2012-10-09 14:46:19.750605	2012-10-09 14:46:19.750605
+1062	12	9285056111	0	t	\N	\N	t	\N	2012-10-09 14:46:19.753123	2012-10-09 14:46:19.753123
+1063	12	9285057666	0	t	\N	\N	t	\N	2012-10-09 14:46:19.755715	2012-10-09 14:46:19.755715
+1064	12	9285058280	0	t	\N	\N	t	\N	2012-10-09 14:46:19.758432	2012-10-09 14:46:19.758432
+1065	12	9285059175	0	t	\N	\N	t	\N	2012-10-09 14:46:19.761043	2012-10-09 14:46:19.761043
+1066	12	9285059410	0	t	\N	\N	t	\N	2012-10-09 14:46:19.763742	2012-10-09 14:46:19.763742
+1067	12	9285059610	0	t	\N	\N	t	\N	2012-10-09 14:46:19.766415	2012-10-09 14:46:19.766415
+1068	12	9285059715	0	t	\N	\N	t	\N	2012-10-09 14:46:19.769066	2012-10-09 14:46:19.769066
+1069	12	9285060015	0	t	\N	\N	t	\N	2012-10-09 14:46:19.771739	2012-10-09 14:46:19.771739
+1070	12	9285060016	0	t	\N	\N	t	\N	2012-10-09 14:46:19.774471	2012-10-09 14:46:19.774471
+1071	12	9285060166	0	t	\N	\N	t	\N	2012-10-09 14:46:19.777803	2012-10-09 14:46:19.777803
+852	10	9285013562	0	f	9	Test	f	2012-10-08	2012-09-30 17:43:21.601455	2012-10-09 16:00:06.275393
+980	12	9280553288	0	t	\N	\N	t	\N	2012-10-09 14:46:19.547444	2012-10-09 14:46:19.547444
+981	12	9280558583	0	t	\N	\N	t	\N	2012-10-09 14:46:19.549949	2012-10-09 14:46:19.549949
+982	12	9280570802	0	t	\N	\N	t	\N	2012-10-09 14:46:19.552477	2012-10-09 14:46:19.552477
+983	12	9280574757	0	t	\N	\N	t	\N	2012-10-09 14:46:19.554961	2012-10-09 14:46:19.554961
+984	12	9280574942	0	t	\N	\N	t	\N	2012-10-09 14:46:19.557455	2012-10-09 14:46:19.557455
+985	12	9280577777	0	t	\N	\N	t	\N	2012-10-09 14:46:19.559955	2012-10-09 14:46:19.559955
+986	12	9280581879	0	t	\N	\N	t	\N	2012-10-09 14:46:19.562484	2012-10-09 14:46:19.562484
+987	12	9280586653	0	t	\N	\N	t	\N	2012-10-09 14:46:19.564976	2012-10-09 14:46:19.564976
+988	12	9280587733	0	t	\N	\N	t	\N	2012-10-09 14:46:19.567482	2012-10-09 14:46:19.567482
+989	12	9280589440	0	t	\N	\N	t	\N	2012-10-09 14:46:19.569981	2012-10-09 14:46:19.569981
+990	12	9280589472	0	t	\N	\N	t	\N	2012-10-09 14:46:19.572481	2012-10-09 14:46:19.572481
+991	12	9280589600	0	t	\N	\N	t	\N	2012-10-09 14:46:19.575075	2012-10-09 14:46:19.575075
+992	12	9280595821	0	t	\N	\N	t	\N	2012-10-09 14:46:19.577605	2012-10-09 14:46:19.577605
+993	12	9280595831	0	t	\N	\N	t	\N	2012-10-09 14:46:19.580297	2012-10-09 14:46:19.580297
+994	12	9280598868	0	t	\N	\N	t	\N	2012-10-09 14:46:19.582815	2012-10-09 14:46:19.582815
+995	12	9280599838	0	t	\N	\N	t	\N	2012-10-09 14:46:19.585352	2012-10-09 14:46:19.585352
+996	12	9280601357	0	t	\N	\N	t	\N	2012-10-09 14:46:19.587832	2012-10-09 14:46:19.587832
+997	12	9280602888	0	t	\N	\N	t	\N	2012-10-09 14:46:19.590331	2012-10-09 14:46:19.590331
+998	12	9280611600	0	t	\N	\N	t	\N	2012-10-09 14:46:19.59278	2012-10-09 14:46:19.59278
+999	12	9280617550	0	t	\N	\N	t	\N	2012-10-09 14:46:19.595242	2012-10-09 14:46:19.595242
+1000	12	9280639776	0	t	\N	\N	t	\N	2012-10-09 14:46:19.597739	2012-10-09 14:46:19.597739
+1001	12	9281231111	0	t	\N	\N	t	\N	2012-10-09 14:46:19.600205	2012-10-09 14:46:19.600205
+1002	12	9282193727	0	t	\N	\N	t	\N	2012-10-09 14:46:19.602689	2012-10-09 14:46:19.602689
+1003	12	9282198888	0	t	\N	\N	t	\N	2012-10-09 14:46:19.605146	2012-10-09 14:46:19.605146
+1004	12	9282202117	0	t	\N	\N	t	\N	2012-10-09 14:46:19.607641	2012-10-09 14:46:19.607641
+1005	12	9282203712	0	t	\N	\N	t	\N	2012-10-09 14:46:19.610161	2012-10-09 14:46:19.610161
+1006	12	9282208019	0	t	\N	\N	t	\N	2012-10-09 14:46:19.61264	2012-10-09 14:46:19.61264
+1007	12	9282244883	0	t	\N	\N	t	\N	2012-10-09 14:46:19.615126	2012-10-09 14:46:19.615126
+1008	12	9282245128	0	t	\N	\N	t	\N	2012-10-09 14:46:19.617627	2012-10-09 14:46:19.617627
+1009	12	9282277666	0	t	\N	\N	t	\N	2012-10-09 14:46:19.620155	2012-10-09 14:46:19.620155
+1010	12	9282381403	0	t	\N	\N	t	\N	2012-10-09 14:46:19.622625	2012-10-09 14:46:19.622625
+1011	12	9282430032	0	t	\N	\N	t	\N	2012-10-09 14:46:19.625089	2012-10-09 14:46:19.625089
+1012	12	9282433313	0	t	\N	\N	t	\N	2012-10-09 14:46:19.627577	2012-10-09 14:46:19.627577
+1013	12	9282460045	0	t	\N	\N	t	\N	2012-10-09 14:46:19.630251	2012-10-09 14:46:19.630251
+1014	12	9282505022	0	t	\N	\N	t	\N	2012-10-09 14:46:19.632746	2012-10-09 14:46:19.632746
+1015	12	9282648000	0	t	\N	\N	t	\N	2012-10-09 14:46:19.635205	2012-10-09 14:46:19.635205
+1016	12	9282648090	0	t	\N	\N	t	\N	2012-10-09 14:46:19.637704	2012-10-09 14:46:19.637704
+1017	12	9282775573	0	t	\N	\N	t	\N	2012-10-09 14:46:19.640168	2012-10-09 14:46:19.640168
+1018	12	9282778840	0	t	\N	\N	t	\N	2012-10-09 14:46:19.642708	2012-10-09 14:46:19.642708
+1019	12	9282877779	0	t	\N	\N	t	\N	2012-10-09 14:46:19.645196	2012-10-09 14:46:19.645196
+1020	12	9282880011	0	t	\N	\N	t	\N	2012-10-09 14:46:19.647717	2012-10-09 14:46:19.647717
+1021	12	9282885514	0	t	\N	\N	t	\N	2012-10-09 14:46:19.650178	2012-10-09 14:46:19.650178
+1022	12	9282885858	0	t	\N	\N	t	\N	2012-10-09 14:46:19.652692	2012-10-09 14:46:19.652692
+1023	12	9282970915	0	t	\N	\N	t	\N	2012-10-09 14:46:19.655196	2012-10-09 14:46:19.655196
+1024	12	9282972110	0	t	\N	\N	t	\N	2012-10-09 14:46:19.657689	2012-10-09 14:46:19.657689
+1025	12	9282979796	0	t	\N	\N	t	\N	2012-10-09 14:46:19.660185	2012-10-09 14:46:19.660185
+1026	12	9282983323	0	t	\N	\N	t	\N	2012-10-09 14:46:19.662691	2012-10-09 14:46:19.662691
+1027	12	9283171313	0	t	\N	\N	t	\N	2012-10-09 14:46:19.665164	2012-10-09 14:46:19.665164
+1028	12	9284066666	0	t	\N	\N	t	\N	2012-10-09 14:46:19.667688	2012-10-09 14:46:19.667688
+1029	12	9285001707	0	t	\N	\N	t	\N	2012-10-09 14:46:19.67024	2012-10-09 14:46:19.67024
+1030	12	9285001742	0	t	\N	\N	t	\N	2012-10-09 14:46:19.672693	2012-10-09 14:46:19.672693
+1031	12	9285002273	0	t	\N	\N	t	\N	2012-10-09 14:46:19.675148	2012-10-09 14:46:19.675148
+1032	12	9285002343	0	t	\N	\N	t	\N	2012-10-09 14:46:19.677667	2012-10-09 14:46:19.677667
+1033	12	9285002749	0	t	\N	\N	t	\N	2012-10-09 14:46:19.680219	2012-10-09 14:46:19.680219
+1034	12	9285002766	0	t	\N	\N	t	\N	2012-10-09 14:46:19.682687	2012-10-09 14:46:19.682687
+1035	12	9285002823	0	t	\N	\N	t	\N	2012-10-09 14:46:19.685163	2012-10-09 14:46:19.685163
+1036	12	9285005017	0	t	\N	\N	t	\N	2012-10-09 14:46:19.687653	2012-10-09 14:46:19.687653
+1037	12	9285005100	0	t	\N	\N	t	\N	2012-10-09 14:46:19.690244	2012-10-09 14:46:19.690244
+1038	12	9285007444	0	t	\N	\N	t	\N	2012-10-09 14:46:19.692709	2012-10-09 14:46:19.692709
+1039	12	9285007516	0	t	\N	\N	t	\N	2012-10-09 14:46:19.6952	2012-10-09 14:46:19.6952
+1040	12	9285008044	0	t	\N	\N	t	\N	2012-10-09 14:46:19.697696	2012-10-09 14:46:19.697696
+1041	12	9285020797	0	t	\N	\N	t	\N	2012-10-09 14:46:19.700209	2012-10-09 14:46:19.700209
+1042	12	9285021011	0	t	\N	\N	t	\N	2012-10-09 14:46:19.702729	2012-10-09 14:46:19.702729
+1043	12	9285021070	0	t	\N	\N	t	\N	2012-10-09 14:46:19.705193	2012-10-09 14:46:19.705193
+1044	12	9285021211	0	t	\N	\N	t	\N	2012-10-09 14:46:19.707693	2012-10-09 14:46:19.707693
+1045	12	9285021270	0	t	\N	\N	t	\N	2012-10-09 14:46:19.710238	2012-10-09 14:46:19.710238
+1046	12	9285022727	0	t	\N	\N	t	\N	2012-10-09 14:46:19.712698	2012-10-09 14:46:19.712698
+1047	12	9285023332	0	t	\N	\N	t	\N	2012-10-09 14:46:19.715238	2012-10-09 14:46:19.715238
+1048	12	9285027808	0	t	\N	\N	t	\N	2012-10-09 14:46:19.717765	2012-10-09 14:46:19.717765
+1049	12	9285030015	0	t	\N	\N	t	\N	2012-10-09 14:46:19.720304	2012-10-09 14:46:19.720304
+1050	12	9285032378	0	t	\N	\N	t	\N	2012-10-09 14:46:19.722861	2012-10-09 14:46:19.722861
+1051	12	9285033353	0	t	\N	\N	t	\N	2012-10-09 14:46:19.725397	2012-10-09 14:46:19.725397
+1052	12	9285033383	0	t	\N	\N	t	\N	2012-10-09 14:46:19.727893	2012-10-09 14:46:19.727893
+1053	12	9285033411	0	t	\N	\N	t	\N	2012-10-09 14:46:19.730403	2012-10-09 14:46:19.730403
+1054	12	9285036070	0	t	\N	\N	t	\N	2012-10-09 14:46:19.732902	2012-10-09 14:46:19.732902
+1055	12	9285039202	0	t	\N	\N	t	\N	2012-10-09 14:46:19.735394	2012-10-09 14:46:19.735394
+1056	12	9285053222	0	t	\N	\N	t	\N	2012-10-09 14:46:19.737937	2012-10-09 14:46:19.737937
+1057	12	9285054111	0	t	\N	\N	t	\N	2012-10-09 14:46:19.740449	2012-10-09 14:46:19.740449
+1058	12	9285054672	0	t	\N	\N	t	\N	2012-10-09 14:46:19.742968	2012-10-09 14:46:19.742968
+1059	12	9285055819	0	t	\N	\N	t	\N	2012-10-09 14:46:19.745468	2012-10-09 14:46:19.745468
+1060	12	9285055861	0	t	\N	\N	t	\N	2012-10-09 14:46:19.747989	2012-10-09 14:46:19.747989
+1072	12	9285060176	0	t	\N	\N	t	\N	2012-10-09 14:46:19.780975	2012-10-09 14:46:19.780975
+1073	12	9285060320	0	t	\N	\N	t	\N	2012-10-09 14:46:19.809196	2012-10-09 14:46:19.809196
+1074	12	9285060466	0	t	\N	\N	t	\N	2012-10-09 14:46:19.812447	2012-10-09 14:46:19.812447
+1075	12	9285060607	0	t	\N	\N	t	\N	2012-10-09 14:46:19.849644	2012-10-09 14:46:19.849644
+1076	12	9285060616	0	t	\N	\N	t	\N	2012-10-09 14:46:19.855822	2012-10-09 14:46:19.855822
+1077	12	9285060633	0	t	\N	\N	t	\N	2012-10-09 14:46:19.85846	2012-10-09 14:46:19.85846
+1079	12	9285070009	0	t	\N	\N	t	\N	2012-10-09 14:46:19.863629	2012-10-09 14:46:19.863629
+1080	12	9285076001	0	t	\N	\N	t	\N	2012-10-09 14:46:19.866236	2012-10-09 14:46:19.866236
+1081	12	9285088808	0	t	\N	\N	t	\N	2012-10-09 14:46:19.868829	2012-10-09 14:46:19.868829
+1082	12	9285088887	0	t	\N	\N	t	\N	2012-10-09 14:46:19.871421	2012-10-09 14:46:19.871421
+1083	12	9285095050	0	t	\N	\N	t	\N	2012-10-09 14:46:19.87397	2012-10-09 14:46:19.87397
+1084	12	9285098435	0	t	\N	\N	t	\N	2012-10-09 14:46:19.876484	2012-10-09 14:46:19.876484
+1085	12	9285099950	0	t	\N	\N	t	\N	2012-10-09 14:46:19.879021	2012-10-09 14:46:19.879021
+1086	12	9285100515	0	t	\N	\N	t	\N	2012-10-09 14:46:19.881587	2012-10-09 14:46:19.881587
+1087	12	9285101055	0	t	\N	\N	t	\N	2012-10-09 14:46:19.884241	2012-10-09 14:46:19.884241
+1088	12	9285107720	0	t	\N	\N	t	\N	2012-10-09 14:46:19.886783	2012-10-09 14:46:19.886783
+1089	12	9285109001	0	t	\N	\N	t	\N	2012-10-09 14:46:19.889379	2012-10-09 14:46:19.889379
+1090	12	9285111113	0	t	\N	\N	t	\N	2012-10-09 14:46:19.891911	2012-10-09 14:46:19.891911
+1091	12	9285127000	0	t	\N	\N	t	\N	2012-10-09 14:46:19.894442	2012-10-09 14:46:19.894442
+1092	12	9285131111	0	t	\N	\N	t	\N	2012-10-09 14:46:19.896972	2012-10-09 14:46:19.896972
+1093	12	9285133535	0	t	\N	\N	t	\N	2012-10-09 14:46:19.899496	2012-10-09 14:46:19.899496
+1094	12	9285144416	0	t	\N	\N	t	\N	2012-10-09 14:46:19.902011	2012-10-09 14:46:19.902011
+1095	12	9285150013	0	t	\N	\N	t	\N	2012-10-09 14:46:19.904543	2012-10-09 14:46:19.904543
+1096	12	9285150515	0	t	\N	\N	t	\N	2012-10-09 14:46:19.907051	2012-10-09 14:46:19.907051
+1097	12	9285150888	0	t	\N	\N	t	\N	2012-10-09 14:46:19.909616	2012-10-09 14:46:19.909616
+1098	12	9285151700	0	t	\N	\N	t	\N	2012-10-09 14:46:19.912096	2012-10-09 14:46:19.912096
+1099	12	9285155505	0	t	\N	\N	t	\N	2012-10-09 14:46:19.914575	2012-10-09 14:46:19.914575
+1100	12	9285155550	0	t	\N	\N	t	\N	2012-10-09 14:46:19.917083	2012-10-09 14:46:19.917083
+1101	12	9285158079	0	t	\N	\N	t	\N	2012-10-09 14:46:19.919614	2012-10-09 14:46:19.919614
+1102	12	9285167371	0	t	\N	\N	t	\N	2012-10-09 14:46:19.922103	2012-10-09 14:46:19.922103
+1103	12	9285168989	0	t	\N	\N	t	\N	2012-10-09 14:46:19.924589	2012-10-09 14:46:19.924589
+1104	12	9285180761	0	t	\N	\N	t	\N	2012-10-09 14:46:19.927068	2012-10-09 14:46:19.927068
+1105	12	9285180763	0	t	\N	\N	t	\N	2012-10-09 14:46:19.929625	2012-10-09 14:46:19.929625
+1106	12	9285193333	0	t	\N	\N	t	\N	2012-10-09 14:46:19.932119	2012-10-09 14:46:19.932119
+1107	12	9285198142	0	t	\N	\N	t	\N	2012-10-09 14:46:19.934605	2012-10-09 14:46:19.934605
+1108	12	9285199957	0	t	\N	\N	t	\N	2012-10-09 14:46:19.937043	2012-10-09 14:46:19.937043
+1109	12	9285200531	0	t	\N	\N	t	\N	2012-10-09 14:46:19.93951	2012-10-09 14:46:19.93951
+1110	12	9285201010	0	t	\N	\N	t	\N	2012-10-09 14:46:19.941988	2012-10-09 14:46:19.941988
+1111	12	9285205600	0	t	\N	\N	t	\N	2012-10-09 14:46:19.944534	2012-10-09 14:46:19.944534
+1112	12	9285207007	0	t	\N	\N	t	\N	2012-10-09 14:46:19.947019	2012-10-09 14:46:19.947019
+1113	12	9285211101	0	t	\N	\N	t	\N	2012-10-09 14:46:19.949566	2012-10-09 14:46:19.949566
+1114	12	9285220088	0	t	\N	\N	t	\N	2012-10-09 14:46:19.952047	2012-10-09 14:46:19.952047
+1115	12	9285221451	0	t	\N	\N	t	\N	2012-10-09 14:46:19.954606	2012-10-09 14:46:19.954606
+1116	12	9285228595	0	t	\N	\N	t	\N	2012-10-09 14:46:19.957092	2012-10-09 14:46:19.957092
+1117	12	9285235053	0	t	\N	\N	t	\N	2012-10-09 14:46:19.959614	2012-10-09 14:46:19.959614
+1118	12	9285243333	0	t	\N	\N	t	\N	2012-10-09 14:46:19.96205	2012-10-09 14:46:19.96205
+1119	12	9285244421	0	t	\N	\N	t	\N	2012-10-09 14:46:19.964498	2012-10-09 14:46:19.964498
+1120	12	9285250190	0	t	\N	\N	t	\N	2012-10-09 14:46:19.966986	2012-10-09 14:46:19.966986
+1121	12	9285250210	0	t	\N	\N	t	\N	2012-10-09 14:46:19.96954	2012-10-09 14:46:19.96954
+1122	12	9285251050	0	t	\N	\N	t	\N	2012-10-09 14:46:19.972018	2012-10-09 14:46:19.972018
+1123	12	9285252027	0	t	\N	\N	t	\N	2012-10-09 14:46:19.974573	2012-10-09 14:46:19.974573
+1124	12	9285252055	0	t	\N	\N	t	\N	2012-10-09 14:46:19.977054	2012-10-09 14:46:19.977054
+1125	12	9285252533	0	t	\N	\N	t	\N	2012-10-09 14:46:19.9796	2012-10-09 14:46:19.9796
+1126	12	9285252585	0	t	\N	\N	t	\N	2012-10-09 14:46:19.982279	2012-10-09 14:46:19.982279
+1127	12	9285253040	0	t	\N	\N	t	\N	2012-10-09 14:46:19.984777	2012-10-09 14:46:19.984777
+1128	12	9285253253	0	t	\N	\N	t	\N	2012-10-09 14:46:19.987315	2012-10-09 14:46:19.987315
+1129	12	9285254030	0	t	\N	\N	t	\N	2012-10-09 14:46:19.989807	2012-10-09 14:46:19.989807
+1130	12	9285254042	0	t	\N	\N	t	\N	2012-10-09 14:46:19.99237	2012-10-09 14:46:19.99237
+1131	12	9285257661	0	t	\N	\N	t	\N	2012-10-09 14:46:19.994867	2012-10-09 14:46:19.994867
+1132	12	9285258050	0	t	\N	\N	t	\N	2012-10-09 14:46:19.997321	2012-10-09 14:46:19.997321
+1133	12	9285258077	0	t	\N	\N	t	\N	2012-10-09 14:46:19.999851	2012-10-09 14:46:19.999851
+1134	12	9285258090	0	t	\N	\N	t	\N	2012-10-09 14:46:20.002473	2012-10-09 14:46:20.002473
+1135	12	9285258118	0	t	\N	\N	t	\N	2012-10-09 14:46:20.00492	2012-10-09 14:46:20.00492
+1136	12	9285258228	0	t	\N	\N	t	\N	2012-10-09 14:46:20.007445	2012-10-09 14:46:20.007445
+1137	12	9285258258	0	t	\N	\N	t	\N	2012-10-09 14:46:20.009879	2012-10-09 14:46:20.009879
+1138	12	9285258338	0	t	\N	\N	t	\N	2012-10-09 14:46:20.012311	2012-10-09 14:46:20.012311
+1139	12	9285258448	0	t	\N	\N	t	\N	2012-10-09 14:46:20.014725	2012-10-09 14:46:20.014725
+1140	12	9285258535	0	t	\N	\N	t	\N	2012-10-09 14:46:20.017126	2012-10-09 14:46:20.017126
+1141	12	9285258545	0	t	\N	\N	t	\N	2012-10-09 14:46:20.019611	2012-10-09 14:46:20.019611
+1142	12	9285267727	0	t	\N	\N	t	\N	2012-10-09 14:46:20.022051	2012-10-09 14:46:20.022051
+1143	12	9285299997	0	t	\N	\N	t	\N	2012-10-09 14:46:20.024503	2012-10-09 14:46:20.024503
+1144	12	9285300300	0	t	\N	\N	t	\N	2012-10-09 14:46:20.02699	2012-10-09 14:46:20.02699
+1145	12	9285304055	0	t	\N	\N	t	\N	2012-10-09 14:46:20.029487	2012-10-09 14:46:20.029487
+1146	12	9285311101	0	t	\N	\N	t	\N	2012-10-09 14:46:20.031968	2012-10-09 14:46:20.031968
+1147	12	9285316867	0	t	\N	\N	t	\N	2012-10-09 14:46:20.034495	2012-10-09 14:46:20.034495
+1148	12	9285317131	0	t	\N	\N	t	\N	2012-10-09 14:46:20.036976	2012-10-09 14:46:20.036976
+1149	12	9285320509	0	t	\N	\N	t	\N	2012-10-09 14:46:20.039509	2012-10-09 14:46:20.039509
+1150	12	9285320552	0	t	\N	\N	t	\N	2012-10-09 14:46:20.042002	2012-10-09 14:46:20.042002
+1151	12	9285321155	0	t	\N	\N	t	\N	2012-10-09 14:46:20.044552	2012-10-09 14:46:20.044552
+1152	12	9285353535	0	t	\N	\N	t	\N	2012-10-09 14:46:20.047037	2012-10-09 14:46:20.047037
+1153	12	9285358996	0	t	\N	\N	t	\N	2012-10-09 14:46:20.049586	2012-10-09 14:46:20.049586
+1154	12	9285377776	0	t	\N	\N	t	\N	2012-10-09 14:46:20.052054	2012-10-09 14:46:20.052054
+1155	12	9285380077	0	t	\N	\N	t	\N	2012-10-09 14:46:20.054598	2012-10-09 14:46:20.054598
+1156	12	9285400608	0	t	\N	\N	t	\N	2012-10-09 14:46:20.057071	2012-10-09 14:46:20.057071
+1157	12	9285409355	0	t	\N	\N	t	\N	2012-10-09 14:46:20.059609	2012-10-09 14:46:20.059609
+1158	12	9285416444	0	t	\N	\N	t	\N	2012-10-09 14:46:20.062075	2012-10-09 14:46:20.062075
+1159	12	9285441094	0	t	\N	\N	t	\N	2012-10-09 14:46:20.064572	2012-10-09 14:46:20.064572
+1160	12	9285442222	0	t	\N	\N	t	\N	2012-10-09 14:46:20.067049	2012-10-09 14:46:20.067049
+1161	12	9285444074	0	t	\N	\N	t	\N	2012-10-09 14:46:20.069568	2012-10-09 14:46:20.069568
+1162	12	9285447544	0	t	\N	\N	t	\N	2012-10-09 14:46:20.072046	2012-10-09 14:46:20.072046
+1163	12	9285456394	0	t	\N	\N	t	\N	2012-10-09 14:46:20.074572	2012-10-09 14:46:20.074572
+1164	12	9285483900	0	t	\N	\N	t	\N	2012-10-09 14:46:20.077046	2012-10-09 14:46:20.077046
+1165	12	9285496868	0	t	\N	\N	t	\N	2012-10-09 14:46:20.079576	2012-10-09 14:46:20.079576
+1166	12	9285514555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.082049	2012-10-09 14:46:20.082049
+1167	12	9285554446	0	t	\N	\N	t	\N	2012-10-09 14:46:20.084578	2012-10-09 14:46:20.084578
+1168	12	9285566555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.087061	2012-10-09 14:46:20.087061
+1169	12	9285569210	0	t	\N	\N	t	\N	2012-10-09 14:46:20.0896	2012-10-09 14:46:20.0896
+1170	12	9285576620	0	t	\N	\N	t	\N	2012-10-09 14:46:20.119318	2012-10-09 14:46:20.119318
+1171	12	9285580550	0	t	\N	\N	t	\N	2012-10-09 14:46:20.122542	2012-10-09 14:46:20.122542
+1172	12	9285582555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.125121	2012-10-09 14:46:20.125121
+1173	12	9285582777	0	t	\N	\N	t	\N	2012-10-09 14:46:20.127747	2012-10-09 14:46:20.127747
+1174	12	9285593896	0	t	\N	\N	t	\N	2012-10-09 14:46:20.130358	2012-10-09 14:46:20.130358
+1175	12	9285600100	0	t	\N	\N	t	\N	2012-10-09 14:46:20.132898	2012-10-09 14:46:20.132898
+1176	12	9285609249	0	t	\N	\N	t	\N	2012-10-09 14:46:20.135479	2012-10-09 14:46:20.135479
+1177	12	9285616191	0	t	\N	\N	t	\N	2012-10-09 14:46:20.13801	2012-10-09 14:46:20.13801
+1178	12	9285616669	0	t	\N	\N	t	\N	2012-10-09 14:46:20.140591	2012-10-09 14:46:20.140591
+1179	12	9285616940	0	t	\N	\N	t	\N	2012-10-09 14:46:20.143171	2012-10-09 14:46:20.143171
+1180	12	9285617887	0	t	\N	\N	t	\N	2012-10-09 14:46:20.145701	2012-10-09 14:46:20.145701
+1181	12	9285619121	0	t	\N	\N	t	\N	2012-10-09 14:46:20.148258	2012-10-09 14:46:20.148258
+1182	12	9285620011	0	t	\N	\N	t	\N	2012-10-09 14:46:20.150871	2012-10-09 14:46:20.150871
+1183	12	9285621155	0	t	\N	\N	t	\N	2012-10-09 14:46:20.153444	2012-10-09 14:46:20.153444
+1184	12	9285621199	0	t	\N	\N	t	\N	2012-10-09 14:46:20.155969	2012-10-09 14:46:20.155969
+1185	12	9285622070	0	t	\N	\N	t	\N	2012-10-09 14:46:20.158554	2012-10-09 14:46:20.158554
+1186	12	9285622772	0	t	\N	\N	t	\N	2012-10-09 14:46:20.161159	2012-10-09 14:46:20.161159
+1187	12	9285622882	0	t	\N	\N	t	\N	2012-10-09 14:46:20.163737	2012-10-09 14:46:20.163737
+1188	12	9285623060	0	t	\N	\N	t	\N	2012-10-09 14:46:20.1663	2012-10-09 14:46:20.1663
+1189	12	9285623080	0	t	\N	\N	t	\N	2012-10-09 14:46:20.168871	2012-10-09 14:46:20.168871
+1190	12	9285623443	0	t	\N	\N	t	\N	2012-10-09 14:46:20.171408	2012-10-09 14:46:20.171408
+1191	12	9285626886	0	t	\N	\N	t	\N	2012-10-09 14:46:20.173993	2012-10-09 14:46:20.173993
+1192	12	9285633332	0	t	\N	\N	t	\N	2012-10-09 14:46:20.17649	2012-10-09 14:46:20.17649
+1193	12	9285655558	0	t	\N	\N	t	\N	2012-10-09 14:46:20.179061	2012-10-09 14:46:20.179061
+1194	12	9285672423	0	t	\N	\N	t	\N	2012-10-09 14:46:20.181637	2012-10-09 14:46:20.181637
+1195	12	9285676555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.184163	2012-10-09 14:46:20.184163
+1196	12	9285681944	0	t	\N	\N	t	\N	2012-10-09 14:46:20.186669	2012-10-09 14:46:20.186669
+1197	12	9285684119	0	t	\N	\N	t	\N	2012-10-09 14:46:20.189224	2012-10-09 14:46:20.189224
+1198	12	9285686828	0	t	\N	\N	t	\N	2012-10-09 14:46:20.191794	2012-10-09 14:46:20.191794
+1199	12	9285709210	0	t	\N	\N	t	\N	2012-10-09 14:46:20.19436	2012-10-09 14:46:20.19436
+1200	12	9285717700	0	t	\N	\N	t	\N	2012-10-09 14:46:20.196892	2012-10-09 14:46:20.196892
+1201	12	9285731382	0	t	\N	\N	t	\N	2012-10-09 14:46:20.199386	2012-10-09 14:46:20.199386
+1202	12	9285732032	0	t	\N	\N	t	\N	2012-10-09 14:46:20.202002	2012-10-09 14:46:20.202002
+1203	12	9285732055	0	t	\N	\N	t	\N	2012-10-09 14:46:20.204587	2012-10-09 14:46:20.204587
+1204	12	9285732153	0	t	\N	\N	t	\N	2012-10-09 14:46:20.20714	2012-10-09 14:46:20.20714
+1205	12	9285732200	0	t	\N	\N	t	\N	2012-10-09 14:46:20.209651	2012-10-09 14:46:20.209651
+1206	12	9285732224	0	t	\N	\N	t	\N	2012-10-09 14:46:20.212236	2012-10-09 14:46:20.212236
+1207	12	9285732241	0	t	\N	\N	t	\N	2012-10-09 14:46:20.214764	2012-10-09 14:46:20.214764
+1208	12	9285732405	0	t	\N	\N	t	\N	2012-10-09 14:46:20.217348	2012-10-09 14:46:20.217348
+1209	12	9285732422	0	t	\N	\N	t	\N	2012-10-09 14:46:20.219843	2012-10-09 14:46:20.219843
+1210	12	9285732867	0	t	\N	\N	t	\N	2012-10-09 14:46:20.222375	2012-10-09 14:46:20.222375
+1211	12	9285732877	0	t	\N	\N	t	\N	2012-10-09 14:46:20.224919	2012-10-09 14:46:20.224919
+1212	12	9285732933	0	t	\N	\N	t	\N	2012-10-09 14:46:20.22744	2012-10-09 14:46:20.22744
+1213	12	9285732939	0	t	\N	\N	t	\N	2012-10-09 14:46:20.230018	2012-10-09 14:46:20.230018
+1214	12	9285732959	0	t	\N	\N	t	\N	2012-10-09 14:46:20.232524	2012-10-09 14:46:20.232524
+1215	12	9285733031	0	t	\N	\N	t	\N	2012-10-09 14:46:20.235087	2012-10-09 14:46:20.235087
+1216	12	9285733052	0	t	\N	\N	t	\N	2012-10-09 14:46:20.23764	2012-10-09 14:46:20.23764
+1217	12	9285733133	0	t	\N	\N	t	\N	2012-10-09 14:46:20.24025	2012-10-09 14:46:20.24025
+1218	12	9285733313	0	t	\N	\N	t	\N	2012-10-09 14:46:20.242791	2012-10-09 14:46:20.242791
+1219	12	9285733400	0	t	\N	\N	t	\N	2012-10-09 14:46:20.24539	2012-10-09 14:46:20.24539
+1220	12	9285733473	0	t	\N	\N	t	\N	2012-10-09 14:46:20.247928	2012-10-09 14:46:20.247928
+1221	12	9285733553	0	t	\N	\N	t	\N	2012-10-09 14:46:20.250499	2012-10-09 14:46:20.250499
+1222	12	9285733614	0	t	\N	\N	t	\N	2012-10-09 14:46:20.253042	2012-10-09 14:46:20.253042
+1223	12	9285733793	0	t	\N	\N	t	\N	2012-10-09 14:46:20.255566	2012-10-09 14:46:20.255566
+1224	12	9285738880	0	t	\N	\N	t	\N	2012-10-09 14:46:20.258355	2012-10-09 14:46:20.258355
+1225	12	9285750666	0	t	\N	\N	t	\N	2012-10-09 14:46:20.260916	2012-10-09 14:46:20.260916
+1226	12	9285754888	0	t	\N	\N	t	\N	2012-10-09 14:46:20.263556	2012-10-09 14:46:20.263556
+1227	12	9285775111	0	t	\N	\N	t	\N	2012-10-09 14:46:20.266095	2012-10-09 14:46:20.266095
+1228	12	9285775222	0	t	\N	\N	t	\N	2012-10-09 14:46:20.268686	2012-10-09 14:46:20.268686
+1229	12	9285808505	0	t	\N	\N	t	\N	2012-10-09 14:46:20.271236	2012-10-09 14:46:20.271236
+1230	12	9285808884	0	t	\N	\N	t	\N	2012-10-09 14:46:20.273829	2012-10-09 14:46:20.273829
+1231	12	9285811600	0	t	\N	\N	t	\N	2012-10-09 14:46:20.276389	2012-10-09 14:46:20.276389
+1232	12	9285835752	0	t	\N	\N	t	\N	2012-10-09 14:46:20.278986	2012-10-09 14:46:20.278986
+1233	12	9285844994	0	t	\N	\N	t	\N	2012-10-09 14:46:20.281532	2012-10-09 14:46:20.281532
+1234	12	9285846904	0	t	\N	\N	t	\N	2012-10-09 14:46:20.284096	2012-10-09 14:46:20.284096
+1235	12	9285855522	0	t	\N	\N	t	\N	2012-10-09 14:46:20.286676	2012-10-09 14:46:20.286676
+1236	12	9285863016	0	t	\N	\N	t	\N	2012-10-09 14:46:20.28929	2012-10-09 14:46:20.28929
+1237	12	9285867777	0	t	\N	\N	t	\N	2012-10-09 14:46:20.291889	2012-10-09 14:46:20.291889
+1238	12	9285875773	0	t	\N	\N	t	\N	2012-10-09 14:46:20.294498	2012-10-09 14:46:20.294498
+1239	12	9285877725	0	t	\N	\N	t	\N	2012-10-09 14:46:20.297056	2012-10-09 14:46:20.297056
+1240	12	9285877745	0	t	\N	\N	t	\N	2012-10-09 14:46:20.29968	2012-10-09 14:46:20.29968
+1241	12	9285877778	0	t	\N	\N	t	\N	2012-10-09 14:46:20.302279	2012-10-09 14:46:20.302279
+1242	12	9285883003	0	t	\N	\N	t	\N	2012-10-09 14:46:20.304862	2012-10-09 14:46:20.304862
+1243	12	9285885005	0	t	\N	\N	t	\N	2012-10-09 14:46:20.307487	2012-10-09 14:46:20.307487
+1244	12	9285885205	0	t	\N	\N	t	\N	2012-10-09 14:46:20.310102	2012-10-09 14:46:20.310102
+1245	12	9285885550	0	t	\N	\N	t	\N	2012-10-09 14:46:20.312675	2012-10-09 14:46:20.312675
+1246	12	9285885805	0	t	\N	\N	t	\N	2012-10-09 14:46:20.315306	2012-10-09 14:46:20.315306
+1247	12	9285885905	0	t	\N	\N	t	\N	2012-10-09 14:46:20.317926	2012-10-09 14:46:20.317926
+1248	12	9285888588	0	t	\N	\N	t	\N	2012-10-09 14:46:20.320523	2012-10-09 14:46:20.320523
+1249	12	9285891288	0	t	\N	\N	t	\N	2012-10-09 14:46:20.323136	2012-10-09 14:46:20.323136
+1250	12	9285891492	0	t	\N	\N	t	\N	2012-10-09 14:46:20.32577	2012-10-09 14:46:20.32577
+1251	12	9285894183	0	t	\N	\N	t	\N	2012-10-09 14:46:20.328421	2012-10-09 14:46:20.328421
+1252	12	9285894186	0	t	\N	\N	t	\N	2012-10-09 14:46:20.331035	2012-10-09 14:46:20.331035
+1253	12	9285894193	0	t	\N	\N	t	\N	2012-10-09 14:46:20.333623	2012-10-09 14:46:20.333623
+1254	12	9285895485	0	t	\N	\N	t	\N	2012-10-09 14:46:20.336266	2012-10-09 14:46:20.336266
+1255	12	9285895530	0	t	\N	\N	t	\N	2012-10-09 14:46:20.339063	2012-10-09 14:46:20.339063
+1256	12	9285895531	0	t	\N	\N	t	\N	2012-10-09 14:46:20.342508	2012-10-09 14:46:20.342508
+1257	12	9285896555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.345306	2012-10-09 14:46:20.345306
+1258	12	9285900805	0	t	\N	\N	t	\N	2012-10-09 14:46:20.376663	2012-10-09 14:46:20.376663
+1259	12	9285903330	0	t	\N	\N	t	\N	2012-10-09 14:46:20.379324	2012-10-09 14:46:20.379324
+1260	12	9285903916	0	t	\N	\N	t	\N	2012-10-09 14:46:20.381881	2012-10-09 14:46:20.381881
+1261	12	9285903933	0	t	\N	\N	t	\N	2012-10-09 14:46:20.384519	2012-10-09 14:46:20.384519
+1262	12	9285903974	0	t	\N	\N	t	\N	2012-10-09 14:46:20.387062	2012-10-09 14:46:20.387062
+1263	12	9285904071	0	t	\N	\N	t	\N	2012-10-09 14:46:20.389656	2012-10-09 14:46:20.389656
+1264	12	9285904122	0	t	\N	\N	t	\N	2012-10-09 14:46:20.392243	2012-10-09 14:46:20.392243
+1265	12	9285904135	0	t	\N	\N	t	\N	2012-10-09 14:46:20.394818	2012-10-09 14:46:20.394818
+1266	12	9285904144	0	t	\N	\N	t	\N	2012-10-09 14:46:20.397405	2012-10-09 14:46:20.397405
+1267	12	9285904147	0	t	\N	\N	t	\N	2012-10-09 14:46:20.399946	2012-10-09 14:46:20.399946
+1268	12	9285904149	0	t	\N	\N	t	\N	2012-10-09 14:46:20.402504	2012-10-09 14:46:20.402504
+1269	12	9285904200	0	t	\N	\N	t	\N	2012-10-09 14:46:20.405049	2012-10-09 14:46:20.405049
+1270	12	9285904217	0	t	\N	\N	t	\N	2012-10-09 14:46:20.407637	2012-10-09 14:46:20.407637
+1271	12	9285904219	0	t	\N	\N	t	\N	2012-10-09 14:46:20.410318	2012-10-09 14:46:20.410318
+1272	12	9285904226	0	t	\N	\N	t	\N	2012-10-09 14:46:20.412862	2012-10-09 14:46:20.412862
+1273	12	9285905305	0	t	\N	\N	t	\N	2012-10-09 14:46:20.415455	2012-10-09 14:46:20.415455
+1274	12	9285907518	0	t	\N	\N	t	\N	2012-10-09 14:46:20.418008	2012-10-09 14:46:20.418008
+1275	12	9285907519	0	t	\N	\N	t	\N	2012-10-09 14:46:20.420802	2012-10-09 14:46:20.420802
+1276	12	9285907594	0	t	\N	\N	t	\N	2012-10-09 14:46:20.423469	2012-10-09 14:46:20.423469
+1277	12	9285907861	0	t	\N	\N	t	\N	2012-10-09 14:46:20.426035	2012-10-09 14:46:20.426035
+1278	12	9285915905	0	t	\N	\N	t	\N	2012-10-09 14:46:20.428623	2012-10-09 14:46:20.428623
+1279	12	9285920592	0	t	\N	\N	t	\N	2012-10-09 14:46:20.431136	2012-10-09 14:46:20.431136
+1280	12	9285928888	0	t	\N	\N	t	\N	2012-10-09 14:46:20.433749	2012-10-09 14:46:20.433749
+1281	12	9285930044	0	t	\N	\N	t	\N	2012-10-09 14:46:20.436382	2012-10-09 14:46:20.436382
+1282	12	9285930080	0	t	\N	\N	t	\N	2012-10-09 14:46:20.438987	2012-10-09 14:46:20.438987
+1283	12	9285930088	0	t	\N	\N	t	\N	2012-10-09 14:46:20.441544	2012-10-09 14:46:20.441544
+1284	12	9285930110	0	t	\N	\N	t	\N	2012-10-09 14:46:20.444078	2012-10-09 14:46:20.444078
+1285	12	9285931697	0	t	\N	\N	t	\N	2012-10-09 14:46:20.446665	2012-10-09 14:46:20.446665
+1286	12	9285933311	0	t	\N	\N	t	\N	2012-10-09 14:46:20.449213	2012-10-09 14:46:20.449213
+1287	12	9285934444	0	t	\N	\N	t	\N	2012-10-09 14:46:20.451813	2012-10-09 14:46:20.451813
+1288	12	9285935005	0	t	\N	\N	t	\N	2012-10-09 14:46:20.454414	2012-10-09 14:46:20.454414
+1289	12	9285938990	0	t	\N	\N	t	\N	2012-10-09 14:46:20.456963	2012-10-09 14:46:20.456963
+1290	12	9285945005	0	t	\N	\N	t	\N	2012-10-09 14:46:20.459517	2012-10-09 14:46:20.459517
+1291	12	9285951555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.46206	2012-10-09 14:46:20.46206
+1292	12	9285952555	0	t	\N	\N	t	\N	2012-10-09 14:46:20.464656	2012-10-09 14:46:20.464656
+1293	12	9285952888	0	t	\N	\N	t	\N	2012-10-09 14:46:20.467264	2012-10-09 14:46:20.467264
+1294	12	9285957666	0	t	\N	\N	t	\N	2012-10-09 14:46:20.469805	2012-10-09 14:46:20.469805
+1295	12	9285957707	0	t	\N	\N	t	\N	2012-10-09 14:46:20.472406	2012-10-09 14:46:20.472406
+1296	12	9285959005	0	t	\N	\N	t	\N	2012-10-09 14:46:20.474956	2012-10-09 14:46:20.474956
+1297	12	9285961155	0	t	\N	\N	t	\N	2012-10-09 14:46:20.477528	2012-10-09 14:46:20.477528
+1298	12	9285990303	0	t	\N	\N	t	\N	2012-10-09 14:46:20.480081	2012-10-09 14:46:20.480081
+1299	12	9285990909	0	t	\N	\N	t	\N	2012-10-09 14:46:20.482677	2012-10-09 14:46:20.482677
+1300	12	9285993438	0	t	\N	\N	t	\N	2012-10-09 14:46:20.485309	2012-10-09 14:46:20.485309
+1301	12	9285997136	0	t	\N	\N	t	\N	2012-10-09 14:46:20.487906	2012-10-09 14:46:20.487906
+1302	12	9286085580	0	t	\N	\N	t	\N	2012-10-09 14:46:20.490499	2012-10-09 14:46:20.490499
+1303	12	9286399995	0	t	\N	\N	t	\N	2012-10-09 14:46:20.493051	2012-10-09 14:46:20.493051
+1304	12	9286606767	0	t	\N	\N	t	\N	2012-10-09 14:46:20.495656	2012-10-09 14:46:20.495656
+1305	12	9286701900	0	t	\N	\N	t	\N	2012-10-09 14:46:20.498259	2012-10-09 14:46:20.498259
+1306	12	9286704142	0	t	\N	\N	t	\N	2012-10-09 14:46:20.500804	2012-10-09 14:46:20.500804
+1307	12	9286706414	0	t	\N	\N	t	\N	2012-10-09 14:46:20.503403	2012-10-09 14:46:20.503403
+1308	12	9286707747	0	t	\N	\N	t	\N	2012-10-09 14:46:20.505955	2012-10-09 14:46:20.505955
+1309	12	9286708001	0	t	\N	\N	t	\N	2012-10-09 14:46:20.508522	2012-10-09 14:46:20.508522
+1310	12	9286708050	0	t	\N	\N	t	\N	2012-10-09 14:46:20.511181	2012-10-09 14:46:20.511181
+1311	12	9286708727	0	t	\N	\N	t	\N	2012-10-09 14:46:20.513689	2012-10-09 14:46:20.513689
+1312	12	9286708747	0	t	\N	\N	t	\N	2012-10-09 14:46:20.516331	2012-10-09 14:46:20.516331
+1313	12	9286708767	0	t	\N	\N	t	\N	2012-10-09 14:46:20.518876	2012-10-09 14:46:20.518876
+1314	12	9286709009	0	t	\N	\N	t	\N	2012-10-09 14:46:20.521559	2012-10-09 14:46:20.521559
+1315	12	9286710303	0	t	\N	\N	t	\N	2012-10-09 14:46:20.524287	2012-10-09 14:46:20.524287
+1316	12	9286716103	0	t	\N	\N	t	\N	2012-10-09 14:46:20.526868	2012-10-09 14:46:20.526868
+1317	12	9286731111	0	t	\N	\N	t	\N	2012-10-09 14:46:20.529472	2012-10-09 14:46:20.529472
+1318	12	9286731309	0	t	\N	\N	t	\N	2012-10-09 14:46:20.532049	2012-10-09 14:46:20.532049
+1319	12	9286732005	0	t	\N	\N	t	\N	2012-10-09 14:46:20.534629	2012-10-09 14:46:20.534629
+1320	12	9286742221	0	t	\N	\N	t	\N	2012-10-09 14:46:20.537263	2012-10-09 14:46:20.537263
+1321	12	9286745554	0	t	\N	\N	t	\N	2012-10-09 14:46:20.539843	2012-10-09 14:46:20.539843
+1322	12	9286751751	0	t	\N	\N	t	\N	2012-10-09 14:46:20.542452	2012-10-09 14:46:20.542452
+1323	12	9286753331	0	t	\N	\N	t	\N	2012-10-09 14:46:20.545045	2012-10-09 14:46:20.545045
+1324	12	9286754517	0	t	\N	\N	t	\N	2012-10-09 14:46:20.547599	2012-10-09 14:46:20.547599
+1325	12	9286755222	0	t	\N	\N	t	\N	2012-10-09 14:46:20.550167	2012-10-09 14:46:20.550167
+1326	12	9286755545	0	t	\N	\N	t	\N	2012-10-09 14:46:20.552759	2012-10-09 14:46:20.552759
+1327	12	9286759890	0	t	\N	\N	t	\N	2012-10-09 14:46:20.555435	2012-10-09 14:46:20.555435
+1328	12	9286767990	0	t	\N	\N	t	\N	2012-10-09 14:46:20.558064	2012-10-09 14:46:20.558064
+1329	12	9286769085	0	t	\N	\N	t	\N	2012-10-09 14:46:20.560632	2012-10-09 14:46:20.560632
+1330	12	9286772502	0	t	\N	\N	t	\N	2012-10-09 14:46:20.563286	2012-10-09 14:46:20.563286
+1331	12	9286776761	0	t	\N	\N	t	\N	2012-10-09 14:46:20.565898	2012-10-09 14:46:20.565898
+1332	12	9286776768	0	t	\N	\N	t	\N	2012-10-09 14:46:20.568522	2012-10-09 14:46:20.568522
+1333	12	9286776771	0	t	\N	\N	t	\N	2012-10-09 14:46:20.571122	2012-10-09 14:46:20.571122
+1334	12	9286777333	0	t	\N	\N	t	\N	2012-10-09 14:46:20.573765	2012-10-09 14:46:20.573765
+1335	12	9286778713	0	t	\N	\N	t	\N	2012-10-09 14:46:20.576438	2012-10-09 14:46:20.576438
+1336	12	9286779013	0	t	\N	\N	t	\N	2012-10-09 14:46:20.579065	2012-10-09 14:46:20.579065
+1337	12	9286789400	0	t	\N	\N	t	\N	2012-10-09 14:46:20.581682	2012-10-09 14:46:20.581682
+1338	12	9286790194	0	t	\N	\N	t	\N	2012-10-09 14:46:20.584486	2012-10-09 14:46:20.584486
+1339	12	9286799992	0	t	\N	\N	t	\N	2012-10-09 14:46:20.587983	2012-10-09 14:46:20.587983
+1340	12	9286810010	0	t	\N	\N	t	\N	2012-10-09 14:46:20.590795	2012-10-09 14:46:20.590795
+1341	12	9286822262	0	t	\N	\N	t	\N	2012-10-09 14:46:20.62348	2012-10-09 14:46:20.62348
+1342	12	9286833063	0	t	\N	\N	t	\N	2012-10-09 14:46:20.626106	2012-10-09 14:46:20.626106
+1343	12	9287003500	0	t	\N	\N	t	\N	2012-10-09 14:46:20.628806	2012-10-09 14:46:20.628806
+1344	12	9288002172	0	t	\N	\N	t	\N	2012-10-09 14:46:20.631405	2012-10-09 14:46:20.631405
+1345	12	9288002184	0	t	\N	\N	t	\N	2012-10-09 14:46:20.634007	2012-10-09 14:46:20.634007
+1346	12	9288002194	0	t	\N	\N	t	\N	2012-10-09 14:46:20.636622	2012-10-09 14:46:20.636622
+1347	12	9288007666	0	t	\N	\N	t	\N	2012-10-09 14:46:20.639214	2012-10-09 14:46:20.639214
+1348	12	9288008278	0	t	\N	\N	t	\N	2012-10-09 14:46:20.641776	2012-10-09 14:46:20.641776
+1349	12	9288008845	0	t	\N	\N	t	\N	2012-10-09 14:46:20.64443	2012-10-09 14:46:20.64443
+1350	12	9288008895	0	t	\N	\N	t	\N	2012-10-09 14:46:20.647029	2012-10-09 14:46:20.647029
+1351	12	9288008990	0	t	\N	\N	t	\N	2012-10-09 14:46:20.649586	2012-10-09 14:46:20.649586
+1352	12	9288009007	0	t	\N	\N	t	\N	2012-10-09 14:46:20.652191	2012-10-09 14:46:20.652191
+1353	12	9288009044	0	t	\N	\N	t	\N	2012-10-09 14:46:20.654786	2012-10-09 14:46:20.654786
+1354	12	9288009069	0	t	\N	\N	t	\N	2012-10-09 14:46:20.657436	2012-10-09 14:46:20.657436
+1355	12	9288009580	0	t	\N	\N	t	\N	2012-10-09 14:46:20.659998	2012-10-09 14:46:20.659998
+1356	12	9288009899	0	t	\N	\N	t	\N	2012-10-09 14:46:20.662607	2012-10-09 14:46:20.662607
+1357	12	9288010745	0	t	\N	\N	t	\N	2012-10-09 14:46:20.707815	2012-10-09 14:46:20.707815
+1358	12	9288021222	0	t	\N	\N	t	\N	2012-10-09 14:46:20.710501	2012-10-09 14:46:20.710501
+1359	12	9288022021	0	t	\N	\N	t	\N	2012-10-09 14:46:20.713105	2012-10-09 14:46:20.713105
+1360	12	9288022025	0	t	\N	\N	t	\N	2012-10-09 14:46:20.71578	2012-10-09 14:46:20.71578
+1361	12	9288027137	0	t	\N	\N	t	\N	2012-10-09 14:46:20.718462	2012-10-09 14:46:20.718462
+1362	12	9288028100	0	t	\N	\N	t	\N	2012-10-09 14:46:20.721064	2012-10-09 14:46:20.721064
+1363	12	9288030083	0	t	\N	\N	t	\N	2012-10-09 14:46:20.72365	2012-10-09 14:46:20.72365
+1364	12	9288036333	0	t	\N	\N	t	\N	2012-10-09 14:46:20.726271	2012-10-09 14:46:20.726271
+1365	12	9288044404	0	t	\N	\N	t	\N	2012-10-09 14:46:20.728864	2012-10-09 14:46:20.728864
+1366	12	9288048055	0	t	\N	\N	t	\N	2012-10-09 14:46:20.731451	2012-10-09 14:46:20.731451
+1367	12	9288051044	0	t	\N	\N	t	\N	2012-10-09 14:46:20.73402	2012-10-09 14:46:20.73402
+1368	12	9288051051	0	t	\N	\N	t	\N	2012-10-09 14:46:20.736624	2012-10-09 14:46:20.736624
+1369	12	9288056070	0	t	\N	\N	t	\N	2012-10-09 14:46:20.739169	2012-10-09 14:46:20.739169
+1370	12	9288058000	0	t	\N	\N	t	\N	2012-10-09 14:46:20.741791	2012-10-09 14:46:20.741791
+1371	12	9288070808	0	t	\N	\N	t	\N	2012-10-09 14:46:20.744434	2012-10-09 14:46:20.744434
+1372	12	9288082111	0	t	\N	\N	t	\N	2012-10-09 14:46:20.747017	2012-10-09 14:46:20.747017
+1373	12	9288083999	0	t	\N	\N	t	\N	2012-10-09 14:46:20.749608	2012-10-09 14:46:20.749608
+1374	12	9288085050	0	t	\N	\N	t	\N	2012-10-09 14:46:20.752192	2012-10-09 14:46:20.752192
+1375	12	9288089795	0	t	\N	\N	t	\N	2012-10-09 14:46:20.754766	2012-10-09 14:46:20.754766
+1376	12	9288091000	0	t	\N	\N	t	\N	2012-10-09 14:46:20.757383	2012-10-09 14:46:20.757383
+1377	12	9288091101	0	t	\N	\N	t	\N	2012-10-09 14:46:20.759949	2012-10-09 14:46:20.759949
+1379	12	9288304611	0	t	\N	\N	t	\N	2012-10-09 14:46:20.765103	2012-10-09 14:46:20.765103
+1380	12	9288315485	0	t	\N	\N	t	\N	2012-10-09 14:46:20.767697	2012-10-09 14:46:20.767697
+1381	12	9288336663	0	t	\N	\N	t	\N	2012-10-09 14:46:20.77041	2012-10-09 14:46:20.77041
+1382	12	9288360303	0	t	\N	\N	t	\N	2012-10-09 14:46:20.772981	2012-10-09 14:46:20.772981
+1383	12	9288387888	0	t	\N	\N	t	\N	2012-10-09 14:46:20.775557	2012-10-09 14:46:20.775557
+1384	12	9288388989	0	t	\N	\N	t	\N	2012-10-09 14:46:20.778135	2012-10-09 14:46:20.778135
+1385	12	9288655659	0	t	\N	\N	t	\N	2012-10-09 14:46:20.780711	2012-10-09 14:46:20.780711
+1386	12	9288661221	0	t	\N	\N	t	\N	2012-10-09 14:46:20.783319	2012-10-09 14:46:20.783319
+1387	12	9288668808	0	t	\N	\N	t	\N	2012-10-09 14:46:20.785884	2012-10-09 14:46:20.785884
+1388	12	9288677772	0	t	\N	\N	t	\N	2012-10-09 14:46:20.788444	2012-10-09 14:46:20.788444
+1389	12	9288682070	0	t	\N	\N	t	\N	2012-10-09 14:46:20.790983	2012-10-09 14:46:20.790983
+1390	12	9288684080	0	t	\N	\N	t	\N	2012-10-09 14:46:20.793556	2012-10-09 14:46:20.793556
+1391	12	9288685030	0	t	\N	\N	t	\N	2012-10-09 14:46:20.796106	2012-10-09 14:46:20.796106
+1392	12	9288688808	0	t	\N	\N	t	\N	2012-10-09 14:46:20.79867	2012-10-09 14:46:20.79867
+1393	12	9288689665	0	t	\N	\N	t	\N	2012-10-09 14:46:20.801171	2012-10-09 14:46:20.801171
+1394	12	9288689701	0	t	\N	\N	t	\N	2012-10-09 14:46:20.80369	2012-10-09 14:46:20.80369
+1395	12	9288698723	0	t	\N	\N	t	\N	2012-10-09 14:46:20.806283	2012-10-09 14:46:20.806283
+1396	12	9288698727	0	t	\N	\N	t	\N	2012-10-09 14:46:20.808815	2012-10-09 14:46:20.808815
+1397	12	9288698740	0	t	\N	\N	t	\N	2012-10-09 14:46:20.811363	2012-10-09 14:46:20.811363
+1398	12	9288698758	0	t	\N	\N	t	\N	2012-10-09 14:46:20.81391	2012-10-09 14:46:20.81391
+1399	12	9288699696	0	t	\N	\N	t	\N	2012-10-09 14:46:20.816433	2012-10-09 14:46:20.816433
+1400	12	9288699939	0	t	\N	\N	t	\N	2012-10-09 14:46:20.818979	2012-10-09 14:46:20.818979
+1401	12	9288699959	0	t	\N	\N	t	\N	2012-10-09 14:46:20.821533	2012-10-09 14:46:20.821533
+1402	12	9288699969	0	t	\N	\N	t	\N	2012-10-09 14:46:20.824082	2012-10-09 14:46:20.824082
+1403	12	9288700010	0	t	\N	\N	t	\N	2012-10-09 14:46:20.826629	2012-10-09 14:46:20.826629
+1404	12	9288700030	0	t	\N	\N	t	\N	2012-10-09 14:46:20.829144	2012-10-09 14:46:20.829144
+1405	12	9288700080	0	t	\N	\N	t	\N	2012-10-09 14:46:20.831665	2012-10-09 14:46:20.831665
+1406	12	9288700505	0	t	\N	\N	t	\N	2012-10-09 14:46:20.83415	2012-10-09 14:46:20.83415
+1407	12	9288701025	0	t	\N	\N	t	\N	2012-10-09 14:46:20.836679	2012-10-09 14:46:20.836679
+1408	12	9288703040	0	t	\N	\N	t	\N	2012-10-09 14:46:20.839258	2012-10-09 14:46:20.839258
+1409	12	9288704050	0	t	\N	\N	t	\N	2012-10-09 14:46:20.841788	2012-10-09 14:46:20.841788
+1410	12	9288705055	0	t	\N	\N	t	\N	2012-10-09 14:46:20.844334	2012-10-09 14:46:20.844334
+1411	12	9288705080	0	t	\N	\N	t	\N	2012-10-09 14:46:20.846856	2012-10-09 14:46:20.846856
+1412	12	9288707087	0	t	\N	\N	t	\N	2012-10-09 14:46:20.849352	2012-10-09 14:46:20.849352
+1413	12	9288707100	0	t	\N	\N	t	\N	2012-10-09 14:46:20.85188	2012-10-09 14:46:20.85188
+1414	12	9288707383	0	t	\N	\N	t	\N	2012-10-09 14:46:20.854387	2012-10-09 14:46:20.854387
+1415	12	9288707455	0	t	\N	\N	t	\N	2012-10-09 14:46:20.856919	2012-10-09 14:46:20.856919
+1416	12	9288709070	0	t	\N	\N	t	\N	2012-10-09 14:46:20.859421	2012-10-09 14:46:20.859421
+1417	12	9288710818	0	t	\N	\N	t	\N	2012-10-09 14:46:20.86195	2012-10-09 14:46:20.86195
+1418	12	9288711138	0	t	\N	\N	t	\N	2012-10-09 14:46:20.864567	2012-10-09 14:46:20.864567
+1419	12	9288713355	0	t	\N	\N	t	\N	2012-10-09 14:46:20.867244	2012-10-09 14:46:20.867244
+1420	12	9288719533	0	t	\N	\N	t	\N	2012-10-09 14:46:20.869771	2012-10-09 14:46:20.869771
+1421	12	9288719990	0	t	\N	\N	t	\N	2012-10-09 14:46:20.872342	2012-10-09 14:46:20.872342
+1422	12	9288720085	0	t	\N	\N	t	\N	2012-10-09 14:46:20.874866	2012-10-09 14:46:20.874866
+1423	12	9288720226	0	t	\N	\N	t	\N	2012-10-09 14:46:20.877392	2012-10-09 14:46:20.877392
+1424	12	9288720275	0	t	\N	\N	t	\N	2012-10-09 14:46:20.879913	2012-10-09 14:46:20.879913
+1425	12	9288720605	0	t	\N	\N	t	\N	2012-10-09 14:46:20.882438	2012-10-09 14:46:20.882438
+1426	12	9288720747	0	t	\N	\N	t	\N	2012-10-09 14:46:20.88496	2012-10-09 14:46:20.88496
+1427	12	9288720806	0	t	\N	\N	t	\N	2012-10-09 14:46:20.887479	2012-10-09 14:46:20.887479
+1428	12	9288721023	0	t	\N	\N	t	\N	2012-10-09 14:46:20.890007	2012-10-09 14:46:20.890007
+1429	12	9288721304	0	t	\N	\N	t	\N	2012-10-09 14:46:20.892538	2012-10-09 14:46:20.892538
+1430	12	9288722494	0	t	\N	\N	t	\N	2012-10-09 14:46:20.895058	2012-10-09 14:46:20.895058
+1431	12	9288738448	0	t	\N	\N	t	\N	2012-10-09 14:46:20.897626	2012-10-09 14:46:20.897626
+1432	12	9288745656	0	t	\N	\N	t	\N	2012-10-09 14:46:20.900131	2012-10-09 14:46:20.900131
+1433	12	9288752030	0	t	\N	\N	t	\N	2012-10-09 14:46:20.902617	2012-10-09 14:46:20.902617
+1434	12	9288755505	0	t	\N	\N	t	\N	2012-10-09 14:46:20.905079	2012-10-09 14:46:20.905079
+1435	12	9288760196	0	t	\N	\N	t	\N	2012-10-09 14:46:20.907576	2012-10-09 14:46:20.907576
+1436	12	9288760197	0	t	\N	\N	t	\N	2012-10-09 14:46:20.910085	2012-10-09 14:46:20.910085
+1437	12	9288760214	0	t	\N	\N	t	\N	2012-10-09 14:46:20.944083	2012-10-09 14:46:20.944083
+1438	12	9288760218	0	t	\N	\N	t	\N	2012-10-09 14:46:20.94687	2012-10-09 14:46:20.94687
+1439	12	9288760305	0	t	\N	\N	t	\N	2012-10-09 14:46:20.949501	2012-10-09 14:46:20.949501
+1440	12	9288760428	0	t	\N	\N	t	\N	2012-10-09 14:46:20.952095	2012-10-09 14:46:20.952095
+1441	12	9288760484	0	t	\N	\N	t	\N	2012-10-09 14:46:20.954677	2012-10-09 14:46:20.954677
+1442	12	9288760510	0	t	\N	\N	t	\N	2012-10-09 14:46:20.957271	2012-10-09 14:46:20.957271
+1443	12	9288761335	0	t	\N	\N	t	\N	2012-10-09 14:46:20.959883	2012-10-09 14:46:20.959883
+1444	12	9288761340	0	t	\N	\N	t	\N	2012-10-09 14:46:20.962465	2012-10-09 14:46:20.962465
+1445	12	9288761355	0	t	\N	\N	t	\N	2012-10-09 14:46:20.965044	2012-10-09 14:46:20.965044
+1446	12	9288761376	0	t	\N	\N	t	\N	2012-10-09 14:46:20.967632	2012-10-09 14:46:20.967632
+1447	12	9288765616	0	t	\N	\N	t	\N	2012-10-09 14:46:20.970184	2012-10-09 14:46:20.970184
+1448	12	9288766001	0	t	\N	\N	t	\N	2012-10-09 14:46:20.972755	2012-10-09 14:46:20.972755
+1449	12	9288766030	0	t	\N	\N	t	\N	2012-10-09 14:46:20.975356	2012-10-09 14:46:20.975356
+1450	12	9288766074	0	t	\N	\N	t	\N	2012-10-09 14:46:20.977938	2012-10-09 14:46:20.977938
+1451	12	9288766185	0	t	\N	\N	t	\N	2012-10-09 14:46:20.980497	2012-10-09 14:46:20.980497
+1452	12	9288766221	0	t	\N	\N	t	\N	2012-10-09 14:46:20.983086	2012-10-09 14:46:20.983086
+1453	12	9288769006	0	t	\N	\N	t	\N	2012-10-09 14:46:20.98569	2012-10-09 14:46:20.98569
+1454	12	9288769282	0	t	\N	\N	t	\N	2012-10-09 14:46:20.98834	2012-10-09 14:46:20.98834
+1455	12	9288769313	0	t	\N	\N	t	\N	2012-10-09 14:46:20.99094	2012-10-09 14:46:20.99094
+1456	12	9288769450	0	t	\N	\N	t	\N	2012-10-09 14:46:20.993582	2012-10-09 14:46:20.993582
+1457	12	9288769452	0	t	\N	\N	t	\N	2012-10-09 14:46:20.996335	2012-10-09 14:46:20.996335
+1458	12	9288769459	0	t	\N	\N	t	\N	2012-10-09 14:46:20.99889	2012-10-09 14:46:20.99889
+1459	12	9288769476	0	t	\N	\N	t	\N	2012-10-09 14:46:21.001485	2012-10-09 14:46:21.001485
+1460	12	9288769478	0	t	\N	\N	t	\N	2012-10-09 14:46:21.00408	2012-10-09 14:46:21.00408
+1461	12	9288769482	0	t	\N	\N	t	\N	2012-10-09 14:46:21.006694	2012-10-09 14:46:21.006694
+1462	12	9288769483	0	t	\N	\N	t	\N	2012-10-09 14:46:21.009373	2012-10-09 14:46:21.009373
+1463	12	9288769487	0	t	\N	\N	t	\N	2012-10-09 14:46:21.011985	2012-10-09 14:46:21.011985
+1464	12	9288769490	0	t	\N	\N	t	\N	2012-10-09 14:46:21.014565	2012-10-09 14:46:21.014565
+1465	12	9288769492	0	t	\N	\N	t	\N	2012-10-09 14:46:21.017161	2012-10-09 14:46:21.017161
+1466	12	9288770077	0	t	\N	\N	t	\N	2012-10-09 14:46:21.0197	2012-10-09 14:46:21.0197
+1467	12	9288793119	0	t	\N	\N	t	\N	2012-10-09 14:46:21.022357	2012-10-09 14:46:21.022357
+1468	12	9289026040	0	t	\N	\N	t	\N	2012-10-09 14:46:21.024971	2012-10-09 14:46:21.024971
+1469	12	9289373622	0	t	\N	\N	t	\N	2012-10-09 14:46:21.027616	2012-10-09 14:46:21.027616
+1470	12	9289375555	0	t	\N	\N	t	\N	2012-10-09 14:46:21.030257	2012-10-09 14:46:21.030257
+1471	12	9289377774	0	t	\N	\N	t	\N	2012-10-09 14:46:21.032869	2012-10-09 14:46:21.032869
+1472	12	9289379900	0	t	\N	\N	t	\N	2012-10-09 14:46:21.035695	2012-10-09 14:46:21.035695
+1473	12	9289406065	0	t	\N	\N	t	\N	2012-10-09 14:46:21.038367	2012-10-09 14:46:21.038367
+1474	12	9289415274	0	t	\N	\N	t	\N	2012-10-09 14:46:21.040953	2012-10-09 14:46:21.040953
+1475	12	9289418060	0	t	\N	\N	t	\N	2012-10-09 14:46:21.043583	2012-10-09 14:46:21.043583
+1476	12	9289500105	0	t	\N	\N	t	\N	2012-10-09 14:46:21.04617	2012-10-09 14:46:21.04617
+1477	12	9289501010	0	t	\N	\N	t	\N	2012-10-09 14:46:21.048811	2012-10-09 14:46:21.048811
+1478	12	9289513335	0	t	\N	\N	t	\N	2012-10-09 14:46:21.051567	2012-10-09 14:46:21.051567
+1479	12	9289610834	0	t	\N	\N	t	\N	2012-10-09 14:46:21.054395	2012-10-09 14:46:21.054395
+1480	12	9289734424	0	t	\N	\N	t	\N	2012-10-09 14:46:21.057034	2012-10-09 14:46:21.057034
+1481	12	9289779060	0	t	\N	\N	t	\N	2012-10-09 14:46:21.059739	2012-10-09 14:46:21.059739
+1482	12	9289784555	0	t	\N	\N	t	\N	2012-10-09 14:46:21.062396	2012-10-09 14:46:21.062396
+1483	12	9289860777	0	t	\N	\N	t	\N	2012-10-09 14:46:21.065016	2012-10-09 14:46:21.065016
+1484	12	9298670017	0	t	\N	\N	t	\N	2012-10-09 14:46:21.067645	2012-10-09 14:46:21.067645
+1485	12	9298670031	0	t	\N	\N	t	\N	2012-10-09 14:46:21.070329	2012-10-09 14:46:21.070329
+1486	12	9298670115	0	t	\N	\N	t	\N	2012-10-09 14:46:21.072966	2012-10-09 14:46:21.072966
+1487	12	9298670143	0	t	\N	\N	t	\N	2012-10-09 14:46:21.075625	2012-10-09 14:46:21.075625
+1488	12	9298670153	0	t	\N	\N	t	\N	2012-10-09 14:46:21.078317	2012-10-09 14:46:21.078317
+1489	12	9298670211	0	t	\N	\N	t	\N	2012-10-09 14:46:21.080937	2012-10-09 14:46:21.080937
+1490	12	9298670230	0	t	\N	\N	t	\N	2012-10-09 14:46:21.08359	2012-10-09 14:46:21.08359
+1491	12	9298670240	0	t	\N	\N	t	\N	2012-10-09 14:46:21.086217	2012-10-09 14:46:21.086217
+1492	12	9298678200	0	t	\N	\N	t	\N	2012-10-09 14:46:21.088873	2012-10-09 14:46:21.088873
+1493	12	9298678202	0	t	\N	\N	t	\N	2012-10-09 14:46:21.09156	2012-10-09 14:46:21.09156
+1494	12	9298678205	0	t	\N	\N	t	\N	2012-10-09 14:46:21.094195	2012-10-09 14:46:21.094195
+1495	12	9298678206	0	t	\N	\N	t	\N	2012-10-09 14:46:21.096829	2012-10-09 14:46:21.096829
+1496	12	9298678207	0	t	\N	\N	t	\N	2012-10-09 14:46:21.099552	2012-10-09 14:46:21.099552
+1497	12	9298678208	0	t	\N	\N	t	\N	2012-10-09 14:46:21.102179	2012-10-09 14:46:21.102179
+1498	12	9298678209	0	t	\N	\N	t	\N	2012-10-09 14:46:21.104861	2012-10-09 14:46:21.104861
+1499	12	9298715989	0	t	\N	\N	t	\N	2012-10-09 14:46:21.107544	2012-10-09 14:46:21.107544
+1500	12	9382047763	0	t	\N	\N	t	\N	2012-10-09 14:46:21.11041	2012-10-09 14:46:21.11041
+1378	12	9288144141	0	f	10		f	\N	2012-10-09 14:46:20.762528	2012-10-09 15:01:36.871435
+1078	12	9285066667	0	t	10		f	\N	2012-10-09 14:46:19.861044	2012-10-11 18:35:27.659412
+\.
+
+
+--
+-- Data for Name: corporation_debits; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY corporation_debits (id, corporation_id, amount, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: corporation_payments; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY corporation_payments (id, corporation_id, amount, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: corporation_saldos; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY corporation_saldos (id, corporation_id, "startDay", created_at, updated_at) FROM stdin;
+139	10	0	2012-09-30 17:43:19.189728	2012-09-30 17:43:19.189728
+140	10	0	2012-10-01 01:00:06.269646	2012-10-01 01:00:06.269646
+141	10	0	2012-10-02 01:00:06.515585	2012-10-02 01:00:06.515585
+142	10	0	2012-10-03 01:00:06.8601	2012-10-03 01:00:06.8601
+143	10	0	2012-10-04 01:00:06.540701	2012-10-04 01:00:06.540701
+144	10	0	2012-10-04 11:04:18.587389	2012-10-04 11:04:18.587389
+145	10	0	2012-10-05 01:00:06.825967	2012-10-05 01:00:06.825967
+146	10	0	2012-10-06 01:00:06.920631	2012-10-06 01:00:06.920631
+147	10	0	2012-10-07 01:00:06.634084	2012-10-07 01:00:06.634084
+148	10	0	2012-10-08 01:00:06.744007	2012-10-08 01:00:06.744007
+149	10	0	2012-10-08 17:56:45.671782	2012-10-08 17:56:45.671782
+150	10	0	2012-10-08 18:04:14.845435	2012-10-08 18:04:14.845435
+151	10	0	2012-10-08 18:04:51.738732	2012-10-08 18:04:51.738732
+152	10	0	2012-10-08 18:23:37.690883	2012-10-08 18:23:37.690883
+153	10	0	2012-10-08 18:24:49.595695	2012-10-08 18:24:49.595695
+154	10	0	2012-10-08 18:32:03.606774	2012-10-08 18:32:03.606774
+155	10	0	2012-10-09 01:00:06.802228	2012-10-09 01:00:06.802228
+157	12	0	2012-10-09 14:46:16.082466	2012-10-09 14:46:16.082466
+158	10	0	2012-10-09 16:00:12.323089	2012-10-09 16:00:12.323089
+159	12	0	2012-10-09 16:05:35.441439	2012-10-09 16:05:35.441439
+160	10	0	2012-10-09 16:05:58.332598	2012-10-09 16:05:58.332598
+161	12	0	2012-10-09 16:06:39.845531	2012-10-09 16:06:39.845531
+162	10	0	2012-10-09 17:45:15.115062	2012-10-09 17:45:15.115062
+163	12	0	2012-10-09 17:45:46.545324	2012-10-09 17:45:46.545324
+164	12	0	2012-10-09 18:02:34.425841	2012-10-09 18:02:34.425841
+165	10	0	2012-10-09 18:03:01.633989	2012-10-09 18:03:01.633989
+166	12	0	2012-10-10 01:00:35.394796	2012-10-10 01:00:35.394796
+167	10	0	2012-10-10 01:01:09.359787	2012-10-10 01:01:09.359787
+168	12	0	2012-10-11 01:00:41.080797	2012-10-11 01:00:41.080797
+169	10	0	2012-10-11 01:01:18.685578	2012-10-11 01:01:18.685578
+170	12	0	2012-10-12 01:00:25.760297	2012-10-12 01:00:25.760297
+171	10	0	2012-10-12 01:00:52.331246	2012-10-12 01:00:52.331246
+172	12	0	2012-10-13 01:00:45.624505	2012-10-13 01:00:45.624505
+173	10	0	2012-10-13 01:01:12.41897	2012-10-13 01:01:12.41897
+174	12	0	2012-10-14 01:00:35.256907	2012-10-14 01:00:35.256907
+175	10	0	2012-10-14 01:01:12.768457	2012-10-14 01:01:12.768457
+176	12	0	2012-10-15 01:00:25.718796	2012-10-15 01:00:25.718796
+177	10	0	2012-10-15 01:00:54.863586	2012-10-15 01:00:54.863586
+178	12	0	2012-10-16 01:00:25.466646	2012-10-16 01:00:25.466646
+179	10	0	2012-10-16 01:00:52.453926	2012-10-16 01:00:52.453926
+\.
+
+
+--
+-- Data for Name: corporations; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY corporations (id, name, phone, password, rate_megafon, rate_corpo_id, number_count, balance_megafon, balance_corpo, status, user_id, corporation, delay, created_at, updated_at) FROM stdin;
+12	ИП АЛИБЕКОВ АБДУСАЛАМ МАГОМЕДРАСУЛОВИЧ	9285888588	2006200310	Фирменный Особый	\N	617	21012.05	\N	0	7	Али	0	2012-10-09 14:46:16.081148	2012-10-16 01:00:35.143399
+10	ИП АБДУЛЛАЕВ АБДУЛЛА МАГОМЕДОВИЧ 	9285013691	ORQLLR	Терминал	\N	119	2749.57	\N	0	6	Мерадом	0	2012-09-30 17:43:19.188301	2012-10-16 01:00:55.485568
+\.
+
+
+--
+-- Data for Name: helps; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY helps (id, title, body, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: news; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY news (id, title, text, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: rate_corpos; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY rate_corpos (id, name, pay, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY schema_migrations (version) FROM stdin;
+20120115140400
+20120115150054
+20120116062236
+20120116071529
+20120116121002
+20120116134555
+20120125064950
+20120127202635
+20120130173400
+20120130202539
+20120201015430
+20120201021528
+20120226180249
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: corporatino
+--
+
+COPY users (id, email, encrypted_password, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, username, admin) FROM stdin;
+10		$2a$10$IGHSEjehlB0THniplnL7ZOjgeAlD8bBi2i/aFCerJR8haiwlUDGue	\N	1	2012-10-15 16:42:24.163501	2012-10-15 16:42:24.163501	81.163.36.33	81.163.36.33	2012-10-15 16:42:05.737959	2012-10-15 16:42:24.164014	tagir	f
+6		$2a$10$MWLT8.h.ftig1r9tQaL1n.P5IXTMt2PFDStO7B3xBWBXUIk8H3E.y	\N	15	2012-10-15 16:50:50.192952	2012-10-10 10:54:13.412577	81.163.36.33	81.163.36.33	2012-09-30 17:40:44.985624	2012-10-15 16:50:50.193548	meradom	f
+9		$2a$10$xfjLmnBTAuxERiZnOBqLvuK/wtripYQZjUGjioXY.e4lqXnGwac1S	\N	6	2012-10-16 15:58:08.882585	2012-10-15 16:47:51.641438	81.163.36.33	81.163.36.33	2012-10-09 15:30:11.164438	2012-10-16 15:58:08.883256	admin	t
+4		$2a$10$ZeYn3k/vYevM27hNXdzKWeWYJy3UPxC0X4lD5cyEJR6WBVZb00tby	\N	3	2012-05-31 11:42:02.197977	2012-05-30 17:19:49.261222	81.163.36.33	81.163.36.33	2012-05-30 16:45:05.546223	2012-05-31 11:42:06.465993	murad1986	f
+8		$2a$10$A6PkpemS4kuwQGlTrWbI5e3kses9Vxq6EHg0tzQ3XDanmr3SLOoR.	\N	1	2012-10-09 14:44:55.06747	2012-10-09 14:44:55.06747	91.205.129.201	91.205.129.201	2012-10-09 14:44:55.044655	2012-10-09 14:44:55.067992	murad@gmail.com	f
+7		$2a$10$VVwjLiu/PZg/mTxrGdJOy.rNuVKLVGVezR70VWQqbXmPaih448iLa	2012-10-09 14:44:10.258377	5	2012-10-11 17:41:51.395892	2012-10-09 14:44:10.277167	81.163.36.33	95.153.187.98	2012-10-09 14:34:58.606311	2012-10-11 17:41:51.396414	ali	f
+\.
+
+
+--
+-- Name: abonent_debits_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY abonent_debits
+    ADD CONSTRAINT abonent_debits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: abonent_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY abonent_payments
+    ADD CONSTRAINT abonent_payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: abonent_saldos_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY abonent_saldos
+    ADD CONSTRAINT abonent_saldos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: abonent_tarifs_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY abonent_tarifs
+    ADD CONSTRAINT abonent_tarifs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: abonents_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY abonents
+    ADD CONSTRAINT abonents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: corporation_debits_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY corporation_debits
+    ADD CONSTRAINT corporation_debits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: corporation_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY corporation_payments
+    ADD CONSTRAINT corporation_payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: corporation_saldos_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY corporation_saldos
+    ADD CONSTRAINT corporation_saldos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: corporations_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY corporations
+    ADD CONSTRAINT corporations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: helps_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY helps
+    ADD CONSTRAINT helps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: news_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY news
+    ADD CONSTRAINT news_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: rate_corpos_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY rate_corpos
+    ADD CONSTRAINT rate_corpos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_abonent_debits_on_abonent_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_abonent_debits_on_abonent_id ON abonent_debits USING btree (abonent_id);
+
+
+--
+-- Name: index_abonent_payments_on_abonent_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_abonent_payments_on_abonent_id ON abonent_payments USING btree (abonent_id);
+
+
+--
+-- Name: index_abonent_saldos_on_abonent_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_abonent_saldos_on_abonent_id ON abonent_saldos USING btree (abonent_id);
+
+
+--
+-- Name: index_abonents_on_corporation_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_abonents_on_corporation_id ON abonents USING btree (corporation_id);
+
+
+--
+-- Name: index_corporation_debits_on_corporation_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_corporation_debits_on_corporation_id ON corporation_debits USING btree (corporation_id);
+
+
+--
+-- Name: index_corporation_payments_on_corporation_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_corporation_payments_on_corporation_id ON corporation_payments USING btree (corporation_id);
+
+
+--
+-- Name: index_corporation_saldos_on_corporation_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_corporation_saldos_on_corporation_id ON corporation_saldos USING btree (corporation_id);
+
+
+--
+-- Name: index_corporations_on_rate_corpo_id; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE INDEX index_corporations_on_rate_corpo_id ON corporations USING btree (rate_corpo_id);
+
+
+--
+-- Name: index_users_on_username; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_username ON users USING btree (username);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: corporatino; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
