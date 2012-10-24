@@ -90,9 +90,6 @@ class Corporation < ActiveRecord::Base
     abonents_to_unlock = []
 
     abonents.each do |abonent|
-      abonent_pays = abonent.abonent_payments.collect{|pay| pay.amount}
-      abonent_debits = abonent.abonent_debits.collect{|pay| pay.amount}
-      balance = abonent_pays.sum - abonent_debits.sum
       delay = abonent.delay.to_i
 
       if !abonent.suspend? and abonent.abonent_tarif
@@ -110,7 +107,7 @@ class Corporation < ActiveRecord::Base
               # => Прошло ли 30 дней с последнего списания
               if last_debit_day.to_date + 30.day == Date.current
 
-                if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
+                if (delay == 0) and abonent.has_enough_balance
                   lock_abonent(abonent, abonents_to_lock)
                 else
                   unlock_abonent(abonent, abonents_to_unlock)
@@ -119,7 +116,7 @@ class Corporation < ActiveRecord::Base
 
             # => Если последнее списание не по ежемесячному списанию
             else
-              if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
+              if (delay == 0) and abonent.has_enough_balance
                 lock_abonent(abonent, abonents_to_lock)
               else
                 unlock_abonent(abonent, abonents_to_unlock)
@@ -128,7 +125,7 @@ class Corporation < ActiveRecord::Base
 
           # => Если предедущих списаний нет
           else
-            if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
+            if (delay == 0) and abonent.has_enough_balance
               lock_abonent(abonent, abonents_to_lock)
             else
               unlock_abonent(abonent, abonents_to_unlock)
@@ -137,7 +134,7 @@ class Corporation < ActiveRecord::Base
 
         # => Если тариф не ежемесячный
         else
-          if (delay == 0) and (balance < abonent.abonent_tarif.tarif)
+          if (delay == 0) and abonent.has_enough_balance
             lock_abonent(abonent, abonents_to_lock)
           else
             unlock_abonent(abonent, abonents_to_unlock) 
