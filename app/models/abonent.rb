@@ -88,9 +88,9 @@ class Abonent < ActiveRecord::Base
 
 
   def has_enough_balance
-    abonent_pays = abonent_payments.collect{|pay| pay.amount}
-    abonent_debits = abonent_debits.collect{|pay| pay.amount}
-    balance = abonent_pays.sum - abonent_debits.sum
+    pays = abonent_payments.collect{|pay| pay.amount}
+    debits = abonent_debits.collect{|pay| pay.amount}
+    balance = pays.sum - debits.sum
      
     balance < abonent_tarif.get_charge
 
