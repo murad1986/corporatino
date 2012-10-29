@@ -157,7 +157,7 @@ class Corporation < ActiveRecord::Base
     rescue => err
       puts err
       try_index += 1
-      if try_index < 1000
+      if try_index < 10
         puts "Tried #{try_index} times"
         retry
       else
