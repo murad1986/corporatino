@@ -5,7 +5,7 @@ class Corporation < ActiveRecord::Base
   require 'hpricot'
   require 'date'
   include MEGAFON
-  
+
   def logging(message)
     log = Logger.new(File.join(Rails.root, "log", 'corporation.log'))
     log.debug "#{DateTime.now} #{message}"
@@ -17,15 +17,15 @@ class Corporation < ActiveRecord::Base
   has_many    :corporation_payments,    :dependent => :destroy
   has_many    :corporation_debits,      :dependent => :destroy
   has_many    :corporation_saldos,      :dependent => :destroy
-  
-  # => Callback's  
+
+  # => Callback's
   after_create  :xml_response
 # after_create  :create_user # => Раньше регистрация пользователей была автоматической, при создании корпорации
   #after_create  :add_default_tarif
   before_create :add_start_day
   after_update  :change_status_after_delay
   after_create  :change_status_after_delay
-  
+
   # => Validate's
   validates_uniqueness_of :phone
 
@@ -96,7 +96,7 @@ class Corporation < ActiveRecord::Base
         # => Проверка тарифа
         if abonent.abonent_tarif.monthly?
 
-          # => Проверка было ли списание у абонента 
+          # => Проверка было ли списание у абонента
           if abonent.abonent_debits.last
             last_debit = abonent.abonent_debits.last    #Последнее списание
 
@@ -107,7 +107,7 @@ class Corporation < ActiveRecord::Base
               # => Прошло ли 30 дней с последнего списания
               if last_debit_day.to_date + 30.day == Date.current
 
-                if (delay == 0) and abonent.has_enough_balance
+                if (delay == 0) and abonent.has_not_enough_balance
                   lock_abonent(abonent, abonents_to_lock)
                 else
                   unlock_abonent(abonent, abonents_to_unlock)
@@ -116,7 +116,7 @@ class Corporation < ActiveRecord::Base
 
             # => Если последнее списание не по ежемесячному списанию
             else
-              if (delay == 0) and abonent.has_enough_balance
+              if (delay == 0) and abonent.has_not_enough_balance
                 lock_abonent(abonent, abonents_to_lock)
               else
                 unlock_abonent(abonent, abonents_to_unlock)
@@ -125,7 +125,7 @@ class Corporation < ActiveRecord::Base
 
           # => Если предедущих списаний нет
           else
-            if (delay == 0) and abonent.has_enough_balance
+            if (delay == 0) and abonent.has_not_enough_balance
               lock_abonent(abonent, abonents_to_lock)
             else
               unlock_abonent(abonent, abonents_to_unlock)
@@ -134,11 +134,11 @@ class Corporation < ActiveRecord::Base
 
         # => Если тариф не ежемесячный
         else
-          if (delay == 0) and abonent.has_enough_balance
+          if (delay == 0) and abonent.has_not_enough_balance
             lock_abonent(abonent, abonents_to_lock)
           else
-            unlock_abonent(abonent, abonents_to_unlock) 
-          end                      
+            unlock_abonent(abonent, abonents_to_unlock)
+          end
         end
       elsif !abonent.suspend? and !abonent.abonent_tarif
     	    if balance <= 0 and delay == 0
@@ -148,7 +148,7 @@ class Corporation < ActiveRecord::Base
 
     end
 
-    
+
 
     try_index = 0
     begin
@@ -173,17 +173,17 @@ class Corporation < ActiveRecord::Base
       abonent.update_attributes(:suspend => false) if abonent.start_date == Date.current
     end
   end
-  
+
   def lock_abonent(abonent, lock_array)
     lock_array << abonent.phone.to_s
     abonent.update_attributes(:status => false)
-    logging("Заблокирован абонент #{abonent.phone.to_s} --- #{abonent.corporation.name}")    
+    logging("Заблокирован абонент #{abonent.phone.to_s} --- #{abonent.corporation.name}")
   end
 
   def unlock_abonent(abonent, unlock_array)
     unlock_array << abonent.phone.to_s
     abonent.update_attributes(:status => true)
-    logging("Разблокирован абонент #{abonent.phone.to_s} --- #{abonent.corporation.name}")     
+    logging("Разблокирован абонент #{abonent.phone.to_s} --- #{abonent.corporation.name}")
   end
 
 

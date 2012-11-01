@@ -7,7 +7,7 @@ class Abonent < ActiveRecord::Base
   has_many    :abonent_debits,    :dependent => :destroy
   has_many    :abonent_payments,  :dependent => :destroy
   belongs_to  :abonent_tarif
-  
+
   #Callback's
   after_create  :addStartDay
   after_update  :change_status_after_delay
@@ -34,7 +34,7 @@ class Abonent < ActiveRecord::Base
     end
   end
 
-  
+
   def show_status
     self.status ? "Активен" : "Не активен"
   end
@@ -73,9 +73,9 @@ class Abonent < ActiveRecord::Base
         make_debit
       end
     end
-  
+
 #--------------------- new func -----------------------------------
-# make_debit if !last_debit or 
+# make_debit if !last_debit or
 #               (last_debit and !last_debit.abonent_tarif.monthly?) or
 #               !abonent_tarif.monthly?
 
@@ -86,14 +86,14 @@ class Abonent < ActiveRecord::Base
 
   end
 
-
-  def has_enough_balance
+  def balance
     pays = abonent_payments.collect{|pay| pay.amount}
     debits = abonent_debits.collect{|pay| pay.amount}
-    balance = pays.sum - debits.sum
-     
-    balance < abonent_tarif.get_charge
+    pays.sum - debits.sum
+  end
 
+  def has_not_enough_balance
+    balance < abonent_tarif.get_charge
   end
 
   def make_debit
